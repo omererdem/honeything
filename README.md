@@ -1,2 +1,2 @@
 # HoneyThing
-Implementation of a TR-069 Honeypot
+Honeypot for Internet of TR-069 Things
