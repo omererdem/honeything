@@ -1,0 +1,50 @@
+<html><head>
+<title></title><meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="wizardstart_files/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+</style>
+<script>
+function ExitWizard()
+{
+if (confirm("Quit setup wizard and discard settings ?")) {document.wzStartform.wzExitFlag.value = 1;
+document.wzStartform.submit();
+window.close();
+}
+}
+function NextWizard()
+{
+window.location = "wizardTZ.htm"/*tpa=http://192.168.1.1/wizard/wizardTZ.htm*/;
+}
+</script>
+</head><body topmargin="10" leftmargin="0">
+<form method="POST" action="http://192.168.1.1/Forms/wizardstart_1" name="wzStartform"><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td class="orange" height="5" valign="baseline" width="500"></td></tr></tbody></table><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td align="center" bgcolor="#FFFFFF" height="50" valign="middle" width="200"><div align="left"><img src="wizardstart_files/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" height="50" width="200"></div></td><td class="model" align="right" bgcolor="#FFFFFF" height="50" valign="bottom" width="300">
+</td></tr><tr>
+<td colspan="2" class="orange" width="500"> </td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="2" width="500">
+<tbody><tr>
+<td class="orange"> </td></tr></tbody></table><table color="#FF9933" align="center" border="0" cellpadding="0" cellspacing="0" height="35" width="500">
+<tbody><tr>
+<td class="headline" bgcolor="#FFFFFF" width="500">&nbsp;
+<font color="#666666">Quick Start</font></td></tr></tbody></table><table align="center" border="0" cellpadding="2" cellspacing="0" width="500">
+<tbody><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata">    				<font color="#000000">The Wizard will guide you through these four quick steps. Begin by clicking on <b>NEXT</b></font>.</td></tr><tr>
+<td width="40">&nbsp;</td><td width="30"></td><td class="tabdata">
+<font color="#000000">Step 1. Choose your time zone</font></td></tr><tr>
+<td>&nbsp;</td><td width="30"></td><td class="tabdata">
+<font color="#000000">Step 2. Set your Internet connection</font></td></tr><tr>
+<td>&nbsp;</td><td width="30"></td><td class="tabdata">
+<font color="#000000">Step 3. Wireless network configuration</font></td></tr><tr>
+<td>&nbsp;</td><td></td><td class="tabdata">
+<font color="#000000">Step 4. Save settings of this ADSL Router</font></td></tr><tr>
+<td>&nbsp;</td><td width="30"></td><td><input name="wzExitFlag" value="0" type="HIDDEN"><input name="wzStartCommitFlag" value="0" type="HIDDEN"></td></tr><tr>
+<td></td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="40" width="500">
+<tbody><tr>
+<td class="orange">
+<div align="right">
+<input name="NextBtn" value="NEXT" Â"50"="" class="tabdata" onclick="NextWizard();" type="BUTTON"><input name="ExitBtn" value="EXIT" Â"50"="" class="tabdata" onclick="ExitWizard()" type="BUTTON"></div></td><td class="orange" valign="baseline" width="25">&nbsp;</td></tr></tbody></table></form>
+</body></html>

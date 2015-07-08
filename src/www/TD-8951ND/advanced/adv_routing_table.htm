@@ -1,0 +1,78 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language='javascript'>
+function DelRoute(num) {
+if (confirm("Positive you want to drop route " + (num+1) +"?")) {document.forms[0].staticTable_RouteDelFlag.value = 1;
+document.forms[0].staticTable_RouteDel.value = num;
+document.forms[0].submit();
+}
+return;
+}
+function EditRoute(num) {
+document.forms[0].staticTable_RouteEditFlag.value = 1;
+document.forms[0].staticTable_RouteEdit.value = num;
+document.forms[0].submit();
+return;
+}
+function addStaticRoute()
+{
+document.forms[0].submit();
+return false;
+}
+function doLoad()
+{
+}
+</script>
+</head><body onLoad="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/rpRouteTable_1" name="RoutingTable_form"><div align=center>
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Routing Table List</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td colspan="3" align=center>
+<table width="580" border="1" align=center cellpadding="0" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#FFFFFF">
+<tr height="30">
+<td width="40"  align=center class="tabdata"><strong>#</strong></td><td width="110" align=center class="tabdata"><strong>
+<font color="#000000">Dest IP</font></strong></td><td width="50"  align=center class="tabdata"><strong>
+<font color="#000000">Mask</font></strong> </td><td width="110" align=center class="tabdata"><strong>
+<font color="#000000">Gateway IP</font></strong> </td><td width="50"  align=center class="tabdata"><strong>
+<font color="#000000">Metric</font></strong></td><td width="70"  align=center class="tabdata"><strong>
+<font color="#000000">Device</font></strong></td><td width="50"  align=center class="tabdata"><strong>
+<font color="#000000">Use</font></strong></td><td width="45"  align=center class="tabdata"><strong>
+<font color="#000000">Edit</font></strong></td><td align=center class="tabdata"><strong>
+<font color="#000000">Drop</font></strong></td></tr><tr>
+<td align="center" class="tabdata">  1  </td>
+<td align="center" class="tabdata">192.168.1.0</td>
+<td align="center" class="tabdata">24</td>
+<td align="center" class="tabdata">192.168.1.1</td>
+<td align="center" class="tabdata">1</td>
+<td align="center" class="tabdata">enet0</td>
+<td align="center" class="tabdata">8028</td>
+<td align="center" class="tabdata">&nbsp</td>
+<td align="center" class="tabdata">&nbsp</td>
+</tr>
+<tr>
+<td align="center" class="tabdata">  2  </td>
+<td align="center" class="tabdata">default</td>
+<td align="center" class="tabdata">0</td>
+<td align="center" class="tabdata">Node5</td>
+<td align="center" class="tabdata">2</td>
+<td align="center" class="tabdata">Idle</td>
+<td align="center" class="tabdata">0</td>
+<td align="center" class="tabdata">&nbsp</td>
+<td align="center" class="tabdata">&nbsp</td>
+</tr>
+</table></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td height="5" class="tabdata" align=right colspan="3">
+&nbsp;
+</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr height="42">
+<td width="160" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="HIDDEN" NAME="staticTable_RouteDel" VALUE="0"><INPUT TYPE="HIDDEN" NAME="staticTable_RouteDelFlag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="staticTable_RouteEdit" VALUE="0"><INPUT TYPE="HIDDEN" NAME="staticTable_RouteEditFlag" VALUE="0"><input name="AddRoute" type="button" value="ADD ROUTE" onClick="location='adv_static_route.htm'">
+</tr></table></div></form>
+</body></html>

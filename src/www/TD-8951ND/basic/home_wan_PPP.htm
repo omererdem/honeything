@@ -1,0 +1,1169 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+<!--
+.style1 {color: #FFFFFF}
+-->
+</style>
+<script language="javascript" src="../js/general.js" tppabs="http://192.168.1.1/js/general.js"></script>
+<script language="JavaScript">
+var ipversion = 0;
+function dowVersionChange()
+{
+if(document.forms[0].wanIPVersionRadio[0].checked)
+{
+if(document.getElementById("ipv6DynamicOption")!= null)
+document.getElementById("ipv6DynamicOption").style.display = "none";
+if(document.getElementById("ipv6StaticOption")!= null)
+document.getElementById("ipv6StaticOption").style.display = "none";
+if(document.getElementById("ipv6NatOptions")!= null)
+{
+document.getElementById("ipv6NatOptions").style.display = "";
+if((document.forms[0].wan_NAT != null) && ipversion == 2)
+document.forms[0].wan_NAT.selectedIndex = 1;
+}
+if(document.getElementById("divIpv4Static")!= null)
+document.getElementById("divIpv4Static").style.display = "";
+if(document.getElementById("divIpv4Dynamic")!= null)
+document.getElementById("divIpv4Dynamic").style.display = "";
+if(document.getElementById("divDynamicIpv4Addr")!= null)
+document.getElementById("divDynamicIpv4Addr").style.display = "";
+if(document.getElementById("dsliteDynamicOption")!= null){
+document.forms[0].wan_IPv6DSLiteEnable[1].checked = true;
+DSLiteChanged();
+document.getElementById("dsliteDynamicOption").style.display = "none";
+}
+ipversion = 0;
+}
+if(document.forms[0].wanIPVersionRadio[1].checked)
+{
+if(document.getElementById("ipv6DynamicOption")!= null)
+document.getElementById("ipv6DynamicOption").style.display = "";
+if(document.getElementById("ipv6StaticOption")!= null)
+document.getElementById("ipv6StaticOption").style.display = "";
+if(document.getElementById("ipv6NatOptions")!= null)
+{
+document.getElementById("ipv6NatOptions").style.display = "";
+if((document.forms[0].wan_NAT != null) && ipversion == 2)
+document.forms[0].wan_NAT.selectedIndex = 1;
+}
+if(document.getElementById("divIpv4Static")!= null)
+document.getElementById("divIpv4Static").style.display = "";
+if(document.getElementById("divIpv4Dynamic")!= null)
+document.getElementById("divIpv4Dynamic").style.display = "";
+if(document.getElementById("divDynamicIpv4Addr")!= null)
+document.getElementById("divDynamicIpv4Addr").style.display = "";
+if(document.getElementById("dsliteDynamicOption")!= null)
+document.getElementById("dsliteDynamicOption").style.display = "";
+ipversion = 1;
+}
+if(document.forms[0].wanIPVersionRadio[2].checked)
+{
+if(document.getElementById("ipv6DynamicOption")!= null)
+document.getElementById("ipv6DynamicOption").style.display = "";
+if(document.getElementById("ipv6StaticOption")!= null)
+document.getElementById("ipv6StaticOption").style.display = "";
+if(document.getElementById("ipv6NatOptions")!= null)
+document.getElementById("ipv6NatOptions").style.display = "none";
+if(document.getElementById("divIpv4Static")!= null)
+document.getElementById("divIpv4Static").style.display = "none";
+if(document.getElementById("divIpv4Dynamic")!= null)
+document.getElementById("divIpv4Dynamic").style.display = "none";
+if(document.getElementById("divDynamicIpv4Addr")!= null)
+document.getElementById("divDynamicIpv4Addr").style.display = "none";
+if(document.getElementById("dsliteDynamicOption")!= null)
+document.getElementById("dsliteDynamicOption").style.display = "";
+ipversion = 2;
+}
+}
+function inValidIPv6Addr(Address)
+{
+var regExp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+var address = Address.match(regExp);
+if(address == null){
+alert('Invalid IPv6 Address:' + Address);
+return true;
+}
+return false;
+}
+function inValidIPv6Prefix(Prefix)
+{
+var IPv6Prefix = Prefix.match("^[0-9]{1,3}$");
+if(IPv6Prefix == null) {
+alert('Invalid IPv6 Prefix:' + Prefix);
+return true;
+}
+if((Number(Prefix) > 128 ) || (Number(Prefix) < 1 )){
+alert('Invalid IPv6 Prefix:' + Prefix);
+return true;
+}
+return false;
+}
+function DSLiteChanged()
+{
+with (document.forms[0])
+{
+if (wan_IPv6DSLiteEnable[1].checked){
+setDisplay('div_DSLitemode', 0);
+}
+else {
+setDisplay('div_DSLitemode', 1);
+DSLiteModeChanged();
+}
+}
+}
+function DSLiteModeChanged( )
+{
+with (document.forms[0])
+{
+if (wan_IPv6DSLiteMode[0].checked)
+setDisplay('div_DSLiteReAddr', 0);
+else
+setDisplay('div_DSLiteReAddr', 1);
+}
+}
+function setDisplay(sId, sh)
+{
+var status;
+if (sh > 0)
+{
+status = "";
+}
+else
+{
+status = "none";
+}
+document.getElementById(sId).style.display = status;
+}
+function MTUCheck()
+{
+var MTU;
+var value = document.forms[0].wanTypeRadio[2].checked;
+MTU = parseInt(document.Alpha_WAN.wan_TCPMTU.value);
+if(value){
+if((MTU > 1492 || MTU < 100)){
+alert("The range of PPP MTU: 100 ~ 1492");return false;
+}
+else{
+return true;
+}
+}else{
+if((MTU > 1500 || MTU < 100))
+{
+alert("The range of TCP MTU: 100 ~ 1500");return false;
+}
+else{
+return true;
+}
+}
+}
+function valDoValidateIntegerWAN(Integer)
+{
+if(Integer.match("^[0-9]+")) {
+return true;
+}
+alert("An integer can only have digits");return false;
+}
+function pvcDoValidatePageWAN()
+{
+var value;
+value = document.Alpha_WAN.Alwan_VPI.value;
+if(!valDoValidateIntegerWAN(value))
+{
+return false;
+}
+else if(Number(value) > 255 || Number(value)<0)
+{
+alert("VPI must be in the range 0-255");return false;
+}
+value = document.Alpha_WAN.Alwan_VCI.value;
+if(!valDoValidateIntegerWAN(value))
+{
+return false;
+}
+else if(Number(value) > 65535 || Number(value)<=0)
+{
+alert("VCI must be in the range 1-65535");return false;
+}
+return true;
+}
+function isNumeric(value)
+{
+var len= value.length;
+if(len==0)
+return false;
+if(value.match("[^0-9]") != null)
+return false;
+else
+return true;
+}
+function QoSDoValidatePageWAN()
+{
+var value;
+var value1;
+switch(document.forms[0].Alwan_QoS.selectedIndex)
+{
+case 0:
+case 1:
+value = document.Alpha_WAN.wan_PCR.value;
+if(!isNumeric(value))
+{
+alert("PCR must be Integer");return false;
+}
+if(Number(value) > 5500)
+{
+alert("PCR must be less than or equal to 5500");return false;
+}
+break;
+case 2:
+case 3:
+value = document.Alpha_WAN.wan_MBS.value;
+if(!isNumeric(value))
+{
+alert("MBS must be Integer");return false;
+}
+if(Number(value) > 65535)
+{
+alert("MBS must be less than or equal to 65535");return false;
+}
+value = document.Alpha_WAN.wan_PCR.value;
+if(!isNumeric(value))
+{
+alert("PCR must be Integer");return false;
+}
+if(Number(value) > 5500)
+{
+alert("PCR must be less than or equal to 5500");return false;
+}
+value1 = document.Alpha_WAN.wan_SCR.value;
+if(!isNumeric(value1))
+{
+alert("SCR must be Integer");return false;
+}
+else if(Number(value1) > Number(value)) {
+alert("SCR must be less than or equal to PCR");return false; }
+break;
+default:
+break;
+}
+return true;
+}
+function WANChkIdleTimeT() {
+if (document.forms[0].wan_ConnectSelect[1].checked)
+document.forms[0].wan_IdleTimeT.disabled = false;
+else
+document.forms[0].wan_IdleTimeT.disabled = true;
+}
+function QosCheck() {
+switch(document.forms[0].Alwan_QoS.selectedIndex) {
+case 0:
+case 1:
+document.forms[0].wan_PCR.disabled = false;
+document.forms[0].wan_SCR.disabled = true;
+document.forms[0].wan_MBS.disabled = true;
+break;
+case 2:
+case 3:
+document.forms[0].wan_PCR.disabled = false;
+document.forms[0].wan_SCR.disabled = false;
+document.forms[0].wan_MBS.disabled = false;
+break;
+}
+return;
+}
+function onClickPVCSummary() {
+window.open("home_pvclist.htm"/*tpa=http://192.168.1.1/basic/home_pvclist.htm*/,"PVC_List","toolbar=no,menubar=no,height=305, width=620,location=0,left=200,top=200");
+return false;
+}
+/*function doVCChange(value) {
+document.Alpha_WAN.wanVCFlag.value = 1;
+//document.Alpha_WAN.submit();
+
+ if(value==0)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=1;
+  document.Alpha_WAN.Alwan_VCI.value=32;
+  }
+   if(value==1)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=0;
+  document.Alpha_WAN.Alwan_VCI.value=33;
+  }
+   if(value==2)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=0;
+  document.Alpha_WAN.Alwan_VCI.value=35;
+  }
+   if(value==3)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=0;
+  document.Alpha_WAN.Alwan_VCI.value=100;
+  }
+   if(value==4)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=8;
+  document.Alpha_WAN.Alwan_VCI.value=35;
+  }
+   if(value==5)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=8;
+  document.Alpha_WAN.Alwan_VCI.value=48;
+  }
+  if(value==6)
+  {
+  document.Alpha_WAN.Alwan_VPI.value=0;
+  document.Alpha_WAN.Alwan_VCI.value=38;
+  }
+
+return;
+}*/
+function doConTypeChange() {
+document.Alpha_WAN.wanConTypeFlag.value = 1;
+document.Alpha_WAN.submit();
+return;
+}
+function doPPPStaticChange() {
+if(document.Alpha_WAN.wan_IPv6PPPStatic[0].checked)
+{
+if(document.getElementById("IPv6PPPStaticIP")!= null)
+document.getElementById("IPv6PPPStaticIP").style.display = "";
+if(document.getElementById("IPv6PPPStaticIPGateway")!= null)
+document.getElementById("IPv6PPPStaticIPGateway").style.display = "";
+}
+if(document.Alpha_WAN.wan_IPv6PPPStatic[1].checked)
+{
+if(document.getElementById("IPv6PPPStaticIP")!= null)
+document.getElementById("IPv6PPPStaticIP").style.display = "none";
+if(document.getElementById("IPv6PPPStaticIPGateway")!= null)
+document.getElementById("IPv6PPPStaticIPGateway").style.display = "none";
+}
+}
+function isBlank(s) {
+for(i=0;i<s.length;i++) {
+c = s.charAt(i);
+if( (c!=' ')&&(c!='\n')&&(c!='\t') )
+return false;
+}return true;
+}
+function isValidIPString(s) {
+tempstr = s;
+if (isBlank(s))
+return false;
+else
+{
+var IParray = s.split(".");
+if ((IParray.length>4)||(IParray.length<2))
+return false;
+for (i=0;i<IParray.length;i++)
+{
+st = IParray[i];
+if (isNaN(st)||(st=="")){
+return false;
+}
+if ((st<0)||(st>255))
+return false;
+if ( (i == 3) && ((st == 0) || (st==255)) )
+return false;
+}
+}
+return true;
+}
+function doIPVersionsChange() {
+if( !isValidIPString(document.forms[0].wan_StaticIPaddr.value))
+document.forms[0].wan_StaticIPaddr.value="192.168.1.1";
+document.Alpha_WAN.wanIPVersionsFlag.value = 1;
+document.Alpha_WAN.submit();
+return;
+}
+function doBridgeSwitch()
+{
+document.Alpha_WAN.BridgeFlag.value = 1;
+document.Alpha_WAN.submit();
+return;
+}
+function idleTimeCheck() {
+var number = document.forms[0].wan_IdleTimeT.value.match("^[0-9]{1,5}$");
+if (document.forms[0].wan_ConnectSelect[1].checked) {
+if (number == null) {
+alert("Invalid Connection of Demand Idle Time");return true;
+}
+if (Number(document.forms[0].wan_IdleTimeT.value) > 546) {
+alert("Idle time cannot be more than 546!");return true;
+}
+}
+return false;
+}
+function isValidIpAddr(ip1,ip2,ip3,ip4)
+{
+if((ip4==0 && ip3==0) || ip1==0 || ip4==255 || ip1==127)
+return false;
+return true;
+}
+function valDoValidateIP(Address)
+{
+var address = Address.match("^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$");
+var digits;
+var i;
+if(address == null) {
+alert("IP address is empty or wrong format!");return false;
+}
+else
+{
+digits = address[0].split(".");
+for(i=0; i < 4; i++)
+{
+if((Number(digits[i]) > 255 ) || (Number(digits[i]) < 0 ) || (Number(digits[0]) > 223))
+{
+alert("Invalid IP address: " + Address);return false;
+}
+}
+if(!isValidIpAddr(digits[0],digits[1],digits[2],digits[3],false))
+{
+alert("Invalid IP address: " + Address);return false;
+}
+}
+return true;
+}
+function inValidSubnetMask(Mask)
+{
+var mask = Mask.match("^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$");
+var digits;
+var bMask = 0;
+var watch = false;
+var i;
+if(mask == null)
+return true;
+digits = mask[0].split(".");
+if(Number(digits[3]>253))
+return true;
+for(i=0; i < 4; i++)
+{
+if((Number(digits[i]) > 255 ) || (Number(digits[i]) < 0 ))
+return true;
+bMask = (bMask << 8) | Number(digits[i]);
+}
+if ( (Number(digits[0]) == 0) && (Number(digits[1]) == 0)
+&& (Number(digits[2]) == 0) && (Number(digits[3]) == 0))
+return true;
+bMask = bMask & 0x0FFFFFFFF;
+for(i=0; i<32; i++)
+{
+if((watch==true) && ((bMask & 0x1)==0))
+return true;
+if((bMask & 0x01) == 1) watch=true;
+bMask = bMask >> 1;
+}
+return false;
+}
+function staticDoValidatePageWAN()
+{
+var value;
+value = document.Alpha_WAN.wan_StaticIPaddr.value;
+if(!valDoValidateIP(value))
+return false;
+return true;
+}
+function StringCheck(val)
+{
+re = /^[^\s]+$/;
+if( re.test(val) )
+return true;
+else
+return false;
+}
+function IsStringEmpty(val)
+{
+var sw;
+sw = /^\s*$/;
+if( val == "" || sw.test(val) )
+return true;
+else
+return false;
+}
+function doHexCheck(c)
+{
+if ( (c >= "0") && (c <= "9") )
+return 1;
+else if ( (c >= "A") && (c <= "F") )
+return 1;
+else if ( (c >= "a") && (c <= "f") )
+return 1;
+return -1;
+}
+function isIllegalMacAddr(address)
+{
+if(address.match("[0]{2}\:[0]{2}\:[0]{2}\:[0]{2}\:[0]{2}\:[0]{2}")||address.match("[f  F]{2}\:[f  F]{2}\:[f  F]{2}\:[f  F]{2}\:[f  F]{2}\:[f  F]{2}")|| address.match("01\:00\:5[E,e]\:[0-7]{1}[0-9  a-f  A-F]{1}\:[0-9  a-f  A-F]{2}\:[0-9  a-f  A-F]{2}")
+|| address.match("01\:80\:[C,c]2\:[0-9  a-f  A-F]{2}\:[0-9  a-f  A-F]{2}\:[0-9  a-f  A-F]{2}")
+|| address.match("09\:00\:2[B,b]\:00\:00\:0[4-5]{1}")
+|| address.match("03\:00\:00\:00\:00\:08")
+|| address.match("03\:00\:00\:00\:00\:[1,4]0")
+|| address.match("03\:00\:00\:00\:0[1,2,4,8]\:00")
+|| address.match("03\:00\:00\:00\:[1,2,4]0\:00")
+|| address.match("03\:00\:00\:40\:00\:00")
+)
+{
+return 1;
+}
+return 0;
+}
+function doMACcheck(object)
+{
+var szAddr = object.value;
+var len = szAddr.length;
+if((document.forms[0].wanIPVersionRadio[0].checked) || (document.forms[0].wanIPVersionRadio[1].checked))
+{
+if ( len == 0 )
+{
+object.value ="00:00:00:00:00:00";
+return;
+}
+if ( len == 12 )
+{
+var newAddr = "";
+var i = 0;
+for ( i = 0; i < len; i++ )
+{
+var c = szAddr.charAt(i);
+if ( doHexCheck(c) < 0 )
+{
+alert("Invalid Source MAC address!");//      	object.value ="00:00:00:00:00:00";
+object.focus();
+return;
+}
+if ( (i == 2) || (i == 4) || (i == 6) || (i == 8) || (i == 10) )
+newAddr = newAddr + ":";
+newAddr = newAddr + c;
+}
+var temp = newAddr.charAt(1);
+temp = parseInt(temp, 16);
+if ( temp & 0x01 ==1 )
+{
+object.focus();
+}
+object.value = newAddr;
+return;
+}
+else if ( len == 17 )
+{
+var i = 2;
+var c0 = szAddr.charAt(0);
+var c1 = szAddr.charAt(1);
+if ( (doHexCheck(c0) < 0) || (doHexCheck(c1) < 0) )
+{
+alert("Invalid Source MAC address!");//      	object.value ="00:00:00:00:00:00";
+object.focus();
+return;
+}
+i = 2;
+while ( i < len )
+{
+var c0 = szAddr.charAt(i);
+var c1 = szAddr.charAt(i+1);
+var c2 = szAddr.charAt(i+2);
+if ( (c0 != ":") || (doHexCheck(c1) < 0) || (doHexCheck(c2) < 0) )
+{
+alert("Invalid Source MAC address!");//      		object.value ="00:00:00:00:00:00";
+object.focus();
+return;
+}
+i = i + 3;
+}
+var temp = szAddr.charAt(1);
+temp = parseInt(temp, 16);
+if ( temp & 0x01 ==1 )
+{
+object.focus();
+}
+return;
+}
+else
+{
+alert("Invalid Source MAC address!");//  		object.value ="00:00:00:00:00:00";
+object.focus();
+return;
+}
+}
+}
+function quotationCheck(object, limit_len) {
+var len = object.value.length;
+var c;
+var i, j = 0;
+for (i = 0; i < len; i++)
+{
+var c = object.value.charAt(i);
+if (c == '"')
+{
+j += 6;
+}
+else
+j++;
+}
+if (j > limit_len)
+{
+alert('too many quotation marks!');return true;
+}
+return false;
+}
+function backslashCheck(object, limit_len) {
+var len = object.value.length;
+var c;
+var i, j = 0;
+for (i = 0; i < len; i++)
+{
+var c = object.value.charAt(i);
+if (c == '\\')
+{
+j += 4;
+}
+else
+j++;
+}
+if (j > limit_len)
+{
+return true;
+}
+return false;
+}
+function uiSave() {
+if((document.forms[0].wanIPVersionRadio[1].checked) || (document.forms[0].wanIPVersionRadio[2].checked))
+{
+if(document.forms[0].wan_Ipv6Address0 !=null)
+{
+if(inValidIPv6Addr(document.forms[0].wan_Ipv6Address0.value))
+return false;
+}
+if(document.forms[0].wan_Ipv6Address1 !=null)
+{
+if(inValidIPv6Prefix(document.forms[0].wan_Ipv6Address1.value))
+return false;
+}
+if(document.forms[0].wan_Ipv6Getway !=null)
+{
+if(inValidIPv6Addr(document.forms[0].wan_Ipv6Getway.value))
+return false;
+}
+if(document.forms[0].wan_IPv6GDNSServer1 !=null)
+{
+if(inValidIPv6Addr(document.forms[0].wan_IPv6GDNSServer1.value))
+return false;
+}
+if(document.forms[0].wan_IPv6GDNSServer2 !=null)
+{
+if(inValidIPv6Addr(document.forms[0].wan_IPv6GDNSServer2.value))
+return false;
+}
+}
+if((document.forms[0].wanIPVersionRadio[0].checked) || (document.forms[0].wanIPVersionRadio[1].checked))
+{
+if(document.forms[0].wan_IPv6DSLiteEnable[0].checked)
+{
+alert('Dual Stack Lite only can be enabled on ipv6 version!');return false;
+}
+}
+else
+{
+if(document.forms[0].wan_IPv6DSLiteEnable[0].checked)
+{
+if(document.forms[0].wan_IPv6DSLiteMode[1].checked)
+{
+if(document.forms[0].wan_RemoteAddress !=null)
+{
+if(inValidIPv6Addr(document.forms[0].wan_RemoteAddress.value))
+return false;
+}
+}
+if((document.forms[0].WAN_DefaultRoute == null) || (document.forms[0].WAN_DefaultRoute[1].checked))
+{
+alert('If you want to enable Dual Stack Lite,please set the pvc to default route!');return false;
+}
+}
+}
+var value;
+var Mask;
+if(null != document.forms[0].wan_PPPGetIPVersions)
+{
+if(document.forms[0].wanTypeRadio[2].checked)
+{
+if(document.forms[0].wan_PPPGetIPVersions[1].checked)
+return;
+}
+}
+if (
+!pvcDoValidatePageWAN() ||
+!QoSDoValidatePageWAN())
+return;
+if ((!IsStringEmpty(document.forms[0].wan_PPPUsername.value))&&
+(!StringCheck(document.forms[0].wan_PPPUsername.value)))
+{
+alert("Username contain space!!");return;
+}
+if ((!IsStringEmpty(document.forms[0].wan_PPPPassword.value))&&
+(!StringCheck(document.forms[0].wan_PPPPassword.value)))
+{
+alert("Password contain space!!");return;
+}
+if(document.forms[0].Check_UsrPsw_Flag.value != 0)
+{
+if(((document.forms[0].wan_PPPUsername.value!="") && !UsrPswCheck(document.forms[0].wan_PPPUsername.value)) ||
+(document.forms[0].Empty_UsrPsw_Flag.value!=1 && IsStringEmpty(document.forms[0].wan_PPPUsername.value)))
+{
+alert('Invalid Username');return;
+}
+if(((document.forms[0].wan_PPPPassword.value!="") && !UsrPswCheck(document.forms[0].wan_PPPPassword.value) && (document.forms[0].Check_PasswordFlag.value != 0))  ||
+(document.forms[0].Empty_UsrPsw_Flag.value!=1 && IsStringEmpty(document.forms[0].wan_PPPPassword.value)))
+{
+alert('Invalid Password');return;
+}
+}
+if(idleTimeCheck())
+return ;
+MSS = parseInt(document.Alpha_WAN.wan_TCPMSS.value);
+if(MSS > 1452 || MSS < 100)
+{
+alert("The range of TCP MSS: 100 ~ 1452");return false;
+}
+if((document.forms[0].wanIPVersionRadio[0].checked) || (document.forms[0].wanIPVersionRadio[1].checked))
+{
+if (!MTUCheck())
+return false;
+MTU = parseInt(document.Alpha_WAN.wan_TCPMTU.value);
+if( (MTU != 0) && (MSS != 0) && (MSS > (MTU - 40)) )
+{
+alert("The range of TCP MSS must less than TCP MTU - 40(TCP and IP header)!");return false;
+}
+}
+if (quotationCheck(document.forms[0].wan_PPPServicename, 31) )
+return;
+if(chineseCheck(document.forms[0].wan_PPPServicename, "ServicenameId"))
+return;
+if (quotationCheck(document.forms[0].wan_PPPUsername, 70) )
+return;
+if(chineseCheck(document.forms[0].wan_PPPUsername, "UsernameId"))
+return;
+if (quotationCheck(document.forms[0].wan_PPPPassword, 70) )
+return;
+if(chineseCheck(document.forms[0].wan_PPPPassword, "PasswardId"))
+return;
+if(document.forms[0].wan_PPPGetIP[0].checked)
+{
+if((document.forms[0].wanIPVersionRadio[0].checked) || (document.forms[0].wanIPVersionRadio[1].checked))
+{
+if (!staticDoValidatePageWAN())
+return;
+Mask = document.forms[0].wan_StaticIPSubMask.value;
+if (inValidSubnetMask(Mask))
+{
+alert("Invalid subnet mask: " + Mask);return;
+}
+value = document.forms[0].wan_StaticIpGateway.value;
+if (!valDoValidateIP(value))
+return;
+}
+}
+if (document.Alpha_WAN.wanIGMPQitFlag.value == 1)
+{
+if(!isNumeric(document.Alpha_WAN.WANPMulticastQIT.value))
+{
+alert("An integer can only have digits");return;
+}
+}
+if(document.forms[0].wanIPVersionRadio[2].checked)
+{
+if(document.forms[0].wan_IPv6DSLiteEnable[0].checked)
+{
+if((document.forms[0].wan_NAT != null) && (document.forms[0].wan_NAT.selectedIndex == 1))
+{
+}
+}
+}
+document.Alpha_WAN.submit();
+}
+function pppStaticCheck() {
+var value = document.forms[0].wan_PPPGetIP[1].checked;
+if (value) {
+document.forms[0].wan_StaticIPaddr.disabled = true;
+document.forms[0].wan_StaticIPaddr.value = "0.0.0.0";
+document.forms[0].wan_StaticIPSubMask.disabled = true;
+document.forms[0].wan_StaticIPSubMask.value = "0.0.0.0";
+document.forms[0].wan_StaticIpGateway.disabled = true;
+document.forms[0].wan_StaticIpGateway.value = "0.0.0.0";
+} else {
+document.forms[0].wan_StaticIPaddr.disabled = false;
+document.forms[0].wan_StaticIPSubMask.disabled = false;
+document.forms[0].wan_StaticIpGateway.disabled = false;
+}
+}
+function doEnable() {
+if (document.forms[0].wan_EnabledSpoof[1].checked){
+document.forms[0].wan_SpoofSrcMacValue.disabled = true;
+document.forms[0].wan_SpoofSrcMacValue.value="00:00:00:00:00:00";
+}
+else
+document.forms[0].wan_SpoofSrcMacValue.disabled = false;
+}
+function doLoad() {
+dowVersionChange();
+DSLiteChanged();
+var value = document.forms[0].wanTypeRadio[2].checked;
+QosCheck();
+WANChkIdleTimeT();
+if (value)
+{
+pppStaticCheck();
+}
+LockWhenPVC0();
+LockPVC();
+if(document.forms[0].wan_PPPPassword != null)
+{
+document.forms[0].wan_PPPPassword.value = pwdppp;
+}
+}
+function doDelete() {
+document.forms[0].wanVCFlag.value = 2;
+document.Alpha_WAN.submit();
+}
+function UsrPswCheck(val)
+{
+re = /^[0-9 a-z A-Z]+$/;
+if( re.test(val) )
+return true;
+else
+return false;
+}
+function pppUsernameCheck(val)
+{
+re = /^[0-9 a-z A-Z @]+$/;
+if( re.test(val) ){
+return true;
+}
+else{
+return false;
+}
+}
+function LockPVC()
+{
+var j;
+var frm = document.Alpha_WAN;
+if(frm.HiddenFlag.value==1)
+{
+frm.elements[2].disabled = true;
+for(j = 4; j < frm.elements.length; j++)
+{
+frm.elements[j].disabled = true;
+}
+}
+return;
+}
+function LockWhenPVC0() {
+if(document.Alpha_WAN.wan_PVCO_Flag.value == 1)
+{
+if(document.Alpha_WAN.Alwan_VPI != null)
+{
+document.Alpha_WAN.Alwan_VPI.disabled = true;
+}
+if(document.Alpha_WAN.Alwan_VCI != null)
+{
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+if(document.Alpha_WAN.wan_PPPEncap != null)
+{
+document.Alpha_WAN.wan_PPPEncap.disabled = true;
+}
+if(document.Alpha_WAN.PPPoEBIStatus!= null)
+{
+document.Alpha_WAN.PPPoEBIStatus[0].disabled = true;
+document.Alpha_WAN.PPPoEBIStatus[1].disabled = true;
+}
+if(document.Alpha_WAN.wan_ConnectSelect != null)
+{
+document.Alpha_WAN.wan_ConnectSelect[0].disabled = true;
+document.Alpha_WAN.wan_ConnectSelect[1].disabled = true;
+document.Alpha_WAN.wan_ConnectSelect[2].disabled = true;
+}
+}
+else if (document.Alpha_WAN.wan_PVCO_Flag.value == 2)
+{
+if(document.Alpha_WAN.Alwan_VCI != null)
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+else if (document.Alpha_WAN.wan_PVCO_Flag.value == 3)
+{
+if((document.Alpha_WAN.wan_VC.selectedIndex >= 3) && (document.Alpha_WAN.wan_VC.selectedIndex <= 7))
+{
+if(document.Alpha_WAN.Alwan_VCI != null)
+{
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+if(document.Alpha_WAN.DeleteBtn != null)
+{
+document.Alpha_WAN.DeleteBtn.disabled = true;
+}
+}
+}
+else if (document.Alpha_WAN.wan_PVCO_Flag.value == 4)
+{
+if(document.Alpha_WAN.Alwan_VPI != null)
+{
+document.Alpha_WAN.Alwan_VPI.disabled = true;
+}
+if(document.Alpha_WAN.Alwan_VCI != null)
+{
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+for(var i=0; i<4; i++)
+{
+if(document.Alpha_WAN.wanTypeRadio[i] != null)
+document.Alpha_WAN.wanTypeRadio[i].disabled = true;
+}
+if(document.Alpha_WAN.wan_VC.selectedIndex == 0)
+{
+if(document.Alpha_WAN.wan_PPPEncap != null)
+{
+document.Alpha_WAN.wan_PPPEncap.disabled = true;
+}
+}
+if(document.Alpha_WAN.wan_VC.selectedIndex == 1)
+{
+if(document.Alpha_WAN.wan_BridgeSelect != null)
+{
+document.Alpha_WAN.wan_BridgeSelect.disabled = true;
+}
+}
+}
+else if (document.Alpha_WAN.wan_PVCO_Flag.value == 5)
+{
+if(document.Alpha_WAN.Alwan_VPI != null)
+{
+document.Alpha_WAN.Alwan_VPI.disabled = true;
+}
+if(document.Alpha_WAN.Alwan_VCI != null)
+{
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+for (var i=2; i<=3; i++)
+{
+if(document.Alpha_WAN.wanTypeRadio[i] != null)
+document.Alpha_WAN.wanTypeRadio[i].disabled = true;
+}
+}
+else if (document.Alpha_WAN.wan_PVCO_Flag.value == 6)
+{
+if(document.Alpha_WAN.Alwan_VPI != null)
+{
+document.Alpha_WAN.Alwan_VPI.disabled = true;
+}
+if(document.Alpha_WAN.Alwan_VCI != null)
+{
+document.Alpha_WAN.Alwan_VCI.disabled = true;
+}
+for(var i=0; i<4; i++)
+{
+if(document.Alpha_WAN.wanTypeRadio[i] != null)
+document.Alpha_WAN.wanTypeRadio[i].disabled = true;
+}
+if(document.Alpha_WAN.wan_PPPEncap != null)
+{
+document.Alpha_WAN.wan_PPPEncap.disabled = true;
+}
+}
+}
+function NameCheck(name)
+{
+var pattern=name.value.search(/@/i)
+if (pattern!= -1 ){
+alert("The username is invalid.");name.focus();
+return false;
+}
+return true;
+}
+</script>
+</head><body onLoad="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/home_wan_1" name="Alpha_WAN"><INPUT TYPE="HIDDEN" NAME="HiddenFlag" VALUE="0"><div align=center>
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" onLoad="doLoad()">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">ATM VC</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">Virtual Circuit</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="wan_VC" SIZE="1" onchange="doVCChange(this.value)"><OPTION value="0" SELECTED>PVC0
+<OPTION value="1">PVC1
+<OPTION value="2">PVC2
+<OPTION value="3">PVC3
+<OPTION value="4">PVC4
+<OPTION value="5">PVC5
+<OPTION value="6">PVC6
+<OPTION value="7">PVC7
+</SELECT>&nbsp;
+<INPUT TYPE="BUTTON" NAME="PVC_Summary" VALUE="PVCs Summary" onClick="onClickPVCSummary();"><INPUT TYPE="HIDDEN" NAME="wanVCFlag" VALUE="0"></tr><tr id="Pvc_Status_TR">
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Status</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_VCStatus" VALUE="1" CHECKED><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="wan_VCStatus" VALUE="0"><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">VPI</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="Alwan_VPI" SIZE="5" MAXLENGTH="3" VALUE="1"><font color="#000000">(range: 0~255)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">VCI</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="Alwan_VCI" SIZE="5" MAXLENGTH="5" VALUE="32"><font color="#000000">(range: 1~65535)</font></td></tr><tr>
+<td class="title-sub">
+<font color="#000000">QoS</font></td><td class="light-orange">&nbsp;</td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td></tr><tr>
+<td  class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">ATM QoS</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="Alwan_QoS" SIZE="1" onchange="QosCheck()"><OPTION>CBR
+<OPTION SELECTED>UBR
+<OPTION>rtVBR
+<OPTION>nrtVBR
+</SELECT></td></tr><tr>
+<td  class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">PCR</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_PCR" SIZE="5" MAXLENGTH="7" VALUE="0"><font color="#000000">cells/second</font></td></tr><tr>
+<td  class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">SCR</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_SCR" SIZE="5" MAXLENGTH="7" VALUE="0"><font color="#000000">cells/second</font></td></tr><tr>
+<td  class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">MBS</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_MBS" SIZE="5" MAXLENGTH="7" VALUE="0"><font color="#000000">cells</font></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30" class="title-main">
+IPv4/IPv6</td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade></td><td width= "10"><hr noshade></td><td width="440"><hr noshade></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+IP Version</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wanIPVersionRadio" VALUE="0" CHECKED onClick="dowVersionChange()">IPv4<INPUT TYPE="RADIO" NAME="wanIPVersionRadio" VALUE="1" onClick="dowVersionChange()">IPv4/IPv6<INPUT TYPE="RADIO" NAME="wanIPVersionRadio" VALUE="2" onClick="dowVersionChange()">IPv6</td></tr></table><div align=center>
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Encapsulation</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade></td><td width= "10"><hr noshade></td><td width="440"><hr noshade></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">ISP</font></div><INPUT TYPE="HIDDEN" NAME="wanConTypeFlag" VALUE="0"></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wanTypeRadio" VALUE="Zero" onClick="javascript:window.location='home_wan_Dynamic.htm'"><font color="#000000">Dynamic IP Address</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td>&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wanTypeRadio" VALUE="One" onClick="djavascript:window.location='home_wan_Static.htm'"><font color="#000000">Static IP Address</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td>&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wanTypeRadio" VALUE="Two" CHECKED onClick="javascript:window.location='home_wan_PPP.htm'"><font color="#000000">PPPoA/PPPoE</font></td></tr><!-- TPLINK SMILE  add by jqzhou start -->
+<tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;
+</td><td>&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wanTypeRadio" VALUE="Three" onClick="javascript:window.location='home_wan_bridge.htm'"><font color="#000000">Bridge Mode</font></td></tr><!-- TPLINK SMILE  add by jqzhou end -->
+</table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">PPPoE/PPPoA</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade></td><td width="10"><hr noshade></td><td width="440"><hr noshade></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="ServicenameId">
+<font color="#000000">Servicename</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_PPPServicename" SIZE="32" MAXLENGTH="31" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="UsernameId">
+<font color="#000000">Username</font><INPUT TYPE="HIDDEN" NAME="Allow_Empty_Flag" VALUE="1"><INPUT TYPE="HIDDEN" NAME="Check_UsrPsw_Flag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="Empty_UsrPsw_Flag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="Check_PasswordFlag" VALUE="0"></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<!-- TPLINK SMILE  add by jqzhou start -->
+<INPUT TYPE="TEXT" NAME="wan_PPPUsername" SIZE="32" MAXLENGTH="70" VALUE=""><!-- TPLINK SMILE  add by jqzhou end -->
+</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right  id="PasswardId">
+<font color="#000000">Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="wan_PPPPassword" SIZE="32" MAXLENGTH="70" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Encapsulation</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="wan_PPPEncap" SIZE="1" onchange="doBridgeSwitch()"><OPTION SELECTED>PPPoE LLC
+<OPTION>PPPoE VC-Mux
+<OPTION>PPPoA LLC
+<OPTION>PPPoA VC-Mux
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Bridge Interface</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="PPPoEBIStatus" VALUE="1"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="PPPoEBIStatus" VALUE="0" CHECKED><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="title-sub">
+<font color="#000000">Connection Setting</font></td><td class="light-orange">&nbsp;</td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Connection </font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_ConnectSelect" VALUE="Connect_Keep_Alive" CHECKED onClick="WANChkIdleTimeT();"><font color="#000000">Always On (Recommended)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td>&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_ConnectSelect" VALUE="Connect_on_Demand" onClick="WANChkIdleTimeT();"><font color="#000000">Connect On-Demand (Close if idle for</font><INPUT TYPE="TEXT" NAME="wan_IdleTimeT" SIZE="5" MAXLENGTH="3" VALUE="0"><font color="#000000">minutes)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td>&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_ConnectSelect" VALUE="ConnectManually" onClick="WANChkIdleTimeT();"><font color="#000000">Connect Manually</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">TCP MSS Option</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<font color="#000000">TCP MSS(default:1400)</font><INPUT TYPE="TEXT" NAME="wan_TCPMSS" SIZE="5" MAXLENGTH="4" VALUE="1400"><font color="#000000">bytes</font></td></tr><tr>
+<td class="title-sub">
+IP Common Options</td><td class="light-orange">&nbsp;</td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Default Route</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="WAN_DefaultRoute" VALUE="1" CHECKED><font color="#000000">Yes</font><INPUT TYPE="RADIO" NAME="WAN_DefaultRoute" VALUE="0"><font color="#000000">No</font></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" id="divDynamicIpv4Addr">
+<tr>
+<td class="title-sub">
+IPv4 Address</td><td width="10" class="light-orange">&nbsp;</td><td width="150"><hr noshade class="light-orange-line"></td><td width="10"><hr noshade class="light-orange-line"></td><td width="440"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Get IP Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_PPPGetIP" VALUE="1" onClick="pppStaticCheck()"><font color="#000000">Static</font><INPUT TYPE="RADIO" NAME="wan_PPPGetIP" VALUE="0" CHECKED onClick="pppStaticCheck()"><font color="#000000">Dynamic</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Static IP Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_StaticIPaddr" SIZE="16" MAXLENGTH="15" VALUE="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IP Subnet Mask</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_StaticIPSubMask" SIZE="16" MAXLENGTH="15" VALUE="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Gateway</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_StaticIpGateway" SIZE="16" MAXLENGTH="15" VALUE="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">TCP MTU Option</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<font color="#000000">TCP MTU(default:1480)</font><INPUT TYPE="TEXT" NAME="wan_TCPMTU" SIZE="5" MAXLENGTH="4" VALUE="1480"><font color="#000000">bytes</font></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" id="ipv6NatOptions">
+<tr>
+<td width="150" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td width="150" class="tabdata"><div align=right> NAT
+</div></td><td width="10" class="tabdata"><div align=center>:</div></td><td width="440" class="tabdata">
+<SELECT NAME="wan_NAT" SIZE="1"><OPTION>Disabled
+<OPTION SELECTED>Enable
+</SELECT></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" id="divIpv4Dynamic">
+<tr>
+<td width="150" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td width="150" class="tabdata"><div align=right>
+<font color="#000000">Dynamic Route</font></div></td><td class="tabdata" width=10><div align=center>:</div></td><td class="tabdata" width="60">
+<SELECT NAME="wan_RIPVersion" SIZE="1"><OPTION>RIP1
+<OPTION SELECTED>RIP2-B
+<OPTION>RIP2-M
+</SELECT></td><td width="60" class="tabdata"><div align=right>
+<font color="#000000">Direction</font></div></td><td class="tabdata" width=10><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="wan_RIPDirection" SIZE="1"><OPTION>None
+<OPTION SELECTED>Both
+<OPTION>IN Only
+<OPTION>OUT Only
+</SELECT></td></tr><tr>
+<td width="150" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td width="150" class="tabdata"><div align=right>
+<font color="#000000">Multicast</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata" width="60">
+<SELECT NAME="wan_IGMP" SIZE="1"><OPTION>Disabled
+<OPTION>IGMP v1
+<OPTION SELECTED>IGMP v2
+<OPTION>IGMP v3
+</SELECT>&nbsp&nbsp&nbsp&nbsp&nbsp;
+</td></tr></table><table id="ipv6DynamicOption" width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30"  class="title-sub"><div align=right>
+IPv6 Address</div></td><td width="10" class="light-orange">&nbsp;</td><td width="150"><hr noshade class="light-orange-line"></td><td width= "10"><hr noshade class="light-orange-line"></td><td width="440"><hr noshade class="light-orange-line"></td></tr><tr id="div_PPPDHCP6en">
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+DHCP IPv6 Enable</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_IPv6DHCP" VALUE="1" CHECKED>DHCP<INPUT TYPE="RADIO" NAME="wan_IPv6DHCP" VALUE="0">SLAAC</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+DHCP PD Enable</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_IPv6DHCPPDEnable" VALUE="1" CHECKED>Enable<INPUT TYPE="RADIO" NAME="wan_IPv6DHCPPDEnable" VALUE="0">Disable</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+MLD Proxy</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_IPv6MLDProxy" VALUE="1" CHECKED>Enable<INPUT TYPE="RADIO" NAME="wan_IPv6MLDProxy" VALUE="0">Disable</td></tr></table><table id="dsliteDynamicOption" width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30"  class="title-sub"><div align=right>
+Dual Stack Lite</div></td><td width="10" class="light-orange">&nbsp;</td><td width="150"><hr noshade class="light-orange-line"></td><td width= "10"><hr noshade class="light-orange-line"></td><td width="440"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+Enable</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_IPv6DSLiteEnable" VALUE="1" onClick="DSLiteChanged()">Enable<INPUT TYPE="RADIO" NAME="wan_IPv6DSLiteEnable" VALUE="0" CHECKED onClick="DSLiteChanged()">Disable</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF" id="div_DSLitemode">
+<tr>
+<td width="150" class="light-orange">&nbsp;</td><td width="10" class="light-orange">&nbsp;</td><td width="150" class="tabdata"><div align=right>
+Mode</div></td><td width="10" class="tabdata"><div align=center>:</div></td><td width="440" class="tabdata">
+<INPUT TYPE="RADIO" NAME="wan_IPv6DSLiteMode" VALUE="0" CHECKED onClick="DSLiteModeChanged()">Auto<INPUT TYPE="RADIO" NAME="wan_IPv6DSLiteMode" VALUE="1" onClick="DSLiteModeChanged()">Manual</td></tr><tr id="div_DSLiteReAddr">
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+Remote Address</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="wan_RemoteAddress" SIZE="40" MAXLENGTH="39" VALUE="::"></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" class="light-orange">&nbsp;</td><td width="10"  class="light-orange"></td><td width="150" class="tabdata">&nbsp;</td><td width="10">&nbsp;</td><td width="440" class="tabdata">&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" height="42" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="HIDDEN" NAME="BridgeFlag" VALUE="0"><INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE" class="sbutton"></td></tr></table></div><INPUT TYPE="HIDDEN" NAME="wanIGMPQitFlag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="wan_PVCO_Flag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="PageLockValue" VALUE="0"></form><script language="javascript" src="tc2wanfun.js" tppabs="http://192.168.1.1/basic/tc2wanfun.js"></script>
+
+</body></html>

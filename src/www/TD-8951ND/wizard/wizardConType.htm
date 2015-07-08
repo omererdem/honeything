@@ -1,0 +1,73 @@
+<html><head>
+<title></title><meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="wizardConType_files/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script>
+function ExitWizard() {
+if (confirm("Quit setup wizard and discard settings ?")) {document.wzConTypeform.wzConTypeExitFlag.value = 1;
+document.wzConTypeform.submit();
+window.close();
+}
+}
+function uiSave() 
+{
+  if(document.forms[0].ConTypeRadio[0].checked)
+    {
+      window.location="wizardDHCP.htm";
+    }
+   if(document.forms[0].ConTypeRadio[1].checked)
+     {
+       window.location="wizardStatic.htm";
+     }
+   if(document.forms[0].ConTypeRadio[2].checked)
+     {
+       window.location="wizardPPP.htm";
+     }
+   if(document.forms[0].ConTypeRadio[3].checked)
+      {
+       window.location="wizardBridge.htm";
+      }
+}
+function pageLoad()
+{
+}
+</script>
+</head><body topmargin="10" leftmargin="0" onload="pageLoad()">
+<form method="POST" action="http://192.168.1.1/Forms/wizardConType_1" name="wzConTypeform"><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td class="orange" height="5" valign="baseline" width="500"></td></tr></tbody></table><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td align="center" bgcolor="#FFFFFF" height="50" valign="middle" width="200"><div align="left"><img src="wizardConType_files/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" height="50" width="200"></div></td><td class="model" align="right" bgcolor="#FFFFFF" height="50" valign="bottom" width="300">
+</td></tr><tr>
+<td colspan="2" class="orange" width="500"> </td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="2" width="500">
+<tbody><tr>
+<td class="orange"> </td></tr></tbody></table><table color="#FF9933" align="center" border="0" cellpadding="0" cellspacing="0" height="35" width="500">
+<tbody><tr>
+<td class="headline" bgcolor="#FFFFFF" width="500">&nbsp;
+<font color="#666666">Quick Start - ISP Connection Type</font></td></tr></tbody></table><table align="center" border="0" cellpadding="2" cellspacing="0" width="500">
+<tbody><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata">
+<font color="#000000">Select the Internet connection type to connect to your ISP. Click <b>NEXT</b> to continue.</font><input name="wzConTypeExitFlag" value="0" type="HIDDEN"><input name="wzConTypeCommitFlag" value="0" type="HIDDEN"></td></tr><tr>
+<td></td><td></td><td></td></tr><tr>
+<td height="40" width="40">&nbsp;</td><td class="tabdata" align="left" width="150">
+<input name="ConTypeRadio" value="Zero" type="RADIO"><font color="#000000">Dynamic IP Address</font></td><td class="tabdata" align="left" width="310"><span class="databold">
+<font color="#000000">Choose this option to obtain a IP address automatically from your ISP.</font></span></td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" align="left" height="40">
+<input name="ConTypeRadio" value="One" type="RADIO"><font color="#000000">Static IP Address</font></td><td class="tabdata" align="left"><span class="databold">
+<font color="#000000">Choose this option to set static IP information provided to you by your ISP.</font></span></td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" align="left" height="40">
+<input name="ConTypeRadio" value="Two" checked="checked" type="RADIO"><font color="#000000">PPPoE/PPPoA</font></td><td class="tabdata" align="left"><span class="databold">
+<font color="#000000">Choose this option if your ISP uses PPPoE/PPPoA. (For most DSL users) </font></span></td></tr><!-- C9 SMILE  add by jqzhou start -->
+<tr>
+<td>&nbsp;</td><td class="tabdata" align="left" height="40">
+<input name="ConTypeRadio" value="Three" type="RADIO"><font color="#000000">Bridge Mode</font></td><td class="tabdata" align="left"><span class="databold">
+<font color="#000000">Choose this option if your ISP uses Bridge Mode.</font></span></td></tr><!-- C9 SMILE  add by jqzhou end -->
+<tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">&nbsp;</td><td class="tabdata" align="left">&nbsp;</td></tr><tr>
+<td height="25"></td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="40" width="500">
+<tbody><tr>
+<td class="orange">
+<div align="right">
+<input name="BackBtn" value="BACK" Â"50"="" class="tabdata" onclick="javascript:window.location='wizardTZ.htm'/*tpa=http://192.168.1.1/wizard/wizardTZ.htm*/" type="BUTTON"><input name="NextBtn" value="NEXT" Â"50"="" class="tabdata" onclick="uiSave()" type="BUTTON"><input name="ExitBtn" value="EXIT" Â"50"="" class="tabdata" onclick="ExitWizard()" type="BUTTON"></div></td><td class="orange" valign="baseline" width="25">&nbsp;</td></tr></tbody></table></form>
+</body></html>

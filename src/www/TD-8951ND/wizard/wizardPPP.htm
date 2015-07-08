@@ -1,0 +1,179 @@
+<html><head>
+<title></title><meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="wizardPPP_files/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+</style>
+<script language="javascript" src="wizardPPP_files/general.js" tppabs="http://192.168.1.1/js/general.js"></script>
+<script>
+function ExitWizard() {
+if (confirm("Quit setup wizard and discard settings ?")) {document.wzPPPform.wzPPPExitFlag.value = 1;
+document.wzPPPform.submit();
+window.close();
+}
+}
+function isNumeric(s)
+{
+var len= s.length;
+var ch;
+if(len==0)
+return false;
+for( i=0; i< len; i++)
+{
+ch= s.charAt(i);
+if( ch > '9' || ch < '0')
+{
+return false;
+}
+}
+return true;
+}
+function vpivcicheck() {
+var value;
+value = document.forms[0].uiViewPvcVpi.value;
+if(!isNumeric(value)){
+alert("VPI must be an integer");return false;
+}
+if(Number(value) > 255 || Number(value)<0)
+{
+alert("VPI must be in the range 0-255");return false;
+}
+value = document.forms[0].uiViewPvcVci.value;
+if(!isNumeric(value)) {
+alert("VCI must be an integer");return false;
+}
+if(Number(value) > 65535 || Number(value)<=0)
+{
+alert("VCI must be in the range 1-65535");return false;
+}
+return true;
+}
+function uiSave() {
+if (!vpivcicheck())
+return ;
+else
+<!-- TPLINK SMILE  add by jqzhou start -->
+if(chineseCheck(document.wzPPPform.Al_PPPUsername, "WZPPPUsernameId"))
+{
+return false;
+}
+<!-- TPLINK SMILE  add by jqzhou end -->
+if(chineseCheck(document.wzPPPform.Al_PPPPassword, "WZPPPPasswordId"))
+{
+return false;
+}
+document.wzPPPform.submit();
+}
+function doLoad(){
+LockWhenPVC0();
+if(document.forms[0].Al_PPPPassword != null)
+{
+document.forms[0].Al_PPPPassword.value = pwdppp;
+}
+}
+function LockWhenPVC0() {
+if(document.wzPPPform.wzPPP_PVCO_Flag.value == 1)
+{
+if(document.wzPPPform.uiViewPvcVpi != null)
+{
+document.wzPPPform.uiViewPvcVpi.disabled = true;
+}
+if(document.wzPPPform.uiViewPvcVci != null)
+{
+document.wzPPPform.uiViewPvcVci.disabled = true;
+}
+if(document.wzPPPform.wzPPP_Encaps != null)
+{
+document.wzPPPform.wzPPP_Encaps.disabled = true;
+}
+}
+else if(document.wzPPPform.wzPPP_PVCO_Flag.value == 2)
+{
+if(document.wzPPPform.uiViewPvcVpi != null)
+{
+document.wzPPPform.uiViewPvcVpi.disabled = true;
+}
+if(document.wzPPPform.uiViewPvcVci != null)
+{
+document.wzPPPform.uiViewPvcVci.disabled = true;
+}
+if(document.wzPPPform.wzPPP_Encaps != null)
+{
+document.wzPPPform.wzPPP_Encaps.disabled = false;
+}
+}
+else
+{
+if(document.wzPPPform.uiViewPvcVpi != null)
+{
+document.wzPPPform.uiViewPvcVpi.disabled = false;
+}
+if(document.wzPPPform.uiViewPvcVci != null)
+{
+document.wzPPPform.uiViewPvcVci.disabled = false;
+}
+if(document.wzPPPform.wzPPP_Encaps != null)
+{
+document.wzPPPform.wzPPP_Encaps.disabled = false;
+}
+}
+}
+function NameCheck(name)
+{
+var pattern=name.value.search(/@/i)
+if (pattern!= -1 ){
+alert("The username is invalid.");name.focus();
+return false;
+}
+return true;
+}
+</script>
+</head><body topmargin="10" leftmargin="0" onload="doLoad()">
+<form method="POST" action="http://192.168.1.1/Forms/wizardPPP_1" name="wzPPPform"><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td class="orange" height="5" valign="baseline" width="500"></td></tr></tbody></table><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td align="center" bgcolor="#FFFFFF" height="50" valign="middle" width="200"><div align="left"><img src="wizardPPP_files/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" height="50" width="200"></div></td><td class="model" align="right" bgcolor="#FFFFFF" valign="bottom" width="300">
+</td></tr><tr>
+<td colspan="2" class="orange" width="500"> </td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="2" width="500">
+<tbody><tr>
+<td class="orange"> </td></tr></tbody></table><table color="#FF9933" align="center" border="0" cellpadding="0" cellspacing="0" height="35" width="500">
+<tbody><tr>
+<td class="headline" bgcolor="#FFFFFF" width="500">&nbsp;
+<font color="#666666">Quick Start - PPPoE/PPPoA</font></td></tr></tbody></table><table align="center" border="0" cellpadding="2" cellspacing="0" width="500">
+<tbody><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata">
+<font color="#000000">Enter the PPPoE/PPPoA information provided to you by your ISP. Click <b>NEXT</b> to continue.</font></td></tr><tr>
+<td height="10"></td><td></td><td></td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" id="WZPPPUsernameId" align="right">
+<font color="#000000">Username:</font></td><td class="tabdata" align="left">
+<!-- TPLINK SMILE  add by jqzhou start -->
+<input name="Al_PPPUsername" size="32" maxlength="64" type="TEXT"><!-- TPLINK SMILE  add by jqzhou end -->
+</td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" id="WZPPPPasswordId" align="right">
+<font color="#000000">Password:</font></td><td class="tabdata" align="left">
+<input name="Al_PPPPassword" size="32" maxlength="64" value="" type="PASSWORD"></td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" align="right">
+<font color="#000000">VPI:</font></td><td class="tabdata" align="left">
+<input name="uiViewPvcVpi" size="5" maxlength="3" value="8" type="TEXT">(0~255)
+</td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+<font color="#000000">VCI:</font></td><td class="tabdata" align="left" width="310">
+<input name="uiViewPvcVci" size="5" maxlength="5" value="35" type="TEXT">(1~65535)
+<input name="wzPPP_PVCO_Flag" value="0" type="HIDDEN"><input name="PageLockValue" value="0" type="HIDDEN"></td></tr><tr>
+<td>&nbsp;</td><td class="tabdata" align="right">
+<font color="#000000">Connection Type:</font></td><td class="tabdata" align="left">
+<select name="wzPPP_Encaps" size="1"><option selected="selected">PPPoE LLC
+</option><option>PPPoE VC-Mux
+</option><option>PPPoA LLC
+</option><option>PPPoA VC-Mux
+</option></select></td></tr><tr>
+<td height="25">
+<input name="wzPPPExitFlag" value="0" type="HIDDEN"><input name="wzPPPCommitFlag" value="0" type="HIDDEN"></td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="40" width="500">
+<tbody><tr>
+<td class="orange">
+<div align="right">
+<input name="BackBtn" value="BACK" Â"50"="" class="tabdata" onclick="javascript:window.location='wizardConType.htm'/*tpa=http://192.168.1.1/wizard/wizardConType.htm*/" type="BUTTON"><input name="NextBtn" value="NEXT" Â"50"="" class="tabdata" onclick="javascript:window.location='wizardWlan.htm'/*tpa=http://192.168.1.1/wizard/wizardWlan.htm*/" type="BUTTON"><input name="ExitBtn" value="EXIT" Â"50"="" class="tabdata" onclick="ExitWizard()" type="BUTTON"></div></td><td class="orange" valign="baseline" width="25">&nbsp;</td></tr></tbody></table></form><script language="javascript" src="wizardPPP_files/tc2wanfun.js" tppabs="http://192.168.1.1/basic/tc2wanfun.js"></script>
+
+</body></html>

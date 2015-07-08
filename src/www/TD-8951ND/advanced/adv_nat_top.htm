@@ -1,0 +1,53 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script>
+function doNATLoad(value) {
+document.NAT_form.single_multi_flag.value = value;
+document.NAT_form.submit();
+return;
+}
+function doALGLoad(value) {
+if(document.NAT_form.ALG_flag.value != value)
+{
+document.NAT_form.ALG_flag.value = value;
+document.NAT_form.submit();
+}
+return;
+}
+function onClickPortTriggeringSummary() {
+window.open("http://192.168.1.1/advanced/adv_nat_porttriggering_list.htm","Port_Triggering_List","toolbar=no,menubar=no,scrollbars=no,height=370, width=620,location=0,left=200,top=200");
+return false;
+}
+function pageLoad()
+{
+}
+</script>
+</head><body onLoad="pageLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/adv_nat_top_1" name="NAT_form"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">NAT</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Virtual Circuit</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="NAT_VCIndex" SIZE="1" onChange="document.NAT_form.submit()"><OPTION SELECTED>PVC0
+<OPTION>PVC1
+<OPTION>PVC2
+<OPTION>PVC3
+<OPTION>PVC4
+<OPTION>PVC5
+<OPTION>PVC6
+<OPTION>PVC7
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">NAT Status</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+Deactivated</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td class="tabdata">&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" height="42" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+</td></tr></table><INPUT TYPE="HIDDEN" NAME="NATTop_SubmitFlag" VALUE="0"></form>
+</body></html>

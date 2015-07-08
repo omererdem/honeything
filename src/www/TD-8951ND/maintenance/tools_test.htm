@@ -1,0 +1,121 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="JavaScript">
+function removeLeadingAndTrailingChar (inputString, removeChar)
+{
+var returnString = inputString;
+if (removeChar.length)
+{
+while(''+returnString.charAt(0)==removeChar)
+{
+returnString=returnString.substring(1,returnString.length);
+}
+while(''+returnString.charAt(returnString.length-1)==removeChar)
+{
+returnString=returnString.substring(0,returnString.length-1);
+}
+}
+return returnString;
+}
+function DoRefresh() {
+document.Test_Form.submit();
+}
+function doSubmit(){
+var str = document.forms[0].PingIPAddr.value;
+if(str != "")
+{
+str = removeLeadingAndTrailingChar(str, ' ');
+if((str.indexOf(' ',0) != -1) || (str.length == 0))
+{
+alert("IP Address/Domain Name can't contain space!");return ;
+}
+document.forms[0].PingIPAddr.value = str;
+}
+document.Test_Form.pingflag.value=1;
+document.Test_Form.submit();
+}
+function doTraceSubmit()
+{
+if (document.Test_Form.pingflag.value != 1)
+{
+if(document.Test_Form.trace_open_flag.value!=0)
+{
+document.Test_Form.TraceFlag.value =1;
+document.Test_Form.elements["InfoDisplay"].value = "Please waiting to trace route.......";
+}
+}
+document.Test_Form.submit();
+}
+function doStopTraceSubmit()
+{
+if(document.Test_Form.trace_open_flag.value!=0)
+{
+document.Test_Form.TraceFlag.value =2;
+}
+document.Test_Form.submit();
+}
+function doLoad() {
+}
+</script>
+</head><body onLoad="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/tools_test_1" name="Test_Form"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="6">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Diagnostic Test</font><td width="10" class="black">&nbsp;</td><td colspan="2"></td><td width="60"> </td><td width="215"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td width="50" >&nbsp;</td><td width="275"  class="tabdata">
+<font color="#000000">Virtual Circuit:</font><SELECT NAME="Test_PVC" SIZE="1"><OPTION SELECTED>PVC0
+<OPTION>PVC1
+<OPTION>PVC2
+<OPTION>PVC3
+<OPTION>PVC4
+<OPTION>PVC5
+<OPTION>PVC6
+<OPTION>PVC7
+</SELECT></td><td>&nbsp;</td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing Ethernet LAN connection ...</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>PASS</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing ADSL Synchronization .</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="red"><strong>FAIL</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing ATM OAM segment ping ...</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing ATM OAM end to end ping ...</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing ATM OAM F4 segment ping ...</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Testing ATM OAM F4 end to end ping ...</font></td><td class="tabdata"> <div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Ping Primary Domain Name Server .</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td class="tabdata">&nbsp;&nbsp;&gt;&gt;
+<font color="#000000">Ping www.yahoo.com ...</font></td><td class="tabdata"><div align=center>
+<font face="Arial" color="green"><strong>SKIPPED</strong></div></td><td>&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Ping Tool</font></td><td width="10" class="black">&nbsp;</td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td><td ><hr noshade class="light-orange-line"></td></tr><tr>
+<td colspan="2" class="light-orange" >&nbsp;</td><td colspan="4">&nbsp;</td></tr><tr>
+<td colspan="2" class="light-orange" >&nbsp;</td><td colspan="4">&nbsp;</td></tr><tr>
+<td colspan="2" class="light-orange" >&nbsp;</td><td width="50" >&nbsp;</td><td colspan="3" class="tabdata">
+<font color="#000000">IP Address/Domain Name:</font><INPUT TYPE="TEXT" NAME="PingIPAddr" SIZE="30" MAXLENGTH="30" VALUE="">&nbsp;
+<INPUT TYPE="BUTTON" NAME="PingButton" VALUE="Ping"><INPUT TYPE="HIDDEN" NAME="pingflag" VALUE="0"></td></tr><INPUT TYPE="HIDDEN" NAME="trace_open_flag" VALUE="0"><tr>
+<td colspan="2" class="light-orange" >&nbsp;</td><td width="50" >&nbsp;</td><td colspan="3"><TEXTAREA NAME="InfoDisplay" ROWS="15" COLS="48" READONLY> - Info -
+</TEXTAREA></td></tr><tr>
+<td colspan="2" class="light-orange" >&nbsp;</td><!--
+<td class="light-orange"></td>-->
+<td colspan="4">&nbsp;</td><!--
+<td width="60">&nbsp;</td><td width="215">&nbsp;</td>-->
+</table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">&nbsp;</td></tr></table></div></form>
+</body></html>

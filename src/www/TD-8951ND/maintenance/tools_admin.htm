@@ -1,0 +1,73 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="JavaScript">
+function passwordValidateCheck()
+{
+var admin = document.tool_admin;
+var password = admin.uiViewTools_Password.value;
+var confirmpassword = admin.uiViewTools_PasswordConfirm.value;
+if (password.length == 0 || password.length > 30) {
+alert("Password length should be 1-30.");return -1;
+}
+for(var i = 0; i < password.length; i ++ )
+{
+var ascNum = password.charCodeAt(i);
+if (ascNum < 33 || ascNum > 126){
+alert("Password Invalid!");return -1;
+}
+}
+if (password != confirmpassword) {
+alert("Your Password and Confirm Password must match before you can apply.");return -1;
+}
+return 0;
+}
+function uiSave() {
+var flag = passwordValidateCheck();
+if (!flag) {
+document.tool_admin.submit();
+return;
+}
+return;
+}
+function chk_len(event)
+{
+var admin = document.tool_admin;
+var password = admin.uiViewTools_Password.value;
+if (password.length >= 31) {
+}
+}
+function chk_len2(event)
+{
+var admin = document.tool_admin;
+var confirmpassword = admin.uiViewTools_PasswordConfirm.value;
+if (confirmpassword.length >= 31) {
+}
+}
+function doLoad()
+{
+}
+</script>
+</head><body onLoad="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/tools_admin_1" name="tool_admin"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Administrator</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10"> </td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Username</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata"><strong>
+admin</strong></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">New Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="uiViewTools_Password" SIZE="50" MAXLENGTH="31" VALUE="" onKeyPress="chk_len(event)"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Confirm Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="uiViewTools_PasswordConfirm" SIZE="50" MAXLENGTH="31" VALUE="" onKeyPress="chk_len2(event)"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="CancelBtn" VALUE="CANCEL" onClick="javascript:window.location='tools_admin.htm'/*tpa=http://192.168.1.1/maintenance/tools_admin.htm*/"></td></tr></table></div></form>
+</body></html>

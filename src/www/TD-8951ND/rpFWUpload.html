@@ -1,0 +1,65 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="JavaScript">
+function uiDoUpdate()
+{
+var string = document.uiPostUpdateForm.tools_FW_UploadFile.value.search(/ras[^\x5c]{0,13}$/);
+var string2 = document.uiPostUpdateForm.tools_ROMFILE_Upload.value.search(/rom[^\x5c]{0,13}$/);
+var string3 = document.uiPostUpdateForm.tools_FW_UploadFile.value.search(/TCLinuxAllinone$/);
+if( (document.uiPostUpdateForm.tools_FW_UploadFile.value=="")
+&& (document.uiPostUpdateForm.tools_ROMFILE_Upload.value=="") )
+{
+alert("You must select a file to update.");}else if( (string >= 0 ) && (string2 >= 0) )
+{
+alert("we do not support two items upgrade simultaneously!");}else if( ((string >= 0 || string3 >= 0) && (document.uiPostUpdateForm.tools_ROMFILE_Upload.value==""))
+|| ((string2 >= 0) && (document.uiPostUpdateForm.tools_FW_UploadFile.value=="")) )
+{
+if(string >= 0 || string3 >= 0){
+document.uiPostUpdateForm.UpgradeItemFlag.value = 1;
+}else{
+document.uiPostUpdateForm.UpgradeItemFlag.value = 2;
+}
+document.uiPostUpdateForm.uiStatus.value =
+"Upgrade in progress, Please wait...";document.uiPostUpdateForm.submit();
+}else
+{
+alert("You put a wrong file.");}
+}
+function doLoad()
+{
+}
+</script>
+</head><body onLoad="doLoad();">
+<FORM ENCTYPE="multipart/form-data" METHOD="POST" ACTION="http://192.168.1.1/Forms/tools_firmware_1" name="uiPostUpdateForm"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Firmware/Romfile Upgrade</font></td><td width="10" class="black">&nbsp;</td><td width="150">&nbsp;</td><td width="10">&nbsp; </td><td width="440">&nbsp;</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">Current Firmware Version</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="uiFwVer" SIZE="70" MAXLENGTH="80" VALUE="6.0.0 Build 141027 Rel.23356" style="border-top:0px;border-bottom:0px;border-left:0px;border-right:0px" onfocus="document.uiPostUpdateForm.elements[3].focus();"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">New Firmware Location</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="FILE" NAME="tools_FW_UploadFile" SIZE="30" MAXLENGTH="128"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">New Romfile Location</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="FILE" NAME="tools_ROMFILE_Upload" SIZE="30" MAXLENGTH="128"><INPUT TYPE="HIDDEN" NAME="UpgradeItemFlag" VALUE="0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+<font color="#000000">Romfile Backup</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT Name="Save" type=button value="ROMFILE SAVE" onClick="alert('Suggest to save Romfile name as rom-0')" ></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Status</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="uiStatus" SIZE="55" MAXLENGTH="55" VALUE="" class="InputTextWarning" readonly="true"></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td class="tabdata"><div align=right><img src="Images/exclamation.gif" tppabs="http://192.168.1.1/Images/exclamation.gif"></div></td><td>&nbsp;</td><td class="tabdata">
+<font color="#000000">It might take several minutes, don't power off it during upgrading. Device will restart after the upgrade.</font></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >
+<INPUT TYPE="HIDDEN" NAME="FirmwareLockFlag" VALUE="0"></td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="FW_apply" VALUE="UPGRADE" class="sbutton"></td></tr></table></form>
+</body></html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<link rel="stylesheet" type="text/css" href="help_interface_files/style.css" tppabs="http://192.168.1.1/css/style.css">
+
+</head><body bgcolor="#ffffff" text="#000000">
+<table border="0" cellpadding="0" cellspacing="0" width="750">
+<tbody>
+  <tr>
+    <td class="orange" height="50"><span class="help-header">&nbsp;
+    <font color="#FFFFFF">Interface Setup</font>    </span></td></tr><tr>
+    <td>&nbsp;</td></tr>  <tr>
+    <td><span class="help-main"><a name="Internet_Settings">
+      <font color="#FF9933">Internet Settings</font>      </a></span><br></td></tr><tr>
+	<td><span class="help-sub">
+      <font color="#6666FF">Internet :: ATM VC</font>      </span><br><span class="help-text">
+	  <font color="#000000">ATM settings are used to connect to your ISP. 
+Your ISP provides VPI, VCI settings to you. In this Device, you can 
+totally setup 8 VCs on different encapsulations, if you apply 8 
+different virtual circuits from your ISP.</font>      <font color="#000000">You need to activate the VC to take effect. For PVCs management, you can use ATM QoS to setup each PVC traffic line's priority.<br><b><i>Virtual Circuit</i></b>&nbsp; Select the VC number you want to setup.<br></font>	  <font color="#000000"><b><i>VPI</i></b>&nbsp;Virtual Path Identifier.<br><b><i>VCI</i></b>&nbsp;Vitrual Channel Identifier.<br><b><i>ATM QoS </i></b>&nbsp;Select
+ the Quality of Service types for this Virtual Circuit. The ATM QoS 
+types include CBR (Constant Bit Rate), VBR (Variable Bit Rate) and UBR 
+(Unspecified Bit Rate).</font>	  <font color="#000000">These QoS types are all controlled by the parameters specified below, including PCR, SCR and MBS.<br><b><span class="helplink">PCR</span></b>&nbsp;Peak Cell Rate.<br><b><span class="helplink">SCR</span></b>&nbsp;Sustained Cell Rate.<br><b><span class="helplink">MBS</span></b>&nbsp;Maximum Burst Size.</font>		</span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Internet :: Encapsulation</font>      </span><br><span class="help-text">
+		<font color="#000000"><b><i>Dynamic IP </i></b>&nbsp;Select this 
+option if your ISP provides you an IP address automatically. This option
+ is typically used for Cable services. Please enter the Dynamic IP 
+information accordingly.<br><b><i>Static IP </i></b>&nbsp;</font>		<font color="#000000">Select
+ this option to set static IP information. You will need to enter in the
+ Connection type, IP address, subnet mask, and gateway address, provided
+ to you by your ISP. Each IP address entered in the fields must be in 
+the appropriate IP form, which is four IP octets separated by a dot 
+(x.x.x.x). The Router will not accept the IP address if it is not in 
+this format.<br></font>        <font color="#000000"><b><i>PPPoA/PPPoE</i></b>&nbsp;Select
+ this option if your ISP requires you to use a PPPoE connection. This 
+option is typically used for DSL services. Select Dynamic PPPoE to 
+obtain an IP address automatically for your PPPoE connection. Select 
+Static PPPoE to use a static IP address for your PPPoE connection. 
+Please enter the information accordingly.<br></font>		<font color="#000000"><b><i>Bridge Mode </i></b>The
+ modem can be configured to act as a bridging device between your LAN 
+and your ISP. Bridges are devices that enable two or more networks to 
+communicate as if they are two segments of the same physical LAN. Please
+ set the Connection type.</font>	    </span>
+	</td></tr><tr>
+    <td>&nbsp;</td></tr><tr><td><span class="help-sub">
+        <font color="#6666FF">Internet :: PPPoE/PPPoA</font>        </span><br><span class="help-text">
+	    <font color="#000000">Select this option if your ISP requires you 
+to use a PPPoE connection. This option is typically used for DSL 
+services. Select Dynamic PPPoE to obtain an IP address automatically for
+ your PPPoE connection. Select Static PPPoE to use a static IP address 
+for your PPPoE connection. Please enter the information accordingly. <br></font>        <font color="#000000"><b><i>Username </i></b>&nbsp;Enter your username for your PPPoE/PPPoA connection.<br><b><i>Password </i></b>&nbsp;Enter your password for your PPPoE/PPPoA connection<br><b><i>Encapsulation</i></b>&nbsp;For both PPPoE/PPPoA connection, you need to specify the type of Multiplexing, either LLC or VC Mux.<br><b><i>Connection Setting</i></b>&nbsp;</font>		<font color="#000000">For PPPoE/PPPoA connection, you can select <b>Always on</b> or <b>Connect on-demand</b>. Connect on demand is dependent on the traffic. If there is no traffic (or <b>Idle</b>)
+ for a pre-specified period of time, the connect will tear down 
+automatically. And once there is traffic send or receive, the connection
+ will be automatically on.</font>		<font color="#000000"><b><i>Static/Dynamic IP Address</i></b>&nbsp;For
+ PPPoE/PPPoA connection, you need to specify the public IP address for 
+this ADSL Router. The IP address can be either dynamically (via DHCP) or
+ given IP address provide by your ISP. For Static IP, you need to 
+specify the IP address, Subnet Mask and Gateway IP address.</font>	    </span>
+	</td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Internet :: NAT</font>      </span><br><span class="help-text">
+      <font color="#000000"><b><i>NAT</i></b>&nbsp;Select this option to
+ Activate/Deactivated the NAT (Network Address Translation) function for
+ this VC. The NAT function can be activated or deactivated per PVC 
+basis.</font>		</span>
+	</td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Internet :: Default Route</font>      </span><br><span class="help-text">
+      <font color="#000000"><b><i>Default Route </i></b>&nbsp;<span class="MsoNormal"><span lang="EN-US">if enable this function, the current PVC will be the default gateway to internet from this device.</span></span></font>		</span>
+	</td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Internet :: Dynamic Route</font>      </span><br><span class="help-text">
+      <font color="#000000"><b><i>RIP</i></b>&nbsp;(Routing Information protocol) Select this option to specify the RIP version, including <b>RIP-1</b>, <b>RIP-2M</b> and <b>RIP-2B</b>.
+ RIP-2M and RIP-2B are both sent in RIP-2 format; the difference is that
+ RIP-2M using Multicast and RIP-2 using Broadcast format. <br></font>	  <font color="#000000"><b><i>RIP Direction</i></b>&nbsp;Select this option to specify the RIP direction. <b>None</b> is for disabling the RIP function. <b>Both</b>
+ means the ADSL Router will periodically send routing information and 
+accept routing information then incorporate into routing table. <b>IN only </b> means the ADLS router will only accept but will not send RIP packet. <b>OUT only</b> means the ADLS router will only send but will not accept RIP packet.</font>	  </span></td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Internet :: Multicast</font>      </span><br><span class="help-text">
+	  <font color="#000000"><b><i>IGMP</i></b> (Internet Group Multicast 
+Protocol) is a session-layer protocol used to establish membership in a 
+multicast group. The ADSL ATU-R supports both IGMP version 1 (<b>IGMP-v1</b>) and <b>IGMP-v2</b>. Select <b>Disabled</b> to disable it.</font>		</span>
+	</td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FFFF">Internet :: MAC Spoofing</font>      </span><br><span class="help-text">
+	  <font color="#000000"><b><i>MAC Spoofing</i></b> is the activity of 
+altering the MAC address which pass through the CPE.The changing of the 
+assigned MAC address may allow the bypassing of access control lists on 
+servers or routers, either hiding a computer on a network or allowing it
+ to impersonate another computer.</font>		</span>
+	</td></tr><tr>
+    <td height="40"><hr noshade="noshade"></td></tr>   <tr>
+    <td><span class="help-main"><a name="LAN_settings">
+      <font color="#FF9933">LAN settings</font>      </a></span><br><span class="help-text">
+      <font color="#000000">These are the IP settings of the LAN 
+interface for the device. These settings may be referred to as Private 
+settings. You may change the LAN IP address if needed. The LAN IP 
+address is private to your internal network and cannot be seen on the 
+Internet.</font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">LAN :: Dynamic Route</font>      </span><br><span class="help-text">
+	  <font color="#000000">Please refer to Internet::Dynamic Route. The only difference is the interface.</font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">LAN :: Multicast</font>      </span><br><span class="help-text">
+      <font color="#000000">Please refer to Internet::Multicast. The only difference is the interface.</font>	  </span>
+    </td></tr><tr>
+      <td>&nbsp;</td></tr><tr>
+      <td><span class="help-sub">
+        <font color="#6666FF">LAN :: DHCP Server</font>        </span><br><span class="help-text"> 
+        <font color="#000000">DHCP stands for Dynamic Host Control 
+Protocol. The DHCP Server gives out IP addresses when a device is 
+booting up and request an IP address to be logged on to the network. 
+That device must be set as a DHCP client to obtain the IP address 
+automatically. By default, the DHCP Server is enabled. The DHCP address </font>        <font color="#000000">pool contains the range of the IP address that will automatically be assigned to the clients on the network.<br><b><i>Starting IP Address </i></b>&nbsp;The starting IP address for the DHCP server's IP assignment.<br><b><i>IP Pool Count</i></b>&nbsp;The max user pool size.<br><b><i>Lease Time</i></b>&nbsp;The length of time for the IP lease.<br><b><i>Physical Ports</i></b>&nbsp;When
+ DHCP function is enabled, you also can disable DHCP for some special 
+ports by removing the selection of the ports here.</font>        </span>
+      </td></tr><tr>
+      <td>&nbsp;</td></tr><tr>
+      <td><span class="help-sub">
+	    <font color="#6666FF">LAN :: DHCP Relay</font>	    </span><br><span class="help-text"> 
+        <font color="#000000">A DHCP relay is a computer that forwards 
+DHCP data between computers that request IP addresses and the DHCP 
+server that assigns the addresses. Each of the device's interfaces can 
+be configured as a DHCP relay. If it is enable, the DHCP requests from 
+local PCs will forward to the DHCP server runs on WAN side. </font>        <font color="#000000">To
+ have this function working properly, please run on router mode only, 
+disable the DHCP server on the LAN port, and make sure the routing table
+ has the correct routing entry.<br><b><i>DHCP Server IP for relay agent </i></b>&nbsp;The DHCP server IP Address runs on WAN side.</font>		</span> 
+	  </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">LAN :: DNS Server</font>      </span><br><span class="help-text">
+	  <font color="#000000">The DNS Configuration allows the user to set the configuration of DNS<br><b><i>DNS Relay selection</i></b>&nbsp;If
+ user want to disable this feature, he just need to set both Primary and
+ secondary DNS IP to 0.0.0.0.Using DNS relay, users can setup DNS server
+ IP to 192.168.1.1 on their Computer. If not, device will perform as no 
+DNS relay.</font>	</span></td></tr><tr>
+    <td height="40"><hr noshade="noshade"></td></tr>  <tr>
+    <td><span class="help-main"><a name="Wireless_LAN_Settings">
+      <font color="#FF9933">Wireless LAN Settings</font>      </a></span><br><span class="help-text">  
+      <font color="#000000"><b><i>SSID</i></b>&nbsp;The SSID is a unique
+ name to identify the ADSL Router in the wireless LAN. Wireless clients 
+associating to the ADSL Router must have the same SSID.<br><b><i>Broadcast SSID</i></b>&nbsp;Select <b>No</b> to hide the SSID such that a station can not obtain the SSID through passive scanning.</font>      <font color="#000000">Select <b>Yes</b> to make the SSID visible so a station can obtain the SSID through passive scanning.<br><b><i>Channel ID</i></b>&nbsp;The range of radio frequencies used by IEEE 802.11b/g wireless devices is called a channel.<br></font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Wireless LAN :: WEP</font>      </span><br><span class="help-text">
+      <font color="#000000">WEP (Wired Equivalent Privacy) encrypts data frames before transmitting over the wireless network. Select <b>Disable</b> to allow all wireless computers to communicate with the access points without any data encryption.Select <b>64-bit WEP</b> or <b>128-bit WEP</b> to use data encryption.<br><b><i>Key#1~Key#4</i></b>&nbsp;</font>	  <font color="#000000">The
+ WEP keys are used to encrypt data. Both the ADSL Router and the 
+wireless clients must use the same WEP key for data transmission.If you 
+chose 64-bit WEP, then enter any 10 hexadecimal digits ("0-9", "A-F") 
+preceded by 0x for each key (1-4). If you chose 128-bit WEP, then enter 
+26 hexadecimal digits ("0-9", "A-F") preceded by 0x for each key 
+(1-4).The values must be set up exactly </font>	  <font color="#000000">the
+ same on the Access Points as they are on the wireless client stations. 
+The same value must be assigned to Key 1 on both the access point (your 
+ADSL Router) and the client adapters, the same value must be assigned to
+ Key 2 on both the access point and the client stations and so on, for 
+all four WEP keys.</font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Wireless LAN :: WPA-PSK</font>      </span><br><span class="help-text">
+      <font color="#000000">Wi-Fi Protected Access, pre-shared key. Encrypts data frames before transmitting over the wireless network.<br><b><i>Pre-shared Key</i></b>&nbsp;The
+ Pre-shared Key are used to encrypt data. Both the ADSL Router and the 
+wireless clients must use the same WPA-PSK key for data transmission.</font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Wireless LAN :: Advanced setting</font>      </span><br><span class="help-text">  
+      <font color="#000000"><b><i>Beacon Interval</i></b>&nbsp;The 
+Beacon Interval value indicates the frequency interval of the beacon. 
+Enter a value between 20 and 1000. A beacon is a packet broadcast by the
+ Router to synchronize the wireless network.<br><b><i>RTS Threshold</i></b>&nbsp;</font>	  <font color="#000000">The
+ RTS (Request To Send) threshold (number of bytes) for enabling RTS/CTS 
+handshake. Data with its frame size larger than this value will perform 
+the RTS/CTS handshake. Setting this attribute to be larger than the 
+maximum MSDU (MAC service data unit) size turns off the RTS/CTS 
+handshake. Setting this attribute to zero turns on the RTS/CTS 
+handshake. Enter a value between 0 and 2432.<br></font>	  <font color="#000000"><b><i>Fragment Threshold</i></b>&nbsp;The
+ threshold (number of bytes) for the fragmentation boundary for directed
+ messages. It is the maximum data fragment size that can be sent. Enter a
+ value between 256 and 2432.<br><b><i>DTIM</i></b>&nbsp;This value, between 1 and 255, indicates the interval of the Delivery Traffic Indication Message (DTIM).<br><b><i>802.11b/g</i></b>&nbsp;</font>	  </span>
+    </td></tr><tr>
+    <td>&nbsp;</td></tr><tr>
+    <td><span class="help-sub">
+      <font color="#6666FF">Wireless LAN :: MAC Filter</font>      </span><br><span class="help-text">   
+      <font color="#000000">You can allow or deny a list of MAC addresses associated with the wireless stations access to the ADSL Router.<br><b><i>Status</i></b>&nbsp;Use the drop down list box to enable or disable MAC address filtering.<br><b><i>Action</i></b>&nbsp;</font>	  <font color="#000000">Select <b>Deny Association</b> to block access to the router, MAC addresses not listed will be allowed to access the router. Select <b>Allow Association</b> to permit access to the router, MAC addresses not listed will be denied access to the router. <b></b></font><b>	  </b></span><b>
+    </b></td></tr><tr>
+    <td>&nbsp;</td></tr>  <tr>
+    <td>&nbsp;</td></tr></tbody>
+</table>
+</body></html>

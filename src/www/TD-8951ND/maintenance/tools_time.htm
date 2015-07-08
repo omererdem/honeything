@@ -1,0 +1,143 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="../js/general.js" tppabs="http://192.168.1.1/js/general.js"></script>
+<SCRIPT language="javascript">
+function doTimeChange() {
+time.ToolsTimeSetFlag.value = 1;
+time.submit();
+return;
+}
+function isAsciiString(s) {
+var len= s.length;
+var ch;
+if(len == 0)
+return false;
+for( i=0; i< len; i++) {
+ch= s.charCodeAt(i);
+if(ch > 0x39 || ch < 0x30)
+return false;
+}
+return true;
+}
+function uiComputerTimeOnLoad() {
+time = document.Alpha_Time;
+var smtmp = time.uiRadioValue.value;
+if(smtmp == 1){
+syncwithpc();
+time.ToolsTimeSetFlag.value = 0;
+}
+else
+return ;
+}
+function updatetime(){
+theDate=(new Date()).getDate();
+theMonth=(new Date()).getMonth();
+theYear=(new Date()).getFullYear();
+theHour=(new Date()).getHours();
+theMinute=(new Date()).getMinutes();
+theSec=(new Date()).getSeconds();
+time.uiwPCdateDay.value = theDate;
+time.uiwPCdateMonth.value = theMonth;
+time.uiwPCdateYear.value = theYear;
+time.uiwPCdateHour.value = theHour;
+time.uiwPCdateMinute.value = theMinute;
+time.uiwPCdateSec.value = theSec;
+}
+function syncwithpc() {
+time = document.Alpha_Time;
+if(!time.uiViewSyncWith[1].checked)
+{
+return;
+}
+updatetime()
+time.ToolsTimeSetFlag.value = 1;
+time.submit();
+}
+function uiDoCancel() {
+document.location.href="tools_time.htm"/*tpa=http://192.168.1.1/maintenance/tools_time.htm*/;
+}
+function uiSave() {
+if(chineseCheck(document.forms[0].uiViewSNTPServer, "NTPServerAddressId"))
+{
+document.forms[0].uiViewSNTPServer.value = "0.0.0.0";
+return;
+}
+updatetime();
+document.Alpha_Time.submit();
+}
+function doLoad()
+{
+}
+</SCRIPT>
+</head><body onLoad="uiComputerTimeOnLoad();doLoad();">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/tools_time_1" name="Alpha_Time"><INPUT TYPE="HIDDEN" NAME="TimeZoneLock_Flag" VALUE="0"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Time Zone</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Current Date/Time</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+01/01/2000 00:39:21</td></tr><tr>
+<td height="30" class="title-sub">
+<font color="#000000">Time Synchronization</font></div></td><INPUT TYPE="HIDDEN" NAME="ToolsTimeSetFlag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="uiRadioValue" VALUE="0"><INPUT TYPE="HIDDEN" NAME="uiwPCdateMonth" VALUE="0"><INPUT TYPE="HIDDEN" NAME="uiwPCdateDay" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateYear" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateHour" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateMinute" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateSec" VALUE=""><td class="light-orange">&nbsp;</td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line">
+</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Synchronize time with</font></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="0" CHECKED onclick="location='tools_time.htm'"><font color="#000000">NTP Server automatically</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td class="tabdata">&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="1" onclick="location='tools_time_pc.htm'"><font color="#000000">PC's Clock</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td class="tabdata">&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="2" onclick="location='tools_time_manual.htm'"><font color="#000000">Manually</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Time Zone</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="uiViewdateToolsTZ" SIZE="1"><OPTION>(GMT-12:00)Enewetak, Kwajalein
+<OPTION>(GMT-11:00) Midway Island, Samoa
+<OPTION>(GMT-10:00) Hawaii
+<OPTION>(GMT-09:00) Alaska
+<OPTION>(GMT-08:00) Pacific Time (US & Canada), Tijuana
+<OPTION>(GMT-07:00) Mountain Time (US & Canada), Arizona
+<OPTION>(GMT-06:00) Central Time (US & Canada), Central America, Mexico City
+<OPTION>(GMT-05:00) Eastern Time (US & Canada), Bogota, Lima
+<OPTION>(GMT-04:30) Caracas
+<OPTION>(GMT-04:00) Atlantic Time (Canada), Santiago, Asuncion
+<OPTION>(GMT-03:30) Newfoundland
+<OPTION>(GMT-03:00) Brasilia, Buenos Aires, Georgetown, Greenland
+<OPTION>(GMT-02:00) Mid-Atlantic
+<OPTION>(GMT-01:00) Azores, Cape Verde Is.
+<OPTION SELECTED>(GMT) Greenwich Mean Time : Dublin, Edinburgh, London, Lisbon
+<OPTION>(GMT+01:00) Amsterdam, Berlin, Rome, Stockholm, Paris, Prague, Bratislava
+<OPTION>(GMT+02:00) Cairo, Athens, Istanbul, Minsk, Jerusalem, Kiev, Chisinau
+<OPTION>(GMT+03:00) Baghdad, Kuwait, Riyadh
+<OPTION>(GMT+03:30) Tehran
+<OPTION>(GMT+04:00) Abu Dhabi, Muscat, Baku, Tbilisi, Yerevan, Moscow, St.Petersburg
+<OPTION>(GMT+04:30) Kabul
+<OPTION>(GMT+05:00) Islamabad, Karachi, Tashkent
+<OPTION>(GMT+05:30) Madras, Kolkata, Mumbai, New Delhi
+<OPTION>(GMT+05:45) Katmandu
+<OPTION>(GMT+06:00) Almaty, Astana, Dhaka, Ekaterinburg, Bishkek
+<OPTION>(GMT+06:30) Rangoon
+<OPTION>(GMT+07:00) Bangkok, Jakarta, Hanoi, Novosibirsk
+<OPTION>(GMT+08:00) Beijing, Chongqing, Urumchi, Hong Kong, Taipei, Kuala Lumpur, Perth
+<OPTION>(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul
+<OPTION>(GMT+09:30) Darwin, Adelaide
+<OPTION>(GMT+10:00) Brisbane, Guman, Canberra, Melbourne, Sydney, Yakutsk
+<OPTION>(GMT+11:00) Magadan, Solomon Is., New Caledonia
+<OPTION>(GMT+12:00) Fiji, Kamchatka Peninsula, Marshall Is., Wellington
+<OPTION>(GMT+13:00) Nukualofa
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Daylight Saving</font><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewdateDS" VALUE="1"><font color="#000000">Enabled</font><INPUT TYPE="RADIO" NAME="uiViewdateDS" VALUE="2" CHECKED><font color="#000000">Disabled</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="NTPServerAddressId">
+<font color="#000000">NTP Server Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="uiViewSNTPServer" SIZE="24" MAXLENGTH="48" VALUE="0.0.0.0"><font color="#000000">(0.0.0.0: Default Value)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td width="150">&nbsp;</td><td width="10">&nbsp;</td><td width="440">
+<INPUT TYPE="TEXT" NAME="tools_time_preventEnterkey" SIZE="20" MAXLENGTH="20" VALUE="" style="display:none"></td></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="CancelBtn" VALUE="CANCEL" onClick="uiDoCancel()"></td></tr></table></form>
+</body></html>

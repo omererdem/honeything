@@ -1,0 +1,215 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="../js/general.js" tppabs="http://192.168.1.1/js/general.js"></script>
+<script language="JavaScript">
+function cwmpinit(){
+if(document.CWMP_form.elements[0].checked)
+cwmpSwitch(1);
+else
+cwmpSwitch(0);
+}
+function cwmpSwitch(on_off)
+{
+if(on_off == 0){
+for(i = 2; i < document.forms[0].elements.length - 2; i++)
+document.CWMP_form.elements[i].disabled = true;
+}
+else{
+for(i = 2; i < document.forms[0].elements.length - 2; i++){
+document.CWMP_form.elements[i].disabled = false;
+}
+if(document.CWMP_form.CWMP_PeriodActive[1].checked)
+document.CWMP_form.CWMP_PeriodInterval.disabled = true;
+}
+}
+function cwmpPeriodSwitch(on_off)
+{
+if(on_off == 0)
+document.CWMP_form.CWMP_PeriodInterval.disabled = true;
+else
+document.CWMP_form.CWMP_PeriodInterval.disabled = false;
+}
+function isNumeric(s)
+{
+var len= s.length;
+var ch;
+if(len==0)
+return false;
+for( i=0; i< len; i++)
+{
+ch= s.charAt(i);
+if( ch > '9' || ch < '0')
+{
+return false;
+}
+}
+return true;
+}
+function cwmpNumValidCheck()
+{
+var value1;
+value1 = document.CWMP_form.CWMP_ConnectionRequestPort.value;
+if(!isNumeric(value1)){
+alert("The port for ACS connection request should be interger!");return false;
+}
+else{
+if(Number(value1) > 65535 || Number(value1) < 1){
+alert("The port for ACS connection request should be smaller than 65536!");return false;
+}
+}
+value1 = document.CWMP_form.CWMP_PeriodInterval.value;
+if(!document.CWMP_form.CWMP_PeriodActive[1].checked)
+return true;
+if(!isNumeric(value1)){
+alert("The periodic interval should be interger!");return false;
+}
+else{
+if(Number(value1) > 999999 || Number(value1) < 1){
+alert("The inform interval should be 1-86400!");return false;
+}
+}
+return true;
+}
+function StringCheck(val)
+{
+re = /^[^\s]+$/;
+if( re.test(val) )
+return true;
+else
+return false;
+}
+function cwmpStringValidCheck()
+{
+var value1;
+var value2 = null;
+var url = /^https*:\/\/\w+/;
+var path = /^\/\w+/;
+value1 = document.CWMP_form.CWMP_ACSURL.value;
+/*
+if(!StringCheck(value1)){
+alert("ACS URL should not be empty!");return false;
+}
+else{
+*/
+if(StringCheck(value1)){
+value2 = value1.match(url);
+if(value2 == null){
+alert("The format of ACS URL is wrong!");return false;
+}
+if(chineseCheck(document.CWMP_form.CWMP_ACSURL, "ACSURLId"))
+{
+return false;
+}
+}
+if(chineseCheck(document.CWMP_form.CWMP_ACSUserName, "ACSUserNameId"))
+{
+return false;
+}
+if(chineseCheck(document.CWMP_form.CWMP_ACSPassword, "ACSPasswordId"))
+{
+return false;
+}
+if(chineseCheck(document.CWMP_form.CWMP_ConnectionRequestUserName, "CWMPConnectionRequestUserNameId"))
+{
+return false;
+}
+if(chineseCheck(document.CWMP_form.CWMP_ConnectionRequestPassword, "CWMPConnectionRequestPasswordId"))
+{
+return false;
+}
+/* value1 = document.CWMP_form.CWMP_ACSUserName.value;
+if(!StringCheck(value1)){
+alert("Username for logining ACS should not be empty!");return false;
+}
+value1 = document.CWMP_form.CWMP_ACSPassword.value;
+if(!StringCheck(value1)){
+alert("Password for logining ACS should not be empty!");return false;
+}
+*/
+value1 = document.CWMP_form.CWMP_ConnectionRequestPath.value;
+/*
+if(!StringCheck(value1)){
+alert("The path for connection request should not be empty!");return false;
+}
+else{
+*/
+if(StringCheck(value1)){
+value2 = value1.match(path);
+if(value2 == null){
+alert("The format of connection request path is wrong!");return false;
+}
+}
+/*
+value1 = document.CWMP_form.CWMP_ConnectionRequestUserName.value;
+if(!StringCheck(value1)){
+alert("Username for Connection request should not be empty!");return false;
+}
+value1 = document.CWMP_form.CWMP_ConnectionRequestPassword.value;
+if(!StringCheck(value1)){
+alert("Password for Connection request should not be empty!");return false;
+}
+*/
+return true;
+}
+function cwmpSave()
+{
+if(document.CWMP_form.elements[0].checked){
+if(!cwmpNumValidCheck())
+return false;
+if(!cwmpStringValidCheck())
+return false;
+}
+document.CWMP_form.submit();
+}
+</script>
+</head><body onload="cwmpinit()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/access_cwmp_1" name="CWMP_form"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">CWMP Setup</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="9" ></td><td width="441"></td></tr><tr>
+<td height="25" class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">CWMP</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="CWMP_active" VALUE="1" onclick="cwmpSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="CWMP_active" VALUE="0" CHECKED onclick="cwmpSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">Login ACS</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" height="25" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td class="tabdata"><div align=right id="ACSURLId">
+<font color="#000000">URL</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_ACSURL" SIZE="64" MAXLENGTH="255" VALUE="http://0/"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="ACSUserNameId">
+<font color="#000000">User Name</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_ACSUserName" SIZE="32" MAXLENGTH="255" VALUE=""></td></tr></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td class="tabdata"><div align=right id="ACSPasswordId">
+<font color="#000000">Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="CWMP_ACSPassword" SIZE="32" MAXLENGTH="255" VALUE="" autocomplete="off"></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">Connection Request</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" height="25" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Path</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_ConnectionRequestPath" SIZE="64" MAXLENGTH="127" VALUE="/tr069"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Port</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_ConnectionRequestPort" SIZE="9" MAXLENGTH="9" VALUE="7547"></td></tr></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="CWMPConnectionRequestUserNameId">
+<font color="#000000">UserName</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_ConnectionRequestUserName" SIZE="32" MAXLENGTH="255" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right id="CWMPConnectionRequestPasswordId">
+<font color="#000000">Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="CWMP_ConnectionRequestPassword" SIZE="32" MAXLENGTH="255" VALUE="" autocomplete="off"></td></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">Periodic Inform</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" height="25" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Periodic Inform</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="CWMP_PeriodActive" VALUE="1" CHECKED onclick="cwmpPeriodSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="CWMP_PeriodActive" VALUE="0" onclick="cwmpPeriodSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Interval(s)</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="CWMP_PeriodInterval" SIZE="9" MAXLENGTH="9" VALUE="86400"></td></tr></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >
+<INPUT TYPE="HIDDEN" NAME="CWMPLockFlag" VALUE="0"></td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="cwmp_apply" VALUE="SAVE" class="sbutton"><input type="reset"  name="cwmp_cancel" value="CANCEL"></td></tr></table></div></form>
+</body></html>

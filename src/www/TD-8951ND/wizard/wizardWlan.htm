@@ -1,0 +1,238 @@
+<html><head>
+<title></title><meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="wizardWlan_files/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="wizardWlan_files/tc2func.js" tppabs="http://192.168.1.1/basic/tc2func.js"></script>
+<style type="text/css">
+</style>
+<script language="JavaScript">
+function ExitWizard()
+{
+if (confirm("Quit setup wizard and discard settings ?")) {document.WizardWlanForm.WizardWlanCommitFlag.value = 2;
+document.WizardWlanForm.submit();
+window.close();
+}
+}
+function wpapskCheck() {
+if(document.forms[0].WizardWlanPreSharedKey.value.length < 8) {
+alert('Pre-Shared Key length error!');// 	document.forms[0].WizardWlanPreSharedKey.focus();
+return true;
+}
+return false;
+}
+function quotationCheck(object, limit_len) {
+var len = object.value.length;
+var c;
+var i, j = 0;
+for (i = 0; i < len; i++)
+{
+var c = object.value.charAt(i);
+//check hexadecimal characters
+if (len == 64)
+{
+if ( ((c >= '0') && (c <= '9')) || ((c >= 'A') && (c <= 'F')) || ((c >= 'a') && (c <= 'f')) )
+{
+;
+}
+else
+{
+alert('too many quotation marks!');return true;
+}
+}
+if (c == '"')
+{
+j += 6;
+}
+else
+j++;
+}
+if (j > limit_len-1)
+{
+alert('too many quotation marks!');return true;
+}
+return false;
+}
+function checkKey(value, type){
+var c, i;
+if(type == 0)
+{
+if(value.length != 12)
+return true;
+}
+else if(type == 1)
+{
+if(value.length != 28)
+return true;
+}
+c = value.charAt(0);
+if(c != '0')
+return true;
+c = value.charAt(1);
+if(c != 'x')
+return true;
+for(i=2; i< value.length; i++)
+{
+c = value.charAt(i);
+if( doHexCheck(c) < 0 )
+return true;
+}
+return false;
+}
+function wepkeyCheck() {
+var wlan = document.WizardWlanForm;
+if(wlan.WizardWlanWEPSelection.selectedIndex == 1){
+if(wlan.WizardWlanWEPKeyRadio0Data.value.length != 5){
+if(checkKey(wlan.WizardWlanWEPKeyRadio0Data.value,0))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio1Data.value.length != 5){
+if(checkKey(wlan.WizardWlanWEPKeyRadio1Data.value, 0))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio2Data.value.length != 5){
+if(checkKey(wlan.WizardWlanWEPKeyRadio2Data.value, 0))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio3Data.value.length != 5){
+if(checkKey(wlan.WizardWlanWEPKeyRadio3Data.value, 0))
+return true;
+}
+}else if(wlan.WizardWlanWEPSelection.selectedIndex == 2){
+if(wlan.WizardWlanWEPKeyRadio0Data.value.length != 13){
+if(checkKey(wlan.WizardWlanWEPKeyRadio0Data.value, 1))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio1Data.value.length != 13){
+if(checkKey(wlan.WizardWlanWEPKeyRadio1Data.value, 1))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio2Data.value.length != 13){
+if(checkKey(wlan.WizardWlanWEPKeyRadio2Data.value, 1))
+return true;
+}
+if(wlan.WizardWlanWEPKeyRadio3Data.value.length != 13){
+if(checkKey(wlan.WizardWlanWEPKeyRadio3Data.value, 1))
+return true;
+}
+}
+return false;
+}
+function strESSIDCheck(str) {
+if(str.value.match(/[^\x00-\xff]/g)){
+alert("Invalid SSID Input!");return true;
+}
+return false;
+}
+function doLoad() {
+if(document.WizardWlanForm.WizardWPSWEPFlag.value==2)
+{
+alert("We should not use WEP when WPS function turned on! Switch off WPS on Interface->Wireless webpage before you choose WEP mode!");document.WizardWlanForm.WizardWPSWEPFlag.value=0;
+}
+}
+function uiSave(type)
+{
+if(type == 1)
+{
+//if(	document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 1 ||
+//document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 2){
+//document.WizardWlanForm.WizardWPSWEPFlag.value=1;
+//}
+//document.WizardWlanForm.WizardWlanCommitFlag.value=1;
+//document.WizardWlanForm.submit();
+//return true;
+if(document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 0)
+{
+window.location="wizardWlan_disauth.htm";
+}
+if(document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex ==1||document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex ==2)
+{
+alert("We should not use WEP when WPS function turned on! Switch off WPS on Interface->Wireless webpage before you choose WEP mode!");
+}
+
+
+}
+if(	document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 3 ||
+document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 4 ||
+document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 5)
+{
+if(wpapskCheck())
+return false;
+if (quotationCheck(document.WizardWlanForm.WizardWlanPreSharedKey, 65) )
+return false;
+}
+if(	document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 1 ||
+document.WizardWlanForm.WizardWlanWEPSelection.selectedIndex == 2)
+{
+if(wepkeyCheck()){
+alert("WEP Key length error!");return false;
+}
+}
+if (strESSIDCheck(document.WizardWlanForm.WizardWlanESSID))
+{
+return false;
+}
+if(document.WizardWlanForm.WizardWlanESSID.value == "")
+{
+alert("The SSID can not be set empty!!!");return false;
+}
+if(document.WizardWlanForm.WizardWlanESSID.value.indexOf('"')!=-1 || document.WizardWlanForm.WizardWlanESSID.value.indexOf('\\')!=-1){
+alert("The SSID can not contain quotation marks and \"\\\" !");return;
+}
+//document.WizardWlanForm.submit();
+}
+</script>
+</head><body onload="doLoad()" leftmargin="0" topmargin="10">
+<form method="POST" action="http://192.168.1.1/Forms/wizardWlan_1" name="WizardWlanForm"><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td class="orange" height="5" valign="baseline" width="500"></td></tr></tbody></table><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td align="center" bgcolor="#FFFFFF" height="50" valign="middle" width="200">
+<div align="left"><img src="wizardWlan_files/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" height="50" width="200"></div></td><td class="model" align="right" bgcolor="#FFFFFF" valign="bottom" width="300">
+</td></tr><tr>
+<td colspan="2" hclass="orange" width="500"> </td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="2" width="500">
+<tbody><tr>
+<td class="orange"> </td></tr></tbody></table><table color="#FF9933" align="center" border="0" cellpadding="0" cellspacing="0" height="35" width="500">
+<tbody><tr>
+<td class="headline" bgcolor="#FFFFFF" width="500">&nbsp;
+Quick Start - Wlan</td></tr></tbody></table><table align="center" border="0" cellpadding="2" cellspacing="0" width="500">
+<tbody><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata">
+You may enable/disable Wlan, change the Wlan SSID and Authentication type in this page.<br>Click <b>NEXT</b> to continue.</td></tr><tr>
+<td></td><td></td><td></td></tr><tr>
+<td height="10"></td><td></td><td></td></tr><tr id="ApSwitch">
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+Access Point :</td><td class="tabdata" align="left" width="310"><div align="left">
+<input name="WizardWlan_APenable" value="1" checked="checked" type="RADIO">Activated<input name="WizardWlan_APenable" value="0" type="RADIO">Deactivated</div></td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" colspan="2" align="left"><hr noshade="noshade"> </td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+SSID :</td><td class="tabdata" align="left" width="310">
+<input name="WizardWlanESSID" size="32" maxlength="32" value="TP-LINK_A8DAE3" type="TEXT"></td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+Broadcast SSID :</td><td class="tabdata" align="left" width="310">
+<input name="WizardWanESSID_HIDE_Selection" value="0" checked="checked" type="RADIO">Yes<input name="WizardWanESSID_HIDE_Selection" value="1" type="RADIO">No</td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+Authentication Type :</td><td class="tabdata" align="left" width="310">
+<select name="WizardWlanWEPSelection" size="1" onchange="uiSave(1)"><option>Disabled
+</option><option>WEP-64Bits
+</option><option>WEP-128Bits
+</option><option>WPA-PSK
+</option><option selected="selected">WPA2-PSK
+</option><option>WPA-PSK/WPA2-PSK
+</option></select></td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" colspan="2" align="left"><hr noshade="noshade"> </td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+Encryption :</td><td class="tabdata" align="left" width="310">
+<select name="WizardWlanTkipSelection" size="1"><option>TKIP
+</option><option selected="selected">AES
+</option><option>TKIP/AES
+</option></select></td></tr><tr>
+<td width="40">&nbsp;</td><td class="tabdata" align="right" width="150">
+Pre-Shared Key :</td><td class="tabdata" align="left" width="310">
+<input name="WizardWlanPreSharedKey" size="48" maxlength="64" value="10660836" onblur="wpapskCheck()" type="TEXT">(8~63 ASCII characters or 64 hexadecimal characters)</td></tr><tr>
+<td height="25"></td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="40" width="500">
+<tbody><tr>
+<td class="orange">
+<div align="right">
+<input name="WizardWlanBackBtn" value="BACK" Â"50"="" onclick="javascript:history.go(-1);" type="BUTTON"><input name="WizardWlanNextBtn" value="NEXT" Â"50"="" onclick="javascript:window.location='wizardcomp.htm'/*tpa=http://192.168.1.1/wizard/wizardcomp.htm*/" type="BUTTON"><input name="WizardWlanExitBtn" value="EXIT" Â"50"="" onclick="ExitWizard()" type="BUTTON"><input name="WizardWlanCommitFlag" value="0" type="HIDDEN"><input name="WizardWlanAuthTypeSelectIndex" value="4" type="HIDDEN"><input name="WizardWPSWEPFlag" value="0" type="HIDDEN"><input name="WizWlan_Lock_Flag" value="0" type="HIDDEN"><input name="CountryChange_GER" value="0" type="HIDDEN"><input name="wizWlanSubmitFlag" value="0" type="HIDDEN"></div></td><td class="orange" valign="baseline" width="25">&nbsp;</td></tr></tbody></table></form>
+</body></html>

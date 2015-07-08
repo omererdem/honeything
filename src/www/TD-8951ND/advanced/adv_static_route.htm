@@ -1,0 +1,187 @@
+
+<!-- saved from url=(0048)http://192.168.1.1/advanced/adv_static_route.htm -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="http://www.tp-link.com/resources/simulator/TD-8951ND(UN)/advanced/tc2func.js"></script>
+<script language="javascript">
+function doGatewayCheck()
+{
+var fm=document.forms[0];
+if (fm.Route_PvcGateway[0].checked == true){
+fm.staticGatewayIP.disabled = false;
+fm.Route_Pvc_Index.disabled = true;
+}
+else{
+fm.staticGatewayIP.disabled = true;
+fm.Route_Pvc_Index.disabled = false;
+}
+}
+function IPCheckRoute(address) {
+if (address.value != "N/A") {
+if(!doValidateIP(address.value, 0, 0, 1)) {
+address.value="0.0.0.0";
+address.focus();
+return false;
+}
+}
+return true;
+}
+function SubnetCheckRouter(mask,IPAddr) {
+var v=mask.value;
+var addr = IPAddr.value.split(".");
+var digits = v.split(".");
+if ( !((v == "0.0.0.0")||
+(v == "128.0.0.0")||
+(v == "192.0.0.0")||
+(v == "224.0.0.0")||
+(v == "240.0.0.0")||
+(v == "248.0.0.0")||
+(v == "252.0.0.0")||
+(v == "254.0.0.0")||
+(v == "255.0.0.0")||
+(v == "255.128.0.0")||
+(v == "255.192.0.0")||
+(v == "255.224.0.0")||
+(v == "255.240.0.0")||
+(v == "255.248.0.0")||
+(v == "255.252.0.0")||
+(v == "255.254.0.0")||
+(v == "255.255.0.0")||
+(v == "255.255.128.0")||
+(v == "255.255.192.0")||
+(v == "255.255.224.0")||
+(v == "255.255.240.0")||
+(v == "255.255.252.0")||
+(v == "255.255.254.0")||
+(v == "255.255.255.0")||
+(v == "255.255.255.128")||
+(v == "255.255.255.192")||
+(v == "255.255.255.224")||
+(v == "255.255.255.240")||
+(v == "255.255.255.248")||
+(v == "255.255.255.252")||
+(v == "255.255.255.254")||
+(v == "255.255.255.255")) )
+{
+alert("Invalid subnet mask!");mask.focus();
+v = "0.0.0.0";
+return false;
+}
+if((Number(addr[3])==0)&&(Number(digits[3])==255)){
+alert("Invalid subnet mask!");return false;
+}
+if(!((Number(addr[0]&digits[0])==Number(addr[0]))
+&&(Number(addr[1]&digits[1])==Number(addr[1]))
+&&(Number(addr[2]&digits[2])==Number(addr[2]))
+&&(Number(addr[3]&digits[3])==Number(addr[3])))){
+alert("Invalid subnet mask!");return false;
+}
+return true;
+}
+function IPCheck(address) {
+if (address.value != "N/A") {
+if(!doValidateIP(address.value, 3, 1, 0)) {
+address.value="192.168.1.1";
+address.focus();
+return false;
+}
+}
+return true;
+}
+function IsNum(num)
+{
+var number = "0123456789";
+var i,j;
+for(i = 0; i < num.length; i++)
+{
+for(j = 0; j < 10; j++)
+{
+if(num.charAt(i) == number.charAt(j)) break;
+}
+if(j >= 10) return false;
+}
+return true;
+}
+function metricCheck() {
+var value = document.forms[0].staticMetric.value;
+if(IsNum(value))
+{
+if (value < 1 || value > 15)
+{
+alert("Value for metric must be between 1 and 15");return true;
+}
+}
+else
+{
+alert("Value for metric must be between 1 and 15");return true;
+}
+return false;
+}
+function doSubmit(index) {
+var fm=document.forms[0];
+var sm=fm.staticSubnetMask;
+fm.SubmitFlag.value=index;
+var Address = fm.staticDestIP.value;
+if(index==0)
+{
+if (metricCheck()) return false;
+if(!IPCheckRoute(fm.staticDestIP)) return false;
+if(!SubnetCheckRouter(sm,fm.staticDestIP)) return false;
+if (fm.Route_PvcGateway[0].checked)
+if(!IPCheck(fm.staticGatewayIP)) return false;
+if((Address == "0.0.0.0") && (sm.value !="0.0.0.0")){
+alert("Invalid destination IP address: " + Address);fm.staticDestIP.focus();
+return false;
+}
+if((Address!="0.0.0.0") && (sm.value =="0.0.0.0") ){
+alert("Invalid subnet mask!");sm.focus();
+return false;
+}
+}
+fm.submit();
+}
+</script>
+</head><body marginwidth="0" marginheight="0" style="left: 340px; position: absolute;">
+<form method="POST" action="http://192.168.1.1/Forms/rpAddStatic_1" name="Static_Eng"><div align="center">
+<table width="760" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Static Route</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade=""></td><td width="10"><hr noshade=""></td><td width="440"><hr noshade=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align="right">
+<font color="#000000">Destination IP Address</font></div></td><td class="tabdata"><div align="center">:</div></td><td class="tabdata">
+<input type="TEXT" name="staticDestIP" size="16" maxlength="16" value="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align="right">
+<font color="#000000">IP Subnet Mask</font></div></td><td class="tabdata"><div align="center">:</div></td><td class="tabdata">
+<input type="TEXT" name="staticSubnetMask" size="16" maxlength="16" value="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align="right">
+<font color="#000000">Gateway IP Address</font></div></td><td class="tabdata"><div align="center">:</div></td><td class="tabdata">
+<input type="RADIO" name="Route_PvcGateway" value="YES" checked="" onclick="doGatewayCheck()"><input type="TEXT" name="staticGatewayIP" size="16" maxlength="16" value="0.0.0.0"><input type="RADIO" name="Route_PvcGateway" value="No" onclick="doGatewayCheck()"><select name="Route_Pvc_Index" size="1"><option selected="">PVC0
+</option><option>PVC1
+</option><option>PVC2
+</option><option>PVC3
+</option><option>PVC4
+</option><option>PVC5
+</option><option>PVC6
+</option><option>PVC7
+</option></select></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align="right">
+<font color="#000000">Metric</font></div></td><td class="tabdata"><div align="center">:</div></td><td class="tabdata">
+<input type="TEXT" name="staticMetric" size="3" maxlength="5" value="0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align="right">
+<font color="#000000">Announced in RIP</font></div></td><td class="tabdata"><div align="center">:</div></td><td class="tabdata">
+<select name="staticPrivate" size="1"><option>No
+</option><option selected="">Yes
+</option></select></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></tbody></table><table width="760" border="0" align="center" cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tbody><tr height="42">
+<td width="160" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<input type="BUTTON" name="StaticSubmit" value="SAVE">&nbsp;&nbsp;
+<input type="BUTTON" name="StaticDelete" value="DELETE">&nbsp;&nbsp;
+<input type="BUTTON" name="StaticBack" value="BACK" onclick="location='adv_routing_table.htm'">&nbsp;&nbsp;
+<input type="reset" name="DTStaticReset" value="CANCEL">
+<input type="HIDDEN" name="SubmitFlag" value="2"></td></tr></tbody></table>
+</div></form></body></html>

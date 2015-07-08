@@ -1,0 +1,63 @@
+<html>
+<head>
+<title>
+</title><meta http-equiv="Content-Type" content="text/html; charset=
+iso-8859-1">
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<script>
+// this section of script must be at the bottom of the head tag.
+//for window
+function addLoadEvent(wnd,func)
+{
+if ("function" == typeof(wnd.onload))
+{
+var oldloadfunc = wnd.onload;
+wnd.onload = function ()
+{
+oldloadfunc();
+func();
+}
+}
+else
+{
+wnd.onload = func;
+}
+}
+//for frame
+function attachLoadEvent(wnd,func)
+{
+if (wnd.addEventListener)
+{
+wnd.addEventListener("load", func);
+}
+else if (wnd.attachEvent)
+{
+wnd.attachEvent("onload", func);
+}
+}
+function modifyAlignment()
+{
+var bodywidth = window.frames["header"].document.body.clientWidth;
+var body = window.frames["main"].document.body;
+body.style.left = (bodywidth - 760)/2;
+body.style.position = "absolute";
+}
+function loadFunc()
+{
+if ("Microsoft Internet Explorer" != navigator.appName)
+{
+modifyAlignment();//first for sys load.
+addLoadEvent(document.getElementsByName("main")[0], modifyAlignment);//second for GUI refresh.
+window.onresize = modifyAlignment;// third for change the web size.
+}
+}
+addLoadEvent(window, loadFunc);
+</script>
+</head><frameset rows="65,75,*" framespacing="0" border="0" frameborder="0">
+<frame name="header" noresize src="status.html" tppabs="http://192.168.1.1/status.html" marginwidth="0" marginheight="0">
+<frame name="navigation" noresize src="navigation-status.html" tppabs="http://192.168.1.1/navigation-status.html" marginwidth="0" marginheight="0">
+<frame name="main" noresize src="status/status_deviceinfo.htm" tppabs="http://192.168.1.1/status/status_deviceinfo.htm" marginwidth="0" marginheight="0">
+</frameset><noframes>
+</noframes>
+</html>

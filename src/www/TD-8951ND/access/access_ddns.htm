@@ -1,0 +1,142 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+</head><script language="JavaScript">
+function isEmail(str){
+var re = /^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+if(str.match(re) != null)
+return false;
+else
+{
+alert("Invalid Email Format!");return true;
+}}
+function ddnsSwitch(on_off)
+{
+if(on_off == 0)
+{
+if(null != document.forms[0].SERVICE_provider)
+document.forms[0].SERVICE_provider.disabled = true;
+if(null != document.forms[0].sysDNSHost)
+document.forms[0].sysDNSHost.disabled = true;
+if(null != document.forms[0].sysDNSEmail)
+document.forms[0].sysDNSEmail.disabled = true;
+if(null != document.forms[0].sysDNSUser)
+document.forms[0].sysDNSUser.disabled = true;
+if(null != document.forms[0].sysDNSPassword)
+document.forms[0].sysDNSPassword.disabled = true;
+if(null != document.forms[0].Enable_Wildcard)
+{
+document.forms[0].Enable_Wildcard[0].disabled = true;
+document.forms[0].Enable_Wildcard[1].disabled = true;
+}
+}
+else
+{
+if(null != document.forms[0].SERVICE_provider)
+document.forms[0].SERVICE_provider.disabled = false;
+if(null != document.forms[0].sysDNSHost)
+document.forms[0].sysDNSHost.disabled = false;
+if(null != document.forms[0].sysDNSEmail)
+document.forms[0].sysDNSEmail.disabled = false;
+if(null != document.forms[0].sysDNSUser)
+document.forms[0].sysDNSUser.disabled = false;
+if(null != document.forms[0].sysDNSPassword)
+document.forms[0].sysDNSPassword.disabled = false;
+if(null != document.forms[0].Enable_Wildcard)
+{
+document.forms[0].Enable_Wildcard[0].disabled = false;
+document.forms[0].Enable_Wildcard[1].disabled = false;
+}
+}
+}
+function quotationCheck(object, limit_len) {
+var len = object.value.length;
+var c;
+var i, j = 0;
+for (i = 0; i < len; i++)
+{
+var c = object.value.charAt(i);
+if (c == '"')
+{
+j += 6;
+}
+else
+j++;
+}
+if (j > limit_len)
+{
+alert('too many quotation marks!');return true;
+}
+return false;
+}
+function doServerProviderSwitch()
+{
+sTrEmailAddress = document.getElementById("EmailAddress");
+sTrWildcardDisplay =document.getElementById("WildcardDisplay");
+if(document.forms[0].SERVICE_provider.options[document.forms[0].SERVICE_provider.selectedIndex].text=="http://www.no-ip.com/")
+{
+sTrEmailAddress.style.display = "none";
+sTrWildcardDisplay.style.display = "none";
+document.DDNS_form.noIpFlag.value = 1;
+}
+else
+{
+sTrEmailAddress.style.display = "";
+sTrWildcardDisplay.style.display = "";
+document.DDNS_form.noIpFlag.value = 0;
+}
+}
+function DDNSsave() {
+if(document.DDNS_form.elements[0].checked){
+if (quotationCheck(document.forms[0].sysDNSHost, 63) )
+return;
+if (quotationCheck(document.forms[0].sysDNSEmail, 63) )
+return;
+if (quotationCheck(document.forms[0].sysDNSUser, 31) )
+return;
+if (quotationCheck(document.forms[0].sysDNSPassword, 31) )
+return;
+if ((document.forms[0].SERVICE_provider.value != "2") && isEmail(document.forms[0].sysDNSEmail.value) )
+return;
+}
+document.DDNS_form.submit();
+}
+</script>
+<body onload="if(!document.DDNS_form.elements[0].checked) ddnsSwitch(0); doServerProviderSwitch();">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/access_ddns_1" name="DDNS_form"><div align=center>
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Dynamic DNS</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Dynamic DNS</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="Enable_DyDNS" VALUE="1" onclick="ddnsSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="Enable_DyDNS" VALUE="0" CHECKED onclick="ddnsSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Service Provider</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="SERVICE_provider" SIZE="1" onchange="doServerProviderSwitch()"><OPTION VALUE=0>www.dyndns.com
+<OPTION VALUE=2 SELECTED>http://www.no-ip.com/
+</SELECT></td><INPUT TYPE="HIDDEN" NAME="noIpFlag" VALUE="0"></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">My Host Name</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="sysDNSHost" SIZE="32" MAXLENGTH="63" VALUE=""></td></tr><tr id="EmailAddress">
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">E-mail Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="sysDNSEmail" SIZE="32" MAXLENGTH="63" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Username</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="sysDNSUser" SIZE="32" MAXLENGTH="31" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Password</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="PASSWORD" NAME="sysDNSPassword" SIZE="32" MAXLENGTH="31" VALUE=""></td></tr><tr id="WildcardDisplay">
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Wildcard support</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="Enable_Wildcard" VALUE="1"><font color="#000000">Yes</font><INPUT TYPE="RADIO" NAME="Enable_Wildcard" VALUE="0" CHECKED><font color="#000000">No</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"></td></tr></table></div></form>
+</body></html>

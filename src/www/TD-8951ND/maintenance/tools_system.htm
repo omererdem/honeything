@@ -1,0 +1,39 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="JavaScript">
+function doRefresh()
+{
+alert("Reboot Complete");parent.navigation.location.href = "../navigation-status.html"/*tpa=http://192.168.1.1/navigation-status.html*/;
+window.location.href = "../status/status_deviceinfo.htm"/*tpa=http://192.168.1.1/status/status_deviceinfo.htm*/;
+}
+function uiSave() {
+document.System_Restore.submit();
+}
+function doLoad()
+{
+docountryhange();
+}
+function docountryhange()
+{
+}
+</script>
+</head><body onload="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/tools_system_1" name="System_Restore"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">System Restart</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10"> </td><td width="440"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">System Restart with</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="restoreFlag" VALUE="0" CHECKED><font color="#000000">Current Settings</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td class="tabdata">&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="restoreFlag" VALUE="1"><font color="#000000">Factory Default Settings</font></td></tr><tr>
+<td height="20" class="light-orange">&nbsp;</td><td class="light-orange"></td><td width="150">&nbsp;</td><td width="10">&nbsp;</td><td width="440">&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="Restart" VALUE="RESTART" class="sbutton"></td></tr></table></div></form>
+</body></html>

@@ -1,0 +1,88 @@
+<html><head>
+<title></title><meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<link rel="stylesheet" href="wizardTZ_files/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+</style>
+<script>
+function ExitWizard()
+{
+if (confirm("Quit setup wizard and discard settings ?")) {document.wzTimeZoneform.wzTZExitFlag.value = 1;
+document.wzTimeZoneform.submit();
+window.close();
+}
+}
+function uiSave() {
+document.wzTimeZoneform.submit();
+}
+function doLoad() {
+if(document.wzTimeZoneform.TimeZoneLockFlag.value == 1)
+{
+if(document.wzTimeZoneform.uiViewdateTZ != null)
+{
+document.wzTimeZoneform.uiViewdateTZ.disabled = true;
+}
+}
+}
+</script>
+</head><body topmargin="10" leftmargin="0" onload="doLoad()">
+<form method="POST" action="http://192.168.1.1/Forms/wizardTZ_1" name="wzTimeZoneform"><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td class="orange" height="5" valign="baseline" width="500"></td></tr></tbody></table><table align="center" border="0" cellpadding="0" cellspacing="0" width="500">
+<tbody><tr>
+<td align="center" bgcolor="#FFFFFF" height="50" valign="middle" width="200"><div align="left"><img src="wizardTZ_files/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" height="50" width="200"></div></td><td class="model" align="right" bgcolor="#FFFFFF" height="50" valign="bottom" width="300">
+</td></tr><tr>
+<td class="orange" width="500"> </td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="3" width="500">
+<tbody><tr>
+<td class="orange"> </td></tr></tbody></table><table color="#FF9933" align="center" border="0" cellpadding="0" cellspacing="0" height="35" width="500">
+<tbody><tr>
+<td class="headline" bgcolor="#FFFFFF" width="500">&nbsp;
+<font color="#666666">Quick Start - Time Zone</font></td></tr></tbody></table><table align="center" bgcolor="#FFFFFF" border="0" cellpadding="2" cellspacing="0" width="500">
+<tbody><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata">
+<font color="#000000">Select the appropriate time zone for your location and click <b>NEXT</b> to continue.</font></td></tr><tr>
+<td height="10" width="40"></td><td class="tabdata" align="right" width="150"></td><td class="tabdata" align="left" width="310"></td></tr><tr>
+<td width="40">&nbsp;</td><td colspan="2" class="tabdata" align="left">
+<select name="uiViewdateTZ" size="1"><option>(GMT-12:00)Enewetak, Kwajalein
+</option><option>(GMT-11:00) Midway Island, Samoa
+</option><option>(GMT-10:00) Hawaii
+</option><option>(GMT-09:00) Alaska
+</option><option>(GMT-08:00) Pacific Time (US &amp; Canada), Tijuana
+</option><option>(GMT-07:00) Mountain Time (US &amp; Canada), Arizona
+</option><option>(GMT-06:00) Central Time (US &amp; Canada), Central America, Mexico City
+</option><option>(GMT-05:00) Eastern Time (US &amp; Canada), Bogota, Lima
+</option><option>(GMT-04:30) Caracas
+</option><option>(GMT-04:00) Atlantic Time (Canada), Santiago, Asuncion
+</option><option>(GMT-03:30) Newfoundland
+</option><option>(GMT-03:00) Brasilia, Buenos Aires, Georgetown, Greenland
+</option><option>(GMT-02:00) Mid-Atlantic
+</option><option>(GMT-01:00) Azores, Cape Verde Is.
+</option><option selected="selected">(GMT) Greenwich Mean Time : Dublin, Edinburgh, London, Lisbon
+</option><option>(GMT+01:00) Amsterdam, Berlin, Rome, Stockholm, Paris, Prague, Bratislava
+</option><option>(GMT+02:00) Cairo, Athens, Istanbul, Minsk, Jerusalem, Kiev, Chisinau
+</option><option>(GMT+03:00) Baghdad, Kuwait, Riyadh
+</option><option>(GMT+03:30) Tehran
+</option><option>(GMT+04:00) Abu Dhabi, Muscat, Baku, Tbilisi, Yerevan, Moscow, St.Petersburg
+</option><option>(GMT+04:30) Kabul
+</option><option>(GMT+05:00) Islamabad, Karachi, Tashkent
+</option><option>(GMT+05:30) Madras, Kolkata, Mumbai, New Delhi
+</option><option>(GMT+05:45) Katmandu
+</option><option>(GMT+06:00) Almaty, Astana, Dhaka, Ekaterinburg, Bishkek
+</option><option>(GMT+06:30) Rangoon
+</option><option>(GMT+07:00) Bangkok, Jakarta, Hanoi, Novosibirsk
+</option><option>(GMT+08:00) Beijing, Chongqing, Urumchi, Hong Kong, Taipei, Kuala Lumpur, Perth
+</option><option>(GMT+09:00) Tokyo, Osaka, Sapporo, Seoul
+</option><option>(GMT+09:30) Darwin, Adelaide
+</option><option>(GMT+10:00) Brisbane, Guman, Canberra, Melbourne, Sydney, Yakutsk
+</option><option>(GMT+11:00) Magadan, Solomon Is., New Caledonia
+</option><option>(GMT+12:00) Fiji, Kamchatka Peninsula, Marshall Is., Wellington
+</option><option>(GMT+13:00) Nukualofa
+</option></select></td></tr><tr>
+<td height="25">
+<input name="wzTZExitFlag" value="0" type="HIDDEN"><input name="wzTZCommitFlag" value="0" type="HIDDEN"></td></tr></tbody></table><table class="orange" align="center" border="0" cellpadding="0" cellspacing="0" height="40" width="500">
+<tbody><tr>
+<td class="orange">
+<div align="right">
+<input name="BackBtn" value="BACK" Â"50"="" class="tabdata" onclick="javascript:window.location='wizardstart.htm'/*tpa=http://192.168.1.1/wizard/wizardstart.htm*/" type="BUTTON"><input name="NextBtn" value="NEXT" Â"50"="" class="tabdata" onclick="javascript:window.location='wizardConType.htm'/*tpa=http://192.168.1.1/wizard/wizardConType.htm*/" type="BUTTON"><input name="ExitBtn" value="EXIT" Â"50"="" class="tabdata" onclick="ExitWizard()" type="BUTTON"></div></td><td class="orange" valign="baseline" width="25">&nbsp;</td></tr></tbody></table><input name="TimeZoneLockFlag" value="0" type="HIDDEN"></form>
+</body></html>

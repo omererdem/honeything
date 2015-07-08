@@ -1,0 +1,304 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="../basic/tc2func.js" tppabs="http://192.168.1.1/basic/tc2func.js"></script>
+<script language='javascript'>
+function doAdd() {
+document.IPFILTERform.RuleTypeChange.value=0;
+if(!validateInput())
+return false;
+}
+function doDel(){
+document.IPFILTERform.RuleTypeChange.value=0;
+}
+function switchFilterType(object)
+{
+switch(object.selectedIndex)
+{
+case 1:
+window.location='access_appfilter.htm'/*tpa=http://192.168.1.1/access/access_appfilter.htm*/;
+break;
+case 2:
+window.location='access_URLfilter.htm'/*tpa=http://192.168.1.1/access/access_URLfilter.htm*/;
+break;
+}
+}
+function IPFilterinit()
+{
+form = document.IPFILTERform;
+if(form.FULL.value.length != 0)
+alert(form.FULL.value);
+}
+function validateInput()
+{
+form = document.IPFILTERform;
+RuleType = form.FILTERRULETYPE_index.selectedIndex;
+switch(RuleType)
+{
+case 0:
+IP = form.IPFILTER_srcIP.value;
+if(!doValidateIP(IP, 1,0,0))
+return false;
+if(IP == "0.0.0.0" && form.IPFILTER_srcMask.value != "0.0.0.0"){
+alert("when ip set 0.0.0.0, subnet mask can only set 0.0.0.0");return false;
+}
+if(form.IPFILTER_srcMask.value != "0.0.0.0" )
+if(unValidMask(form.IPFILTER_srcMask.value,0))
+return false;
+SrcPort = parseInt(form.IPFILTER_srcPort.value);
+if(isNaN(SrcPort) || SrcPort < 0 || SrcPort > 65535)
+{
+alert("Port number's range: 0 ~ 65535");return false;
+}
+IP = form.IPFILTER_destIP.value;
+if(!doValidateIP(IP, 1,0,0))
+return false;
+if(IP == "0.0.0.0" && form.IPFILTER_destMask.value != "0.0.0.0"){
+alert("when ip set 0.0.0.0, subnet mask can only set 0.0.0.0");return false;
+}
+if(form.IPFILTER_destMask.value != "0.0.0.0" )
+if(unValidMask(form.IPFILTER_destMask.value,0))
+return false;
+DestPort = parseInt(form.IPFILTER_destPort.value);
+if(isNaN(DestPort) || DestPort < 0 || DestPort > 65535)
+{
+alert("Port number's range: 0 ~ 65535");return false;
+}
+break;
+case 1:
+if(document.IPFILTERform.MACFILTER_MACAddress.value.length==0)
+return false;
+macValue=document.IPFILTERform.MACFILTER_MACAddress.value;
+if ( (macValue == "00:00:00:00:00:00") || (macValue.toUpperCase() == "FF:FF:FF:FF:FF:FF") || (macValue.toUpperCase() == "01:00:C5:00:00:00"))
+{
+alert("Invalid MAC Address");document.IPFILTERform.MACFILTER_MACAddress.focus();
+return false;
+}
+break;
+}
+return true;
+}
+function blockMask(index)
+{
+switch(index)
+{
+case 0:
+IP = form.IPFILTER_srcIP;
+mask = form.IPFILTER_srcMask;
+break;
+case 1:
+IP = form.IPFILTER_destIP;
+mask = form.IPFILTER_destMask;
+break;
+}
+if(IP.value == "0.0.0.0")
+mask.value = "0.0.0.0";
+else
+mask.disabled = false;
+}
+function confirmIPFilterChange(index)
+{
+document.IPFILTERform.WhiteList_active.value=index;
+document.IPFILTERform.submit();
+}
+</script>
+</head><body onload="IPFilterinit()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/access_ipfilter_1" name="IPFILTERform"><div align=center>
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Filter</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10"> </td><td width="440"></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">Filter Type</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Filter Type Selection</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="FILTERTYPE_index" SIZE="1" onchange="switchFilterType(this)"><OPTION SELECTED>IP / MAC Filter
+<OPTION>Application Filter
+<OPTION>URL Filter
+</SELECT></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">IP / MAC Filter Set Editing</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IP / MAC Filter Set Index</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTERSET_index" SIZE="1" onchange="document.IPFILTERform.RuleTypeChange.value=0;document.IPFILTERform.submit();"><OPTION SELECTED>1
+<OPTION>2
+<OPTION>3
+<OPTION>4
+<OPTION>5
+<OPTION>6
+<OPTION>7
+<OPTION>8
+<OPTION>9
+<OPTION>10
+<OPTION>11
+<OPTION>12
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Interface</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTER_interface" SIZE="1"><OPTION SELECTED>PVC0
+<OPTION>PVC1
+<OPTION>PVC2
+<OPTION>PVC3
+<OPTION>PVC4
+<OPTION>PVC5
+<OPTION>PVC6
+<OPTION>PVC7
+<OPTION>LAN
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Direction</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTER_direction" SIZE="1"><OPTION SELECTED>Both
+<OPTION>Incoming
+<OPTION>Outgoing
+</SELECT></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">IP / MAC Filter Rule Editing</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IP / MAC Filter Rule Index</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTER_rule_index" SIZE="1" onchange="document.IPFILTERform.RuleTypeChange.value=0;document.IPFILTERform.submit();"><OPTION SELECTED>1
+<OPTION>2
+<OPTION>3
+<OPTION>4
+<OPTION>5
+<OPTION>6
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Rule Type</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="FILTERRULETYPE_index" SIZE="1" onchange="document.IPFILTERform.RuleTypeChange.value=1;document.IPFILTERform.submit();"><OPTION SELECTED>IP
+<OPTION>MAC
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Active</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="RuleIndex_active" VALUE="1"><font color="#000000">Yes</font><INPUT TYPE="RADIO" NAME="RuleIndex_active" VALUE="0" CHECKED><font color="#000000">No</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Source IP Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_srcIP" SIZE="15" MAXLENGTH="15" VALUE="" onblur="blockMask(0);"><font color="#000000">(0.0.0.0 means Don't care)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Subnet Mask</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_srcMask" SIZE="15" MAXLENGTH="15" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Port Number</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_srcPort" SIZE="8" MAXLENGTH="7" VALUE="0"><font color="#000000">(0 means Don't care)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Destination IP Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_destIP" SIZE="15" MAXLENGTH="15" VALUE="" onblur="blockMask(1);"><font color="#000000">(0.0.0.0 means Don't care)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Subnet Mask</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_destMask" SIZE="15" MAXLENGTH="15" VALUE=""></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Port Number</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPFILTER_destPort" SIZE="8" MAXLENGTH="7" VALUE="0"><font color="#000000">(0 means Don't care)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Protocol</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTER_protocol" SIZE="1"><OPTION SELECTED>TCP
+<OPTION>UDP
+<OPTION>ICMP
+</SELECT></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td ></td><td ></td><td ></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Rule Unmatched</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPFILTER_unmatched" SIZE="1"><OPTION SELECTED>Forward
+<OPTION>Next
+</SELECT></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" class="title-sub">
+<font color="#000000">IP / MAC Filter Listing</font></td><td width="10" class="light-orange"></td><td width="10" ><hr noshade class="light-orange-line"></td><td width="580"><hr noshade class="light-orange-line"></td><td width="10" ><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" class="light-orange"></td><td width="10" class="light-orange"></td><td width="10"></td><td width="580">
+<table><tr align=center>
+<td width="150" class="tabdata">
+<strong>
+<font color="#000000">IP / MAC Filter Set Index</font></strong>
+</td><td width="50">
+<SELECT NAME="IPFILTERSET_index" SIZE="1" onchange="document.IPFILTERform.RuleTypeChange.value=0;document.IPFILTERform.submit();"><OPTION SELECTED>1
+<OPTION>2
+<OPTION>3
+<OPTION>4
+<OPTION>5
+<OPTION>6
+<OPTION>7
+<OPTION>8
+<OPTION>9
+<OPTION>10
+<OPTION>11
+<OPTION>12
+</SELECT></td><td width="10"></td><td width="130" class="tabdata"><strong>
+<font color="#000000">Interface</font></strong></td><td width="50" class="tabdata">
+-</td><td width="10"></td><td width="130" class="tabdata"><strong>
+<font color="#000000">Direction</font></strong></td><td width="50" class="tabdata">
+-</td></tr></table></td><td width="10" ></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td>&nbsp;</td><td><table width="580" border="1" align=center cellpadding="0" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#FFFFFF">
+<tr>
+<td width="15"  align=center class="tabdata"><strong>#</strong></td><td width="45"  align=center class="tabdata"><strong>
+<font color="#000000">Active</font></strong></td><td width="120" align=center class="tabdata"><strong>
+<font color="#000000">Src Address/Mask</font></strong></td><td width="120" align=center class="tabdata"><strong>
+<font color="#000000">Dest IP/Mask</font></strong> </td><td width="45"  align=center class="tabdata"><strong>
+<font color="#000000">Src Port</font></strong></td><td width="45"  align=center class="tabdata"><strong>
+<font color="#000000">Dest Port</font></strong></td><td width="60"  align=center class="tabdata"><strong>
+<font color="#000000">Protocol</font></strong></td><td align=center class="tabdata"><strong>
+<font color="#000000">Unmatched</font></strong></td></tr><tr>
+<td align=center class="tabdata">
+1</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr><tr>
+<td align=center class="tabdata">
+2</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr><tr>
+<td align=center class="tabdata">
+3</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr><tr>
+<td align=center class="tabdata">
+4</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr><tr>
+<td align=center class="tabdata">
+5</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr><tr>
+<td align=center class="tabdata">
+6</td><td align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="130" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="70" align=center class="tabdata">
+-</td><td width="65" align=center class="tabdata">
+-</td><td align=center class="tabdata">
+-</td></tr></table></td><td>&nbsp;</td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" height="42" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="IpFilterApply" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="IpFilterDelete" VALUE="DELETE"><INPUT TYPE="BUTTON" NAME="IpFilterCancel" VALUE="CANCEL" onclick="document.IPFILTERform.RuleTypeChange.value=0;"><INPUT TYPE="HIDDEN" NAME="FULL" VALUE=""><INPUT TYPE="HIDDEN" NAME="RuleTypeChange" VALUE=""></td></tr></table></div></form>
+</body></html>

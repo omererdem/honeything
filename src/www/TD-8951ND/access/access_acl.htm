@@ -1,0 +1,365 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+</head><script language="javascript" src="../basic/tc2func.js" tppabs="http://192.168.1.1/basic/tc2func.js"></script>
+<script language="JavaScript">
+function aclSwitch(on_off)
+{
+form = document.ACL_form;
+if(on_off == 0){
+form.ACLRuleIndex.disabled = true;
+form.ACLRuleIndex_active[0].disabled = true;
+form.ACLRuleIndex_active[1].disabled = true;
+form.ACL_secureIPaddr.disabled = true;
+form.ACL_secureIPaddrEnd.disabled = true;
+form.ACLApplicationSelect.disabled = true;
+form.ACLInterfaceSelect.disabled = true;
+}else{
+form.ACLRuleIndex.disabled = false;
+form.ACLRuleIndex_active[0].disabled = false;
+form.ACLRuleIndex_active[1].disabled = false;
+form.ACL_secureIPaddr.disabled = false;
+form.ACL_secureIPaddrEnd.disabled = false;
+form.ACLApplicationSelect.disabled = false;
+form.ACLInterfaceSelect.disabled = false;
+}
+}
+function get_IPv6ACL_Switch()
+{
+var activeObjs = document.getElementsByName('IPv6ACLACL_active');
+if ( activeObjs.length >= 2 )
+{
+if ( activeObjs[0].checked )
+return 1;
+else
+return 0;
+}
+return 0;
+}
+function IPv6aclSwitch(on_off)
+{
+var pageForm = document.ACL_form;
+var state = on_off ? false : true;
+var activeObjs = document.getElementsByName('IPv6ACLRuleIndex_active');
+pageForm.IPv6ACLRuleIndex.disabled = state;
+if ( activeObjs.length >= 2 )
+{
+activeObjs[0].disabled = state;
+activeObjs[1].disabled = state;
+}
+pageForm.IPv6ACL_secureIPaddr.disabled = state;
+pageForm.IPv6ACL_Prefixlen.disabled = state;
+pageForm.IPv6ACLApplicationSelect.disabled = state;
+pageForm.IPv6ACLInterfaceSelect.disabled = state;
+}
+function doValidateRange2(startIP,endIP){
+var staddress;
+var edaddress;
+var cnt;
+staddress=startIP.split(".");
+edaddress=endIP.split(".");
+for(cnt=0; cnt < 4; cnt++) {
+if((cnt<2)&&( Number(edaddress[cnt])!= Number(staddress[cnt]) ) ){
+alert("End IP address and Start IP address are not in the same subnet!");return false;
+}
+}
+if(Number(edaddress[2])!= Number(staddress[2])){
+if( Number(edaddress[2]) < Number(staddress[2]) ){
+alert("End IP address is less than Start IP address!");return false;
+}
+}else{
+if( Number(edaddress[3]) < Number(staddress[3]) ){
+alert("End IP address is less than Start IP address!");return false;
+}
+}
+return true;
+}
+function inValidIPv6Addr(Address)
+{
+var regExp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+var address = Address.match(regExp);
+if(address == null){
+alert("Invalid IPv6 Address:" + Address );return true;
+}
+return false;
+}
+function inValidPrefixLen(value1) {
+if(value1.match("[^0-9]") != null)  {
+alert("Radvd Prefix Length should not a number!!");return false;
+}
+var PrefixLen = parseInt(value1);
+if (value1=="") {
+alert("Radvd Prefix Length should not be empty!!");return false;
+}
+if ( (PrefixLen > 64) || (PrefixLen < 16) )
+{
+alert("Radvd Prefix Length should between 16 and 64!!");return false;
+}
+return true;
+}
+function checkIPv6Input(){
+form = document.ACL_form;
+if(inValidIPv6Addr(form.IPv6ACL_secureIPaddr.value))
+return false;
+if(!inValidPrefixLen(form.IPv6ACL_Prefixlen.value))
+return false;
+return true;
+}
+function verifyForm(){
+form = document.ACL_form;
+var addr = form.ACL_secureIPaddr.value;
+var addrEnd = form.ACL_secureIPaddrEnd.value;
+var hidden = form.Apply_or_Delete_ACL.value;
+var ACL_active = form.ACL_active[1];
+var flag = 1;
+var addrIP6 = form.IPv6ACL_secureIPaddr.value;
+var PrefixlenIP6 = form.IPv6ACL_Prefixlen.value;
+var ACL_activeIP6 = get_IPv6ACL_Switch();
+if(document.ACL_form.ACLIPVersionSel[0].checked){
+if(hidden == 0 && ACL_active.checked == false)
+{
+if( (addr == "0.0.0.0")&&(addrEnd=="0.0.0.0") )
+flag = 1;
+else{
+if(!doValidateIP(addr,0,1,0) || !doValidateIP(addrEnd,0,1,0))
+flag = 0;
+else
+if(doValidateRange(addr, addrEnd))
+flag = 1;
+}
+}
+}else{
+if(ACL_activeIP6)
+{
+if (addrIP6 == "::" && PrefixlenIP6 == '0')
+flag = 1;
+else{
+if (!checkIPv6Input())
+flag = 0;
+}
+}
+}
+if(1 == flag)
+return true;
+else
+return false;
+}
+function doSave() {
+document.ACL_form.Apply_or_Delete_ACL.value = 0;
+}
+function doDel(){
+document.ACL_form.Apply_or_Delete_ACL.value = 1;
+}
+function doLoad()
+{
+if(document.ACL_form.ACLIPVersionSel[0].checked)
+ACLIPVersionSwitch(0);
+else
+ACLIPVersionSwitch(1);
+if(!document.ACL_form.ACL_active[0].checked)
+aclSwitch(0);
+if(!get_IPv6ACL_Switch())
+IPv6aclSwitch(0);
+}
+function appChange()
+{
+}
+function ACLIPVersionSwitch(val)
+{
+if(val == 1){
+document.getElementById("divIPv4ACL").style.display = "none";
+document.getElementById("divIPv6ACL").style.display = "";
+}else{
+document.getElementById("divIPv4ACL").style.display = "";
+document.getElementById("divIPv6ACL").style.display = "none";
+}
+}
+
+function RuleIndexchange(value)
+{
+if(value!=1)
+{
+document.ACL_form.ACLApplicationSelect.value=1;
+document.ACL_form.ACLInterfaceSelect.value=3;
+document.ACL_form.ACLRuleIndex_active.value=1;
+}
+else
+{
+document.ACL_form.ACLApplicationSelect.value=6;
+document.ACL_form.ACLInterfaceSelect.value=2;
+document.ACL_form.ACLRuleIndex_active.value=0;
+}
+}
+
+function Ipv6RuleIndexchange(value)
+{
+if(value!=1)
+{
+document.ACL_form.IPv6ACLApplicationSelect.value=2;
+document.ACL_form.IPv6ACLInterfaceSelect.value=3;
+document.ACL_form.IPv6ACLRuleIndex_active.value=1;
+}
+else
+{
+document.ACL_form.IPv6ACLApplicationSelect.value=4;
+document.ACL_form.IPv6ACLInterfaceSelect.value=2;
+document.ACL_form.IPv6ACLRuleIndex_active.value=0;
+}
+}
+</script>
+<body onload="doLoad()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/access_acl_1" name="ACL_form" onsubmit="return verifyForm();"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">ACL IP Version</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td height="25" class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IP Version</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="ACLIPVersionSel" VALUE="0" CHECKED onClick="ACLIPVersionSwitch(0)"><font color="#000000">IPv4</font><INPUT TYPE="RADIO" NAME="ACLIPVersionSel" VALUE="1" onClick="ACLIPVersionSwitch(1)"><font color="#000000">IPv6</font></td></tr></table><div id="divIPv4ACL">
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Access Control Setup</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade class="light-orange-line"></td><td width="10"><hr noshade class="light-orange-line"></td><td width="440"><hr noshade class="light-orange-line"></td></tr><tr>
+<td height="25" class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">ACL</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="ACL_active" VALUE="1" CHECKED onclick="aclSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="ACL_active" VALUE="0" onclick="aclSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">Access Control Editing</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" height="25" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">ACL Rule Index</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="ACLRuleIndex" SIZE="1" onchange="RuleIndexchange(this.value)"><OPTION VALUE=1 SELECTED>1
+<OPTION VALUE=2>2
+<OPTION VALUE=3>3
+<OPTION VALUE=4>4
+<OPTION VALUE=5>5
+<OPTION VALUE=6>6
+<OPTION VALUE=7>7
+<OPTION VALUE=8>8
+<OPTION VALUE=9>9
+<OPTION VALUE=10>10
+<OPTION VALUE=11>11
+<OPTION VALUE=12>12
+<OPTION VALUE=13>13
+<OPTION VALUE=14>14
+<OPTION VALUE=15>15
+<OPTION VALUE=16>16
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Active</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="ACLRuleIndex_active" VALUE="0" CHECKED><font color="#000000">Yes</font><INPUT TYPE="RADIO" NAME="ACLRuleIndex_active" VALUE="1"><font color="#000000">No</font></td><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Secure IP Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="ACL_secureIPaddr" SIZE="15" MAXLENGTH="15" VALUE="0.0.0.0">&nbsp;~&nbsp;
+<INPUT TYPE="TEXT" NAME="ACL_secureIPaddrEnd" SIZE="15" MAXLENGTH="15" VALUE="0.0.0.0"><font color="#000000">(0.0.0.0 ~ 0.0.0.0 means all IPs)</font></td></tr></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td></td><td></td><td></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Application</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="ACLApplicationSelect" SIZE="1" onchange="appChange()"><OPTION VALUE=1>Web
+<OPTION VALUE=2>FTP
+<OPTION VALUE=3>Telnet
+<OPTION VALUE=4>SNMP
+<OPTION VALUE=5>Ping
+<OPTION VALUE=6 SELECTED>ALL
+</SELECT></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td ></td><td ></td><td ></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Interface</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="ACLInterfaceSelect" SIZE="1"><OPTION VALUE=1>WAN
+<OPTION VALUE=2 SELECTED>LAN
+<OPTION VALUE=3>Both
+</SELECT></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" class="title-sub">
+<font color="#000000">Access Control Listing</font></td><td width="10" class="light-orange"></td><td width="10" ><hr noshade class="light-orange-line"></td><td width="580"><hr noshade class="light-orange-line"></td><td width="10" ><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td ></td><td><table width="482" border="1" align=center cellpadding="0" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#FFFFFF">
+<tr height="30">
+<td width="60"  align=center class="tabdata"><strong>
+<font color="#000000">Index</font></strong></td><td width="60"  align=center class="tabdata"><strong>
+<font color="#000000">Active</font></strong></td><td width="180" align=center class="tabdata"><strong>
+<font color="#000000">Secure IP Address</font></strong></td><td width="90"  align=center class="tabdata"><strong>
+<font color="#000000">Application</font></strong></td><td width="80"  align=center class="tabdata"><strong>
+<font color="#000000">Interface</font></strong></td></tr><tr>
+<td align="center" class="tabdata">1</td>
+<td align="center" class="tabdata">Yes</td>
+<td align="center" class="tabdata">0.0.0.0-0.0.0.0</td>
+<td align="center" class="tabdata">ALL</td>
+<td align="center" class="tabdata">LAN</td>
+</tr>
+</table></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td class="tabdata">&nbsp;</td></tr></table></div><div id="divIPv6ACL">
+<table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">IPv6 Access Control Setup</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade class="light-orange-line"></td><td width="10"><hr noshade class="light-orange-line"></td><td width="440"><hr noshade class="light-orange-line"></td></tr><tr>
+<td height="25" class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IPv6 ACL</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="IPv6ACLACL_active" VALUE="1" CHECKED onclick="IPv6aclSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="IPv6ACLACL_active" VALUE="0" onclick="IPv6aclSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td height="25" class="title-sub">
+<font color="#000000">IPv6 Access Control Editing</font></td><td class="light-orange"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td><td class="tabdata"><hr noshade class="light-orange-line"></td></tr><tr>
+<td width="150" height="25" class="light-orange">&nbsp;</td><td width="10" class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">IPv6 ACL Rule Index</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPv6ACLRuleIndex" SIZE="1" onchange="Ipv6RuleIndexchange(this.value)"><OPTION VALUE=1 SELECTED>1
+<OPTION VALUE=2>2
+<OPTION VALUE=3>3
+<OPTION VALUE=4>4
+<OPTION VALUE=5>5
+<OPTION VALUE=6>6
+<OPTION VALUE=7>7
+<OPTION VALUE=8>8
+<OPTION VALUE=9>9
+<OPTION VALUE=10>10
+<OPTION VALUE=11>11
+<OPTION VALUE=12>12
+<OPTION VALUE=13>13
+<OPTION VALUE=14>14
+<OPTION VALUE=15>15
+<OPTION VALUE=16>16
+</SELECT></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Active</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="IPv6ACLRuleIndex_active" VALUE="0" CHECKED><font color="#000000">Yes</font><INPUT TYPE="RADIO" NAME="IPv6ACLRuleIndex_active" VALUE="1"><font color="#000000">No</font></td><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Secure IPv6 Address</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="IPv6ACL_secureIPaddr" SIZE="40" MAXLENGTH="39" VALUE="::">&nbsp;/&nbsp;
+<INPUT TYPE="TEXT" NAME="IPv6ACL_Prefixlen" SIZE="10" MAXLENGTH="3" VALUE="0"><font color="#000000">(::/0 means all IPs)</font></td></tr></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td></td><td></td><td></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Application</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPv6ACLApplicationSelect" SIZE="1"><OPTION VALUE=1>Telnet
+<OPTION VALUE=2>Web
+<OPTION VALUE=3>Ping
+<OPTION VALUE=4 SELECTED>ALL
+</SELECT></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td ></td><td ></td><td ></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Interface</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="IPv6ACLInterfaceSelect" SIZE="1"><OPTION VALUE=1>WAN
+<OPTION VALUE=2 SELECTED>LAN
+<OPTION VALUE=3>Both
+</SELECT></td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="150" class="title-sub">
+<font color="#000000">IPv6 Access Control Listing</font></td><td width="10" class="light-orange"></td><td width="10" ><hr noshade class="light-orange-line"></td><td width="580"><hr noshade class="light-orange-line"></td><td width="10" ><hr noshade class="light-orange-line"></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td ></td><td><table width="482" border="1" align=center cellpadding="0" cellspacing="0" bordercolor="#CCCCCC" bgcolor="#FFFFFF">
+<tr height="30">
+<td width="60"  align=center class="tabdata"><strong>
+<font color="#000000">Index</font></strong></td><td width="60"  align=center class="tabdata"><strong>
+<font color="#000000">Active</font></strong></td><td width="180" align=center class="tabdata"><strong>
+<font color="#000000">Secure IPv6 Address</font></strong></td><td width="90"  align=center class="tabdata"><strong>
+<font color="#000000">Application</font></strong></td><td width="80"  align=center class="tabdata"><strong>
+<font color="#000000">Interface</font></strong></td></tr><tr>
+<td align="center" class="tabdata">1</td>
+<td align="center" class="tabdata">Yes</td>
+<td align="center" class="tabdata">::/0</td>
+<td align="center" class="tabdata">ALL</td>
+<td align="center" class="tabdata">LAN</td>
+</tr>
+</table></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td class="tabdata">&nbsp;</td></tr></table></div><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="acl_apply" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="acl_delete" VALUE="DELETE"><input type="reset"  name="acl_cancel" value="CANCEL" onclick="location='access_acl.htm'/*tpa=http://192.168.1.1/access/access_acl.htm*/;"><INPUT TYPE="HIDDEN" NAME="Apply_or_Delete_ACL" VALUE="0"></td></tr></table></div></form>
+</body></html>

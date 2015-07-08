@@ -1,0 +1,205 @@
+.formbutton {font-family:  Arial, Helvetica, sans-serif; font-size: 10pt;}
+
+.dislink { font-family:  Arial, Helvetica, sans-serif; font-size: 10pt; color:#666666 ; text-decoration: line-through;  }
+
+
+.helplink { font-style: italic; }
+
+
+A:link    {font-family:  Arial; font-size: 9pt; text-decoration: none; color: #FFFFFF}
+A:visited {font-family:  Arial; font-size: 9pt; text-decoration: none; color: #FFFFFF}
+A:hover   {font-family:  Arial; font-size: 9pt; font-weight: bold;  color: #FFFFFF}
+input     {font-family:  Arial; font-size: 8pt; text-decoration: none;}
+select    {font-family:  Arial; font-size: 8pt; text-decoration: none;}
+
+.alert { color: #cc0000; }
+
+
+FORM {margin:0px;}
+/*FORM {background-color: #f2f2f2;}*/
+
+
+BODY.main {
+    font-family: Arial, Helvetica, sans-serif; font-size: 8pt;
+    background-color: white;
+    margin-top: 30px;
+    margin-left: 30px;
+}
+table.headtable {
+    border: 1px solid black;
+    padding: 0px;
+    width: 300px;
+    height: 25px;
+}
+
+td.progressBarFilled {
+    background-color: #5aa5b5;
+    padding: 2px;
+    width: 5%;
+}
+
+td.progressBarEmpty {
+    background-color: white;
+    color: white;
+    padding: 2px;
+    width: 5%;
+}
+td.title {
+    background-color:#660066;
+    vertical-align:middle;
+    font-size:18.0pt;
+    font-family:Arial;
+    color:#fffbf0;
+}
+td.header {
+    color:#ffffff;
+    vertical-align:middle;
+    font-size:13.0pt;
+    font-family:Arial;
+    font-weight:bold;
+    text-align:center;
+background-color: #000000;}
+td.headline {
+    vertical-align:middle;
+    font-size:12.0pt;
+    font-family:Arial;
+	color:#666666;
+	font-weight:bold;
+}
+td.tabhead {
+    background-color:#660066;
+    vertical-align:middle;
+    font-size:12.0pt;
+    font-family:Arial;
+    color:#ffffff;
+    text-align:center;
+    font-weight: bold;
+}
+td.databold {
+    font-size:8.0pt;
+    font-family:Arial;
+    font-weight: bold;
+}
+td.tabdata {
+    font-size: 8.0pt;
+    font-family: Arial;
+}
+td.tabbar{
+    background-color:#cccccc;
+}
+td.intabdataleft{
+    font-size:8.0pt;
+    font-family:Arial;
+    font-weight: bold;
+}
+
+.nav-main-sel {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+    font-weight: bold;
+	color: #FFFFFF;
+background-color: #FF9933;}
+
+.title-main {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #FFFFFF;
+	text-align:right;
+background-color: #000000;}
+.title-sub {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: #000000;
+	text-align:right;
+background-color: #E7E7E7;}
+
+.help-header {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14pt;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.help-main {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: #FF9933;
+}
+.help-sub {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #6666FF;
+}
+.help-text {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #000000;
+}
+
+.model {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #000000;
+}
+
+.light-orange {
+background-color: #E7E7E7;}
+
+.light-orange-line {
+color: #E7E7E7;}
+
+.orange {
+background-color: #FF9933;}
+
+.black {
+background-color: #000000;}
+
+.InputTextWarning {
+	border-top:0px;
+	border-bottom:0px;
+	border-left:0px;
+	border-right:0px;
+color:#CC0000;}
+
+.InputTextTime {
+	border-top:0px;
+	border-bottom:0px;
+	border-left:0px;
+	border-right:0px;
+font-size: 14.0pt; color: #CC0000;}
+
+
+td.wzwait {
+    font-family: Arial;
+font-size: 14.0pt; color: #CC0000;}
+
+.content A:link    {font-family:  Arial; font-size: 9pt; text-decoration: none; font-weight: bold; color: #777777}
+.content A:visited {font-family:  Arial; font-size: 9pt; text-decoration: none; font-weight: bold; color: #777777}
+.content A:hover   {font-family:  Arial; font-size: 9pt; text-decoration: none; font-weight: bold; color: #FF9933}
+.nav-main A:link    {font-family:  Arial; font-size:10pt; text-decoration: none; font-weight: bold; color: #777777}
+.nav-main A:visited {font-family:  Arial; font-size:10pt; text-decoration: none; font-weight: bold; color: #777777}
+.nav-main A:hover   {font-family:  Arial; font-size:10pt; text-decoration: none; font-weight: bold; color: #FF9933}
+
+.nav-sub A:link     {font-family:  Arial; font-size: 9pt; text-decoration: none; color: #FFFFFF}
+.nav-sub A:visited  {font-family:  Arial; font-size: 9pt; text-decoration: none; color: #FFFFFF}
+.nav-sub A:hover    {font-family:  Arial; font-size: 9pt; text-decoration: none; font-weight: bold; color: #FFFFFF}
+
+.navmaxnet {
+	TEXT-ALIGN: center; BACKGROUND-COLOR: #ff9933; FONT-FAMILY: Arial; COLOR: #ffffff; FONT-SIZE: 14pt; VERTICAL-ALIGN: middle; FONT-WEIGHT: bold
+}
+
+.detaillink A:link    {font-family:  Arial; font-size: 9pt; text-decoration: underline; color: #000000}
+.detaillink A:visited {font-family:  Arial; font-size: 9pt; text-decoration: underline; color: #0000FF}
+.detaillink A:hover   {font-family:  Arial; font-size: 9pt; font-weight: underline; color: #0000FF}.title_gvt {
+	BACKGROUND-COLOR: #ffffff; FONT-FAMILY: Verdana; COLOR: #000000; FONT-SIZE: 12pt; VERTICAL-ALIGN: middle; FONT-WEIGHT: bold
+}
+.waring_gvt {
+	BACKGROUND-COLOR: #ffffff; FONT-FAMILY: Verdana; COLOR: #ff0000; FONT-SIZE: 12pt; VERTICAL-ALIGN: middle; FONT-WEIGHT: bold
+}
+.tabdata_gvt {
+	FONT-FAMILY: Verdana; FONT-SIZE: 12pt; FONT-WEIGHT: bold
+}

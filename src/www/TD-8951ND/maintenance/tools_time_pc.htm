@@ -1,0 +1,114 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" type="text/css">
+<script language="javascript" src="../js/general.js"></script>
+<SCRIPT language="javascript"> 
+function doTimeChange() {
+time.ToolsTimeSetFlag.value = 1;
+time.submit();
+return;
+}
+function isAsciiString(s) {
+var len= s.length;
+var ch;
+if(len == 0)
+return false;
+for( i=0; i< len; i++) {
+ch= s.charCodeAt(i);
+if(ch > 0x39 || ch < 0x30)
+return false;
+}
+return true;
+}
+function uiComputerTimeOnLoad() {
+time = document.Alpha_Time;
+var smtmp = time.uiRadioValue.value;
+if(smtmp == 1){
+syncwithpc();
+time.ToolsTimeSetFlag.value = 0;
+}
+else
+return ;
+}
+function updatetime(){
+theDate=(new Date()).getDate();
+theMonth=(new Date()).getMonth();
+theYear=(new Date()).getFullYear();
+theHour=(new Date()).getHours();
+theMinute=(new Date()).getMinutes();
+theSec=(new Date()).getSeconds();
+time.uiwPCdateDay.value = theDate;
+time.uiwPCdateMonth.value = theMonth;
+time.uiwPCdateYear.value = theYear;
+time.uiwPCdateHour.value = theHour;
+time.uiwPCdateMinute.value = theMinute;
+time.uiwPCdateSec.value = theSec;
+}
+function syncwithpc() {
+time = document.Alpha_Time;
+if(!time.uiViewSyncWith[1].checked)
+{
+return;
+}
+updatetime()
+time.ToolsTimeSetFlag.value = 1;
+if((time.uiPCdateDay.value != theDate)
+||(time.uiPCdateMonth.value != (parseInt(theMonth,10)+1))
+||(time.uiPCdateYear.value != theYear)
+||(time.uiPCdateHour.value != theHour)
+||(time.uiPCdateMinute.value != theMinute)
+||((parseInt(time.uiPCdateSec.value,10)+2) < theSec)
+||(theSec < (parseInt(time.uiPCdateSec.value,10)-5)))
+{
+time.submit();
+}
+}
+function uiDoCancel() {
+document.location.href="../maintenance/tools_time_pc.htm";
+}
+function uiSave() {
+updatetime();
+document.Alpha_Time.submit();
+}
+function doLoad()
+{
+}
+</SCRIPT>
+</head><body onLoad="doLoad();">
+<FORM METHOD="POST" ACTION="http://www.tp-link.com/Forms/tools_time_1" name="Alpha_Time"><INPUT TYPE="HIDDEN" NAME="TimeZoneLock_Flag" VALUE="0"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">Time Zone</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td class="light-orange"></td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Current Date/Time</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+12/24/2014 10:25:47</td></tr><tr>
+<td height="30" class="title-sub">
+<font color="#000000">Time Synchronization</font></div></td><INPUT TYPE="HIDDEN" NAME="ToolsTimeSetFlag" VALUE="0"><INPUT TYPE="HIDDEN" NAME="uiRadioValue" VALUE="1"><INPUT TYPE="HIDDEN" NAME="uiwPCdateMonth" VALUE="0"><INPUT TYPE="HIDDEN" NAME="uiwPCdateDay" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateYear" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateHour" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateMinute" VALUE=""><INPUT TYPE="HIDDEN" NAME="uiwPCdateSec" VALUE=""><td class="light-orange">&nbsp;</td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line"></td><td><hr noshade class="light-orange-line">
+</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Synchronize time with</font></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="0" onclick="location='tools_time.htm'"><font color="#000000">NTP Server automatically</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td class="tabdata">&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="1" CHECKED onclick="location='tools_time_pc.htm'"><font color="#000000">PC's Clock</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata">&nbsp;</td><td class="tabdata">&nbsp;</td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="uiViewSyncWith" VALUE="2" onclick="location='tools_time_manual.htm'"><font color="#000000">Manually</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Date</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="uiPCdateMonth" SIZE="2" MAXLENGTH="2" VALUE="12" Disabled>&nbsp;/&nbsp;
+<INPUT TYPE="TEXT" NAME="uiPCdateDay" SIZE="2" MAXLENGTH="2" VALUE="24" Disabled>&nbsp;/&nbsp;
+<INPUT TYPE="TEXT" NAME="uiPCdateYear" SIZE="4" MAXLENGTH="4" VALUE="2014" Disabled><font color="#000000">(Month/Date/Year)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Time</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="uiPCdateHour" SIZE="2" MAXLENGTH="2" VALUE="10" Disabled>&nbsp;:&nbsp;
+<INPUT TYPE="TEXT" NAME="uiPCdateMinute" SIZE="2" MAXLENGTH="2" VALUE="25" Disabled>&nbsp;:&nbsp;
+<INPUT TYPE="TEXT" NAME="uiPCdateSec" SIZE="2" MAXLENGTH="2" VALUE="47" Disabled><font color="#000000">(hour:min:sec)</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td width="150">&nbsp;</td><td width="10">&nbsp;</td><td width="440">
+<INPUT TYPE="TEXT" NAME="tools_time_preventEnterkey" SIZE="20" MAXLENGTH="20" VALUE="" style="display:none"></td></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="CancelBtn" VALUE="CANCEL" onClick="uiDoCancel()"></td></tr></table></form>
+</body></html>

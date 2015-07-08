@@ -1,0 +1,134 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="JavaScript" type='text/javascript' src="tc2func.js" tppabs="http://192.168.1.1/basic/tc2func.js"></script>
+<SCRIPT language=javascript>
+function isNumeric(value)
+{
+var len= value.length;
+if(len==0)
+return false;
+if(value.match("[^0-9]") != null)
+return false;
+else
+return true;
+}
+function init(){
+var i;
+if(document.ipv6RDtunnelForm.tunnelEnable[1].checked){
+document.ipv6RDtunnelForm.ipv6rd_prefix.disabled = true;
+document.ipv6RDtunnelForm.ipv6rd_prefixlen.disabled = true;
+document.ipv6RDtunnelForm.ipv4masklen.disabled = true;
+document.ipv6RDtunnelForm.BRipv4Addr.disabled = true;
+document.ipv6RDtunnelForm.RD_PVC.disabled = true;
+}
+else{
+document.ipv6RDtunnelForm.ipv6rd_prefix.disabled = false;
+document.ipv6RDtunnelForm.ipv6rd_prefixlen.disabled = false;
+document.ipv6RDtunnelForm.ipv4masklen.disabled = false;
+document.ipv6RDtunnelForm.BRipv4Addr.disabled = false;
+document.ipv6RDtunnelForm.RD_PVC.disabled = false;
+}
+}
+function inValidIPv6Addr(Address1)
+{
+var regExp = /^\s*((([0-9A-Fa-f]{1,4}:){7}([0-9A-Fa-f]{1,4}|:))|(([0-9A-Fa-f]{1,4}:){6}(:[0-9A-Fa-f]{1,4}|((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){5}(((:[0-9A-Fa-f]{1,4}){1,2})|:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3})|:))|(([0-9A-Fa-f]{1,4}:){4}(((:[0-9A-Fa-f]{1,4}){1,3})|((:[0-9A-Fa-f]{1,4})?:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){3}(((:[0-9A-Fa-f]{1,4}){1,4})|((:[0-9A-Fa-f]{1,4}){0,2}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){2}(((:[0-9A-Fa-f]{1,4}){1,5})|((:[0-9A-Fa-f]{1,4}){0,3}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(([0-9A-Fa-f]{1,4}:){1}(((:[0-9A-Fa-f]{1,4}){1,6})|((:[0-9A-Fa-f]{1,4}){0,4}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:))|(:(((:[0-9A-Fa-f]{1,4}){1,7})|((:[0-9A-Fa-f]{1,4}){0,5}:((25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(\.(25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}))|:)))(%.+)?\s*$/;
+var Address = Address1.replace(/(^\s*)|(\s*$)/g, "");
+var address = Address.match(regExp);
+if(address == null){
+alert('Invalid IPv6 address:' + Address);
+return true;
+}
+return false;
+}
+function inValidIPv6Prefix(Prefix1)
+{
+var Prefix = Prefix1.replace(/(^\s*)|(\s*$)/g, "");
+var IPv6Prefix = Prefix.match("^[0-9]{1,3}$");
+if(IPv6Prefix == null) {
+alert('Invalid IPv6 Prefix:' + Prefix);
+return true;
+}
+if((Number(Prefix) > 128 ) || (Number(Prefix) < 1 )){
+alert('Invalid IPv6 Prefix:' + Prefix);
+return true;
+}
+return false;
+}
+function uiSave()
+{
+var value1;
+var value2;
+var value3;
+value1 = document.forms[0].ipv4masklen.value;
+value2 = document.forms[0].ipv6rd_prefixlen.value;
+value3 = parseInt(value2) + 32 - parseInt(value1);
+if(document.ipv6RDtunnelForm.tunnelEnable[0].checked){
+if(inValidIPv6Addr(document.forms[0].ipv6rd_prefix.value))
+{
+return false;
+}
+if(inValidIPv6Prefix(document.forms[0].ipv6rd_prefixlen.value))
+{
+return false;
+}
+if((!isNumeric(value1)) || (Number(value1) > 32) || (Number(value1) < 0))
+{
+alert('IPv4 mask length must be in the range 0-32');
+return false;
+}
+if(!doValidateIP(document.forms[0].BRipv4Addr.value,0,1,0))
+{
+return false;
+}
+if( value3 < 0 || value3 > 128 )
+{
+alert('Difference between Prefix Length and Mask Length should not be greater than 96');
+return false;
+}
+}
+document.forms[0].submit();
+}
+</SCRIPT>
+<meta content="MSHTML 6.00.2800.1400" name=GENERATOR>
+</head><body onload="init()">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/home_6rdtunnel_1" name="ipv6RDtunnelForm"><div align=center>
+<table cellspacing=0 cellpadding=0 width=760 align=center bgColor=#ffffff border=0>
+<TBODY>
+<tr>
+<TD class=light-orange colspan=5 height=5>&nbsp;</td></tr><tr>
+<TD class=light-orange>&nbsp;</td><TD class=light-orange></td><TD class=tabdata> <div align=right>
+6RD Enable</div></td><TD class=tabdata> <div align=center>:</div></td><TD class=tabdata>
+<INPUT TYPE="RADIO" NAME="tunnelEnable" VALUE="1" onclick="init()">Enable<INPUT TYPE="RADIO" NAME="tunnelEnable" VALUE="0" CHECKED onclick="init()">Disable</td></tr><tr>
+<TD class=light-orange>&nbsp;</td><TD class=light-orange></td><TD class=tabdata> <div align=right>
+6rd IPv6 Prefix</div></td><TD class=tabdata> <div align=center>:</div></td><td><INPUT TYPE="TEXT" NAME="ipv6rd_prefix" SIZE="40" MAXLENGTH="39" VALUE="::"><font size=+1>&nbsp;/&nbsp;</font>
+<INPUT TYPE="TEXT" NAME="ipv6rd_prefixlen" SIZE="10" MAXLENGTH="3" VALUE="0"></td></tr><tr>
+<TD class=light-orange>&nbsp;</td><TD class=light-orange></td><TD class=tabdata> <div align=right>
+IPv4 Mask Length</div></td><TD class=tabdata> <div align=center>:</div></td><td><INPUT TYPE="TEXT" NAME="ipv4masklen" SIZE="3" MAXLENGTH="2" VALUE="0"></td></tr><tr>
+<TD class=light-orange>&nbsp;</td><TD class=light-orange></td><TD class=tabdata> <div align=right>
+6RD Border Relay IPv4Addr</div></td><TD class=tabdata> <div align=center>:</div></td><td><INPUT TYPE="TEXT" NAME="BRipv4Addr" SIZE="16" MAXLENGTH="15" VALUE="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+6rd Prefix Delegation</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+c0a8:1464::/64</td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange">&nbsp;</td><td class="tabdata"><div align=right>
+Use PVC</div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<SELECT NAME="RD_PVC" SIZE="1"><OPTION SELECTED>PVC0
+<OPTION>PVC1
+<OPTION>PVC2
+<OPTION>PVC3
+<OPTION>PVC4
+<OPTION>PVC5
+<OPTION>PVC6
+<OPTION>PVC7
+</SELECT></td></tr><tr>
+<TD class=light-orange width=140>&nbsp;</td><TD class=light-orange width=11></td><TD width=179>&nbsp;</td><TD width=10>&nbsp;</td><TD width=420>&nbsp;</td></tr></TBODY>
+</table><table cellspacing=0 cellpadding=0 width=760 align=center bgcolor=#ffffff border=0>
+<tbody>
+<tr height="42" >
+<td width="160" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"><INPUT TYPE="BUTTON" NAME="CancelBtn" VALUE="CANCEL" onClick="javascript:window.location='home_6rdtunnel.htm'/*tpa=http://192.168.1.1/basic/home_6rdtunnel.htm*/"></td></tr></tbody>
+</table></div></form>
+</body></html>

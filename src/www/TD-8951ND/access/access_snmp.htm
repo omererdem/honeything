@@ -1,0 +1,87 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<script language="javascript" src="../basic/tc2func.js" tppabs="http://192.168.1.1/basic/tc2func.js"></script>
+<script language="JavaScript">
+function snmpinit(){
+if(document.SNMP_form.elements[0].checked)
+snmpSwitch(1);
+else
+snmpSwitch(0);
+}
+function snmpSwitch(on_off)
+{
+if(on_off == 0){
+document.forms[0].SNMP_get.disabled = true;
+document.forms[0].SNMP_set.disabled = true;
+if(null != document.forms[0].SNMP_TrapHost)
+{
+document.forms[0].SNMP_TrapHost.disabled = true;
+}
+}
+else{
+document.forms[0].SNMP_get.disabled = false;
+document.forms[0].SNMP_set.disabled = false;
+if(null != document.forms[0].SNMP_TrapHost)
+{
+document.forms[0].SNMP_TrapHost.disabled = false;
+}
+}
+}
+function commCheck(object) {
+var len = object.value.length;
+var c;
+var i, j = 0;
+for (i = 0; i < len; i++)
+{
+var c = object.value.charAt(i);
+if (c == '"')
+{
+j += 6;
+}
+else
+j++;
+}
+if (j > 31)
+{
+alert('too many quotation marks!');return true;
+}
+return false;
+}
+function SNMPsave() {
+if (commCheck(document.forms[0].SNMP_get))
+return;
+if (commCheck(document.forms[0].SNMP_set))
+return;
+document.SNMP_form.submit();
+}
+function doLoad()
+{
+}
+</script>
+</head><body onload="snmpinit();doLoad();">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/access_snmp_1" name="SNMP_form"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">SNMP</font></td><td width="10" class="black">&nbsp;</td><td width="150"></td><td width="10" ></td><td width="440"></td></tr><tr>
+<td height="25" class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">SNMP</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="SNMP_active" VALUE="1" onclick="snmpSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="SNMP_active" VALUE="0" CHECKED onclick="snmpSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Get Community</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="SNMP_get" SIZE="30" MAXLENGTH="30" VALUE="public"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Set Community</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="SNMP_set" SIZE="30" MAXLENGTH="30" VALUE="public"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td class="tabdata"><div align=right>
+<font color="#000000">Trap Host</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="TEXT" NAME="SNMP_TrapHost" SIZE="30" MAXLENGTH="15" VALUE="0.0.0.0"></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td>&nbsp;</td><td>&nbsp;</td><td class="tabdata">&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" class="black" height="42" >&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange">
+<INPUT TYPE="BUTTON" NAME="SaveBtn" VALUE="SAVE"></td></tr></table></form>
+</body></html>

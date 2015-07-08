@@ -1,0 +1,53 @@
+<html><head>
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<meta http-equiv=Content-Type content="text/html; charset=
+iso-8859-1">
+<link rel="stylesheet" href="../css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+</style>
+<script language='javascript'>
+var linkable = true;
+function onClickVLANGroupSummary() {
+window.open("http://192.168.1.1/advanced/adv_vlan_list.htm","VLAN_Group_Table","toolbar=no,menubar=no,height=500, width=700,location=0,left=200,top=200");
+return false;
+}
+function VlanPvidLink()
+{
+if(linkable)
+window.location="adv_vlan_pvid.htm"/*tpa=http://192.168.1.1/advanced/adv_vlan_pvid.htm*/;
+}
+function VlanGroupLink()
+{
+if(linkable)
+window.location="adv_vlan_group.htm"/*tpa=http://192.168.1.1/advanced/adv_vlan_group.htm*/;
+}
+function vlanSwitch(on_off)
+{
+if(on_off == 0)
+linkable = false;
+else
+linkable = true;
+}
+function doLoad()
+{
+}
+</script>
+</head><body onLoad="doLoad()" onclick="if(!document.Vlan_form.elements[0].checked) vlanSwitch(0);">
+<FORM METHOD="POST" ACTION="http://192.168.1.1/Forms/adv_vlan_top_1" name="Vlan_form"><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td height="5" class="light-orange" colspan="5">&nbsp;</td></tr><tr>
+<td width="150" height="30" class="title-main">
+<font color="#FFFFFF">VLAN</font></td><td width="10" class="black">&nbsp;</td><td width="150"><hr noshade></td><td width="10" ><hr noshade></td><td width="440"><hr noshade></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td height="30" class="tabdata"><div align=right>
+<font color="#000000">VLAN Function</font></div></td><td class="tabdata"><div align=center>:</div></td><td class="tabdata">
+<INPUT TYPE="RADIO" NAME="Vlan_active" VALUE="1" onclick="vlanSwitch(1)"><font color="#000000">Activated</font><INPUT TYPE="RADIO" NAME="Vlan_active" VALUE="0" CHECKED onclick="vlanSwitch(0)"><font color="#000000">Deactivated</font></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td height="30"><div align=right><img src="../Images/next.gif" tppabs="http://192.168.1.1/Images/next.gif" width="16" height="16"></div></td><td>&nbsp;</td><td class="content" ><a href="javascript:VlanGroupLink();" target="main">
+<font color="#666666">Define VLAN Group</font></a></td></tr><tr>
+<td class="light-orange">&nbsp;</td><td class="light-orange"></td><td height="30"><div align=right><img src="../Images/next.gif" tppabs="http://192.168.1.1/Images/next.gif" width="16" height="16"></div></td><td>&nbsp;</td><td class="content"> <a href="javascript:VlanPvidLink();" target="main">
+<font color="#666666">Assign VLAN PVID for each Interface</font></a></td></tr><tr>
+<td height="20" class="light-orange">
+<INPUT TYPE="HIDDEN" NAME="VlanLockFlag" VALUE="0"></td><td class="light-orange"></td><td height="30">&nbsp;</td><td>&nbsp;</td><td class="tabdata">&nbsp;</td></tr></table><table width="760" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#FFFFFF">
+<tr>
+<td width="160" height="42" class="black">&nbsp;</td><td width="160" class="orange">&nbsp;</td><td width="440" class="orange"></td></tr></table></div></form>
+</body></html>

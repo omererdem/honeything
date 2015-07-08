@@ -1,0 +1,48 @@
+<html><head>
+<meta http-equiv="Content-Type" content="text/html; charset=
+iso-8859-1">
+<meta http-equiv=Content-Script-Type content=text/javascript>
+<meta http-equiv=Content-Style-Type content=text/css>
+<link rel="stylesheet" href="css/style.css" tppabs="http://192.168.1.1/css/style.css" type="text/css">
+<style type="text/css">
+.Customer_AboveLogoTableCss {
+background-color: #FF9933;}
+</style>
+<script language="JavaScript">
+var intervalId;
+var i=0;
+function doLogout()
+{
+}
+function doSubmit( )
+{
+document.Language_form.flagFresh.value = 1;
+document.Language_form.submit();
+}
+function doLangChange() {
+document.Language_form.flagFresh.value = 1;
+document.Language_form.submit();
+}
+function fresh()
+{
+if(document.Language_form.flagFresh.value == 1)
+{
+top.navigation.location = "navigation-status.html"/*tpa=http://192.168.1.1/navigation-status.html*/;
+top.main.location.href = "status/status_deviceinfo.htm"/*tpa=http://192.168.1.1/status/status_deviceinfo.htm*/;
+}
+}
+</script>
+</head><body onLoad="fresh()">
+<FORM METHOD="POST" ACTION="status.html" tppabs="http://192.168.1.1/Forms/status_1?flagFresh=0" name="Language_form"><div align=center>
+<table width="760" height="5" border="0" align=center cellpadding="0" cellspacing="0" class="Customer_AboveLogoTableCss">
+<tr>
+<td></td></tr></table><table border="0" width="760" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF">
+<tr>
+<td width="200" height="50" align=center valign=middle bgcolor="#FFFFFF"><div align=left>
+<img src="Images/Logo.gif" tppabs="http://192.168.1.1/Images/Logo.gif" width="200" height="50">
+</div><INPUT TYPE="HIDDEN" NAME="flagFresh" VALUE="0"></td><td width="560" height="50" align=center valign=middle bgcolor="#FFFFFF"><div align=left>
+<img src="Images/tb3.gif" tppabs="http://192.168.1.1/Images/tb3.gif" width="560" height="50">
+</div></td></tr></table><table width="760" height="1" border="0" align=center cellpadding="0" cellspacing="0" bgcolor="#CCCCCC">
+<tr>
+<td></td></tr></table></div></form>
+</body></html>
