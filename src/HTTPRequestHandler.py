@@ -23,6 +23,8 @@ import BaseHTTPServer
 
 from Auth import Auth
 from config.ConfigReader import ConfigReader
+from logger.HTTPLogging import HTTPLogging
+from logger.HoneythingLogging import HTLogging
 
 
 class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
@@ -30,6 +32,8 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     sys_version = 'UPnP/1.0'
     server_version = 'RomPager/4.07'
 
+    ht = HTLogging()
+    http_logging = HTTPLogging()
 
     '''
     Customized get function (checking application session, specific paths)
@@ -88,13 +92,15 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 self.send_header('Set-Cookie', 'C0=' + credentials['user'] + '; path=/')
                 self.send_header('Set-Cookie', 'C1=' + credentials['pass'] + '; path=/')
                 self.end_headers()
+                self.log_http(303, postvars)
             else:
                 self.do_GET()
-
+                self.log_http(200, postvars)
         else:
             self.send_response(200)
             self.send_header('Content-Type', 'text/html')
             self.end_headers()
+            self.log_http(200, postvars)
 
 
     '''
@@ -173,11 +179,16 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 f = open(path)
                 self.wfile.write(f.read())
             except IOError, msg:
-                print 'Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1]
+                HTTPRequestHandler.ht.logger.error('Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1])
+
             finally:
                 f.close()
+
+            self.log_http(200)
+
         else:
             self.send_error(415)
+            self.log_http(415)
 
 
     '''
@@ -190,6 +201,7 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(301)
         self.send_header('Location', url)
         self.end_headers()
+        self.log_http(301)
 
 
     '''
@@ -216,6 +228,8 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         </body></html>
 
         ''' %(path, self.headers.getheader('Host'), self.path))
+
+        self.log_http(404)
 
 
     '''
@@ -263,5 +277,30 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_header('Content-Type', 'application/octet-stream')
         self.end_headers()
 
-        with open(path) as fp:
-            self.wfile.write(fp.read())
+        try:
+            with open(path) as fp:
+                self.wfile.write(fp.read())
+        except IOError, msg:
+            HTTPRequestHandler.ht.logger.error('Error code: ' + str(msg[0]) + ' , Error message : ' + msg[1])
+
+        self.log_http(200)
+
+
+    '''
+    Get logging message dictionary and send it to
+    HTTP logging function
+    @code: HTTP response code
+    @postvar: Variables from HTTP post action
+    '''
+
+    def log_http(self, code, postvar=None):
+
+        msg = {
+               'client'  : self.client_address,
+               'request' : self.requestline,
+               'headers' : self.headers,
+               'response': [code, self.responses[code][0]],
+               'post'    : postvar
+              }
+
+        HTTPRequestHandler.http_logging.log_message(msg)

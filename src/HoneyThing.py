@@ -20,26 +20,38 @@ import BaseHTTPServer
 
 from HTTPRequestHandler import HTTPRequestHandler
 from config.ConfigReader import ConfigReader
+from logger.HoneythingLogging import HTLogging
 
-print("Starting HoneyThing...")
 
-'''
-Initialize HTTP server according to stated config
-that try to acs as RomPager server
-'''
+class HoneyThing:
 
-def main():
+    def __init__(self):
 
-    cfg = ConfigReader()
-    server_address = cfg.getConfig("http", "address")
-    server_port = cfg.getConfig("http", "port")
-    httpd = BaseHTTPServer.HTTPServer((server_address, int(server_port)), HTTPRequestHandler)
+        self.ht = HTLogging()
 
-    try:
-        httpd.serve_forever()
-    except KeyboardInterrupt:
-        pass
-    httpd.server_close()
+    '''
+    Initialize HTTP server according to stated config
+    that try to acs as RomPager server
+    '''
+
+    def main(self):
+
+        self.ht.logger.info('Starting Honeything...')
+        print('Starting Honeything...')
+
+        cfg = ConfigReader()
+        server_address = cfg.getConfig("http", "address")
+        server_port = cfg.getConfig("http", "port")
+        httpd = BaseHTTPServer.HTTPServer((server_address, int(server_port)), HTTPRequestHandler)
+
+        try:
+            httpd.serve_forever()
+        except KeyboardInterrupt:
+            pass
+        httpd.server_close()
+
 
 if __name__ == '__main__':
-    main()
+
+    ht = HoneyThing()
+    ht.main()

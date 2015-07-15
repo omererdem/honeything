@@ -24,6 +24,7 @@ from config.ConfigReader import ConfigReader
 class Auth:
 
     def __init__(self):
+
         cfg = ConfigReader()
 
         self.username = cfg.getConfig('authentication', 'http_user')
@@ -40,7 +41,7 @@ class Auth:
     def http_client_auth(self, postvars):
 
         if postvars['Login_Name'][0] == self.username and \
-                        postvars['uiWebLoginhiddenPassword'][0] == self.password:
+                        postvars['Login_Pwd'][0] == self.password:
             return True
         else:
             return False
@@ -55,6 +56,6 @@ class Auth:
     def get_credentials(self):
 
         credentials = {'user': hashlib.md5(self.username).hexdigest(),
-                       'pass': self.password}
+                       'pass': hashlib.md5(self.password).hexdigest()}
 
         return credentials
