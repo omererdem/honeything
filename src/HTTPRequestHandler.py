@@ -22,6 +22,7 @@ import Cookie
 import BaseHTTPServer
 
 from Auth import Auth
+from urlparse import urlparse
 from config.ConfigReader import ConfigReader
 from logger.HTTPLogging import HTTPLogging
 from logger.HoneythingLogging import HTLogging
@@ -211,10 +212,14 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def show_error_page(self):
 
-        path = self.misfortune_cookie()
+        path = self.path
+        hostname = self.headers.getheader('Host')
+        uri = self.path
 
-        if not path:
-            path = self.path
+        if self.misfortune_cookie():
+            path = self.misfortune_cookie()
+        elif self.reflected_xss():
+            hostname, uri = self.reflected_xss()
 
         self.send_response(404)
         self.wfile.write('''\
@@ -227,7 +232,7 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         <p>Return to <A HREF="http://%s%s">last page</A><p>
         </body></html>
 
-        ''' %(path, self.headers.getheader('Host'), self.path))
+        ''' %(path, hostname, uri))
 
         self.log_http(404)
 
@@ -262,6 +267,26 @@ class HTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         if cookie.has_key('C107373883'):
             return cookie['C107373883'].value
+
+
+    '''
+    Allows remote attackers to inject arbitrary web script or HTML by requesting
+    a nonexistent URI in conjunction with a crafted HTTP Referer header
+    that is not properly handled in a 404 page (CVE-2013-6786).
+    @:return: string
+    '''
+
+    def reflected_xss(self):
+
+        referer = self.headers.getheader('Referer')
+
+        if referer and "script" in referer:
+            hostname, uri = "", ""
+            try:
+                hostname = urlparse(referer).hostname
+                uri = urlparse(referer).path
+            finally:
+                return hostname, uri
 
 
     '''
