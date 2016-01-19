@@ -22,7 +22,7 @@ import ConfigParser
 class ConfigReader:
 
     def __init__(self):
-        self.configFile = os.path.dirname(__file__) + "/config.ini"
+        self.configFile = "/opt/honeything/config/config.ini"
 
 
     '''
