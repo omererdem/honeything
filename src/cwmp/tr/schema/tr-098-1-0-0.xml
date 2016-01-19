@@ -1,0 +1,2778 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 InternetGatewayDevice:1.1 Root Object definition
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  Broadband Forum XML Document has been approved by members of the Forum.
+  This Broadband Forum XML Document is not binding on the Broadband Forum,
+  any of its members, or any developer or service provider. This Broadband
+  Forum XML Document is subject to change, but only with approval of members
+  of the Forum.  This XML Document is copyrighted by the Broadband Forum,
+  and all rights are reserved.  Portions of this XML Document may be
+  copyrighted by Broadband Forum members.
+
+  This Broadband Forum XML Document is provided AS IS, WITH ALL FAULTS.
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT,
+  OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+  LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT
+  NOT LIMITED TO, ANY WARRANTY:
+
+  (A) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+      PURPOSE, NON-INFRINGEMENT, OR TITLE;
+  (B) THAT THE CONTENTS OF THIS BROADBAND FORUM XML DOCUMENT ARE SUITABLE
+      FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+  (C) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENTATION WILL NOT
+      INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER
+      RIGHTS.
+
+  By using this Broadband Forum XML Document, users acknowledge that
+  implementation may require licenses to patents.  The Broadband Forum
+  encourages but does not require its members to identify such patents.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.  No assurance is given that
+  licenses to patents necessary to implement this XML Document will be
+  available for license at all or on reasonable and non-discriminatory terms.
+
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT, OR
+  ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW
+  (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL
+  DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR
+  RELIANCE UPON THIS XML DOCUMENT; AND (B) ANY OBLIGATION TO UPDATE OR
+  CORRECT THIS XML DOCUMENT.
+
+  Broadband Forum XML Documents may be copied, downloaded, stored on a
+  server or otherwise re-distributed in their entirety only, and may not be
+  modified without the advance written permission of the Broadband Forum.
+
+  The text of this notice must be included in all copies.
+
+  Summary:
+  TR-069 InternetGatewayDevice:1.1 Root Object Definition.  Contains definition of
+  InternetGatewayDevice:1.1 Root Object.
+
+  Version History:
+  March 2009: tr-098-1-0-0.xml, corresponds to TR-098 sections 2.4 (Data Model), 2.4.1
+              (Inform and Notification Requirements) and 3 (Profile Definitions).
+  September 2009: tr-098-1-0-0.xml (name unchanged)
+              - changed WLANConfigurationNumberOfEntries to (wrong but consistent)
+                LANWLANConfigurationNumberOfEntries
+              - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-0"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-0 cwmp-datamodel-1-0.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-098-1-0-0">
+
+  <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+  
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="IPAddress"/>
+    <dataType name="MACAddress"/>
+  </import>
+  
+  <import file="tr-069-1-0.xml" spec="urn:broadband-forum-org:tr-069-1-0">
+    <model name="InternetGatewayDevice:1.0"/>
+  </import>
+  
+  <model name="InternetGatewayDevice:1.1" base="InternetGatewayDevice:1.0">
+    <object base="InternetGatewayDevice." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="DeviceSummary" access="readOnly" forcedInform="true" dmr:previousParameter="">
+        <description>As defined in {{bibref|TR-106}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="1024"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Services." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="">
+      <description>This object contains general services information.</description>
+    </object>
+    <object base="InternetGatewayDevice.DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="HardwareVersion" access="readOnly" forcedInform="true"/>
+      <parameter base="SoftwareVersion" access="readOnly" activeNotify="forceEnabled" forcedInform="true"/>
+      <parameter base="EnabledOptions" access="readOnly">
+        <description action="replace">Comma-separated list of the OptionName of each Option that is currently enabled in the CPE.  The OptionName of each is identical to the OptionName element of the OptionStruct described in {{bibref|TR-069}}.  Only those options are listed whose State indicates the option is enabled.</description>
+      </parameter>
+      <parameter base="SpecVersion" access="readOnly" status="deprecated" forcedInform="true">
+        <description action="replace">This parameter is deprecated
+Represents the version of the specification implemented by the device.  Currently 1.0 is the only available version.</description>
+        <syntax>
+          <string>
+            <size maxLength="16"/>
+          </string>
+          <default type="object" value="1.0"/>
+        </syntax>
+      </parameter>
+      <parameter base="ProvisioningCode" access="readWrite" activeNotify="forceEnabled" forcedInform="true"/>
+      <parameter base="FirstUseDate" access="readOnly">
+        <description action="replace">Date and time in UTC that the CPE first both successfully established an IP-layer network connection and acquired an absolute time reference using NTP or equivalent over that network connection.  The CPE MAY reset this date after a factory reset.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="URL" access="readWrite">
+        <description action="replace">URL for the CPE to connect to the ACS using the CPE WAN Management Protocol. 
+This parameter MUST be in the form of a valid HTTP or HTTPS URL {{bibref|RFC2616}}.
+The ''host'' portion of this URL is used by the CPE for server-side certificate authentication when using SSL or TLS.</description>
+      </parameter>
+      <parameter base="ParameterKey" access="readOnly" activeNotify="canDeny" forcedInform="true">
+        <description action="replace">{{param}} provides the ACS a reliable and extensible means to track changes made by the ACS.  The value of {{param}} MUST be equal to the value of the ParameterKey argument from the most recent successful SetParameterValues, AddObject, or DeleteObject method call from the ACS.
+The CPE MUST set {{param}} to the value specified in the corresponding method arguments if and only if the method completes successfully and no fault response is generated.  If a method call does not complete successfully (implying that the changes requested in the method did not take effect), the value of {{param}} MUST NOT be modified.
+The CPE MUST only modify the value of {{param}} as a result of SetParameterValues, AddObject, DeleteObject, or due to a factory reset.  On factory reset, the value of {{param}} MUST be set to {{empty}}.</description>
+      </parameter>
+      <parameter base="ConnectionRequestURL" access="readOnly" activeNotify="forceEnabled" forcedInform="true"/>
+    </object>
+    <object base="InternetGatewayDevice.Time." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="CurrentLocalTime" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.Layer3Forwarding." access="readOnly" minEntries="1" maxEntries="1">
+    </object>
+    <object base="InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="ForwardNumberOfEntries">
+      <description action="append">This table MUST NOT include routes learned through dynamic layer-3 routing protocols, such as RIP or OSPF.</description>
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="DestIPAddress" access="readWrite">
+        <description action="replace">Destination address.  {{empty}} or a value of "0.0.0.0" indicates no destination address is specified.</description>
+      </parameter>
+      <parameter base="DestSubnetMask" access="readWrite">
+        <description action="replace">Destination subnet mask.  {{empty}} or a value of "0.0.0.0" indicates no destination subnet mask is specified.</description>
+      </parameter>
+      <parameter base="SourceIPAddress" access="readWrite">
+        <description action="replace">Source address.  {{empty}} or a value of "0.0.0.0" indicates no source address is specified.</description>
+      </parameter>
+      <parameter base="SourceSubnetMask" access="readWrite">
+        <description action="replace">Source subnet mask.  {{empty}} or a value of "0.0.0.0" indicates no source subnet mask is specified.</description>
+      </parameter>
+      <parameter name="ForwardingPolicy" access="readWrite">
+        <description>Identifier of a set of classes or flows that have the corresponding {{param}} value as defined in the ''QueueManagement'' object.
+A value of -1 indicates no {{param}} is specified.
+If specified, this forwarding entry is to apply only to traffic associated with the specified classes and flows.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter base="Interface" access="readWrite">
+        <description action="replace">Specifies the egress interface associated with this entry.  The content is the full hierarchical parameter name of the layer-3 connection object.  Example: ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1''.</description>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Layer2Bridging." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Layer-2 bridging table.  Specifies bridges between layer-2 LAN and/or WAN interfaces.  Bridges can be defined to include layer-2 filter criteria to selectively bridge traffic between interfaces.</description>
+      <parameter name="MaxBridgeEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Bridge}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxFilterEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Filter}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxMarkingEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Marking}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="BridgeNumberOfEntries" access="readOnly">
+        <description>Number of entries in the {{object|Bridge}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FilterNumberOfEntries" access="readOnly">
+        <description>Number of entries in the {{object|Filter}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MarkingNumberOfEntries" access="readOnly">
+        <description>Number of entries in the {{object|Marking}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="AvailableInterfaceNumberOfEntries" access="readOnly">
+        <description>Number of entries in the {{object|AvailableInterfaces}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Layer2Bridging.Bridge.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="BridgeNumberOfEntries" enableParameter="BridgeEnable">
+      <description>Bridge table.</description>
+      <uniqueKey>
+        <parameter ref="BridgeKey"/>
+      </uniqueKey>
+      <parameter name="BridgeKey" access="readOnly">
+        <description>Unique key for each Bridge table entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="BridgeEnable" access="readWrite">
+        <description>Enables or disables this Bridge table entry.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="BridgeStatus" access="readOnly">
+        <description>The status of this Bridge table entry.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="BridgeName" access="readWrite">
+        <description>Human-readable name for this Bridge table entry.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANID" access="readWrite">
+        <description>The 802.1Q VLAN ID associated with this Bridge.
+A value of 0 indicates either Untagged or PriorityOnly tagging, which are treated identically.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="4094"/>
+          </unsignedInt>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Layer2Bridging.Filter.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="FilterNumberOfEntries" enableParameter="FilterEnable">
+      <description>Filter table containing filter entries each of which is associated with one Bridge as specified by a ''Bridge'' table entry.</description>
+      <uniqueKey>
+        <parameter ref="FilterKey"/>
+      </uniqueKey>
+      <parameter name="FilterKey" access="readOnly">
+        <description>Unique key for each Filter table entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FilterEnable" access="readWrite">
+        <description>Enables or disables this Filter table entry.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="FilterStatus" access="readOnly">
+        <description>The status of this Filter table entry.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="FilterBridgeReference" access="readWrite">
+        <description>The ''BridgeKey'' value of the ''Bridge'' table entry associated with this Filter.  A value of -1 indicates the Filter table entry is not associated with a Bridge (and has no effect).</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ExclusivityOrder" access="readWrite">
+        <description>Whether or not the Filter definition is exclusive of all others.  And if the entry is exclusive, order of precedence.
+A value of 1 or greater indicates an Exclusive Filter, where the value 1 indicates the first entry to be considered (highest precedence).
+A value of 0 indicates a Non-Exclusive Filter.
+For each packet, if the packet matches any Exclusive Filters, the packet is assigned to the Bridge associated with the highest precedence Exclusive Filter to which it matches (lowest {{param}} value).
+If and only if the packet does not match any Exclusive Filters, the packet is assigned to all Bridges associated with each Non-Exclusive Filter for which it matches the defining criteria.
+If a packet matches no Filter, it is discarded.
+When the {{param}} is set to match that of an existing Exclusive Filter (1 or greater), the value for the existing entry and all higher numbered entries is incremented (lowered in precedence) to ensure uniqueness of this value. A deletion or change in {{param}} of an Exclusive Filter causes {{param}} values of other Exclusive Filters (values 1 or greater) to be compacted.
+Note that the use of Exclusive Filters to associate a layer-3 router interface with LAN and/or WAN interfaces via a Bridge entry overrides the default association between layer-3 and layer-2 objects implied by the ''InternetGatewayDevice'' object hierarchy.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="FilterInterface" access="readWrite">
+        <description>The interface or interfaces associated with this Filter table entry.  The bridge corresponding to this Filter table entry is defined to admit packets on ingress to the bridge from the specified interfaces that meet all of the criteria specified in the Filter table entry.  The following values are defined.
+To associate this Filter with a single interface listed in the AvailableInterface table, the {{param}} value is set to the value of corresponding ''AvailableInterfaceKey''.
+* ''AllInterfaces'' indicates that this Filter is associated with all LAN and WAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''LANInterface'' or ''WANInterface'').
+* ''LANInterfaces'' indicates that this Filter is associated with all LAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''LANInterface'').
+* ''WANInterfaces'' indicates that this Filter is associated with all WAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''WANInterface'').
+* {{empty}} indicates the Filter table entry is not associated with any interface (and has no effect)</description>
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANIDFilter" access="readWrite">
+        <description>The 802.1Q VLAN ID of packets to admit to the specified Bridge through the interfaces specified for this Filter.
+A value of -1 indicates that the default VLAN ID for the Bridge should be used instead (as specified by {{param|InternetGatewayDevice.Layer2Bridging.Bridge.{i}.VLANID}} for the ''Bridge'' table entry associated with this Filter table entry).  On creation of a Filter entry, the default value for this parameter should be -1.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1" maxInclusive="4095"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="AdmitOnlyVLANTagged" access="readWrite">
+        <description>If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits only packets tagged with a VLAN ID that matches the {{param|VLANIDFilter}} parameter (or instead, the VLAN ID for the Bridge if {{param|VLANIDFilter}} is unspecified).
+If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits both packets tagged with a VLAN ID that matches the {{param|VLANIDFilter}} parameter (or instead, the VLAN ID for the Bridge if {{param|VLANIDFilter}} is unspecified), and any Untagged or PriorityOnly packets.  All Untagged or PriorityOnly packets are tagged on ingress with the value of the {{param|VLANID}} parameter.
+If the {{param|VLANIDFilter}} parameter (or instead, the VLAN ID for the Bridge if {{param|VLANIDFilter}} is unspecified) is equal to 0, then this parameter is ignored, and only packets that are Untagged or PriorityOnly packets are admitted.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthertypeFilterList" access="readWrite">
+        <description>Comma-separated list of unsigned integers, each representing an Ethertype value.</description>
+        <syntax>
+          <list>
+            <size maxLength="256"/>
+          </list>
+          <unsignedInt/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="EthertypeFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge is defined to admit only those packets that match one of the {{param|EthertypeFilterList}} entries (in either the Ethernet or SNAP Type header).  If the {{param|EthertypeFilterList}} is empty, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge is defined to admit all packets except those packets that match one of the {{param|EthertypeFilterList}} entries (in either the Ethernet or SNAP Type header).  If the {{param|EthertypeFilterList}} is empty, packets are admitted regardless of Ethertype.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACAddressFilterList" access="readWrite">
+        <description>Comma-separated list of MAC Addresses.
+Each list entry may optionally specify a bit-mask, where matching of a packet's MAC address is only to be done for bit positions set to one in the mask.  If no mask is specified, all bits of the MAC Address are to be used for matching.
+For example, the list may be: ''01:02:03:04:05:06, 1:22:33:00:00:00/FF:FF:FF:00:00:00, 88:77:66:55:44:33''</description>
+        <syntax>
+          <list>
+            <size maxLength="512"/>
+          </list>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACAddressFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose source MAC Address matches one of the {{param|SourceMACAddressFilterList}} entries.  If the {{param|SourceMACAddressFilterList}} is empty, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose source MAC Address matches one of the {{param|SourceMACAddressFilterList}} entries.  If the {{param|SourceMACAddressFilterList}} is empty, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACAddressFilterList" access="readWrite">
+        <description>Comma-separated list of MAC Addresses.
+Each list entry may optionally specify a bit-mask, where matching of a packet's MAC address is only to be done for bit positions set to one in the mask.  If no mask is specified, all bits of the MAC Address are to be used for matching.
+For example, the list may be: ''01:02:03:04:05:06, 1:22:33:00:00:00/FF:FF:FF:00:00:00, 88:77:66:55:44:33''</description>
+        <syntax>
+          <list>
+            <size maxLength="512"/>
+          </list>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACAddressFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose destination MAC Address matches one of the {{param|DestMACAddressFilterList}} entries.  If the {{param|DestMACAddressFilterList}} is empty, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose destination MAC Address matches one of the {{param|DestMACAddressFilterList}} entries.  If the {{param|DestMACAddressFilterList}} is empty, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromVendorClassIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP Vendor Class Identifier (Option 60 as defined in RFC 2132) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromVendorClassIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromVendorClassIDFilter}}.  If {{param|SourceMACFromVendorClassIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromVendorClassIDFilter}}.  If the {{param|SourceMACFromVendorClassIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromVendorClassIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP Vendor Class Identifier (Option 60 as defined in RFC 2132) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromVendorClassIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromVendorClassIDFilter}}.  If {{param|DestMACFromVendorClassIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromVendorClassIDFilter}}.  If the {{param|DestMACFromVendorClassIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromClientIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP Client Identifier (Option 61 as defined in RFC 2132) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromClientIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromClientIDFilter}}.  If {{param|SourceMACFromClientIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromClientIDFilter}}.  If the {{param|SourceMACFromClientIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromClientIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP Client Identifier (Option 61 as defined in RFC 2132) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromClientIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromClientIDFilter}}.  If {{param|DestMACFromClientIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromClientIDFilter}}.  If the {{param|DestMACFromClientIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromUserClassIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP User Class Identifier (Option 77 as defined in RFC 3004) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACFromUserClassIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromUserClassIDFilter}}.  If {{param|SourceMACFromUserClassIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose source MAC Address matches that of a LAN device previously identified as described in {{param|SourceMACFromUserClassIDFilter}}.  If the {{param|SourceMACFromUserClassIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromUserClassIDFilter" access="readWrite">
+        <description>A string used to identify one or more devices via DHCP for which MAC address filtering would subsequently apply.  A device is considered matching if it its DHCP User Class Identifier (Option 77 as defined in RFC 3004) in the most recent DHCP lease acquisition or renewal was equal to the specified value.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACFromUserClassIDFilterExclude" access="readWrite">
+        <description>If {{false}}, on ingress to the interfaces associated with this Filter, the Bridge admits only those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromUserClassIDFilter}}.  If {{param|DestMACFromUserClassIDFilter}} is {{empty}}, no packets are admitted.
+If {{true}}, on ingress to the interfaces associated with this Filter, the Bridge admits all packets except those packets whose destination MAC Address matches that of a LAN device previously identified as described in {{param|DestMACFromUserClassIDFilter}}.  If the {{param|DestMACFromUserClassIDFilter}} is {{empty}}, packets are admitted regardless of MAC address.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Layer2Bridging.Marking.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="MarkingNumberOfEntries" enableParameter="MarkingEnable">
+      <description>Marking table identifying non-default layer-2 marking behavior for packets on egress from the specified interfaces.</description>
+      <uniqueKey>
+        <parameter ref="MarkingKey"/>
+      </uniqueKey>
+      <parameter name="MarkingKey" access="readOnly">
+        <description>Unique key for each Marking table entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MarkingEnable" access="readWrite">
+        <description>Enables or disables this Marking table entry.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="MarkingStatus" access="readOnly">
+        <description>The status of this Marking table entry.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="MarkingBridgeReference" access="readWrite">
+        <description>The ''BridgeKey'' value of the Bridge table entry associated with this Marking table entry.  A value of -1 indicates the Marking table entry is not associated with a Bridge (and has no effect).
+The effect of a Marking table entry applies only to packets that have been admitted to the specified bridge (regardless of the ingress interface).</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="MarkingInterface" access="readWrite">
+        <description>The interface or interfaces associated with this Marking table entry for which the specified marking behavior is to apply on egress from the associated bridge.  The following values are defined.
+To associate this Marking table entry with a single interface listed in the ''AvailableInterface'' table, the {{param}} value is set to the value of corresponding ''AvailableInterfaceKey''.
+* ''AllInterfaces'' indicates that this Marking table entry is associated with all LAN and WAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''LANInterface'' or ''WANInterface'').
+* ''LANInterfaces'' indicates that this Marking table entry is associated with all LAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''LANInterface'').
+* ''WANInterfaces'' indicates that this Marking table entry is associated with all WAN interfaces listed in the ''AvailableInterface'' table (all entries of ''InterfaceType'' ''WANInterface'').
+* {{empty}} indicates the Marking table entry table entry is not associated with any interface (and has no effect)
+If there is more than one enabled Marking table entry that specifies one or more of the same interfaces for the same bridge (identical values of {{param|MarkingBridgeReference}}), then for packets on egress from the specified bridge to those interfaces, the applied marking MUST be that specified in the Marking table entry among those in conflict with the lowest {{param|MarkingKey}} value.
+If an interface in a given bridge does not have a corresponding Marking table entry, the marking is left unchanged on egress.</description>
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANIDUntag" access="readWrite">
+        <description>If {{true}}, on egress to the interfaces associated with this Marking table entry, all packets are Untagged.  That is, the VLAN tag is stripped from the packet.
+If {{false}}, on egress to the interfaces associated with this Marking table entry, all VLAN tags are left intact (including those added on ingress).</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANIDMark" access="readWrite">
+        <description>The 802.1Q VLAN ID to be used on egress to the interfaces associated with this Marking table entry (if VLANIDUntag is {{false}}).
+A value of -1 indicates that the default VLAN ID for the Bridge should be used instead (as specified by {{param|InternetGatewayDevice.Layer2Bridging.Bridge.{i}.VLANID}} for the ''Bridge'' table entry associated with this Marking table entry).</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1" maxInclusive="4095"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthernetPriorityMark" access="readWrite">
+        <description>Ethernet priority code (as defined in 802.1D) to mark traffic with that falls into this Bridge on egress to the interfaces associated with this Marking table entry. A value of -1 indicates no change from the incoming packet or the mark assigned by the classifier.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1" maxInclusive="7"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthernetPriorityOverride" access="readWrite">
+        <description>If {{false}}, on egress to the interfaces associated with this Marking table entry, the {{param|EthernetPriorityMark}}, if specified, is applied only to packets of priority 0.
+If {{true}}, on egress to the interfaces associated with this Marking table entry, the {{param|EthernetPriorityMark}}, if specified, is to be applied to all packets on this Bridge.
+If {{param|VLANIDUntag}} is {{true}}, then no priority marking is done since the tag containing the Ethernet priority is removed.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.Layer2Bridging.AvailableInterface.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AvailableInterfaceNumberOfEntries">
+      <description>Table containing all LAN and WAN interfaces that are available to be referenced by the ''Bridge'' table.  Only interfaces that can carry layer-2 bridged traffic are included.</description>
+      <uniqueKey>
+        <parameter ref="AvailableInterfaceKey"/>
+      </uniqueKey>
+      <parameter name="AvailableInterfaceKey" access="readOnly" activeNotify="canDeny">
+        <description>Unique key for each Interface entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="InterfaceType" access="readOnly" activeNotify="canDeny">
+        <description>Whether the interface is a LAN-side or WAN-side interface, or a LAN-side or WAN-side connection to the Gateway's IP router.</description>
+        <syntax>
+          <string>
+            <enumeration value="LANInterface"/>
+            <enumeration value="WANInterface"/>
+            <enumeration value="LANRouterConnection"/>
+            <enumeration value="WANRouterConnection"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="InterfaceReference" access="readOnly" activeNotify="canDeny">
+        <description>This table should contain a single entry for each available LAN and WAN interface.
+For a WAN interface, this parameter is the full hierarchical parameter name of a particular ''WANConnectionDevice''.  A WANConnectionDevice is considered available (included in this table) only if it supports layer-2 bridged traffic.  That is, this table MUST include only ''WANConnectionDevice''s that contain either a ''WANEthernetLinkConfig'' object, or that contain a ''WANDSLLinkConfig'' object for which the LinkType is ''EoA''.  For example: ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2''
+For a LAN interface, this parameter is the full hierarchical parameter name of a particular ''LAN**InterfaceConfig'' object, or a ''WLANConfiguration'' object.  This table SHOULD include one entry for each such object.  For example: ''InternetGatewayDevice.LANDevice.1.LANLANEthernetInterfaceConfig.2''
+For a WAN-side connection to the Gateway's IP router, this parameter is the full hierarchical parameter name of a particular ''WAN**Connection'' service.  This table SHOULD include an entry for each layer-3 WAN connection.  For example: ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1''
+For a LAN-side connection to the Gateway's IP router, this parameter is the full hierarchical parameter name of a particular ''LANDevice''.  This table SHOULD include an entry for each ''LANDevice'', each of which is associated with a LAN-side layer-3 connection to the Gateway's IP router.  For example: ''InternetGatewayDevice.LANDevice.2''</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Queue management configuration object.</description>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables all queuing operation.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxQueues" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of queues supported by the CPE. Calculated as the sum of the number of different queues pointed to by Classification table.  For each entry in the Classification table, the count includes a queue for each egress interface to which the corresponding classified traffic could reach.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxClassificationEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the Classification table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassificationNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|Classification}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxAppEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|App}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="AppNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|App}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxFlowEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Flow}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|Flow}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxPolicerEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Policer}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="PolicerNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|Policer}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxQueueEntries" access="readOnly" activeNotify="canDeny">
+        <description>The maximum number of entries available in the {{object|Queue}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|Queue}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultForwardingPolicy" access="readWrite">
+        <description>Identifier of the forwarding policy associated with traffic not associated with any specified classifier.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultPolicer" access="readWrite">
+        <description>Instance number of the Policer table entry for traffic not associated with any specified classifier.
+A value of -1 indicates a null policer.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultQueue" access="readWrite">
+        <description>Instance number of the {{object|Queue}} table entry for traffic not associated with any specified classifier.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultDSCPMark" access="readWrite">
+        <description>DSCP to mark traffic not associated with any specified classifier.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultEthernetPriorityMark" access="readWrite">
+        <description>Ethernet priority code (as defined in 802.1D) to mark traffic not associated with any specified classifier.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter name="AvailableAppList" access="readOnly">
+        <description>Comma-separated list of URNs, each indicating a protocol supported for use as a ProtocolIdentifier in the App table.  This list may include any of the URNs defined in {{bibref|TR-098|Appendix A}} as well as other URNs defined elsewhere.</description>
+        <syntax>
+          <list>
+            <size maxLength="1024"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement.Classification.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="ClassificationNumberOfEntries">
+      <description>Classification table.</description>
+      <parameter name="ClassificationKey" access="readOnly">
+        <description>Unique key for each classification entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassificationEnable" access="readWrite">
+        <description>Enables or disables this classifier.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassificationStatus" access="readOnly">
+        <description>The status of this classifier.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassificationOrder" access="readWrite">
+        <description>Position of the classification entry in the order of precedence.  A value of 1 indicates the first entry considered.  For each packet, the highest ordered entry that matches the classification criteria is applied.  All lower order entries are ignored.
+When this value is modified, if the value matches that of an existing entry, the Order value for the existing entry and all lower Order entries is incremented (lowered in precedence) to ensure uniqueness of this value. A deletion causes Order values to be compacted. When a value is changed, incrementing occurs before compaction.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="ClassInterface" access="readWrite">
+        <description>Classification criterion.
+Specifies the LAN or WAN ingress interface associated with this entry.  The content is the full hierarchical parameter name of the particular ''WANDevice'', ''WANConnectionDevice'', ''WAN**Connection'', ''LANDevice'', or ''LAN**InterfaceConfig'' object.
+The following are WAN interface examples:
+* ''InternetGatewayDevice.WANDevice.2''
+* ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1''
+The following are LAN interface examples:
+* ''InternetGatewayDevice.LANDevice.3''
+* ''InternetGatewayDevice.LANDevice.1.LANLANEthernetInterfaceConfig.2''
+The string ''WAN'' indicates this entry is to apply to traffic entering from any WAN interface.
+The string ''LAN'' indicates this entry is to apply to traffic entering from any LAN interface.
+The string ''Local'' indicates this entry is to apply to IP-layer traffic entering from a local source within the Internet Gateway Device.
+{{empty}} indicates this classification entry is to apply to all sources.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestIP" access="readWrite">
+        <description>Classification criterion.
+Destination IP address.  {{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMask" access="readWrite">
+        <description>Destination IP address mask.  If not {{empty}}, only the indicated network portion of the DestIP address is to be used for classification.  {{empty}} indicates that the full DestIP address is to be used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestIPExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the (masked) DestIP entry, if specified.
+If {{true}}, the class includes all packets except those that match the (masked) DestIP entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceIP" access="readWrite">
+        <description>Classification criterion.
+Source IP address.  {{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMask" access="readWrite">
+        <description>Source IP address mask.  If not {{empty}}, only the indicated network portion of the SourceIP address is to be used for classification.  {{empty}} indicates that the full SourceIP address is to be used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceIPExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the (masked) SourceIP entry, if specified.
+If {{true}}, the class includes all packets except those that match the (masked) SourceIP entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="Protocol" access="readWrite">
+        <description>Classification criterion.
+Protocol number.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ProtocolExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the Protocol entry, if specified.
+If {{true}}, the class includes all packets except those that match the Protocol entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestPort" access="readWrite">
+        <description>Classification criterion.
+Destination port number.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestPortRangeMax" access="readWrite">
+        <description>Classification criterion.
+If specified, indicates the classification criterion is to include the port range from DestPort through DestPortRangeMax (inclusive).  If specified, DestPortRangeMax MUST be greater than or equal to DestPort.
+A value of -1 indicates that no port range is specified.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestPortExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the DestPort entry (or port range), if specified.
+If {{true}}, the class includes all packets except those that match the DestPort entry (or port range), if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourcePort" access="readWrite">
+        <description>Classification criterion.
+Source port number.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourcePortRangeMax" access="readWrite">
+        <description>Classification criterion.
+If specified, indicates the classification criterion is to include the port range from SourcePort through SourcePortRangeMax (inclusive).  If specified, SourcePortRangeMax MUST be greater than or equal to SourcePort.
+A value of -1 indicates that no port range is specified.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourcePortExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the SourcePort entry (or port range), if specified.
+If {{true}}, the class includes all packets except those that match the SourcePort entry (or port range), if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACAddress" access="readWrite">
+        <description>Classification criterion.
+Source MAC Address.  {{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <dataType ref="MACAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACMask" access="readWrite">
+        <description>Bit-mask for the MAC address, where matching of a packet's MAC address with the SourceMACAddress is only to be done for bit positions set to one in the mask.  A mask of ''FF:FF:FF:FF:FF:FF'' or {{empty}} indicates all bits of the SourceMACAdress are to be used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceMACExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the (masked) SourceMACAddress entry, if specified.
+If {{true}}, the class includes all packets except those that match the (masked) SourceMACAddress entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACAddress" access="readWrite">
+        <description>Classification criterion.
+Destination MAC Address.  {{empty}} indicates this criterion is not used for classification.
+The use of destination MAC address as a classification criterion is primarily useful only for bridged traffic.</description>
+        <syntax>
+          <dataType ref="MACAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACMask" access="readWrite">
+        <description>Bit-mask for the MAC address, where matching of a packet's MAC address with the DestMACAddress is only to be done for bit positions set to one in the mask.  A mask of ''FF:FF:FF:FF:FF:FF'' or {{empty}} indicates all bits of the DestMACAdress are to be used for classification.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestMACExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the (masked) DestMACAddress entry, if specified.
+If {{true}}, the class includes all packets except those that match the (masked) DestMACAddress entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="Ethertype" access="readWrite">
+        <description>Classification criterion.
+Ethertype as indicated in either the Ethernet or SNAP Type header.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthertypeExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the Ethertype entry, if specified.
+If {{true}}, the class includes all packets except those that match the Ethertype entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SSAP" access="readWrite">
+        <description>Classification criterion.
+SSAP element in the LLC header.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="SSAPExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the SSAP entry, if specified.
+If {{true}}, the class includes all packets except those that match the SSAP entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DSAP" access="readWrite">
+        <description>Classification criterion.
+DSAP element in the LLC header.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="DSAPExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the DSAP entry, if specified.
+If {{true}}, the class includes all packets except those that match the DSAP entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="LLCControl" access="readWrite">
+        <description>Classification criterion.
+Control element in the LLC header.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="LLCControlExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the LLCControl entry, if specified.
+If {{true}}, the class includes all packets except those that match the LLCControl entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SNAPOUI" access="readWrite">
+        <description>Classification criterion.
+OUI element in the SNAP header.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="SNAPOUIExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the SNAPOUI entry, if specified.
+If {{true}}, the class includes all packets except those that match the SNAPOUI entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceVendorClassID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP Vendor Class Identifier (Option 60) as defined in RFC 2132.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceVendorClassIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets sourced from LAN devices that match the SourceVendorClassID entry, if specified.
+If {{true}}, the class includes all packets except those sourced from LAN devices that match the SourceVendorClassID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestVendorClassID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP Vendor Class Identifier (Option 60) as defined in RFC 2132.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestVendorClassIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets destined for LAN devices that match the DestVendorClassID entry, if specified.
+If {{true}}, the class includes all packets except those destined for LAN devices that match the DestVendorClassID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceClientID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP Client Identifier (Option 61) as defined in RFC 2132.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceClientIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets sourced from LAN devices that match the SourceClientID entry, if specified.
+If {{true}}, the class includes all packets except those sourced from LAN devices that match the SourceClientID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestClientID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP Client Identifier (Option 61) as defined in RFC 2132.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestClientIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets destined for LAN devices that match the DestClientID entry, if specified.
+If {{true}}, the class includes all packets except those destined for LAN devices that match the DestClientID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceUserClassID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP User Class Identifier (Option 77) as defined in RFC 3004.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="SourceUserClassIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets sourced from LAN devices that match the SourceUserClassID entry, if specified.
+If {{true}}, the class includes all packets except those sourced from LAN devices that match the SourceUserClassID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DestUserClassID" access="readWrite">
+        <description>Classification criterion. 
+Used to identify one or more LAN devices, value of the DHCP User Class Identifier (Option 77) as defined in RFC 3004.
+{{empty}} indicates this criterion is not used for classification.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="DestUserClassIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets destined for LAN devices that match the DestUserClassID entry, if specified.
+If {{true}}, the class includes all packets except those destined for LAN devices that match the DestUserClassID entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="TCPACK" access="readWrite">
+        <description>Classification criterion.
+If {{false}}, this criterion is not used for classification.
+If {{true}}, this criterion matches with all TCP segments that have the ACK control bit set.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="TCPACKExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the TCPACK entry, if specified.
+If {{true}}, the class includes all packets except those that match the TCPACK entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="IPLengthMin" access="readWrite">
+        <description>Classification criterion.
+Minimum IP Packet Length (including header) in bytes.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="IPLengthMax" access="readWrite">
+        <description>Classification criterion.
+Maximum IP Packet Length (including header) in bytes.
+A value of zero indicates that no maximum is specified (an umlimited maximum length).</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="IPLengthExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets whose length (including header) falls within the inclusive range IPLengthMin through IPLengthMax.  A value of zero for both IPLengthMin and IPLengthMax allows any length packet.  An equal non-zero value of IPLengthMin and IPLengthMax allows only a packet with the exact length specified.
+If {{true}}, the class includes all packets except those whose length (including header) falls within the inclusive range IPLengthMin through IPLengthMax.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DSCPCheck" access="readWrite">
+        <description>Classification criterion.
+DiffServ codepoint (defined in RFC 2474).
+If set to a Class Selector Codepoint (defined in RFC 2474), all DSCP values that match the first 3 bits will be considered a valid match.
+A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="DSCPExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the DSCPCheck entry, if specified.
+If {{true}}, the class includes all packets except those that match the DSCPCheck entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DSCPMark" access="readWrite">
+        <description>Classification result.
+DSCP to mark traffic with that falls into this classification entry.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthernetPriorityCheck" access="readWrite">
+        <description>Classification criterion.
+Current Ethernet priority as defined in 802.1D.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthernetPriorityExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the EthernetPriorityCheck entry, if specified.
+If {{true}}, the class includes all packets except those that match the EthernetPriorityCheck entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="EthernetPriorityMark" access="readWrite">
+        <description>Classification result.
+Ethernet priority code (as defined in 802.1D) to mark traffic with that falls into this classification entry.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANIDCheck" access="readWrite">
+        <description>Classification criterion.
+Current Ethernet VLAN ID as defined in 802.1Q.  A value of -1 indicates this criterion is not used for classification.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANIDExclude" access="readWrite">
+        <description>If {{false}}, the class includes only those packets that match the VLANIDCheck entry, if specified.
+If {{true}}, the class includes all packets except those that match the VLANIDCheck entry, if specified.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="ForwardingPolicy" access="readWrite">
+        <description>Classification result.
+Identifier of the forwarding policy associated with traffic that falls in this classification.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassPolicer" access="readWrite">
+        <description>Classification result.
+Instance number of the Policer table entry for traffic that falls in this classification.
+A value of -1 indicates a null policer.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassQueue" access="readWrite">
+        <description>Classification result.
+Instance number of the Queue table entry for traffic that falls in this classification.
+A value of -1 indicates a null queue.
+ClassQueue and ClassApp are mutually exclusive and one of the two must be specified.  If ClassQueue is null, ClassApp must be specified, and vice versa.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ClassApp" access="readWrite">
+        <description>Classification result.
+Instance number of the App table entry for traffic that falls in this classification.
+A value of -1 indicates a null App table entry.
+ClassQueue and ClassApp are mutually exclusive and one of the two must be specified.  If ClassQueue is null, ClassApp must be specified, and vice versa.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement.App.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="AppNumberOfEntries">
+      <description>Application table.</description>
+      <parameter name="AppKey" access="readOnly">
+        <description>Unique key for each App table entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="AppEnable" access="readWrite">
+        <description>Enables or disables this App table entry.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="AppStatus" access="readOnly">
+        <description>The status of this App table entry.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="ProtocolIdentifier" access="readWrite">
+        <description>URN identifying the protocol associated with the given application.  A set of defined URNs is given in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="AppName" access="readWrite">
+        <description>Human-readable name associated with this entry in the App table.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="AppDefaultForwardingPolicy" access="readWrite">
+        <description>Identifier of the forwarding policy associated with traffic associated with this App table entry, but not associated with any specified flow.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="AppDefaultPolicer" access="readWrite">
+        <description>Instance number of the Policer table entry for traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates a null policer.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="AppDefaultQueue" access="readWrite">
+        <description>Instance number of the Queue table entry for traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates a null queue.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="AppDefaultDSCPMark" access="readWrite">
+        <description>DSCP to mark traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="AppDefaultEthernetPriorityMark" access="readWrite">
+        <description>Ethernet priority code (as defined in 802.1D) to mark traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement.Flow.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="FlowNumberOfEntries">
+      <description>Flow table.</description>
+      <parameter name="FlowKey" access="readOnly">
+        <description>Unique key for each Flow table entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowEnable" access="readWrite">
+        <description>Enables or disables this Flow table entry.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowStatus" access="readOnly">
+        <description>The status of this Flow table entry.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowType" access="readWrite">
+        <description>URN identifying the type of flow to be associated with the specified queue and policer.  A set of defined URNs is given in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowTypeParameters" access="readWrite">
+        <description>List of name-value pairs representing additional criteria to identify the flow type.  The use and interpretation is specific to the particular FlowType URN.Encoded using the "x-www-form-urlencoded" content type defined in {{bibref|HTML4.01}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowName" access="readWrite">
+        <description>Human-readable name associated with this entry in the Flow table.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="AppIdentifier" access="readWrite">
+        <description>Instance number of the App table entry associated with this flow.  A value of -1 indicates the flow table is not associated with any App table entry.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowForwardingPolicy" access="readWrite">
+        <description>Identifier of the forwarding policy associated with this flow.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowPolicer" access="readWrite">
+        <description>Instance number of the Policer table entry for traffic that falls in this flow.
+A value of -1 indicates a null policer.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowQueue" access="readWrite">
+        <description>Instance number of the Queue table entry for traffic that falls in this flow.
+A value of -1 indicates a null queue.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowDSCPMark" access="readWrite">
+        <description>DSCP to mark traffic with that falls into this flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="FlowEthernetPriorityMark" access="readWrite">
+        <description>Ethernet priority code (as defined in 802.1D) to mark traffic with that falls into this flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value as defined in {{bibref|TR-098|Appendix A}}.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-2"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement.Policer.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PolicerNumberOfEntries">
+      <description>Policer table.</description>
+      <parameter name="PolicerKey" access="readOnly">
+        <description>Unique key for each policer entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="PolicerEnable" access="readWrite">
+        <description>Enables or disables this policer.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="PolicerStatus" access="readOnly">
+        <description>The status of this policer.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="CommittedRate" access="readWrite">
+        <description>Committed rate allowed for this policer in bits-per-second.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="CommittedBurstSize" access="readWrite">
+        <description>Committed Burstsize in bytes.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="ExcessBurstSize" access="readWrite">
+        <description>Excess Burstsize in bytes.
+Applied for a {{enum|SingleRateThreeColor|MeterType}} meter.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="PeakRate" access="readWrite">
+        <description>Peak rate allowed for this Meter in bits-per-second.
+Applied for {{enum|TwoRateThreeColor|MeterType}} meters.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="PeakBurstSize" access="readWrite">
+        <description>Peak Burstsize in bytes.
+Applied for {{enum|TwoRateThreeColor|MeterType}} meters.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="MeterType" access="readWrite">
+        <description>Identifies the method of traffic measurement to be used for this policer.  {{enum}}
+{{enum|SimpleTokenBucket}} makes use of {{param|CommittedRate}} and {{param|CommittedBurstSize}}.
+{{enum|SingleRateThreeColor}} makes use of {{param|CommittedRate}}, {{param|CommittedBurstSize}}, and {{param|ExcessBurstSize}} as defined in RFC 2697.
+{{enum|TwoRateThreeColor}} makes use of {{param|CommittedRate}}, {{param|CommittedBurstSize}}, {{param|PeakRate}}, and {{param|PeakBurstSize}} as defined in RFC 2698.</description>
+        <syntax>
+          <string>
+            <enumeration value="SimpleTokenBucket"/>
+            <enumeration value="SingleRateThreeColor"/>
+            <enumeration value="TwoRateThreeColor"/>
+          </string>
+          <default type="object" value="SimpleTokenBucket"/>
+        </syntax>
+      </parameter>
+      <parameter name="PossibleMeterTypes" access="readOnly" activeNotify="canDeny">
+        <description>Supported meter types.</description>
+        <syntax>
+          <list/>
+          <string>
+            <enumeration value="SimpleTokenBucket"/>
+            <enumeration value="SingleRateThreeColor"/>
+            <enumeration value="TwoRateThreeColor"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConformingAction" access="readWrite">
+        <description>Instructions for how to handle traffic that is conforming.  {{pattern}}
+{{pattern|Null}} corresponds with no action.
+A {{pattern|Count}} action increases the meter instance count statistics.
+''&lt;DSCP Value&gt;'' is an unsigned integer that corresponds with a mark action overwriting the traffic's DSCP with the configured DSCP.</description>
+        <syntax>
+          <string>
+            <pattern value="Null"/>
+            <pattern value="Drop"/>
+            <pattern value="Count"/>
+            <pattern value="[0-9]|[1-5][0-9]|6[0-3]">
+              <description>&lt;DSCP Value&gt;</description>
+            </pattern>
+          </string>
+          <default type="object" value="Null"/>
+        </syntax>
+      </parameter>
+      <parameter name="PartialConformingAction" access="readWrite">
+        <description>Instructions for how to handle traffic that is partially conforming (colored yellow).  {{pattern}}
+{{pattern|Null}} corresponds with no action.
+A {{pattern|Count}} action increases the meter instance count statistics.
+''&lt;DSCP Value&gt;'' is an unsigned integer that corresponds with a mark action overwriting the traffic's DSCP with the configured DSCP.Only applies for three-color meters.</description>
+        <syntax>
+          <string>
+            <pattern value="Null"/>
+            <pattern value="Drop"/>
+            <pattern value="Count"/>
+            <pattern value="[0-9]|[1-5][0-9]|6[0-3]">
+              <description>&lt;DSCP Value&gt;</description>
+            </pattern>
+          </string>
+          <default type="object" value="Drop"/>
+        </syntax>
+      </parameter>
+      <parameter name="NonConformingAction" access="readWrite">
+        <description>Instructions for how to handle traffic that is non-conforming.  {{pattern}}
+{{pattern|Null}} corresponds with no action.
+A {{pattern|Count}} action increases the meter instance count statistics.
+''&lt;DSCP Value&gt;'' is an unsigned integer that corresponds with a mark action overwriting the traffic's DSCP with the configured DSCP.</description>
+        <syntax>
+          <string>
+            <pattern value="Null"/>
+            <pattern value="Drop"/>
+            <pattern value="Count"/>
+            <pattern value="[0-9]|[1-5][0-9]|6[0-3]">
+              <description>&lt;DSCP Value&gt;</description>
+            </pattern>
+          </string>
+          <default type="object" value="Drop"/>
+        </syntax>
+      </parameter>
+      <parameter name="CountedPackets" access="readOnly" activeNotify="canDeny">
+        <description>Number of Packets counted as result of a count meter action.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="CountedBytes" access="readOnly" activeNotify="canDeny">
+        <description>Number of Bytes counted as result of a count meter action.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.QueueManagement.Queue.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="QueueNumberOfEntries">
+      <description>Queue table.</description>
+      <parameter name="QueueKey" access="readOnly">
+        <description>Unique key for each queue entry.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueEnable" access="readWrite">
+        <description>Enables or disables this queue.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueStatus" access="readOnly">
+        <description>The status of this queue.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueInterface" access="readWrite">
+        <description>Egress interfaces for which the specified queue must exist.  This parameter must be in one of the following forms:
+* The full hierarchical parameter name of the particular ''WANDevice'', ''WANConnectionDevice'', ''WAN**Connection'', ''LANDevice'', or ''LAN**InterfaceConfig'' object.
+* The string ''WAN'', which indicates this entry applies to all WAN interfaces.
+* The string ''LAN'', which indicates this entry applies to all LAN interfaces.
+* {{empty}}, which indicates this classification entry is to apply to all interfaces.
+Packets classified into this queue that exit through any other interface must instead use the default queuing behavior specified in the Queue table entry referenced by {{param|InternetGatewayDevice.QueueManagement.DefaultQueue}}.
+For the default queue itself (the Queue table entry referenced by {{param|InternetGatewayDevice.QueueManagement.DefaultQueue}}), the value of the {{param}} parameter MUST be ignored.  That is, the default queue must exist on all egress interfaces.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueBufferLength" access="readOnly">
+        <description>Number of bytes in the buffer.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QueueWeight" access="readWrite">
+        <description>Weight of this queue in case of {{enum|WFQ|SchedulerAlgorithm}} or {{enum|WRR|SchedulerAlgorithm}}, but only used for queues of equal precedence.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="QueuePrecedence" access="readWrite">
+        <description>Precedence of this queue relative to others. Lower numbers imply greater precedence.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+          <default type="object" value="1"/>
+        </syntax>
+      </parameter>
+      <parameter name="REDThreshold" access="readWrite">
+        <description>Random Early Discard threshold; in case the {{param|DropAlgorithm}} is {{enum|RED|DropAlgorithm}}, this is the threshold to use.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="REDPercentage" access="readWrite">
+        <description>Random Early Discard percentage; in case the {{param|DropAlgorithm}} is {{enum|RED|DropAlgorithm}}, this is the percentage to use.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="DropAlgorithm" access="readWrite">
+        <description>Dropping algorithm used for this queue if congested.</description>
+        <syntax>
+          <string>
+            <enumeration value="RED"/>
+            <enumeration value="DT"/>
+            <enumeration value="WRED"/>
+            <enumeration value="BLUE"/>
+          </string>
+          <default type="object" value="DT"/>
+        </syntax>
+      </parameter>
+      <parameter name="SchedulerAlgorithm" access="readWrite">
+        <description>Scheduling Algorithm used by scheduler.</description>
+        <syntax>
+          <string>
+            <enumeration value="WFQ"/>
+            <enumeration value="WRR"/>
+            <enumeration value="SP">
+              <description>strict priority</description>
+            </enumeration>
+          </string>
+          <default type="object" value="SP"/>
+        </syntax>
+      </parameter>
+      <parameter name="ShapingRate" access="readWrite">
+        <description>Rate to shape this queue's traffic.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress.  The rate is limited over the window period specified by {{param|ShapeWindow}}.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ShapingBurstSize" access="readWrite">
+        <description>Burst Size in bytes.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.IPPingDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny"/>
+      <parameter base="DSCP" access="readWrite">
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="63"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter base="SuccessCount" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FailureCount" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="AverageResponseTime" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="MinimumResponseTmie" access="readOnly" status="deleted"/>
+      <parameter name="MinimumResponseTime" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the minimum response time in milliseconds over all repetitions with successful responses of the most recent ping test.  If there were no successful responses, this value MUST be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter base="MaximumResponseTime" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.IPInterface.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="IPInterfaceNumberOfEntries">
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="BytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="BytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="PacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="PacketsReceived" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="BytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="BytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellsReceived" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="LANWLANConfigurationNumberOfEntries">
+      <parameter base="TotalPSKFailures" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalIntegrityFailures" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ChannelsInUse" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalBytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalBytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalPacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalPacketsReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalAssociations" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.AssociatedDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="TotalAssociations">
+      <parameter base="AssociatedDeviceMACAddress" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="AssociatedDeviceIPAddress" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="AssociatedDeviceAuthenticationState" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LastRequestedUnicastCipher" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LastRequestedMulticastCipher" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LastPMKId" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="HostNumberOfEntries">
+      <parameter base="LeaseTimeRemaining" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANCommonInterfaceConfig." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="TotalBytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalBytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalPacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalPacketsReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="MaximumActiveConnections" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <parameter base="UpstreamCurrRate" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="DownstreamCurrRate" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="UpstreamMaxRate" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="DownstreamMaxRate" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="UpstreamNoiseMargin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="DownstreamNoiseMargin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="UpstreamAttenuation" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="DownstreamAttenuation" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="UpstreamPower" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="DownstreamPower" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TotalStart" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ShowtimeStart" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of seconds since the most recent DSL Showtime-the beginning of the period used for collection of Showtime{{bibref|RFC2616}} statistics.</description>
+      </parameter>
+      <parameter base="LastShowtimeStart" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CurrentDayStart" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="QuarterHourStart" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Total." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellDelin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LinkRetrain" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitTimeouts" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LossOfFraming" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SeverelyErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCFECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCHECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCCRCErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Showtime." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellDelin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LinkRetrain" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitTimeouts" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LossOfFraming" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SeverelyErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCFECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCHECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCCRCErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.LastShowtime." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellDelin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LinkRetrain" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitTimeouts" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LossOfFraming" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SeverelyErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCFECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCHECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCCRCErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.CurrentDay." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellDelin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LinkRetrain" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitTimeouts" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LossOfFraming" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SeverelyErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCFECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCHECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCCRCErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.QuarterHour." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CellDelin" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LinkRetrain" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="InitTimeouts" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="LossOfFraming" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SeverelyErroredSecs" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCFECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCHECErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATUCCRCErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="BytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="BytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="PacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="PacketsReceived" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object is to provide diagnostic information for a CPE with an ADSL2 or ADSL2+ modem WAN interface, but may also be used for ADSL.</description>
+      <parameter base="LoopDiagnosticsState" access="readWrite" activeNotify="canDeny"/>
+      <parameter base="ACTPSDds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ACTPSDus" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ACTATPds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ACTATPus" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HLINSCds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="HLINpsds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="QLNpsds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="SNRpsds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="BITSpsds" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="GAINSpsds" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <description action="replace">This object models the ATM layer properties specific to a single physical connection of a DSL modem used for Internet access on a CPE.  This object is intended for a CPE with a DSL modem WAN interface, and is exclusive of any other ''WAN*LinkConfig'' object within a given ''WANConnectionDevice'' instance.</description>
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="ATMTransmittedBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATMReceivedBlocks" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="AAL5CRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATMCRCErrors" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="ATMHECErrors" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANATMF5LoopbackDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <syntax>
+          <string/>
+          <default type="object" value="None"/>
+        </syntax>
+      </parameter>
+      <parameter base="SuccessCount" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="FailureCount" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="AverageResponseTime" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="MinimumResponseTime" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="MaximumResponseTime" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANEthernetLinkConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <description action="replace">This object models the Ethernet link layer properties specific to a single physical connection used for Internet access on a CPE.  This object is intended for a CPE with an Ethernet WAN interface, and is exclusive of any other ''WAN*LinkConfig'' object within a given ''WANConnectionDevice'' instance.  Note that this object is not related to the Ethernet protocol layer sometimes used in associated with a DSL connection.</description>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPOTSLinkConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <description action="replace">This object models the POTS link layer properties specific to a single physical connection used for Internet access on a CPE.  This object is intended for a CPE with a POTS WAN interface, and is exclusive of any other ''WAN*LinkConfig'' object within a given ''WANConnectionDevice'' instance.</description>
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="WANIPConnectionNumberOfEntries">
+      <description action="replace">This object enables configuration of IP connections on the WAN interface of a CPE.  This object is intended only for all ''WANConnectionDevice''s not employing PPP addressing, and must not be active for ''WANConnectionDevice''s that do employ PPP addressing.</description>
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="Uptime" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="NATEnabled" access="readWrite">
+        <description action="replace">Indicates if Network Address Translation (NAT) is enabled for this connection.</description>
+      </parameter>
+      <parameter base="RouteProtocolRx" access="readWrite"/>
+      <parameter name="ShapingRate" access="readWrite">
+        <description>Rate to shape this connection's egress traffic to.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress. The rate is limited over the window period specified by {{param|ShapeWindow}}.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ShapingBurstSize" access="readWrite">
+        <description>Burst Size in bytes.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.PortMapping.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PortMappingNumberOfEntries">
+      <description action="append">This table MUST NOT contain dynamic NAT binding entries.</description>
+      <parameter base="PortMappingEnabled" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="PortMappingLeaseDuration" access="readWrite" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains statistics for all connections within the same ''WANConnectionDevice'' that share a common MAC address.  The contents of this object should be identical for each such connection.
+This object is intended only for ''WANConnectionDevice''s that can support an Ethernet-layer on this interface (e.g., ''PPPoE'', ''IPoE'').</description>
+      <parameter base="EthernetBytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetBytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetPacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetPacketsReceived" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="WANPPPConnectionNumberOfEntries">
+      <description action="replace">This object enables configuration of PPP connections on the WAN interface of a CPE.  This object is intended only for all ''WANConnectionDevice''s that employ PPP addressing, and must not be active for ''WANConnectionDevice''s that do not employ PPP addressing.</description>
+      <parameter base="Enable" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="Uptime" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="NATEnabled" access="readWrite">
+        <description action="replace">Indicates if Network Address Translation (NAT) is enabled for this connection.</description>
+      </parameter>
+      <parameter base="CurrentMRUSize" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="MACAddress" access="readWrite">
+        <description action="replace">The physical address of the ''WANPPPConnection'' if applicable.  Configurable only if {{param|MACAddressOverride}} is present and {{true}}.</description>
+      </parameter>
+      <parameter base="PPPLCPEchoRetry" access="readOnly"/>
+      <parameter name="ShapingRate" access="readWrite">
+        <description>Rate to shape this connection's egress traffic.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress. The rate is limited over the window period specified by {{param|ShapeWindow}}.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+      <parameter name="ShapingBurstSize" access="readWrite">
+        <description>Burst Size in bytes.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.PortMapping.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PortMappingNumberOfEntries">
+      <description action="append">This table MUST NOT contain dynamic NAT binding entries.</description>
+      <parameter base="PortMappingEnabled" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="PortMappingLeaseDuration" access="readWrite" activeNotify="canDeny"/>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains statistics for all connections within the same ''WANConnectionDevice'' that share a common MAC address.  The contents of this object should be identical for each such connection.
+This object is intended only for ''WANConnectionDevice''s that can support an Ethernet-layer on this interface (e.g., ''PPPoE'', ''IPoE'').</description>
+      <parameter base="EthernetBytesSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetBytesReceived" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetPacketsSent" access="readOnly" activeNotify="canDeny"/>
+      <parameter base="EthernetPacketsReceived" access="readOnly" activeNotify="canDeny"/>
+    </object>
+    <profile name="Baseline:1">
+      <object ref="InternetGatewayDevice." requirement="present">
+        <parameter ref="DeviceSummary" requirement="readOnly"/>
+        <parameter ref="LANDeviceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="WANDeviceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.DeviceInfo." requirement="present">
+        <parameter ref="Manufacturer" requirement="readOnly"/>
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="ModelName" requirement="readOnly"/>
+        <parameter ref="Description" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+        <parameter ref="HardwareVersion" requirement="readOnly"/>
+        <parameter ref="SoftwareVersion" requirement="readOnly"/>
+        <parameter ref="SpecVersion" requirement="readOnly"/>
+        <parameter ref="ProvisioningCode" requirement="readWrite"/>
+        <parameter ref="UpTime" requirement="readOnly"/>
+        <parameter ref="DeviceLog" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.ManagementServer." requirement="present">
+        <parameter ref="URL" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="PeriodicInformEnable" requirement="readWrite"/>
+        <parameter ref="PeriodicInformInterval" requirement="readWrite"/>
+        <parameter ref="PeriodicInformTime" requirement="readWrite"/>
+        <parameter ref="ParameterKey" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestURL" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestUsername" requirement="readWrite"/>
+        <parameter ref="ConnectionRequestPassword" requirement="readWrite"/>
+        <parameter ref="UpgradesManaged" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer3Forwarding." requirement="present">
+        <parameter ref="DefaultConnectionService" requirement="readWrite"/>
+        <parameter ref="ForwardNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Type" requirement="readWrite"/>
+        <parameter ref="DestIPAddress" requirement="readWrite"/>
+        <parameter ref="DestSubnetMask" requirement="readWrite"/>
+        <parameter ref="SourceIPAddress" requirement="readWrite"/>
+        <parameter ref="SourceSubnetMask" requirement="readWrite"/>
+        <parameter ref="GatewayIPAddress" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="ForwardingMetric" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANConfigSecurity." requirement="present">
+        <parameter ref="ConfigPassword" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}." requirement="present">
+        <parameter ref="LANEthernetInterfaceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="LANUSBInterfaceNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="LANWLANConfigurationNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement." requirement="present">
+        <parameter ref="DHCPServerConfigurable" requirement="readWrite"/>
+        <parameter ref="DHCPServerEnable" requirement="readWrite"/>
+        <parameter ref="DHCPRelay" requirement="readOnly"/>
+        <parameter ref="MinAddress" requirement="readWrite"/>
+        <parameter ref="MaxAddress" requirement="readWrite"/>
+        <parameter ref="ReservedAddresses" requirement="readWrite"/>
+        <parameter ref="SubnetMask" requirement="readWrite"/>
+        <parameter ref="DNSServers" requirement="readWrite"/>
+        <parameter ref="DomainName" requirement="readWrite"/>
+        <parameter ref="IPRouters" requirement="readWrite"/>
+        <parameter ref="IPInterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.IPInterface.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="IPInterfaceIPAddress" requirement="readWrite"/>
+        <parameter ref="IPInterfaceSubnetMask" requirement="readWrite"/>
+        <parameter ref="IPInterfaceAddressingType" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.Hosts." requirement="present">
+        <parameter ref="HostNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}." requirement="present">
+        <parameter ref="IPAddress" requirement="readOnly"/>
+        <parameter ref="AddressSource" requirement="readOnly"/>
+        <parameter ref="LeaseTimeRemaining" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="HostName" requirement="readOnly"/>
+        <parameter ref="InterfaceType" requirement="readOnly"/>
+        <parameter ref="Active" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}." requirement="present">
+        <parameter ref="WANConnectionNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANCommonInterfaceConfig." requirement="present">
+        <parameter ref="EnabledForInternet" requirement="readOnly"/>
+        <parameter ref="WANAccessType" requirement="readOnly"/>
+        <parameter ref="Layer1UpstreamMaxBitRate" requirement="readOnly"/>
+        <parameter ref="Layer1DownstreamMaxBitRate" requirement="readOnly"/>
+        <parameter ref="PhysicalLinkStatus" requirement="readOnly"/>
+        <parameter ref="TotalBytesSent" requirement="readOnly"/>
+        <parameter ref="TotalBytesReceived" requirement="readOnly"/>
+        <parameter ref="TotalPacketsSent" requirement="readOnly"/>
+        <parameter ref="TotalPacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}." requirement="present">
+        <parameter ref="WANIPConnectionNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="WANPPPConnectionNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="ConnectionStatus" requirement="readOnly"/>
+        <parameter ref="PossibleConnectionTypes" requirement="readOnly"/>
+        <parameter ref="ConnectionType" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readWrite"/>
+        <parameter ref="Uptime" requirement="readOnly"/>
+        <parameter ref="LastConnectionError" requirement="readOnly"/>
+        <parameter ref="RSIPAvailable" requirement="readOnly"/>
+        <parameter ref="NATEnabled" requirement="readWrite"/>
+        <parameter ref="AddressingType" requirement="readOnly"/>
+        <parameter ref="ExternalIPAddress" requirement="readOnly"/>
+        <parameter ref="SubnetMask" requirement="readOnly"/>
+        <parameter ref="DefaultGateway" requirement="readOnly"/>
+        <parameter ref="DNSEnabled" requirement="readOnly"/>
+        <parameter ref="DNSOverrideAllowed" requirement="readOnly"/>
+        <parameter ref="DNSServers" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="ConnectionTrigger" requirement="readWrite"/>
+        <parameter ref="RouteProtocolRx" requirement="readWrite"/>
+        <parameter ref="PortMappingNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.PortMapping.{i}." requirement="createDelete">
+        <parameter ref="PortMappingEnabled" requirement="readWrite"/>
+        <parameter ref="PortMappingLeaseDuration" requirement="readOnly"/>
+        <parameter ref="RemoteHost" requirement="readWrite"/>
+        <parameter ref="ExternalPort" requirement="readWrite"/>
+        <parameter ref="InternalPort" requirement="readWrite"/>
+        <parameter ref="PortMappingProtocol" requirement="readWrite"/>
+        <parameter ref="InternalClient" requirement="readWrite"/>
+        <parameter ref="PortMappingDescription" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats." requirement="present">
+        <parameter ref="EthernetBytesSent" requirement="readOnly"/>
+        <parameter ref="EthernetBytesReceived" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsSent" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="ConnectionStatus" requirement="readOnly"/>
+        <parameter ref="PossibleConnectionTypes" requirement="readOnly"/>
+        <parameter ref="ConnectionType" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readWrite"/>
+        <parameter ref="Uptime" requirement="readOnly"/>
+        <parameter ref="LastConnectionError" requirement="readOnly"/>
+        <parameter ref="RSIPAvailable" requirement="readOnly"/>
+        <parameter ref="NATEnabled" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="ExternalIPAddress" requirement="readOnly"/>
+        <parameter ref="DNSEnabled" requirement="readOnly"/>
+        <parameter ref="DNSOverrideAllowed" requirement="readOnly"/>
+        <parameter ref="DNSServers" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="TransportType" requirement="readOnly"/>
+        <parameter ref="PPPoEACName" requirement="readWrite"/>
+        <parameter ref="PPPoEServiceName" requirement="readWrite"/>
+        <parameter ref="ConnectionTrigger" requirement="readWrite"/>
+        <parameter ref="RouteProtocolRx" requirement="readWrite"/>
+        <parameter ref="PortMappingNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.PortMapping.{i}." requirement="createDelete">
+        <parameter ref="PortMappingEnabled" requirement="readWrite"/>
+        <parameter ref="PortMappingLeaseDuration" requirement="readOnly"/>
+        <parameter ref="RemoteHost" requirement="readWrite"/>
+        <parameter ref="ExternalPort" requirement="readWrite"/>
+        <parameter ref="InternalPort" requirement="readWrite"/>
+        <parameter ref="PortMappingProtocol" requirement="readWrite"/>
+        <parameter ref="InternalClient" requirement="readWrite"/>
+        <parameter ref="PortMappingDescription" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats." requirement="present">
+        <parameter ref="EthernetBytesSent" requirement="readOnly"/>
+        <parameter ref="EthernetBytesReceived" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsSent" requirement="readOnly"/>
+        <parameter ref="EthernetPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="EthernetLAN:1">
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="MACAddressControlEnabled" requirement="readWrite"/>
+        <parameter ref="MaxBitRate" requirement="readWrite"/>
+        <parameter ref="DuplexMode" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="USBLAN:1">
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="MACAddressControlEnabled" requirement="readWrite"/>
+        <parameter ref="Standard" requirement="readOnly"/>
+        <parameter ref="Type" requirement="readOnly"/>
+        <parameter ref="Rate" requirement="readOnly"/>
+        <parameter ref="Power" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="CellsSent" requirement="readOnly"/>
+        <parameter ref="CellsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="WiFiLAN:1">
+      <object ref="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="BSSID" requirement="readOnly"/>
+        <parameter ref="MaxBitRate" requirement="readWrite"/>
+        <parameter ref="Channel" requirement="readWrite"/>
+        <parameter ref="SSID" requirement="readWrite"/>
+        <parameter ref="BeaconType" requirement="readWrite"/>
+        <parameter ref="MACAddressControlEnabled" requirement="readWrite"/>
+        <parameter ref="Standard" requirement="readOnly"/>
+        <parameter ref="WEPKeyIndex" requirement="readWrite"/>
+        <parameter ref="KeyPassphrase" requirement="readWrite"/>
+        <parameter ref="WEPEncryptionLevel" requirement="readOnly"/>
+        <parameter ref="BasicEncryptionModes" requirement="readWrite"/>
+        <parameter ref="BasicAuthenticationMode" requirement="readWrite"/>
+        <parameter ref="WPAEncryptionModes" requirement="readWrite"/>
+        <parameter ref="WPAAuthenticationMode" requirement="readWrite"/>
+        <parameter ref="PossibleChannels" requirement="readOnly"/>
+        <parameter ref="BasicDataTransmitRates" requirement="readWrite"/>
+        <parameter ref="OperationalDataTransmitRates" requirement="readWrite"/>
+        <parameter ref="PossibleDataTransmitRates" requirement="readOnly"/>
+        <parameter ref="RadioEnabled" requirement="readWrite"/>
+        <parameter ref="AutoRateFallBackEnabled" requirement="readWrite"/>
+        <parameter ref="TotalBytesSent" requirement="readOnly"/>
+        <parameter ref="TotalBytesReceived" requirement="readOnly"/>
+        <parameter ref="TotalPacketsSent" requirement="readOnly"/>
+        <parameter ref="TotalPacketsReceived" requirement="readOnly"/>
+        <parameter ref="TotalAssociations" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.AssociatedDevice.{i}." requirement="present">
+        <parameter ref="AssociatedDeviceMACAddress" requirement="readOnly"/>
+        <parameter ref="AssociatedDeviceIPAddress" requirement="readOnly"/>
+        <parameter ref="AssociatedDeviceAuthenticationState" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.WEPKey.{i}." requirement="present">
+        <parameter ref="WEPKey" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.PreSharedKey.{i}." requirement="present">
+        <parameter ref="PreSharedKey" requirement="readWrite"/>
+        <parameter ref="KeyPassphrase" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="ADSLWAN:1">
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="UpstreamCurrRate" requirement="readOnly"/>
+        <parameter ref="DownstreamCurrRate" requirement="readOnly"/>
+        <parameter ref="UpstreamMaxRate" requirement="readOnly"/>
+        <parameter ref="DownstreamMaxRate" requirement="readOnly"/>
+        <parameter ref="UpstreamNoiseMargin" requirement="readOnly"/>
+        <parameter ref="DownstreamNoiseMargin" requirement="readOnly"/>
+        <parameter ref="UpstreamAttenuation" requirement="readOnly"/>
+        <parameter ref="DownstreamAttenuation" requirement="readOnly"/>
+        <parameter ref="UpstreamPower" requirement="readOnly"/>
+        <parameter ref="DownstreamPower" requirement="readOnly"/>
+        <parameter ref="ATURVendor" requirement="readOnly"/>
+        <parameter ref="ATURCountry" requirement="readOnly"/>
+        <parameter ref="ATUCVendor" requirement="readOnly"/>
+        <parameter ref="ATUCCountry" requirement="readOnly"/>
+        <parameter ref="TotalStart" requirement="readOnly"/>
+        <parameter ref="ShowtimeStart" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats." requirement="present">
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Total." requirement="present">
+        <parameter ref="ReceiveBlocks" requirement="readOnly"/>
+        <parameter ref="TransmitBlocks" requirement="readOnly"/>
+        <parameter ref="CellDelin" requirement="readOnly"/>
+        <parameter ref="LinkRetrain" requirement="readOnly"/>
+        <parameter ref="InitErrors" requirement="readOnly"/>
+        <parameter ref="InitTimeouts" requirement="readOnly"/>
+        <parameter ref="LossOfFraming" requirement="readOnly"/>
+        <parameter ref="ErroredSecs" requirement="readOnly"/>
+        <parameter ref="SeverelyErroredSecs" requirement="readOnly"/>
+        <parameter ref="FECErrors" requirement="readOnly"/>
+        <parameter ref="ATUCFECErrors" requirement="readOnly"/>
+        <parameter ref="HECErrors" requirement="readOnly"/>
+        <parameter ref="ATUCHECErrors" requirement="readOnly"/>
+        <parameter ref="CRCErrors" requirement="readOnly"/>
+        <parameter ref="ATUCCRCErrors" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Showtime." requirement="present">
+        <parameter ref="ReceiveBlocks" requirement="readOnly"/>
+        <parameter ref="TransmitBlocks" requirement="readOnly"/>
+        <parameter ref="CellDelin" requirement="readOnly"/>
+        <parameter ref="LinkRetrain" requirement="readOnly"/>
+        <parameter ref="InitErrors" requirement="readOnly"/>
+        <parameter ref="InitTimeouts" requirement="readOnly"/>
+        <parameter ref="LossOfFraming" requirement="readOnly"/>
+        <parameter ref="ErroredSecs" requirement="readOnly"/>
+        <parameter ref="SeverelyErroredSecs" requirement="readOnly"/>
+        <parameter ref="FECErrors" requirement="readOnly"/>
+        <parameter ref="ATUCFECErrors" requirement="readOnly"/>
+        <parameter ref="HECErrors" requirement="readOnly"/>
+        <parameter ref="ATUCHECErrors" requirement="readOnly"/>
+        <parameter ref="CRCErrors" requirement="readOnly"/>
+        <parameter ref="ATUCCRCErrors" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement." requirement="present">
+        <parameter ref="ConnectionServiceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement.ConnectionService.{i}." requirement="present">
+        <parameter ref="WANConnectionDevice" requirement="readOnly"/>
+        <parameter ref="WANConnectionService" requirement="readOnly"/>
+        <parameter ref="DestinationAddress" requirement="readOnly"/>
+        <parameter ref="LinkType" requirement="readOnly"/>
+        <parameter ref="ConnectionType" requirement="readOnly"/>
+        <parameter ref="Name" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}." requirement="createDelete">
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="LinkStatus" requirement="readOnly"/>
+        <parameter ref="LinkType" requirement="readWrite"/>
+        <parameter ref="AutoConfig" requirement="readOnly"/>
+        <parameter ref="DestinationAddress" requirement="readWrite"/>
+        <parameter ref="ATMTransmittedBlocks" requirement="readOnly"/>
+        <parameter ref="ATMReceivedBlocks" requirement="readOnly"/>
+        <parameter ref="AAL5CRCErrors" requirement="readOnly"/>
+        <parameter ref="ATMCRCErrors" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="EthernetWAN:1">
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="MaxBitRate" requirement="readWrite"/>
+        <parameter ref="DuplexMode" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANEthernetLinkConfig." requirement="present">
+        <parameter ref="EthernetLinkStatus" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="POTSWAN:1">
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPOTSLinkConfig." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="LinkStatus" requirement="readOnly"/>
+        <parameter ref="ISPPhoneNumber" requirement="readOnly"/>
+        <parameter ref="ISPInfo" requirement="readOnly"/>
+        <parameter ref="LinkType" requirement="readOnly"/>
+        <parameter ref="NumberOfRetries" requirement="readOnly"/>
+        <parameter ref="DelayBetweenRetries" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="QoS:1">
+      <object ref="InternetGatewayDevice.QueueManagement." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="MaxQueues" requirement="readOnly"/>
+        <parameter ref="MaxClassificationEntries" requirement="readOnly"/>
+        <parameter ref="ClassificationNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="MaxAppEntries" requirement="readOnly"/>
+        <parameter ref="AppNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="MaxFlowEntries" requirement="readOnly"/>
+        <parameter ref="FlowNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="MaxPolicerEntries" requirement="readOnly"/>
+        <parameter ref="PolicerNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="MaxQueueEntries" requirement="readOnly"/>
+        <parameter ref="QueueNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="DefaultForwardingPolicy" requirement="readWrite"/>
+        <parameter ref="DefaultPolicer" requirement="readWrite"/>
+        <parameter ref="DefaultQueue" requirement="readWrite"/>
+        <parameter ref="DefaultDSCPMark" requirement="readWrite"/>
+        <parameter ref="DefaultEthernetPriorityMark" requirement="readWrite"/>
+        <parameter ref="AvailableAppList" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.QueueManagement.Classification.{i}." requirement="createDelete">
+        <parameter ref="ClassificationKey" requirement="readOnly"/>
+        <parameter ref="ClassificationEnable" requirement="readWrite"/>
+        <parameter ref="ClassificationStatus" requirement="readOnly"/>
+        <parameter ref="ClassificationOrder" requirement="readWrite"/>
+        <parameter ref="ClassInterface" requirement="readWrite"/>
+        <parameter ref="DestIP" requirement="readWrite"/>
+        <parameter ref="DestMask" requirement="readWrite"/>
+        <parameter ref="DestIPExclude" requirement="readWrite"/>
+        <parameter ref="SourceIP" requirement="readWrite"/>
+        <parameter ref="SourceMask" requirement="readWrite"/>
+        <parameter ref="SourceIPExclude" requirement="readWrite"/>
+        <parameter ref="Protocol" requirement="readWrite"/>
+        <parameter ref="ProtocolExclude" requirement="readWrite"/>
+        <parameter ref="DestPort" requirement="readWrite"/>
+        <parameter ref="DestPortRangeMax" requirement="readWrite"/>
+        <parameter ref="DestPortExclude" requirement="readWrite"/>
+        <parameter ref="SourcePort" requirement="readWrite"/>
+        <parameter ref="SourcePortRangeMax" requirement="readWrite"/>
+        <parameter ref="SourcePortExclude" requirement="readWrite"/>
+        <parameter ref="SourceMACAddress" requirement="readWrite"/>
+        <parameter ref="SourceMACExclude" requirement="readWrite"/>
+        <parameter ref="DestMACAddress" requirement="readWrite"/>
+        <parameter ref="DestMACExclude" requirement="readWrite"/>
+        <parameter ref="DSCPCheck" requirement="readWrite"/>
+        <parameter ref="DSCPExclude" requirement="readWrite"/>
+        <parameter ref="DSCPMark" requirement="readWrite"/>
+        <parameter ref="EthernetPriorityCheck" requirement="readWrite"/>
+        <parameter ref="EthernetPriorityExclude" requirement="readWrite"/>
+        <parameter ref="EthernetPriorityMark" requirement="readWrite"/>
+        <parameter ref="VLANIDCheck" requirement="readWrite"/>
+        <parameter ref="VLANIDExclude" requirement="readWrite"/>
+        <parameter ref="ForwardingPolicy" requirement="readWrite"/>
+        <parameter ref="ClassPolicer" requirement="readWrite"/>
+        <parameter ref="ClassQueue" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.QueueManagement.Policer.{i}." requirement="createDelete">
+        <parameter ref="PolicerKey" requirement="readOnly"/>
+        <parameter ref="PolicerEnable" requirement="readWrite"/>
+        <parameter ref="PolicerStatus" requirement="readOnly"/>
+        <parameter ref="CommittedRate" requirement="readWrite"/>
+        <parameter ref="CommittedBurstSize" requirement="readWrite"/>
+        <parameter ref="MeterType" requirement="readWrite"/>
+        <parameter ref="PossibleMeterTypes" requirement="readOnly"/>
+        <parameter ref="ConformingAction" requirement="readWrite"/>
+        <parameter ref="NonConformingAction" requirement="readWrite"/>
+        <parameter ref="CountedPackets" requirement="readOnly"/>
+        <parameter ref="CountedBytes" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.QueueManagement.Queue.{i}." requirement="createDelete">
+        <parameter ref="QueueKey" requirement="readOnly"/>
+        <parameter ref="QueueEnable" requirement="readWrite"/>
+        <parameter ref="QueueStatus" requirement="readOnly"/>
+        <parameter ref="QueueInterface" requirement="readWrite"/>
+        <parameter ref="QueueBufferLength" requirement="readOnly"/>
+        <parameter ref="QueueWeight" requirement="readWrite"/>
+        <parameter ref="QueuePrecedence" requirement="readWrite"/>
+        <parameter ref="REDThreshold" requirement="readWrite"/>
+        <parameter ref="REDPercentage" requirement="readWrite"/>
+        <parameter ref="DropAlgorithm" requirement="readWrite"/>
+        <parameter ref="SchedulerAlgorithm" requirement="readWrite"/>
+        <parameter ref="ShapingRate" requirement="readWrite"/>
+        <parameter ref="ShapingBurstSize" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}." requirement="notSpecified">
+        <parameter ref="ForwardingPolicy" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}." requirement="notSpecified">
+        <parameter ref="ShapingRate" requirement="readWrite"/>
+        <parameter ref="ShapingBurstSize" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}." requirement="notSpecified">
+        <parameter ref="ShapingRate" requirement="readWrite"/>
+        <parameter ref="ShapingBurstSize" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="QoSDynamicFlow:1">
+      <object ref="InternetGatewayDevice.QueueManagement.App.{i}." requirement="createDelete">
+        <parameter ref="AppKey" requirement="readOnly"/>
+        <parameter ref="AppEnable" requirement="readWrite"/>
+        <parameter ref="AppStatus" requirement="readOnly"/>
+        <parameter ref="ProtocolIdentifier" requirement="readWrite"/>
+        <parameter ref="AppName" requirement="readWrite"/>
+        <parameter ref="AppDefaultForwardingPolicy" requirement="readWrite"/>
+        <parameter ref="AppDefaultPolicer" requirement="readWrite"/>
+        <parameter ref="AppDefaultQueue" requirement="readWrite"/>
+        <parameter ref="AppDefaultDSCPMark" requirement="readWrite"/>
+        <parameter ref="AppDefaultEthernetPriorityMark" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.QueueManagement.Flow.{i}." requirement="createDelete">
+        <parameter ref="FlowKey" requirement="readOnly"/>
+        <parameter ref="FlowEnable" requirement="readWrite"/>
+        <parameter ref="FlowStatus" requirement="readOnly"/>
+        <parameter ref="FlowType" requirement="readWrite"/>
+        <parameter ref="FlowTypeParameters" requirement="readWrite"/>
+        <parameter ref="FlowName" requirement="readWrite"/>
+        <parameter ref="AppIdentifier" requirement="readWrite"/>
+        <parameter ref="FlowForwardingPolicy" requirement="readWrite"/>
+        <parameter ref="FlowPolicer" requirement="readWrite"/>
+        <parameter ref="FlowQueue" requirement="readWrite"/>
+        <parameter ref="FlowDSCPMark" requirement="readWrite"/>
+        <parameter ref="FlowEthernetPriorityMark" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.QueueManagement.Classification.{i}." requirement="notSpecified">
+        <parameter ref="ClassApp" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="Bridging:1">
+      <object ref="InternetGatewayDevice.Layer2Bridging." requirement="present">
+        <parameter ref="MaxBridgeEntries" requirement="readOnly"/>
+        <parameter ref="MaxFilterEntries" requirement="readOnly"/>
+        <parameter ref="MaxMarkingEntries" requirement="readOnly"/>
+        <parameter ref="BridgeNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="FilterNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="MarkingNumberOfEntries" requirement="readOnly"/>
+        <parameter ref="AvailableInterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer2Bridging.Bridge.{i}." requirement="createDelete">
+        <parameter ref="BridgeKey" requirement="readOnly"/>
+        <parameter ref="BridgeEnable" requirement="readWrite"/>
+        <parameter ref="BridgeStatus" requirement="readOnly"/>
+        <parameter ref="BridgeName" requirement="readWrite"/>
+        <parameter ref="VLANID" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer2Bridging.Filter.{i}." requirement="createDelete">
+        <parameter ref="FilterKey" requirement="readOnly"/>
+        <parameter ref="FilterEnable" requirement="readWrite"/>
+        <parameter ref="FilterStatus" requirement="readOnly"/>
+        <parameter ref="FilterBridgeReference" requirement="readWrite"/>
+        <parameter ref="ExclusivityOrder" requirement="readWrite"/>
+        <parameter ref="FilterInterface" requirement="readWrite"/>
+        <parameter ref="VLANIDFilter" requirement="readWrite"/>
+        <parameter ref="AdmitOnlyVLANTagged" requirement="readWrite"/>
+        <parameter ref="EthertypeFilterList" requirement="readWrite"/>
+        <parameter ref="EthertypeFilterExclude" requirement="readWrite"/>
+        <parameter ref="SourceMACAddressFilterList" requirement="readWrite"/>
+        <parameter ref="SourceMACAddressFilterExclude" requirement="readWrite"/>
+        <parameter ref="DestMACAddressFilterList" requirement="readWrite"/>
+        <parameter ref="DestMACAddressFilterExclude" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer2Bridging.Marking.{i}." requirement="createDelete">
+        <parameter ref="MarkingKey" requirement="readOnly"/>
+        <parameter ref="MarkingEnable" requirement="readWrite"/>
+        <parameter ref="MarkingStatus" requirement="readOnly"/>
+        <parameter ref="MarkingBridgeReference" requirement="readWrite"/>
+        <parameter ref="MarkingInterface" requirement="readWrite"/>
+        <parameter ref="VLANIDUntag" requirement="readWrite"/>
+        <parameter ref="VLANIDMark" requirement="readWrite"/>
+        <parameter ref="EthernetPriorityMark" requirement="readWrite"/>
+        <parameter ref="EthernetPriorityOverride" requirement="readWrite"/>
+      </object>
+      <object ref="InternetGatewayDevice.Layer2Bridging.AvailableInterface.{i}." requirement="present">
+        <parameter ref="AvailableInterfaceKey" requirement="readOnly"/>
+        <parameter ref="InterfaceType" requirement="readOnly"/>
+        <parameter ref="InterfaceReference" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="Time:1">
+      <object ref="InternetGatewayDevice.Time." requirement="present">
+        <parameter ref="NTPServer1" requirement="readWrite"/>
+        <parameter ref="NTPServer2" requirement="readWrite"/>
+        <parameter ref="CurrentLocalTime" requirement="readOnly"/>
+        <parameter ref="LocalTimeZone" requirement="readWrite"/>
+        <parameter ref="LocalTimeZoneName" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsUsed" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsStart" requirement="readWrite"/>
+        <parameter ref="DaylightSavingsEnd" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="IPPing:1">
+      <object ref="InternetGatewayDevice.IPPingDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Interface" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfRepetitions" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="SuccessCount" requirement="readOnly"/>
+        <parameter ref="FailureCount" requirement="readOnly"/>
+        <parameter ref="AverageResponseTime" requirement="readOnly"/>
+        <parameter ref="MinimumResponseTime" requirement="readOnly"/>
+        <parameter ref="MaximumResponseTime" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="ATMLoopback:1">
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANATMF5LoopbackDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="NumberOfRepetitions" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="SuccessCount" requirement="readOnly"/>
+        <parameter ref="FailureCount" requirement="readOnly"/>
+        <parameter ref="AverageResponseTime" requirement="readOnly"/>
+        <parameter ref="MinimumResponseTime" requirement="readOnly"/>
+        <parameter ref="MaximumResponseTime" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="DSLDiagnostics:1">
+      <object ref="InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics." requirement="present">
+        <parameter ref="LoopDiagnosticsState" requirement="readWrite"/>
+        <parameter ref="ACTPSDds" requirement="readOnly"/>
+        <parameter ref="ACTPSDus" requirement="readOnly"/>
+        <parameter ref="ACTATPds" requirement="readOnly"/>
+        <parameter ref="ACTATPus" requirement="readOnly"/>
+        <parameter ref="HLINSCds" requirement="readOnly"/>
+        <parameter ref="HLINpsds" requirement="readOnly"/>
+        <parameter ref="QLNpsds" requirement="readOnly"/>
+        <parameter ref="SNRpsds" requirement="readOnly"/>
+        <parameter ref="BITSpsds" requirement="readOnly"/>
+        <parameter ref="GAINSpsds" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</dm:document>

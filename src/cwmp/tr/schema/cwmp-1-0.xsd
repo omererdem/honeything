@@ -1,0 +1,1395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR069 xml schema definition
+
+  Define the xml schema for the messages passed in TR069
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
+           xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+           xmlns:tns="urn:dslforum-org:cwmp-1-0"
+           targetNamespace="urn:dslforum-org:cwmp-1-0"
+           elementFormDefault="unqualified"
+           attributeFormDefault="unqualified">
+
+  <xs:import namespace="http://schemas.xmlsoap.org/soap/envelope/"
+             schemaLocation="http://schemas.xmlsoap.org/soap/envelope/"/>
+  <xs:import namespace="http://schemas.xmlsoap.org/soap/encoding/"
+             schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+
+
+  <!--
+       SOAP Header Elements
+  -->
+  <xs:element name="ID">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute ref="soapenv:mustUnderstand" use="required" fixed="1"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+  <xs:element name="HoldRequests">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:boolean">
+          <xs:attribute ref="soapenv:mustUnderstand" use="required" fixed="1"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!--
+       SOAP Fault Extensions
+  -->
+  <xs:simpleType name="FaultCodeType">
+    <xs:union>
+      <xs:simpleType>
+        <xs:restriction base="xs:unsignedInt">
+          <xs:annotation>
+            <xs:documentation>CPE fault codes</xs:documentation>
+          </xs:annotation>
+          <xs:enumeration value="9000">
+            <xs:annotation>
+              <xs:documentation>Method not supported</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9001">
+            <xs:annotation>
+              <xs:documentation>Request denied (no reason specified)</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9002">
+            <xs:annotation>
+              <xs:documentation>Internal error</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9003">
+            <xs:annotation>
+              <xs:documentation>Invalid arguments</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9004">
+            <xs:annotation>
+              <xs:documentation>Resources exceeded</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9005">
+            <xs:annotation>
+              <xs:documentation>Invalid parameter name</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9006">
+            <xs:annotation>
+              <xs:documentation>Invalid parameter type</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9007">
+            <xs:annotation>
+              <xs:documentation>Invalid parameter value</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9008">
+            <xs:annotation>
+              <xs:documentation>Attempt to set a non-writable parameter</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9009">
+            <xs:annotation>
+              <xs:documentation>Notification request rejected</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9010">
+            <xs:annotation>
+              <xs:documentation>Download failure</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9011">
+            <xs:annotation>
+              <xs:documentation>Upload failure</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9012">
+            <xs:annotation>
+              <xs:documentation>File transfer server authentication failure</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="9013">
+            <xs:annotation>
+              <xs:documentation>Unsupported protocol for file transfer</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:unsignedInt">
+          <xs:annotation>
+            <xs:documentation>CPE Vendor fault codes</xs:documentation>
+          </xs:annotation>
+          <xs:minInclusive value="9800"/>
+          <xs:maxInclusive value="9899"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:unsignedInt">
+          <xs:annotation>
+            <xs:documentation>ACS fault codes</xs:documentation>
+          </xs:annotation>
+          <xs:enumeration value="8000">
+            <xs:annotation>
+              <xs:documentation>Method not supported</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="8001">
+            <xs:annotation>
+              <xs:documentation>Request denied (no reason specified)</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="8002">
+            <xs:annotation>
+              <xs:documentation>Internal error</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="8003">
+            <xs:annotation>
+              <xs:documentation>Invalid arguments</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="8004">
+            <xs:annotation>
+              <xs:documentation>Resources exceeded</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="8005">
+            <xs:annotation>
+              <xs:documentation>Retry request</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType>
+        <xs:restriction base="xs:unsignedInt">
+          <xs:annotation>
+            <xs:documentation>ACS Vendor fault codes</xs:documentation>
+          </xs:annotation>
+          <xs:minInclusive value="8800"/>
+          <xs:maxInclusive value="8899"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:element name="Fault">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FaultCode" type="tns:FaultCodeType"/>
+        <xs:element name="FaultString" type="xs:string" minOccurs="0"/>
+        <xs:element name="SetParameterValuesFault" minOccurs="0" maxOccurs="unbounded">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ParameterName" type="xs:string"/>
+              <xs:element name="FaultCode" type="tns:FaultCodeType"/>
+              <xs:element name="FaultString" type="xs:string" minOccurs="0"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!--
+       Type definitions used in messages
+  -->
+  <xs:complexType name="MethodList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="string" maxOccurs="unbounded">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="64"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="FaultStruct">
+    <xs:annotation>
+      <xs:documentation>Fault information for TransferComplete</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="FaultCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedInt">
+            <xs:annotation>
+              <xs:documentation>Transfer fault codes</xs:documentation>
+            </xs:annotation>
+            <xs:enumeration value="0">
+              <xs:annotation>
+                <xs:documentation>No fault</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9001">
+              <xs:annotation>
+                <xs:documentation>Request denied (no reason specified)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9002">
+              <xs:annotation>
+                <xs:documentation>Internal error</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9010">
+              <xs:annotation>
+                <xs:documentation>Download failure</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9011">
+              <xs:annotation>
+                <xs:documentation>Upload failure</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="9012">
+              <xs:annotation>
+                <xs:documentation>File transfer server authentication failure</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="FaultString">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="DeviceIdStruct">
+    <xs:sequence>
+      <xs:element name="Manufacturer">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="OUI">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:length value="6"/>
+            <xs:pattern value="[0-9A-F]{6}"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="ProductClass">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="SerialNumber">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="EventStruct">
+    <xs:sequence>
+      <xs:element name="EventCode">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+            <xs:pattern value="0 BOOTSTRAP"/>
+            <xs:pattern value="1 BOOT"/>
+            <xs:pattern value="2 PERIODIC"/>
+            <xs:pattern value="3 SCHEDULED"/>
+            <xs:pattern value="4 VALUE CHANGE"/>
+            <xs:pattern value="5 KICKED"/>
+            <xs:pattern value="6 CONNECTION REQUEST"/>
+            <xs:pattern value="7 TRANSFER COMPLETE"/>
+            <xs:pattern value="8 DIAGNOSTICS COMPLETE"/>
+            <xs:pattern value="9 REQUEST DOWNLOAD"/>
+            <xs:pattern value="M Reboot"/>
+            <xs:pattern value="M ScheduleInform"/>
+            <xs:pattern value="M Download"/>
+            <xs:pattern value="M Upload"/>
+            <xs:pattern value="M X_\S+"/> <!-- no spaces in method names -->
+            <xs:pattern value="X [0-9A-F]{6} .*"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EventList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="EventStruct" type="tns:EventStruct" minOccurs="0" maxOccurs="64"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ParameterValueStruct">
+    <xs:sequence>
+      <xs:element name="Name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Value" type="xs:anySimpleType"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ParameterValueList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="ParameterValueStruct" type="tns:ParameterValueStruct" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ParameterInfoStruct">
+    <xs:sequence>
+      <xs:element name="Name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Writable" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ParameterInfoList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="ParameterInfoStruct" type="tns:ParameterInfoStruct" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ParameterNames">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="string" minOccurs="1" maxOccurs="unbounded">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="256"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="ParameterKeyType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="AccessList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="string" minOccurs="0" maxOccurs="unbounded">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:maxLength value="64"/>
+                <xs:enumeration value="Subscriber"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="SetParameterAttributesStruct">
+    <xs:sequence>
+      <xs:element name="Name" nillable="true">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="NotificationChange" type="xs:boolean"/>
+      <xs:element name="Notification">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="0">
+              <xs:annotation>
+                <xs:documentation>Notification off. The CPE need not inform the ACS of a change to the specified parameter(s)</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1">
+              <xs:annotation>
+                <xs:documentation>Passive notification. Whenever the specified parameter value changes, the CPE MUST include the new value in the ParameterList in the Inform message that is sent the next time a session is established to the ACS</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+              <xs:annotation>
+                <xs:documentation>Active notification. Whenever the specified parameter value changes, the CPE MUST initiate a session to the ACS, and include the new value in the ParameterList in the associated Inform message</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AccessListChange" type="xs:boolean"/>
+      <xs:element name="AccessList" type="tns:AccessList"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="SetParameterAttributesList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="SetParameterAttributesStruct" type="tns:SetParameterAttributesStruct" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ParameterAttributeStruct">
+    <xs:sequence>
+      <xs:element name="Name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Notification">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="0"/>
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="AccessList" type="tns:AccessList"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ParameterAttributeList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="ParameterAttributeStruct" type="tns:ParameterAttributeStruct" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="QueuedTransferStruct">
+    <xs:sequence>
+      <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+      <xs:element name="State">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="1">
+              <xs:annotation>
+                <xs:documentation>1 - Not yet started</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+              <xs:annotation>
+                <xs:documentation>2 - In progress</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+              <xs:annotation>
+                <xs:documentation>3 - Completed</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TransferList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="QueuedTransferStruct" type="tns:QueuedTransferStruct" minOccurs="0" maxOccurs="16"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="VoucherList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="base64" type="soapenc:base64" minOccurs="1" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="OptionStruct">
+    <xs:sequence>
+      <xs:element name="OptionName">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="VoucherSN" type="xs:unsignedInt"/>
+      <xs:element name="State">
+        <xs:simpleType>
+          <xs:restriction base="xs:unsignedInt">
+            <xs:enumeration value="0">
+              <xs:annotation>
+                <xs:documentation>Option is disabled and not setup</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1">
+              <xs:annotation>
+                <xs:documentation>Option is enabled and not setup</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+              <xs:annotation>
+                <xs:documentation>Option is disabled and setup</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="3">
+              <xs:annotation>
+                <xs:documentation>Option is enabled and setup</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Mode">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="0">
+              <xs:annotation>
+                <xs:documentation>0 - Disabled</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1">
+              <xs:annotation>
+                <xs:documentation>1 - Enabled with expiration</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="2">
+              <xs:annotation>
+                <xs:documentation>2 - Enabled without expiration</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="StartDate" type="xs:dateTime"/>
+      <xs:element name="ExpirationDate" type="xs:dateTime" minOccurs="0"/>
+      <xs:element name="IsTransferable">
+        <xs:simpleType>
+          <xs:restriction base="xs:int">
+            <xs:enumeration value="0">
+              <xs:annotation>
+                <xs:documentation>Non-transferable</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+            <xs:enumeration value="1">
+              <xs:annotation>
+                <xs:documentation>Transferable</xs:documentation>
+              </xs:annotation>
+            </xs:enumeration>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="OptionList">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="OptionStruct" type="tns:OptionStruct" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ArgStruct">
+    <xs:sequence>
+      <xs:element name="Name">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="64"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Value">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="256"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="FileTypeArg">
+    <xs:complexContent>
+      <xs:restriction base="soapenc:Array">
+        <xs:sequence>
+          <xs:element name="ArgStruct" type="tns:ArgStruct" minOccurs="0" maxOccurs="16"/>
+        </xs:sequence>
+        <xs:attribute ref="soapenc:arrayType" use="required"/>
+      </xs:restriction>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:simpleType name="CommandKeyType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="ObjectNameType">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="256"/>
+      <xs:pattern value=".*\."/>
+    </xs:restriction>
+  </xs:simpleType>
+
+
+  <!--
+       Generic RPC Messages - Annex A.3.1
+  -->
+  <!-- GetRPCMethods -->
+  <xs:element name="GetRPCMethods">
+    <xs:annotation>
+      <xs:documentation>GeRPCMethods message - Annex A.3.1.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- GetRPCMethodsResponse -->
+  <xs:element name="GetRPCMethodsResponse">
+    <xs:annotation>
+      <xs:documentation>GeRPCMethodsResponse message - Annex A.3.1.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MethodList" type="tns:MethodList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+
+  <!--
+       CPE messages - Annex A.3.2
+  -->
+  <!-- SetParameterValues -->
+  <xs:element name="SetParameterValues">
+    <xs:annotation>
+      <xs:documentation>SetParameterValues message - Annex A.3.2.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterList" type="tns:ParameterValueList"/>
+        <xs:element name="ParameterKey" type="tns:ParameterKeyType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- SetParameterValuesResponse -->
+  <xs:element name="SetParameterValuesResponse">
+    <xs:annotation>
+      <xs:documentation>SetParameterValuesResponse message - Annex A.3.2.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Status">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="0">
+                <xs:annotation>
+                  <xs:documentation>All Parameter changes have been validated and applied</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>All Parameter changes have been validated and committed, but some or all are not yet applied (for example, if a reboot is required before the new values are applied)</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetParameterValues -->
+  <xs:element name="GetParameterValues">
+    <xs:annotation>
+      <xs:documentation>GetParameterValues message - Annex A.3.2.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterNames" type="tns:ParameterNames"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetParameterValuesResponse -->
+  <xs:element name="GetParameterValuesResponse">
+    <xs:annotation>
+      <xs:documentation>GetParameterValuesResponse message - Annex A.3.2.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterList" type="tns:ParameterValueList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetParameterNames -->
+  <xs:element name="GetParameterNames">
+    <xs:annotation>
+      <xs:documentation>GetParameterNames message - Annex A.3.2.3</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterPath" nillable="true">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="NextLevel" type="xs:boolean"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetParameterNamesResponse -->
+  <xs:element name="GetParameterNamesResponse">
+    <xs:annotation>
+      <xs:documentation>GetParameterNamesResponse message - Annex A.3.2.3</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterList" type="tns:ParameterInfoList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- SetParameterAttributes -->
+  <xs:element name="SetParameterAttributes">
+    <xs:annotation>
+      <xs:documentation>SetParameterAttributes message - Annex A.3.2.4</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterList" type="tns:SetParameterAttributesList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- SetParameterAttributesResponse -->
+  <xs:element name="SetParameterAttributesResponse">
+    <xs:annotation>
+      <xs:documentation>SetParameterAttributesResponse message - Annex A.3.2.4</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- GetParameterAttributes -->
+  <xs:element name="GetParameterAttributes">
+    <xs:annotation>
+      <xs:documentation>GetParameterAttributes message - Annex A.3.2.5</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterNames" type="tns:ParameterNames"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetParameterAttributesResponse -->
+  <xs:element name="GetParameterAttributesResponse">
+    <xs:annotation>
+      <xs:documentation>GetParameterAttributesResponse message - Annex A.3.2.5</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ParameterList" type="tns:ParameterAttributeList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- AddObject -->
+  <xs:element name="AddObject">
+    <xs:annotation>
+      <xs:documentation>AddObject message - Annex A.3.2.6</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ObjectName" type="tns:ObjectNameType"/>
+        <xs:element name="ParameterKey" type="tns:ParameterKeyType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- AddObjectResponse -->
+  <xs:element name="AddObjectResponse">
+    <xs:annotation>
+      <xs:documentation>AddObjectResponse message - Annex A.3.2.6</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="InstanceNumber">
+          <xs:simpleType>
+            <xs:restriction base="xs:unsignedInt">
+              <xs:minInclusive value="1"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Status">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="0">
+                <xs:annotation>
+                  <xs:documentation>The object has been created</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>The object creation has been validated and committed, but not yet applied</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- DeleteObject -->
+  <xs:element name="DeleteObject">
+    <xs:annotation>
+      <xs:documentation>DeleteObject message - Annex A.3.2.7</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ObjectName" type="tns:ObjectNameType"/>
+        <xs:element name="ParameterKey" type="tns:ParameterKeyType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- DeleteObjectResponse -->
+  <xs:element name="DeleteObjectResponse">
+    <xs:annotation>
+      <xs:documentation>DeleteObjectResponse message - Annex A.3.2.7</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Status">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="0">
+                <xs:annotation>
+                  <xs:documentation>The object has been deleted</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>The object deletion has been validated and committed, but not yet applied</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Download -->
+  <xs:element name="Download">
+    <xs:annotation>
+      <xs:documentation>Download message - Annex A.3.2.8</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+        <xs:element name="FileType">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="64"/>
+              <xs:pattern value="1 Firmware Upgrade Image"/>
+              <xs:pattern value="2 Web Content"/>
+              <xs:pattern value="3 Vendor Configuration File"/>
+              <xs:pattern value="X [0-9A-F]{6} .*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="URL">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Username">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Password">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="FileSize" type="xs:unsignedInt"/>
+        <xs:element name="TargetFileName">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="DelaySeconds" type="xs:unsignedInt"/>
+        <xs:element name="SuccessURL">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="FailureURL">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- DownloadResponse -->
+  <xs:element name="DownloadResponse">
+    <xs:annotation>
+      <xs:documentation>DownloadResponse message - Annex A.3.2.8</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Status">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="0">
+                <xs:annotation>
+                  <xs:documentation>Download has completed and been applied</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Download has not yet been completed and applied</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="StartTime" type="xs:dateTime"/>
+        <xs:element name="CompleteTime" type="xs:dateTime"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Reboot -->
+  <xs:element name="Reboot">
+    <xs:annotation>
+      <xs:documentation>Reboot message - Annex A.3.2.9</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- RebootResponse -->
+  <xs:element name="RebootResponse">
+    <xs:annotation>
+      <xs:documentation>RebootResponse message - Annex A.3.2.9</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+
+  <!--
+       Optional CPE messages - Annex A.4.1
+  -->
+  <!-- GetQueuedTransfers -->
+  <xs:element name="GetQueuedTransfers">
+    <xs:annotation>
+      <xs:documentation>GetQueuedTransfers message - Annex A.4.1.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- GetQueuedTransfersResponse -->
+  <xs:element name="GetQueuedTransfersResponse">
+    <xs:annotation>
+      <xs:documentation>GetQueuedTransfersResponse message - Annex A.4.1.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TransferList" type="tns:TransferList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ScheduleInform -->
+  <xs:element name="ScheduleInform">
+    <xs:annotation>
+      <xs:documentation>ScheduleInform message - Annex A.4.1.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DelaySeconds" type="xs:unsignedInt"/>
+        <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- ScheduleInformResponse -->
+  <xs:element name="ScheduleInformResponse">
+    <xs:annotation>
+      <xs:documentation>ScheduleInformResponse message - Annex A.4.1.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- SetVouchers -->
+  <xs:element name="SetVouchers">
+    <xs:annotation>
+      <xs:documentation>SetVouchers message - Annex A.4.1.3</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="VoucherList" type="tns:VoucherList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- SetVouchersResponse -->
+  <xs:element name="SetVouchersResponse">
+    <xs:annotation>
+      <xs:documentation>SetVouchersResponse message - Annex A.4.1.3</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- GetOptions -->
+  <xs:element name="GetOptions">
+    <xs:annotation>
+      <xs:documentation>GetOptions message - Annex A.4.1.4</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OptionName">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="64"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- GetOptionsResponse -->
+  <xs:element name="GetOptionsResponse">
+    <xs:annotation>
+      <xs:documentation>GetOptionsResponse message - Annex A.4.1.4</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OptionList" type="tns:OptionList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- Upload -->
+  <xs:element name="Upload">
+    <xs:annotation>
+      <xs:documentation>Upload message - Annex A.4.1.5</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+        <xs:element name="FileType">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="64"/>
+              <xs:pattern value="1 Vendor Configuration File"/>
+              <xs:pattern value="2 Vendor Log File"/>
+              <xs:pattern value="X [0-9A-F]{6} .*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="URL">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Username">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Password">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="DelaySeconds" type="xs:unsignedInt"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- UploadResponse -->
+  <xs:element name="UploadResponse">
+    <xs:annotation>
+      <xs:documentation>UploadResponse message - Annex A.4.1.5</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Status">
+          <xs:simpleType>
+            <xs:restriction base="xs:int">
+              <xs:enumeration value="0">
+                <xs:annotation>
+                  <xs:documentation>Upload has been completed</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="1">
+                <xs:annotation>
+                  <xs:documentation>Upload has not yet completed</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="StartTime" type="xs:dateTime"/>
+        <xs:element name="CompleteTime" type="xs:dateTime"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- FactoryReset -->
+  <xs:element name="FactoryReset">
+    <xs:annotation>
+      <xs:documentation>FactoryReset message - Annex A.4.1.6</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+  <!-- FactoryResetResponse -->
+  <xs:element name="FactoryResetResponse">
+    <xs:annotation>
+      <xs:documentation>FactoryResetResponse message - Annex A.4.1.6</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+
+  <!--
+       ACS messages - Annex A.3.3
+  -->
+  <!-- Inform -->
+  <xs:element name="Inform">
+    <xs:annotation>
+      <xs:documentation>Inform message - Annex A.3.3.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="DeviceId" type="tns:DeviceIdStruct"/>
+        <xs:element name="Event" type="tns:EventList"/>
+        <xs:element name="MaxEnvelopes" type="xs:unsignedInt"/>
+        <xs:element name="CurrentTime" type="xs:dateTime"/>
+        <xs:element name="RetryCount" type="xs:unsignedInt"/>
+        <xs:element name="ParameterList" type="tns:ParameterValueList"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- InformResponse -->
+  <xs:element name="InformResponse">
+    <xs:annotation>
+      <xs:documentation>InformResponse message - Annex A.3.3.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="MaxEnvelopes" type="xs:unsignedInt"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- TransferComplete -->
+  <xs:element name="TransferComplete">
+    <xs:annotation>
+      <xs:documentation>TransferComplete message - Annex A.3.3.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CommandKey" type="tns:CommandKeyType"/>
+        <xs:element name="FaultStruct" type="tns:FaultStruct"/>
+        <xs:element name="StartTime" type="xs:dateTime"/>
+        <xs:element name="CompleteTime" type="xs:dateTime"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- TransferCompleteResponse -->
+  <xs:element name="TransferCompleteResponse">
+    <xs:annotation>
+      <xs:documentation>TransferCompleteResponse message - Annex A.3.3.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+
+  <!--
+       Optional ACS messages - Annex A.4.2
+  -->
+  <!-- Kicked -->
+  <xs:element name="Kicked">
+    <xs:annotation>
+      <xs:documentation>Kicked message - Annex A.4.2.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="Command">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="32"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Referer">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="64"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Arg">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="256"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="Next">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="1024"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- KickedResponse -->
+  <xs:element name="KickedResponse">
+    <xs:annotation>
+      <xs:documentation>KickedResponse message - Annex A.4.2.1</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="NextURL">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="1024"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- RequestDownload -->
+  <xs:element name="RequestDownload">
+    <xs:annotation>
+      <xs:documentation>RequestDownload message - Annex A.4.2.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="FileType">
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:maxLength value="64"/>
+              <xs:pattern value="1 Firmware Upgrade Image"/>
+              <xs:pattern value="2 Web Content"/>
+              <xs:pattern value="3 Vendor Configuration File"/>
+              <xs:pattern value="X [0-9A-F]{6} .*"/>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:element>
+        <xs:element name="FileTypeArg" type="tns:FileTypeArg"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+
+  <!-- RequestDownloadResponse -->
+  <xs:element name="RequestDownloadResponse">
+    <xs:annotation>
+      <xs:documentation>RequestDownloadResponse message - Annex A.4.2.2</xs:documentation>
+    </xs:annotation>
+    <xs:complexType/>
+  </xs:element>
+
+</xs:schema>

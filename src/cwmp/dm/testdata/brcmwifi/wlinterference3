@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xinterference" ] ; then
+  echo "Auto Wireless LAN Interference mitigation is enabled and not active. (mode 3)"
+fi
+exit 0

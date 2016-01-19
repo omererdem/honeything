@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 google.com vendor device model for GVSB.
+
+  Summary:
+  GVSB configuration
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:google-com:x-gvsb-1-0">
+  <model name="X_GOOGLE-COM_GVSB:1.1" isService="true">
+    <parameter name="GvsbServer" access="readWrite">
+      <description>URL of the GVSB server.</description>
+      <syntax>
+        <string>
+          <size maxLength="2000"/>
+        </string>
+      </syntax>
+    </parameter>
+    <parameter name="GvsbChannelLineup" access="readWrite">
+      <description>Identifier for the current channel lineup.</description>
+      <syntax>
+        <base64>
+          <size minLength="1" maxLength="64"/>
+        </base64>
+      </syntax>
+    </parameter>
+    <parameter name="GvsbKick" access="readWrite">
+      <description>Current Kick value. Whenever the Kick value changes, device will re-fetch the channel list.</description>
+      <syntax>
+        <string>
+          <size maxLength="64"/>
+        </string>
+      </syntax>
+    </parameter>
+    <parameter name="EpgPrimary" access="readWrite">
+      <description>Multicast IP address and port of the primary EPG feed. For example, "224.254.1.1:5000"</description>
+      <syntax>
+        <string>
+          <size maxLength="128"/>
+        </string>
+      </syntax>
+    </parameter>
+    <parameter name="EpgSecondary" access="readWrite">
+      <description>Multicast IP address and port of the secondary EPG feed. For example, "224.254.1.2:5000"</description>
+      <syntax>
+        <string>
+          <size maxLength="128"/>
+        </string>
+      </syntax>
+    </parameter>
+
+  </model>
+</dm:document>

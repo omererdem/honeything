@@ -1,0 +1,14 @@
+Source: pynetlinux
+Maintainer: Roman Lisagor <rlisagor+pynetlinux@gmail.com>
+Section: python
+Priority: optional
+Build-Depends: debhelper (>= 5.0.38), python-central (>= 0.5.6)
+Standards-Version: 3.7.2
+XS-Python-Version: all
+
+Package: python-pynetlinux
+Architecture: all
+Depends: ${python:Depends}
+XB-Python-Version: ${python:Versions}
+Description: Linux network configuration library for Python
+

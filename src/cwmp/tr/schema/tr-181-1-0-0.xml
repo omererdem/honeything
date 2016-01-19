@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device:1.5 Root Object definition
+
+  Notice:
+
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+    
+  Summary:
+    TR-069 Device:1.5 Root Object Definition.  Contains definitions of CWMP
+    retry parameters and additional parameters carried over from Internet-
+    GatewayDevice:1.x objects.
+  
+  Version History:
+    February 2010: tr-181-1-0-0.xml; corresponds to TR-181 Issue 1.
+                   * DeviceInfo: clarified DeviceID and added VendorConfig-
+                     File.{i}
+                   * ManagementServer: added EnableCWMP, DefaultActive-
+                     NotificationThrottle, CWMPRetryMinimumWaitInterval
+                     and CWMPRetryIntervalMultiplier
+                   * Time: added Enable and Status (and Time:2 profile)
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-1"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-1 cwmp-datamodel-1-1.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-181-1-0-0">
+
+  <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+
+  <import file="tr-106-1-2.xml" spec="urn:broadband-forum-org:tr-106-1-2">
+    <component name="_DeviceInfo" ref="DeviceInfo"/>
+    <component name="_ManagementServer" ref="ManagementServer"/>
+    <component name="GatewayInfo"/>
+    <component name="Config"/>
+    <component name="_Time" ref="Time"/>
+    <component name="UserInterface"/>
+    <component name="LAN"/>
+  </import>
+
+  <import file="tr-157-1-1.xml" spec="urn:broadband-forum-org:tr-157-1-1">
+    <model name="Device:1.4"/>
+  </import>
+
+  <component name="DeviceInfoDiffs">
+    <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ManufacturerOUI" access="readOnly">
+        <description action="append">Any change would indicate that it's a new device and would therefore require a BOOTSTRAP Inform.</description>
+      </parameter>
+      <parameter base="ProductClass" access="readOnly">
+        <description action="append">Any change would indicate that it's a new device and would therefore require a BOOTSTRAP Inform.</description>
+      </parameter>
+      <parameter base="SerialNumber" access="readOnly">
+        <description action="append">Any change would indicate that it's a new device and would therefore require a BOOTSTRAP Inform.</description>
+      </parameter>
+      <parameter name="VendorConfigFileNumberOfEntries" access="readOnly">
+        <description>The number of entries in the {{object|VendorConfigFile}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="DeviceInfo.VendorConfigFile.{i}." access="readOnly" numEntriesParameter="VendorConfigFileNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <description>Every instance of this object is a Vendor Configuration File, and contains parameters associated with the Vendor Configuration File.
+This table of Vendor Configuration Files is for information only and does not allow the ACS to operate on these files in any way.
+Whenever the CPE successfully downloads a configuration file as a result of the Download RPC with the FileType argument of ''3 Vendor Configuration File'', the CPE MUST update this table.  If the name of the file (determined as described in the definition of the {{param|Name}} parameter) differs from that of any existing instance, then the CPE MUST create a new instance to represent this file.  If instead, the name of the file is identical to that of an existing instance, then the CPE MUST update the content of the existing instance with the new version, date, and (optionally) description of the file.{{nokeys}}</description>
+      <uniqueKey>
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Name" access="readOnly">
+        <description>Name of the vendor configuration file.
+If the CPE is able to obtain the name of the configuration file from the file itself, then the value of this parameter MUST be set to that name.
+Otherwise, if the CPE can extract the file name from the URL used to download the configuration file, then the value of this parameter MUST be set to that name.
+Otherwise, the value of this parameter MUST be set to the value of the TargetFileName argument of the Download RPC used to download this configuration file.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Version" access="readOnly">
+        <description>A string identifying the configuration file version currently used in the CPE.
+If the CPE is able to obtain the version of the configuration file from the file itself, then the value of this parameter MUST be set to the obtained value.
+Otherwise, the value of this parameter MUST be {{empty}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="16"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Date" access="readOnly">
+        <description>Date and time when the content of the current version of this vendor configuration file was first applied by the CPE.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="Description" access="readOnly">
+        <description>A description of the vendor configuration file (human-readable string).</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <component name="ManagementServerDiffs">
+    <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="EnableCWMP" access="readWrite" dmr:previousParameter="">
+        <description>Enables and disables the CPE's support for CWMP. 
+{{false}} means that CWMP support in the CPE is disabled, in which case the device MUST NOT send any Inform messages to the ACS or accept any Connection Request notifications from the ACS.
+{{true}} means that CWMP support on the CPE is enabled.
+The subscriber can re-enable the CPE's CWMP support either by performing a factory reset or by using a LAN-side protocol to change the value of this parameter back to {{true}}.</description>
+        <syntax>
+          <boolean/>
+          <default type="factory" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultActiveNotificationThrottle" access="readWrite" dmr:previousParameter="DownloadProgressURL">
+        <description>This parameter is used to control throttling of active notifications sent by the CPE to the ACS.  It defines the minimum number of seconds that the CPE MUST wait since the end of the last session with the ACS before establishing a new session for the purpose of delivering an active notification.
+In other words, if CPE needs to establish a new session with the ACS for the sole purpose of delivering an active notification, it MUST delay establishing such a session as needed to ensure that the minimum time since the last session completion has been met.
+The time is counted since the last successfully completed session, regardless of whether or not it was used for active notifications or other purposes. However, if connection to the ACS is established for purposes other than just delivering active notifications, including for the purpose of retrying a failed session, such connection MUST NOT be delayed based on this parameter value, and the pending active notifications MUST be communicated during that connection.
+The time of the last session completion does not need to be tracked across reboots.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CWMPRetryMinimumWaitInterval" access="readWrite">
+        <description>Configures the first session retry wait interval, in seconds, as specified in {{bibref|TR-069a2|section 3.2.1.1}}.
+A value of 5 corresponds to the default behavior that is described in {{bibref|TR-069a2}}.
+The device MUST use a random value between {{param}}  and ({{param}} * {{param|CWMPRetryIntervalMultiplier}} / 1000) as the first retry wait interval.  Other values in the retry pattern MUST be calculated using this value as a starting point.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="CWMPRetryIntervalMultiplier" access="readWrite">
+        <description>Configures the retry interval multiplier as specified in {{bibref|TR-069a2|section 3.2.1.1}}.
+This value is expressed in units of 0.001.  Hence the values of the multiplier range between 1.000 and 65.535.
+A value of 2000 corresponds to the default behavior that is described in {{bibref|TR-069a2}}.
+The device MUST use a random value between {{param|CWMPRetryMinimumWaitInterval}}  and ({{param|CWMPRetryMinimumWaitInterval}} * {{param}} / 1000) as the first retry wait interval.  Other values in the retry pattern MUST be calculated using this value as a starting point.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1000" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <component name="TimeDiffs">
+    <object base="Time." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="Enable" access="readWrite" dmr:previousParameter="">
+        <description>Enables or disables the NTP or SNTP time client.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>Status of Time support on the CPE.  {{enum}}
+The {{enum|Unsynchronized}} value indicates that the CPE's absolute time has not yet been set.
+The {{enum|Synchronized}} value indicates that the CPE has acquired accurate absolute time; its current time is accurate.
+The {{enum|Error_FailedToSynchronize}} value indicates that the CPE failed to acquire accurate absolute time; its current time is not accurate.
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Unsynchronized"/>
+            <enumeration value="Synchronized"/>
+            <enumeration value="Error_FailedToSynchronize"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <profile name="Time:2" base="Time:1">
+      <object ref="Time." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+      </object>
+    </profile>
+  </component>
+
+  <component name="DeviceInfo">
+    <component ref="_DeviceInfo"/>
+    <component ref="DeviceInfoDiffs"/>
+  </component>
+
+  <component name="ManagementServer">
+    <component ref="_ManagementServer"/>
+    <component ref="ManagementServerDiffs"/>
+  </component>
+
+  <component name="Time">
+    <component ref="_Time"/>
+    <component ref="TimeDiffs"/>
+  </component>
+
+  <model name="Device:1.5" base="Device:1.4">
+    <component path="Device." ref="DeviceInfoDiffs"/>
+    <component path="Device." ref="ManagementServerDiffs"/>
+    <component path="Device." ref="TimeDiffs"/>
+  </model>
+
+</dm:document>

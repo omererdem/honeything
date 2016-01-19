@@ -1,0 +1,9 @@
+MANIFEST
+dist
+build
+*.pyc
+debian/python-pynetlinux
+debian/files
+debian/*.debhelper
+debian/*.substvars
+

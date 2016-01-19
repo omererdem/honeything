@@ -1,0 +1,394 @@
+#!/bin/sh
+
+if [ x"$1" = "xassoclist" ] ; then
+  echo "assoclist A0:B0:C0:00:00:01"
+  echo "assoclist A0:B0:C0:00:00:02"
+  echo "assoclist A0:B0:C0:00:00:03"
+fi
+
+if [ x"$1" = "xsta_info" ] && [ x"$2" = x"A0:B0:C0:00:00:01" ] ; then
+echo "STA A0:B0:C0:00:00:01:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 48 54 ]"
+echo "   idle 1 seconds"
+echo "   in network 11 seconds"
+echo "   state: AUTHENTICATED ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 1"
+echo "   tx failures: 2"
+echo "   rx ucast pkts: 3"
+echo "   rx mcast/bcast pkts: 4"
+echo "   rate of last tx pkt: 1000 kbps"
+echo "   rate of last rx pkt: 1000 kbps"
+echo "   rx decrypt succeeds: 5"
+echo "   rx decrypt failures: 6"
+fi
+
+if [ x"$1" = "xsta_info" ] && [ x"$2" = x"A0:B0:C0:00:00:02" ] ; then
+echo "STA A0:B0:C0:00:00:02:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 48 ]"
+echo "   idle 2 seconds"
+echo "   in network 22 seconds"
+echo "   state: ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 7"
+echo "   tx failures: 8"
+echo "   rx ucast pkts: 9"
+echo "   rx mcast/bcast pkts: 10"
+echo "   rate of last tx pkt: 2000 kbps"
+echo "   rate of last rx pkt: 2000 kbps"
+echo "   rx decrypt succeeds: 11"
+echo "   rx decrypt failures: 12"
+fi
+
+if [ x"$1" = "xsta_info" ] && [ x"$2" = x"A0:B0:C0:00:00:03" ] ; then
+echo "STA A0:B0:C0:00:00:03:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 ]"
+echo "   idle 3 seconds"
+echo "   in network 33 seconds"
+echo "   state: AUTHENTICATED ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 13"
+echo "   tx failures: 14"
+echo "   rx ucast pkts: 15"
+echo "   rx mcast/bcast pkts: 16"
+echo "   rate of last tx pkt: 3000 kbps"
+echo "   rate of last rx pkt: 3000 kbps"
+echo "   rx decrypt succeeds: 17"
+echo "   rx decrypt failures: 18"
+fi
+
+if [ x"$1" = "xbss" ] ; then
+  echo "up"
+fi
+
+if [ x"$1" = "xchannel" ] ; then
+  echo "# wl channel"
+  echo "No scan in progress."
+  echo "current mac channel     1"
+  echo "target channel  2"
+fi
+
+if [ x"$1" = "xchannels" ] ; then
+  echo "1 2 3 4 5 6 7 8 9 10 11 36 40 44 48 52 56 60 64 100 104 108 112 116 120 124 128 132 136 140 149 153 157 161 165"
+fi
+
+if [ x"$1" = "xclosed" ] ; then
+  echo "0"
+fi
+
+if [ x"$1" = "xcounters" ] ; then
+  echo "txframe 1 txbyte 2 txretrans 3 txerror 4 rxframe 5 rxbyte 6 rxerror 7"
+  echo "txprshort 8 txdmawar 9 txnobuf 10 txnoassoc 11 txchit 12 txcmiss 13"
+  echo "reset 14 txserr 15 txphyerr 16 txphycrs 17 txfail 18 tbtt 19"
+  echo "d11_txfrag 20 d11_txmulti 21 d11_txretry 22 d11_txretrie "
+  echo "d11_txrts 24 d11_txnocts 25 d11_txnoack 26 d11_txfrmsnt "
+  echo "rxcrc 28 rxnobuf 29 rxnondata 30 rxbadds 31 rxbadcm 32 rxdup 33 rxfragerr 34"
+  echo "rxrunt 35 rxgiant 36 rxnoscb 37 rxbadproto 38 rxbadsrcmac 39"
+  echo "d11_rxfrag 40 d11_rxmulti 41 d11_rxundec "
+  echo "rxctl 42 rxbadda 43 rxfilter 44"
+  echo "rxuflo: 45 46 47 48 49 50"
+  echo "txallfrm 51 txrtsfrm 52 txctsfrm 53 txackfrm 54"
+  echo "txdnlfrm 55 txbcnfrm 56 txtplunfl 57 txphyerr 58"
+  echo "txfunfl: 59 60 61 62 63 64"
+  echo
+  echo "tkipmicfaill 65 tkipicverr 66 tkipcntrmsr 67"
+  echo "tkipreplay 68 ccmpfmterr 69 ccmpreplay 70"
+  echo "ccmpundec 71 fourwayfail 72 wepundec 73"
+  echo "wepicverr 74 decsuccess 75 rxundec 76"
+  echo
+  echo "rxfrmtoolong 77 rxfrmtooshrt 78 rxinvmachdr 79 rxbadfcs 80"
+  echo "rxbadplcp 81 rxcrsglitch 82 rxstrt 83 rxdfrmucastmbss 84"
+  echo "rxmfrmucastmbss 85 rxcfrmucast 86 rxrtsucast 87 rxctsucast 88"
+  echo "rxackucast 89 rxdfrmocast 90 rxmfrmocast 91 rxcfrmocast 92"
+  echo "rxrtsocast 93 rxctsocast 94 rxdfrmmcast 95 rxmfrmmcast 96"
+  echo "rxcfrmmcast 97 rxbeaconmbss 98 rxdfrmucastobss 99 rxbeaconobss 100"
+  echo "rxrsptmout 101 bcntxcancl 102 rxf0ovfl 103 rxf1ovfl 104"
+  echo "rxf2ovfl 105 txsfovfl 106 pmqovfl 107"
+  echo "rxcgprqfrm 108 rxcgprsqovfl 109 txcgprsfail 110 txcgprssuc 111"
+  echo "prs_timeout 112 rxnack 113 frmscons 114 txnack 115 txglitch_nack 116"
+  echo "txburst 117 txphyerror 118"
+  echo "txchanrej 119"
+  echo "rx1mbps 120 rx2mbps 121 rx5mbps5 122"
+  echo "rx6mbps 123 rx9mbps 124 rx11mbps 125"
+  echo "rx12mbps 126 rx18mbps 127 rx24mbps 128"
+  echo "rx36mbps 129 rx48mbps 130 rx54mbps 131"
+  echo "pktengrxducast 132 pktengrxdmcast 133"
+  echo "txmpdu_sgi 134 rxmpdu_sgi 135 txmpdu_stbc 136 rxmpdu_stbc 137"
+fi
+
+if [ x"$1" = "xcountry" ] && [ x"$2" = "xlist" ]; then
+echo "Supported countries: country code and long name
+AF      AFGHANISTAN
+AL      ALBANIA
+DZ      ALGERIA
+AS      AMERICAN SAMOA
+AO      ANGOLA
+AI      ANGUILLA
+AG      ANTIGUA AND BARBUDA
+AR      ARGENTINA
+AM      ARMENIA
+AW      ARUBA
+AU      AUSTRALIA
+AT      AUSTRIA
+AZ      AZERBAIJAN
+BS      BAHAMAS
+BH      BAHRAIN
+0B
+BD      BANGLADESH
+BB      BARBADOS
+BY      BELARUS
+BE      BELGIUM
+BZ      BELIZE
+BJ      BENIN
+BM      BERMUDA
+BT      BHUTAN
+BO      BOLIVIA
+BA      BOSNIA AND HERZEGOVINA
+BW      BOTSWANA
+BR      BRAZIL
+IO      BRITISH INDIAN OCEAN TERRITORY
+BN      BRUNEI DARUSSALAM
+BG      BULGARIA
+BF      BURKINA FASO
+BI      BURUNDI
+KH      CAMBODIA
+CM      CAMEROON
+CA      CANADA
+CV      CAPE VERDE
+KY      CAYMAN ISLANDS
+CF      CENTRAL AFRICAN REPUBLIC
+TD      CHAD
+CL      CHILE
+CN      CHINA
+CX      CHRISTMAS ISLAND
+CO      COLOMBIA
+KM      COMOROS
+CG      CONGO
+CD      CONGO, THE DEMOCRATIC REPUBLIC OF THE
+CR      COSTA RICA
+CI      COTE D'IVOIRE
+HR      CROATIA
+CU      CUBA
+CY      CYPRUS
+CZ      CZECH REPUBLIC
+DK      DENMARK
+DJ      DJIBOUTI
+DM      DOMINICA
+DO      DOMINICAN REPUBLIC
+EC      ECUADOR
+EG      EGYPT
+SV      EL SALVADOR
+GQ      EQUATORIAL GUINEA
+ER      ERITREA
+EE      ESTONIA
+ET      ETHIOPIA
+FK      FALKLAND ISLANDS (MALVINAS)
+FO      FAROE ISLANDS
+FJ      FIJI
+FI      FINLAND
+FR      FRANCE
+GF      FRENCH GUIANA
+PF      FRENCH POLYNESIA
+TF      FRENCH SOUTHERN TERRITORIES
+GA      GABON
+GM      GAMBIA
+GE      GEORGIA
+GH      GHANA
+GI      GIBRALTAR
+DE      GERMANY
+GR      GREECE
+GD      GRENADA
+GP      GUADELOUPE
+GU      GUAM
+GT      GUATEMALA
+GG      GUERNSEY
+GN      GUINEA
+GW      GUINEA-BISSAU
+GY      GUYANA
+HT      HAITI
+VA      HOLY SEE (VATICAN CITY STATE)
+HN      HONDURAS
+HK      HONG KONG
+HU      HUNGARY
+IS      ICELAND
+IN      INDIA
+ID      INDONESIA
+IQ      IRAQ
+IE      IRELAND
+IL      ISRAEL
+IT      ITALY
+JM      JAMAICA
+JP      JAPAN
+JE      JERSEY
+JO      JORDAN
+KZ      KAZAKHSTAN
+KE      KENYA
+KI      KIRIBATI
+KR      KOREA, REPUBLIC OF
+KW      KUWAIT
+0A
+KG      KYRGYZSTAN
+LA      LAO PEOPLE'S DEMOCRATIC REPUBLIC
+LV      LATVIA
+LB      LEBANON
+LS      LESOTHO
+LR      LIBERIA
+LY      LIBYAN ARAB JAMAHIRIYA
+LI      LIECHTENSTEIN
+LT      LITHUANIA
+LU      LUXEMBOURG
+MK      MACEDONIA, THE FORMER YUGOSLAV REPUBLIC OF
+MG      MADAGASCAR
+MW      MALAWI
+MO      MACAO
+MY      MALAYSIA
+MV      MALDIVES
+ML      MALI
+MT      MALTA
+IM      MAN, ISLE OF
+MQ      MARTINIQUE
+MR      MAURITANIA
+MU      MAURITIUS
+YT      MAYOTTE
+MX      MEXICO
+FM      MICRONESIA, FEDERATED STATES OF
+MD      MOLDOVA, REPUBLIC OF
+MC      MONACO
+MN      MONGOLIA
+ME      MONTENEGRO
+MS      MONTSERRAT
+MA      MOROCCO
+MZ      MOZAMBIQUE
+MM      MYANMAR
+NA      NAMIBIA
+NR      NAURU
+NP      NEPAL
+NL      NETHERLANDS
+AN      NETHERLANDS ANTILLES
+NC      NEW CALEDONIA
+NZ      NEW ZEALAND
+NI      NICARAGUA
+NE      NIGER
+NG      NIGERIA
+NU      NIUE
+NF      NORFOLK ISLAND
+MP      NORTHERN MARIANA ISLANDS
+NO      NORWAY
+OM      OMAN
+PK      PAKISTAN
+PW      PALAU
+PA      PANAMA
+PG      PAPUA NEW GUINEA
+PY      PARAGUAY
+PE      PERU
+PH      PHILIPPINES
+PL      POLAND
+PT      PORTUGAL
+PR      PUERTO RICO
+QA      QATAR
+RE      REUNION
+RO      ROMANIA
+RW      RWANDA
+KN      SAINT KITTS AND NEVIS
+LC      SAINT LUCIA
+MF
+RU      RUSSIAN FEDERATION
+PM      SAINT PIERRE AND MIQUELON
+VC      SAINT VINCENT AND THE GRENADINES
+WS      SAMOA
+SM      SAN MARINO
+ST      SAO TOME AND PRINCIPE
+SA      SAUDI ARABIA
+SN      SENEGAL
+RS      SERBIA
+SC      SEYCHELLES
+SL      SIERRA LEONE
+SG      SINGAPORE
+SK      SLOVAKIA
+SI      SLOVENIA
+SB      SOLOMON ISLANDS
+SO      SOMALIA
+ZA      SOUTH AFRICA
+ES      SPAIN
+LK      SRI LANKA
+SR      SURINAME
+SZ      SWAZILAND
+SE      SWEDEN
+CH      SWITZERLAND
+TW      TAIWAN, PROVINCE OF CHINA
+TJ      TAJIKISTAN
+TZ      TANZANIA, UNITED REPUBLIC OF
+TH      THAILAND
+TG      TOGO
+TO      TONGA
+TT      TRINIDAD AND TOBAGO
+TN      TUNISIA
+TR      TURKEY
+TM      TURKMENISTAN
+TC      TURKS AND CAICOS ISLANDS
+TV      TUVALU
+UG      UGANDA
+UA      UKRAINE
+AE      UNITED ARAB EMIRATES
+GB      UNITED KINGDOM
+US      UNITED STATES
+Q2
+UM      UNITED STATES MINOR OUTLYING ISLANDS
+UY      URUGUAY
+UZ      UZBEKISTAN
+VU      VANUATU
+VE      VENEZUELA
+VN      VIET NAM
+VG      VIRGIN ISLANDS, BRITISH
+VI      VIRGIN ISLANDS, U.S.
+WF      WALLIS AND FUTUNA
+0C
+EH      WESTERN SAHARA
+YE      YEMEN
+ZM      ZAMBIA
+ZW      ZIMBABWE
+Z2
+XA
+XB
+X0
+X1
+X2
+X3
+EU
+XS
+XW
+XX
+XY
+XZ
+XU
+XV
+XT
+B2"
+fi
+
+if [ x"$1" = "xcountry" ] ; then
+  echo "US (US/16) UNITED STATES"
+fi
+
+if [ x"$1" = "xinterference" ] ; then
+  echo "Auto Wireless LAN Interference mitigation is enabled and not active, and noise reduction is enabled. (mode 4)"
+fi
+
+if [ x"$1" = "xpwr_percent" ] ; then
+  echo "25"
+fi
+
+if [ x"$1" = "xradio" ] ; then
+  # This may look backwards, that radio off returns 0x001 while on returns
+  # 0x0000, but I assure you it is correct.
+  echo "0x0000"
+fi
+
+if [ x"$1" = "xrateset" ] ; then
+  echo "[ 1(b) 2(b) 5.5(b) 6 9 11(b) 12 18 24 36 48 54 ]"
+  echo "MCS SET : [ 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ]"
+fi
+
+if [ x"$1" = "xssid" ] ; then
+  echo "Current SSID: \"MySSID\""
+fi

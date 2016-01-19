@@ -1,0 +1,4 @@
+#!/bin/sh
+
+echo "If this were an actual device, we'd be REBOOTING NOW."
+exit 0

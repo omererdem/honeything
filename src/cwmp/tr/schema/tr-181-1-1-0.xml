@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device:1.8 Root Object definition
+
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+  
+  Summary:
+    TR-069 Device:1.5 Root Object Definition.  Contains definitions of CWMP
+    retry parameters and additional parameters carried over from Internet-
+    GatewayDevice:1.x objects.
+
+
+  Editors:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Tim Spets, Motorola Mobility
+
+  Editors Object Addressing Extensions:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Ping Fang, Huawei Technologies
+    Nils Magnusson, TeliaSonera
+    Anton Okmyanskiy, Cisco
+    Staffan Ungsgard, TeliaSonera
+
+  Editors Remote Management of non-TR-069 devices:
+    John Blackford, Pace
+    Ping Fang, Huawei Technologies
+    Tim Spets, Motorola Mobility
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Heather Kirksey, Alcatel-Lucent
+
+  Vice Chair: 
+    Jason Walls, UNH
+
+  Chief Editor: 
+    Michael Hanrahan, Huawei Technologies
+
+
+  Version History:
+    February 2010: tr-181-1-0-0.xml; corresponds to TR-181 Issue 1.
+                   * DeviceInfo: clarified DeviceID and added VendorConfig-
+                     File.{i}
+                   * ManagementServer: added EnableCWMP, DefaultActive-
+                     NotificationThrottle, CWMPRetryMinimumWaitInterval
+                     and CWMPRetryIntervalMultiplier
+                   * Time: added Enable and Status (and Time:2 profile)
+    July     2011: tr-181-1-1-0.xml; corresponds to TR-181 Issue 1 Amendment 1.
+
+
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd 
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-181-1-1-0" file="tr-181-1-1-0.xml">
+
+  <description>TR-181 Issue 1 Amendment 1</description>
+
+  <!-- import Alias DT definition -->
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="Alias"/>
+  </import>
+
+	<!-- imports components from tr-181-1-0 -->
+  <import file="tr-181-1-0.xml" spec="urn:broadband-forum-org:tr-181-1-0">
+    <component name="_ManagementServer" ref="ManagementServer"/>
+    <component name="GatewayInfo"/>
+    <component name="Config"/>
+    <component name="Time"/>
+    <component name="UserInterface"/>
+    <component name="_LAN" ref="LAN"/>
+  </import>
+
+	<!-- imports Device data model and components from tr-157-1-3 -->
+  <import file="tr-157-1-3.xml" spec="urn:broadband-forum-org:tr-157-1-3">
+    <component name="_DeviceInfo" ref="DeviceInfo"/>
+    <model name="Device:1.7"/>
+  </import>
+
+	<!-- imports modified/new common objects from tr-157-1-4 -->
+  <import file="tr-157-1-4.xml" spec="urn:broadband-forum-org:tr-157-1-4">
+    <component name="DI_VendorLogFilesDiffs"/>
+    <component name="DI_ProcessorsDiffs"/>
+    <component name="DI_SupportedDataModelDiffs"/>
+    <component name="DI_TemperatureStatusDiffs"/>
+    <component name="UserDiffs"/>
+    <component name="SmartCardReaderDiffs"/>
+    <component name="USBHosts_Device2Diffs"/>
+    <component name="PeriodicStatisticsDiffs"/>
+    <component name="DownloadAvailabilityDiffs"/>
+    <component name="SoftwareModulesDiffs"/>
+    <component name="NSLookupDiagDiffs"/>
+    
+    <!-- new in tr 157-1-4 -->
+    <component name="DI_ProxierInfo"/>
+  </import>
+
+  <!-- Update the DeviceInfo Component for the Device:1 data model -->
+  <component name="DeviceInfoDiffs">
+    <object base="DeviceInfo.VendorConfigFile.{i}." access="readOnly" numEntriesParameter="VendorConfigFileNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <component name="DeviceInfo">
+    <component ref="_DeviceInfo"/>
+    <component ref="DeviceInfoDiffs"/>
+  </component>
+
+  <!-- Update the LAN Component for the Device:1 data model -->
+  <component name="LANDiffs">
+    <object base="LAN.DHCPOption.{i}." access="readWrite" numEntriesParameter="DHCPOptionNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <component name="LAN">
+    <component ref="_LAN"/>
+    <component ref="LANDiffs"/>
+  </component>
+
+	<!-- Update the ManagementServer Component -->
+  <component name="ManagementServerDiffs">
+    <!-- new parameters -->
+    <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="AliasBasedAddressing" access="readOnly" forcedInform="true" dmr:previousParameter="NATDetected">
+        <description>Indicates whether or not the Alias-Based Addressing Mechanism is supported.
+A {{true}} value indicates that the CPE supports the Alias-Based Addressing Mechanism, as defined in {{bibref|TR-069a4|3.6.1}} and described in {{bibref|TR-069a4|Appendix II}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+
+      <parameter name="InstanceMode" access="readWrite">
+        <description>Instance identification mode as defined in {{bibref|TR-069a4|3.6.1}}. When {{param|AliasBasedAddressing}} is {{true}}, {{param}} is used by the ACS to control whether the CPE will use Instance Numbers or Instance Aliases in returned Path Names.  {{enum}} 
+This parameter is REQUIRED for any CPE supporting Alias-Based Addressing.
+        </description>
+        <syntax>
+          <string>
+            <enumeration value="InstanceNumber"/>
+            <enumeration value="InstanceAlias"/>
+          </string>
+          <default type="factory" value="InstanceNumber"/>
+        </syntax>
+      </parameter>
+
+      <parameter name="AutoCreateInstances" access="readWrite">
+        <description>Enable or disable the Auto-Create Instance Mechanism. When {{param|AliasBasedAddressing}} is {{true}}, {{param}} indicates whether or not the CPE will automatically create instances while processing a SetParameterValues RPC (as defined in {{bibref|TR-069a4|A.3.2.1}}).
+*A {{true}} value indicates that the CPE will perform auto-creation of instances when the Alias-Based Addressing Mechanism is used in SetParameterValues RPC.
+*A {{false}} value indicates that the CPE will not create new object instances. Instead, it will reject the setting of parameters in unrecognized instances and respond with a fault code.
+This parameter is REQUIRED for any CPE supporting Alias-Based Addressing.
+        </description>
+        <syntax>
+          <boolean/>
+          <default type="factory" value="false"/>
+        </syntax>
+      </parameter>
+
+    </object>
+
+  </component>
+
+  <component name="ManagementServer">
+    <component ref="_ManagementServer"/>
+    <component ref="ManagementServer"/>
+  </component>
+
+  <model name="Device:1.8" base="Device:1.7">
+		<!-- adds new objects from tr-157-1-4 -->
+    <component path="Device." ref="DI_ProxierInfo"/>
+
+		<!-- replace modified objects from tr-157-1-4 -->
+    <component path="Device." ref="DI_VendorLogFilesDiffs"/>
+    <component path="Device." ref="DI_ProcessorsDiffs"/>
+    <component path="Device." ref="DI_SupportedDataModelDiffs"/>
+    <component path="Device." ref="DI_TemperatureStatusDiffs"/>
+    <component path="Device." ref="UserDiffs"/>
+    <component path="Device." ref="SmartCardReaderDiffs"/>
+    <component path="Device." ref="USBHosts_Device2Diffs"/>
+    <component path="Device." ref="PeriodicStatisticsDiffs"/>
+    <component path="Device." ref="DownloadAvailabilityDiffs"/>
+    <component path="Device." ref="SoftwareModulesDiffs"/>
+    <component path="Device." ref="NSLookupDiagDiffs"/>
+
+		<!-- replace modified objects from tr-181-1-1 -->
+    <component path="Device." ref="DeviceInfoDiffs"/>
+    <component path="Device." ref="LANDiffs"/>
+    <component path="Device." ref="ManagementServerDiffs"/>
+
+  </model>
+
+</dm:document>

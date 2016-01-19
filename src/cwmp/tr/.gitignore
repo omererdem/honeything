@@ -1,0 +1,5 @@
+*.stamp
+*.pyc
+tr???_*.py*
+x_*.py*
+stamp.*

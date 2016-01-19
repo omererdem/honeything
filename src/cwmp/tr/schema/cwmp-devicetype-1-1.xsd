@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device Type Schema (DT Schema) v1.1
+
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+  Summary:
+    TR-069 Device Type Schema (DT Schema).  DT Instances describe individual
+    devices' support for TR-069 data models.
+
+  Version History:
+    September 2009: cwmp-devicetype-1-0.xsd, corresponds to TR-106 Amendment 3
+    November 2010: cwmp-devicetype-1-1.xsd, corresponds to TR-106 Amendment 5
+      - made import/@file attribute required for import element 
+      - removed size facet's default maxLength on string/base64/hexBinary 
+        parameters
+-->
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:broadband-forum-org:cwmp:devicetype-1-1" xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3" xmlns:dtf="urn:broadband-forum-org:cwmp:devicetype-features" targetNamespace="urn:broadband-forum-org:cwmp:devicetype-1-1" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+  <xs:import namespace="urn:broadband-forum-org:cwmp:datamodel-1-3" schemaLocation="cwmp-datamodel-1-3.xsd"/>
+  <xs:import namespace="urn:broadband-forum-org:cwmp:devicetype-features" schemaLocation="cwmp-devicetype-features.xsd"/>
+  <!-- Simple types -->
+  <xs:simpleType name="ActiveNotify">
+    <xs:annotation>
+      <xs:documentation>Parameter active notify support (based on dm:activeNotify).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="willDeny"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectAccess">
+    <xs:annotation>
+      <xs:documentation>Object access (based on dm:ProfileObjectAccess).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="readOnly"/>
+      <xs:enumeration value="create"/>
+      <xs:enumeration value="delete"/>
+      <xs:enumeration value="createDelete"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- Model groups -->
+  <xs:group name="AllBuiltinDataTypes">
+    <xs:annotation>
+      <xs:documentation>All built-in data types.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="base64">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="boolean">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="dateTime">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="hexBinary">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="int">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="instanceRef" type="tns:InstanceRefFacet"/>
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="long">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="string">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet"/>
+              <xs:element name="pathRef" type="tns:PathRefFacet"/>
+              <xs:element name="enumeration" type="tns:EnumerationFacet"/>
+              <xs:element name="enumerationRef" type="tns:EnumerationRefFacet"/>
+              <xs:element name="pattern" type="tns:PatternFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+        <xs:unique name="stringEnumerationValue">
+          <xs:selector xpath="enumeration"/>
+          <xs:field xpath="@value"/>
+        </xs:unique>
+        <xs:unique name="stringPatternValue">
+          <xs:selector xpath="pattern"/>
+          <xs:field xpath="@value"/>
+        </xs:unique>
+      </xs:element>
+      <xs:element name="unsignedInt">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="instanceRef" type="tns:InstanceRefFacet"/>
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="unsignedLong">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="AllFacets">
+    <xs:annotation>
+      <xs:documentation>All facets.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="size" type="tns:SizeFacet"/>
+      <xs:element name="instanceRef" type="tns:InstanceRefFacet"/>
+      <xs:element name="pathRef" type="tns:PathRefFacet"/>
+      <xs:element name="range" type="tns:RangeFacet"/>
+      <xs:element name="enumeration" type="tns:EnumerationFacet"/>
+      <xs:element name="enumerationRef" type="tns:EnumerationRefFacet"/>
+      <xs:element name="pattern" type="tns:PatternFacet"/>
+      <xs:element name="units" type="tns:UnitsFacet"/>
+    </xs:choice>
+  </xs:group>
+  <!-- Complex types -->
+  <xs:complexType name="Annotation">
+    <xs:annotation>
+      <xs:documentation>Annotation.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:anyAttribute namespace="##other"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="BaseAccessFacet" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Base facet (access attribute).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="access" type="dm:ReadWriteAccess" default="readWrite"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="BaseStatusFacet" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Base facet (no attributes).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="annotation" type="tns:Annotation" minOccurs="0"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="DefaultFacet">
+    <xs:annotation>
+      <xs:documentation>Default facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="type" type="dm:DefaultType" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Value MUST be valid for the data type.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EnumerationFacet">
+    <xs:annotation>
+      <xs:documentation>Enumeration facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+        <xs:attribute name="code" type="xs:integer"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EnumerationRefFacet">
+    <xs:annotation>
+      <xs:documentation>Enumeration reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet"/>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Import">
+    <xs:annotation>
+      <xs:documentation>Import data types and models (Root and Service Objects) from DM Instances.  All such items MUST be imported (this is checked by schema validation).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dataType">
+          <xs:complexType>
+            <xs:attribute name="name" type="dm:DataTypeName" use="required"/>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="model">
+          <xs:complexType>
+            <xs:attribute name="name" type="dm:ModelName" use="required"/>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="file" type="xs:anyURI" use="required">
+      <xs:annotation>
+        <xs:documentation>MUST be used to locate the DM Instance (B.2.1).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="spec" type="xs:anyURI">
+      <xs:annotation>
+        <xs:documentation>If specified, processing tools MUST regard a mismatch between this and the external document's spec attribute as an error.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="InstanceRefFacet">
+    <xs:annotation>
+      <xs:documentation>Instance number reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="targetParent" type="dm:ObjectReference" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ListFacet">
+    <xs:annotation>
+      <xs:documentation>List facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="size" type="tns:SizeFacet">
+              <xs:annotation>
+                <xs:documentation>This specifies the size of the TR-069 list-valued parameter, not of the individual list items.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="minItems" type="xs:nonNegativeInteger" default="0"/>
+        <xs:attribute name="maxItems" type="dm:MaxEntries" default="unbounded"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Model">
+    <xs:annotation>
+      <xs:documentation>Model (Root and Service Object) support details.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="annotation" type="tns:Annotation" minOccurs="0"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="parameter" type="tns:ModelParameter"/>
+        <xs:element name="object" type="tns:ModelObject">
+          <xs:unique name="objectParameterName">
+            <xs:selector xpath="parameter"/>
+            <xs:field xpath="@ref"/>
+          </xs:unique>
+        </xs:element>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="dm:ModelName" use="required"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ModelObject">
+    <xs:annotation>
+      <xs:documentation>Object support details</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="annotation" type="tns:Annotation" minOccurs="0"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="parameter" type="tns:ModelParameter"/>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="dm:ObjectName" use="required"/>
+    <xs:attribute name="access" type="tns:ObjectAccess" use="required"/>
+    <xs:attribute name="minEntries" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>minEntries MUST be greater than or equal to minEntries(DM), and less than or equal to maxEntries (all values are regarded as being less than "unbounded").</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maxEntries" type="dm:MaxEntries" use="required">
+      <xs:annotation>
+        <xs:documentation>maxEntries MUST be less than or equal to maxEntries(DM) (all values are regarded as being less than "unbounded").</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ModelParameter">
+    <xs:annotation>
+      <xs:documentation>Parameter support details.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="annotation" type="tns:Annotation" minOccurs="0"/>
+      <xs:element name="syntax" type="tns:Syntax" minOccurs="0"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="dm:ParameterName" use="required"/>
+    <xs:attribute name="access" type="dm:ReadWriteAccess" use="required"/>
+    <xs:attribute name="activeNotify" type="tns:ActiveNotify" default="normal"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="PathRefFacet">
+    <xs:annotation>
+      <xs:documentation>Path name reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="targetParent" type="dm:ObjectReferencePatterns" default=""/>
+        <xs:attribute name="targetType" type="dm:TargetType" default="any"/>
+        <xs:attribute name="targetDataType" type="dm:AnyTypeName" default="any"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PatternFacet">
+    <xs:annotation>
+      <xs:documentation>Pattern facet (pattern syntax is as in XML Schema).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="RangeFacet">
+    <xs:annotation>
+      <xs:documentation>Range facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="minInclusive" type="xs:integer"/>
+        <xs:attribute name="maxInclusive" type="xs:integer"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SizeFacet">
+    <xs:annotation>
+      <xs:documentation>Size facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="minLength" type="xs:nonNegativeInteger" default="0"/>
+        <xs:attribute name="maxLength" type="xs:nonNegativeInteger"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="DataTypeReference">
+    <xs:annotation>
+      <xs:documentation>Parameter data type anonymous restriction / extension.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="tns:AllFacets" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="base" type="dm:DataTypeName">
+      <xs:annotation>
+        <xs:documentation>If specified, content MUST NOT be empty.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="Syntax">
+    <xs:annotation>
+      <xs:documentation>Parameter syntax support details.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="list" type="tns:ListFacet" minOccurs="0"/>
+      <xs:choice>
+        <xs:group ref="tns:AllBuiltinDataTypes">
+          <xs:annotation>
+            <xs:documentation>Direct use of built-in data type, possibly modified via use of facets.</xs:documentation>
+          </xs:annotation>
+        </xs:group>
+        <xs:element name="dataType" type="tns:DataTypeReference">
+          <xs:annotation>
+            <xs:documentation>Use of named data type, possibly modified via use of facets.</xs:documentation>
+          </xs:annotation>
+          <xs:unique name="dtRefEnumerationValue">
+            <xs:selector xpath="enumeration"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+          <xs:unique name="dtRefPatternValue">
+            <xs:selector xpath="pattern"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+        </xs:element>
+      </xs:choice>
+      <xs:element name="default" type="tns:DefaultFacet" minOccurs="0"/>
+    </xs:sequence>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ToplevelFeature">
+    <xs:annotation>
+      <xs:documentation>Top-level feature.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="annotation" type="tns:Annotation" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="dtf:FeatureName" use="required"/>
+  </xs:complexType>
+  <xs:complexType name="UnitsFacet">
+    <xs:annotation>
+      <xs:documentation>Units facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="value" type="dm:UnitsString" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <!-- Elements -->
+  <xs:element name="document">
+    <xs:annotation>
+      <xs:documentation>CWMP Device Type XML Schema (DT Schema) instance documents can contain the following:
+* Imports (from DM Schema instance documents) of Root or Service Object definitions
+* Declarations of which features of imported Root or Service Objects are supported</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="annotation" type="tns:Annotation" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Top-level annotation.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="import" type="tns:Import" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Imported models (Root and Service Objects).</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="bibliography" type="dm:Bibliography" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Bibliographic references.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="feature" type="tns:ToplevelFeature" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Top-level features.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="model" type="tns:Model" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Details of support for model (Root and Service Object).</xs:documentation>
+          </xs:annotation>
+          <xs:unique name="modelParameterName">
+            <xs:selector xpath="parameter"/>
+            <xs:field xpath="@ref"/>
+          </xs:unique>
+          <xs:unique name="modelObjectName">
+            <xs:selector xpath="object"/>
+            <xs:field xpath="@ref"/>
+          </xs:unique>
+        </xs:element>
+      </xs:sequence>
+      <xs:attribute name="deviceType" use="required">
+        <xs:annotation>
+          <xs:documentation>URI indicating the device type associated with this DT Instance.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:anyURI">
+            <xs:pattern value=".+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+    </xs:complexType>
+    <xs:unique name="dataTypeName">
+      <xs:selector xpath="import/dataType"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:keyref name="dataTypeBase" refer="tns:dataTypeName">
+      <xs:selector xpath=".//parameter/syntax/dataType"/>
+      <xs:field xpath="@base"/>
+    </xs:keyref>
+    <xs:unique name="modelName">
+      <xs:selector xpath="import/model"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="modelRef">
+      <xs:selector xpath="model"/>
+      <xs:field xpath="@ref"/>
+    </xs:unique>
+    <xs:keyref name="modelDef" refer="tns:modelName">
+      <xs:selector xpath="model"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

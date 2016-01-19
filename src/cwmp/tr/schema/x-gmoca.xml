@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 google.com vendor device model for MoCA debugging.
+
+  Summary:
+  MoCA debugging information
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:google-com:x-gmoca-1-0">
+  <model name="X_GOOGLE-COM_GMOCA:1.0" isService="true">
+    <parameter name="DebugOutput" access="readOnly">
+      <description>Output of all moca-related debug commands.</description>
+      <syntax>
+        <base64>
+          <size maxLength="131072"/>
+        </base64>
+      </syntax>
+    </parameter>
+
+  </model>
+</dm:document>

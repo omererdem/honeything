@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 google.com vendor device model for Google Fiber TV debugging.
+
+  Summary:
+  Google Fiber TV debugging facility.
+
+  This data model implements a mailbox, a somewhat awkward concept to
+  represent in the tr-69 model. The ACS can write the name of the property
+  it wishes to access and the Node to access it on. The ACS can then issue
+  either a GetParameterValue to fetch the current Value of that TV property,
+  or a SetParameterValue to change it.
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:google-com:x-gfibertv-1-0">
+<import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+  <model name="X_GOOGLE-COM_GFIBERTV:1.0" isService="true">
+
+    <object name="X_GOOGLE_COM_GFIBERTV." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Container for parameters supporting the Google Fiber TV system.</description>
+      <parameter name="DevicePropertiesNumberOfEntries" access="readOnly">
+        <description>Number of instances of {{object|DeviceProperties}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="BtDevices" access="readWrite">
+        <description>The bluetooth devices config.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="BtHHDevices" access="readWrite">
+        <description>The bluetooth HH devices config.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="BtConfig" access="readWrite">
+        <description>The bluetooth device config.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="BtNoPairing" access="readWrite">
+        <description>Creates a file that will prevent the device from pairing with the remote control over bluetooth, which effectively forces IR mode.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <object name="DeviceProperties.{i}." access="readWrite" numEntriesParameter="DevicePropertiesNumberOfEntries" minEntries="0" maxEntries="16">
+        <parameter name="SerialNumber" access="readWrite">
+          <description>Serial number of the device.</description>
+          <syntax>
+            <string/>
+          </syntax>
+        </parameter>
+        <parameter name="NickName" access="readWrite">
+          <description>Nickname of the device.</description>
+          <syntax>
+            <string/>
+          </syntax>
+        </parameter>
+      </object>
+    </object>
+    <object name="X_GOOGLE_COM_GFIBERTV.Mailbox." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Mailbox to access properties from the Google Fiber TV system.</description>
+      <parameter name="Node" access="readWrite">
+        <description>The Node to operate on (generally the serial number of the remote GFHD100). All Mailbox requests should be sent to the GFMS100, which can relay requests to the various GFHD100 devices. If this parameter is empty or omitted, the local properties of the GFMS100 are consulted.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readWrite">
+        <description>Name of the property to operate on.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="Value" access="readWrite">
+        <description>Value of the property. Writing to this parameter will write the the corresponding {Node,Name} property in the GFiberTV system. Reading from this property will fetch the corresponding {Node,Name} property from the GFiberTV system.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="NodeList" access="readOnly">
+        <description>Available Nodes, i.e. the serial numbers of all connected GFHD100 devices.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+    </object>
+  </model>
+</dm:document>

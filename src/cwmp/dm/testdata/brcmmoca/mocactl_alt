@@ -1,0 +1,172 @@
+#!/bin/sh
+
+# Alternate values for various unit tests.
+
+if [ x"$1" = "xshow" ] && [ x"$2" = x"--initparms" ] ; then
+echo "        MoCA InitTime Configuration
+=============================================
+Operating Version          : 2.0
+Network Controller Mode    : AUTO
+SingleCh                   : on2
+Privacy                    : enabled
+Tx Pwr Control             : disabled
+Const Tx Mode              : Normal
+Continuous Rx Mode Attn    : 3 dBm
+Nv Params - Last Oper Freq : 999 Mhz
+Max Tx Power               : 3 dBm
+PasswordSize               : 17
+Password                   : 99999999999999999
+Mcast Mode                 : Broadcast Mode
+Laboratory Mode            : Normal
+Taboo Fixed Start Channel  : 17
+Taboo Fixed Channel Mask   : 0x00000000
+Taboo Left Mask            : 0x00ffffff
+Taboo Right Mask           : 0xffffff00
+Pwr Amplifier Driver Power : -7 dBm
+preferredNC                : preferred
+LED Mode                   : 0
+Backoff Mode               : fast
+RF Type                    : midlo
+Node Type                  : terminal
+Beacon Channel             : 999
+mrNonDefSeqNum             : 0
+EGR MC Addr Filter En      : 0
+lowPriQNum                 : 0
+qam256Capability           : off
+Freq Mask                  : 0xffffffff
+PNS Freq Mask              : 0xffffffff
+OTF En                     : 0
+Turbo En                   : 0
+Flow Control En            : 1
+Beacon Power Reduction     : 0
+Beacon Power Reduction En  : 1
+Persistent Stop            : 0
+MTM En                     : 0
+QAM1024 En                 : 0
+T50 Time Min               : 12
+T50 Time Max               : 20
+=============================================
+Password Hash              : 1234
+============================================="
+fi
+
+if [ x"$1" = "xshow" ] && [ x"$2" = x"--config" ] ; then
+echo "        MoCA Configuration
+==================================
+maxFrameSize                : 6148 bytes
+maxTransmitTime             : 400 uSec
+minBwAlarmThreshold         : 100 Mbps
+continuousIERRInsert        : off
+continuousIEMapInsert       : off
+maxPktAggr                  : 7 pkts
+minAggrWaitTime             : 0 us
+maxConstellationInfo (0-7)  : 10  10  10  10  10  10  10  10
+                    (8-15)  : 10  10  10  10  10  10  10  10
+pmkExchangeInterval         : 11 hrs
+tekExchangeInterval         : 9 min
+HighPrioAlloc (Resv:Limit)  : 1:300
+medPrioAlloc (Resv:Limit)   : 1:300
+lowPrioAlloc (Resv:Limit)   : 1:300
+snrMargin                   : 0.0dB
+minMapCycle                 : 809 micro secs
+maxMapCycle                 : 1800 micro secs
+rxTxPacketsPerQM            : 18
+extraRxPacketsPerQM         : 6
+targetPHYRateQAM128         : 245 mbps
+targetPHYRateQAM256         : 275 mbps
+targetPHYRateTurbo          : 380 mbps
+targetPHYRateTurboPlus      : 500 mbps
+nbasCappingEn               : 0
+selectiveRR                 : 3
+Frequency shift mode        : off
+snrMarginOffset             : 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0 0.0
+SapmTableEn                 : 0
+ArplTh                      : -50
+SapmTable:
+[  4=  0.0] [  5=  0.0] [  6=  0.0] [  7=  0.0] [  8=  0.0] [  9=  0.0] [ 10=
+[ 12=  0.0] [ 13=  0.0] [ 14=  0.0] [ 15=  0.0] [ 16=  0.0] [ 17=  0.0] [ 18=
+[ 20=  0.0] [ 21=  0.0] [ 22=  0.0] [ 23=  0.0] [ 24=  0.0] [ 25=  0.0] [ 26=
+[ 28=  0.0] [ 29=  0.0] [ 30=  0.0] [ 31=  0.0] [ 32=  0.0] [ 33=  0.0] [ 34=
+[ 36=  0.0] [ 37=  0.0] [ 38=  0.0] [ 39=  0.0] [ 40=  0.0] [ 41=  0.0] [ 42=
+[ 44=  0.0] [ 45=  0.0] [ 46=  0.0] [ 47=  0.0] [ 48=  0.0] [ 49=  0.0] [ 50=
+[ 52=  0.0] [ 53=  0.0] [ 54=  0.0] [ 55=  0.0] [ 56=  0.0] [ 57=  0.0] [ 58=
+[ 60=  0.0] [ 61=  0.0] [ 62=  0.0] [ 63=  0.0] [ 64=  0.0] [ 65=  0.0] [ 66=
+[ 68=  0.0] [ 69=  0.0] [ 70=  0.0] [ 71=  0.0] [ 72=  0.0] [ 73=  0.0] [ 74=
+[ 76=  0.0] [ 77=  0.0] [ 78=  0.0] [ 79=  0.0] [ 80=  0.0] [ 81=  0.0] [ 82=
+[ 84=  0.0] [ 85=  0.0] [ 86=  0.0] [ 87=  0.0] [ 88=  0.0] [ 89=  0.0] [ 90=
+[ 92=  0.0] [ 93=  0.0] [ 94=  0.0] [ 95=  0.0] [ 96=  0.0] [ 97=  0.0] [ 98=
+[100=  0.0] [101=  0.0] [102=  0.0] [103=  0.0] [104=  0.0] [105=  0.0] [106=
+[108=  0.0] [109=  0.0] [110=  0.0] [111=  0.0] [112=  0.0] [113=  0.0] [114=
+[141=  0.0] [142=  0.0] [143=  0.0] [144=  0.0] [145=  0.0] [146=  0.0] [147=
+[149=  0.0] [150=  0.0] [151=  0.0] [152=  0.0] [153=  0.0] [154=  0.0] [155=
+[157=  0.0] [158=  0.0] [159=  0.0] [160=  0.0] [161=  0.0] [162=  0.0] [163=
+[165=  0.0] [166=  0.0] [167=  0.0] [168=  0.0] [169=  0.0] [170=  0.0] [171=
+[173=  0.0] [174=  0.0] [175=  0.0] [176=  0.0] [177=  0.0] [178=  0.0] [179=
+[181=  0.0] [182=  0.0] [183=  0.0] [184=  0.0] [185=  0.0] [186=  0.0] [187=
+[189=  0.0] [190=  0.0] [191=  0.0] [192=  0.0] [193=  0.0] [194=  0.0] [195=
+[197=  0.0] [198=  0.0] [199=  0.0] [200=  0.0] [201=  0.0] [202=  0.0] [203=
+[205=  0.0] [206=  0.0] [207=  0.0] [208=  0.0] [209=  0.0] [210=  0.0] [211=
+[213=  0.0] [214=  0.0] [215=  0.0] [216=  0.0] [217=  0.0] [218=  0.0] [219=
+[221=  0.0] [222=  0.0] [223=  0.0] [224=  0.0] [225=  0.0] [226=  0.0] [227=
+[229=  0.0] [230=  0.0] [231=  0.0] [232=  0.0] [233=  0.0] [234=  0.0] [235=
+[237=  0.0] [238=  0.0] [239=  0.0] [240=  0.0] [241=  0.0] [242=  0.0] [243=
+[245=  0.0] [246=  0.0] [247=  0.0] [248=  0.0] [249=  0.0] [250=  0.0] [251=
+RlapmTableEn                : on
+RlapmTable:
+[  0= 0.0] [  1= 0.0] [  2= 0.0] [  3= 0.0] [  4= 0.0] [  5= 0.0] [  6= 0.0] [
+[  8= 0.0] [  9= 0.0] [ 10= 0.0] [ 11= 0.0] [ 12= 0.0] [ 13= 0.0] [ 14= 0.0] [
+[ 16= 0.0] [ 17= 0.0] [ 18= 0.0] [ 19= 0.0] [ 20= 0.0] [ 21= 0.5] [ 22= 0.5] [
+[ 24= 0.5] [ 25= 0.5] [ 26= 1.0] [ 27= 1.0] [ 28= 1.0] [ 29= 1.5] [ 30= 1.5] [
+[ 32= 2.5] [ 33= 3.0] [ 34= 3.5] [ 35= 4.0] [ 36= 4.5] [ 37= 5.5] [ 38= 6.5] [
+[ 40= 8.5] [ 41= 9.5] [ 42=10.5] [ 43=10.5] [ 44=11.5] [ 45=12.5] [ 46=13.5] [
+[ 48=14.5] [ 49=15.0] [ 50=15.0] [ 51=15.0] [ 52=16.0] [ 53=16.0] [ 54=16.0] [
+[ 56=16.0] [ 57=16.0] [ 58=16.0] [ 59=16.0] [ 60=16.0] [ 61=16.0] [ 62=16.0] [
+[ 64=16.0] [ 65=16.0]
+RlapmCap                    : 3.0dB
+Diplexer                    : 0
+Rx Power Tuning             : 0 (0 /w diplexer)
+EN Capable                  : 1
+EN Max Rate in Max BO       : 0
+HostQOSEn                   : 1
+loopbackEn                  : 0
+=================================="
+fi
+
+if [ x"$1" = "xshow" ] && [ x"$2" = x"--status" ] ; then
+echo "           MoCA Status(General)
+==================================
+vendorId                  : 32          HwVersion                 : 0x12345678
+SwVersion                 : 5.6.789     self MoCA Version         : 0x10
+networkVersionNumber      : 0x20        qam256Support             : supported
+operStatus                : Enabled     linkStatus                : Down
+connectedNodes BitMask    : 0x0         nodeId                    : 2
+ncNodeId                  : 1
+upTime                    : 00h:30m:29s
+linkUpTime                : 1h:00m:01s  backupNcId                : 2
+rfChannel                 : 999 Mhz     bwStatus                  : 0x0
+NodesUsableBitMask        : 0x0         NetworkTabooMask          : 0x0
+NetworkTabooStart         : 16          txGcdPowerReduction       : 255
+pqosEgressNumFlows        : 0           Num of connectedNodes     : 0
+ledStatus                 : 2
+==================================
+           MoCA Status(Extended)
+==================================
+lastPmkExchange           : 00h:00m:00s
+lastPmkInterval           : 0 sec
+lastTekExchange           : 00h:00m:00s
+lastTekInterval           : 0 sec
+PMK Even Key              : 00:00:00:00:00:00:00:00 (ACTIVE)
+PMK Odd Key               : 00:00:00:00:00:00:00:00
+TEK Even Key              : 00:00:00:00:00:00:00:00 (ACTIVE)
+TEK Odd Key               : 00:00:00:00:00:00:00:00
+==================================
+           MoCA Status(Misc)
+==================================
+MAC GUID                  : 00:11:22:33:44:55
+Are we Network Controller : no
+Driver Up Time            : 00h:30m:33s
+Link Reset Count          : 0
+=================================="
+fi
+
+exit 0

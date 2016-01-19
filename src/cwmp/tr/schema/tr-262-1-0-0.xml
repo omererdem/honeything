@@ -1,0 +1,1804 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--  
+  Femto Component Objects
+
+  Notice:
+
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+
+  Summary:
+    This document defines optional components for Femto for use in CWMP managed 
+    devices. The objects may exist at the top level of a hierarchy, or in some 
+    cases within an existing object. The objects are intended for use in all CWMP Root 
+    objects. The objects define varying functionality for Femto like:
+            - GPS
+            - Tunnel
+            - Performance Management
+            - Application Platform
+
+  Editor:
+    Klaus Wich, Nokia Siemens Networks
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Jason Walls, UNH
+
+  Version History:
+    * November 2011: tr-262-1-0-0.xml, corresponds to TR-262 Issue 1.
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-262-1-0-0" file="tr-262-1-0-0.xml">
+    
+    <description>TR-262 Issue 1 Femto Component Objects</description>
+    <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+        <dataType name="IPAddress" />
+        <dataType name="Alias" />
+    </import>
+    <component name="FAP">
+        <object name="FAP." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object is the container for all Femto related component objects, to prevent pollution of the so-called global namespace of the BBF with FAP specific objects.</description>
+        </object>
+    </component>
+    <component name="FAP_GPS">
+        <object name="FAP.GPS." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains the parameters relating to the GPS scan.</description>
+            <parameter name="ScanOnBoot" access="readWrite">
+                <description>
+                    Enables or disables GPS scans during the device start up.
+                </description>
+                <syntax>
+                    <boolean />
+                    <default type="factory" value="true" />
+                </syntax>
+            </parameter>
+            <parameter name="ScanPeriodically" access="readWrite">
+                <description>Enables or disables periodic GPS scans.</description>
+                <syntax>
+                    <boolean />
+                    <default type="factory" value="false" />
+                </syntax>
+            </parameter>
+            <parameter name="PeriodicInterval" access="readWrite">
+                <description>When {{param|ScanPeriodically}} is {{true}}, this value indicates the interval in {{units}} which GPS scan is performed.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="PeriodicTime" access="readWrite">
+                <description>
+                    An absolute time reference in UTC to determine when the CPE will initiate the periodic GPS scan. Each GPS scan MUST occur at (or as soon as possible after) this reference time plus or minus an integer multiple of the {{param|PeriodicInterval}}.
+                    {{param}} is used only to set the "phase" of the GPS scan. The actual value of {{param}} can be arbitrarily far into the past or future. 
+                    For example, if {{param|PeriodicInterval}} is 86400 (a day) and if {{param}} is set to UTC midnight on some day (in the past, present, or future) then periodic GPS scans will occur every day at UTC midnight. These MUST begin on the very next midnight, even if {{param}} refers to a day in the future. 
+                    The Unknown Time value defined in {{bibref|TR-106a4|Section 3.2}} indicates that no particular time reference is specified. That is, the CPE MAY locally choose the time reference, and needs only to adhere to the specified PeriodicInformInterval. 
+                    If absolute time is not available to the CPE, its periodic GPS scan behavior MUST be the same as if {{param}} parameter was set to the Unknown Time value.
+                </description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="ContinuousGPS" access="readWrite">
+                <description>
+                    Whether or not the device SHOULD maintain a continuous GPS lock (e.g. as a frequency stability source).
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="ScanTimeout" access="readWrite">
+                <description>
+                    Specifies the time-out value in {{units}} since the scan started after which the scan will time out. A timed out scan is to be reported as {{enum|Error_TIMEOUT|ScanStatus}} with {{param|ErrorDetails}} indicating "Timed out"
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="ScanStatus" access="readOnly">
+                <description>Indicates the current status of this scan.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Indeterminate">
+                            <description>The scan has not been executed and there are no valid scan results available</description>
+                        </enumeration>
+                        <enumeration value="InProgress" />
+                        <enumeration value="Success" />
+                        <enumeration value="Error" />
+                        <enumeration value="Error_TIMEOUT" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ErrorDetails" access="readOnly">
+                <description>Provides more detail when the {{param|ScanStatus}} is either {{enum|Error|ScanStatus}} or {{enum|Error_TIMEOUT|ScanStatus}}.</description>
+                <syntax>
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="LastScanTime" access="readOnly" activeNotify="forceDefaultEnabled">
+                <description>
+                    The date and time when the last GPS scan completed.
+                </description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="LastSuccessfulScanTime" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Specifies the date and time, when the GPS scan last completed successfully.  
+                    This value is retained across reboot and is only reset after another scan completes successfully or {{param|GPSReset}} is set to {{true}}.  
+                    The values for {{param|LockedLatitude}}, {{param|LockedLongitude}} and {{param|NumberOfSatellites}} correspond to this time. If a scan has never succeeded before, the value will be the Unknown Time value, as defined in {{bibref|TR-106a4|Section 3.2}}.
+                </description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="LockedLatitude" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This parameter specifies the latitude of the device's position in degrees, multiplied by 1 million. The positive value signifies the direction, north of the equator. The negative value signifies the direction, south of the equator. 
+                    Range is from: 90d00.00' South (-90,000,000) to 90d00.00' North (90,000,000).
+                    Example: A latitude of 13d19.43' N would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60). Latitude of 50d00.00' S would be represented as value -50,000,000.
+                    This value is retained across reboots and is only reset after another scan completes successfully or {{param|GPSReset}} is set to {{true}}. If a scan has never succeeded before, the value 0 is reported. 
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-90000000" maxInclusive="90000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="LockedLongitude" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This parameter specifies the longitude of the device's position in degrees, multiplied by 1 million. The positive value signifies the direction, east of the prime meridian. The negative value signifies the direction, west of the prime meridian.  
+                    Range is from: 180d00.00' West (-180,000,000) to 180d00.00' East (180,000,000).
+                    Example: A longitude of 13d19.43' E would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60). A longitude of 50d00.00' W would be represented as value -50,000,000.
+                    This value is retained across reboots and is only reset after another scan completes successfully or {{param|GPSReset}} is set to {{true}}. If a scan has never succeeded before, the value 0 is reported. 
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-180000000" maxInclusive="180000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="NumberOfSatellites" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The number of satellites that were locked during the test execution. The greater the number of satellites the better the precision of the results.
+                    This value is retained across reboots and is only reset after another scan completes successfully or {{param|GPSReset}} is set to {{true}}. If a scan has never succeeded before, the value 0 is reported. 
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="GPSReset" access="readWrite">
+                <description>
+                    Setting this to {{true}} will cause a reset on the GPS Hardware. Setting this to {{false}} has no effect.
+                </description>
+                <syntax command="true">
+                    <boolean />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.GPS.ContinuousGPSStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                When {{param|#.ContinuousGPS}} is {{true}}, the parameters in this object contain the GPS status as it is continuously monitored.
+                When {{param|#.ContinuousGPS}} is {{false}}, the parameters in this object are not being updated and their values are not accurate. 
+            </description>
+            <parameter name="CurrentFix" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The value is {{true}} if the location fix is currently valid (i.e. GPS receiver is currently tracking satellite signals), otherwise it is {{false}}. After a reboot the value is {{false}} until the GPS receivers has a valid current position.
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="GotFix" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The value is {{true}} if {{param|CurrentFix}} has transitioned to {{true}} at least once since {{param|#.ContinuousGPS}} was enabled, otherwise it is {{false}}. After a reboot the value is {{false}} until {{param|CurrentFix}} has transitioned to {{true}} again.
+                    The GPS coordinates ({{param|Latitude}}, {{param|Longitude}}, and {{param|Elevation}}) are not valid until {{param}} has a value of {{true}}. 
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="TimingGood" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The value is {{true}} if the timing synchronization is good, otherwise it is {{false}}. After a reboot the value is {{false}} until the timing is synchronized again.
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Latitude" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This parameter represents the most recent latitude reading for the device's position in degrees, multiplied by 1 million. The positive value signifies the direction, north of the equator. The negative value signifies the direction, south of the equator. 
+                    Range is from: 90 deg 00.00' South (-90,000,000) to 90 deg 00.00' North (90,000,000).
+                    Example: A latitude of 13 deg 19.43' N would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60). Latitude of 50 deg 00.00' S would be represented as value -50,000,000.
+                    {{param}} is not valid until {{param|GotFix}} is {{true}}. 
+                    If the parameter has never been set before, the value 0 is reported. The value SHOULD be maintained over a reboot.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-90000000" maxInclusive="90000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="Longitude" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This parameter represents the most recent longitude reading for the device's position in degrees, multiplied by 1 million. The positive value signifies the direction, east of the prime meridian. The negative value signifies the direction, west of the prime meridian.  
+                    Range is from: 180d00.00' West (-180,000,000) to 180d00.00' East (180,000,000).
+                    Example: A longitude of 13d19.43' E would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60). A longitude of 50d00.00' W would be represented as value -50,000,000.
+                    {{param}} is not valid until {{param|GotFix}} is {{true}}.
+                    If the parameter has never been set before, the value 0 is reported. The value SHOULD be maintained over a reboot.
+               </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-180000000" maxInclusive="180000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="Elevation" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This parameter represents the most recent elevation reading for the device's position in {{units}}, relative to the WGS84 ellipsoid. The positive value signifies the direction, above sea level. The negative value signifies the direction, below sea level.  
+                    Range is from: 5,000.000 meters below sea level (-5,000,000) to 25,000.000 meters above sea level (25,000,000).
+                    {{param}} is not valid until {{param|GotFix}} is {{true}}.
+                    If the parameter has never been set before, the value 0 is reported. The value SHOULD be maintained over a reboot.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-5000000" maxInclusive="25000000" />
+                        <units value="millimeters" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="LastFixTime" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Represents the date and time when the last GPS Fix was acquired.
+                    The Unknown Time value defined in {{bibref|TR-106a4|Section 3.2}} is used when {{param|GotFix}} is {{false}}. This applies too after a reboot of the device until a valid location is determined and {{param|GotFix}} transsitions to {{true}}. 
+                </description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="LastFixDuration" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Number of {{units}} of continuous GPS fix time. After a reboot this value is reset to 0. 
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="FirstFixTimeout" access="readWrite">
+                <description>
+                    Number of {{units}} to wait for first GPS fix before declaring a GPS fault.
+                    A value of -1 means that there is no timeout and no fault logging.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-1" />
+                        <units value="seconds" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="SatellitesTracked" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The number of satellites the receiver is tracking.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="SatelliteTrackingInterval" access="readWrite">
+                <description>
+                    The interval in {{units}} at which the GPS tracking information gets reported.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="60" maxInclusive="3600" />
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="ReceiverStatus" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The output of the GPS receiver's status.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="LocationType" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Indicates whether the {{param|Latitude}}, {{param|Longitude}}, and {{param|Elevation}} values are determined via a GPS Fix (where the value of this parameter would be {{enum|Real}}) or via some other means (where the value of this parameter would be {{enum|Reference}}). 
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Real" />
+                        <enumeration value="Reference" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="LockTimeOutDuration" access="readWrite">
+                <description>
+                    The timer duration, in {{units}}, for which the device waits for GPS to acquire lock.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="120" maxInclusive="86400" />
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.GPS.AGPSServerConfig." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters for the configuration of the Assisted Global Positioning System (A-GPS) server. See also {{bibref|3GPP-TS.25.171|Section 3.2}}</description>
+            <parameter name="Enable" access="readWrite">
+                <description>
+                    Enables or disables the {{object}} entry.
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="ServerURL" access="readWrite">
+                <description>
+                    A-GPS server host name or IP address.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ServerPort" access="readWrite">
+                <description>
+                    The port to use when communicating to the A-GPS Server.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <range maxInclusive="65535" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="Username" access="readWrite">
+                <description>
+                    Username to be used by the device to authenticate with the A-GPS server. This string is set to {{empty}} if no authentication is used.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Password" access="readWrite">
+                <description>
+                    Password to be used by the device to authenticate with the A-GPS server. This string is set to {{empty}} if no authentication is used.
+                </description>
+                <syntax hidden="true">
+                    <string>
+                        <size maxLength="64" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ReferenceLatitude" access="readWrite">
+                <description>
+                    This parameter specifies the reference latitude for an A-GPS request position in degrees, multiplied by 1 million. The positive value signifies the direction, north of the equator. The negative value signifies the direction, south of the equator. 
+                    Range is from: 90d00.00' South (-90,000,000) to 90d00.00' North (90,000,000).
+                    Example: A latitude of 13d19.43' N would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60).  Latitude of 50d00.00' S would be represented as value -50,000,000.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-90000000" maxInclusive="90000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="ReferenceLongitude" access="readWrite">
+                <description>
+                    This parameter specifies the reference longitude for an A-GPS request position in degrees, multiplied by 1 million. The positive value signifies the direction, east of the prime meridian. The negative value signifies the direction, west of the prime meridian.  
+                    Range is from: 180d00.00' West (-180,000,000) to 180d00.00' East (180,000,000).
+                    Example: A longitude of 13d19.43' E would be represented as 13,323,833, derived as (13*1,000,000)+((19.43*1,000,000)/60). A longitude of 50d00'00'' W would be represented as value -50,000,000.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-180000000" maxInclusive="180000000" />
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="ServerInUse" access="readOnly">
+                <description>
+                    The value is {{true}} if the device has successfully contacted and received A-GPS info from the A-GPS server, otherwise the value is {{false}}.
+                    After a reboot the value is {{false}} until the server could be contacted again.
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+        </object>
+        <profile name="FAP_GPS:1">
+            <object ref="FAP.GPS." requirement="present">
+                <parameter ref="ScanOnBoot" requirement="readWrite"></parameter>
+                <parameter ref="ScanPeriodically" requirement="readWrite"></parameter>
+                <parameter ref="PeriodicInterval" requirement="readWrite"></parameter>
+                <parameter ref="PeriodicTime" requirement="readWrite"></parameter>
+                <parameter ref="ContinuousGPS" requirement="readWrite"></parameter>
+                <parameter ref="ScanTimeout" requirement="readWrite"></parameter>
+                <parameter ref="ScanStatus" requirement="readOnly"></parameter>
+                <parameter ref="ErrorDetails" requirement="readOnly"></parameter>
+                <parameter ref="LastScanTime" requirement="readOnly"></parameter>
+                <parameter ref="LastSuccessfulScanTime" requirement="readOnly"></parameter>
+                <parameter ref="LockedLatitude" requirement="readOnly"></parameter>
+                <parameter ref="LockedLongitude" requirement="readOnly"></parameter>
+                <parameter ref="NumberOfSatellites" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    <component name="FAP_Tunnel">
+        <object name="FAP.Tunnel." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object contains parameters relating to Tunneling.
+            </description>
+            <parameter name="CryptoProfileNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="IKESANumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="ChildSANumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="MaxVirtualInterfaces" access="readOnly">
+                <description>The maximum number of  virtual interfaces.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="VirtualInterfaceNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="UseForCWMP" access="readWrite">
+                <description> 
+                    If the SecGW parameters are configured then this parameter determines whether the CWMP traffic will be sent across the IPsec tunnel(s) or outside of the IPsec tunnel(s).
+                    If {{false}} then the CWMP traffic will be sent outside of the IPsec tunnel(s). 
+                    If {{true}} then the CWMP traffic will be sent across the IPsec tunnel(s).
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="MaxChildSAPerIKE" access="readOnly">
+                <description>Indicates the maximum number of child SAs per IKE session that the device is capable of supporting.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="MaxIKESessions" access="readOnly">
+                <description>Indicates the maximum number of IKE sessions the device is capable of supporting at any given time.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.Tunnel.CryptoProfile.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="CryptoProfileNumberOfEntries" enableParameter="Enable">
+            <description>
+                This object contains parameters relating to IKEv2 and IPsec crypto profiles, which are essentially a subset of the typical IPsec SPD. {{bibref|RFC4301}}.
+                For Cdma2000 devices, see also {{bibref|3GPP2-S.S0132}}.</description>
+            <uniqueKey>
+                <parameter ref="AuthMethod" />
+                <parameter ref="IKEEncrypt" />
+                <parameter ref="IKEPRF" />
+                <parameter ref="IKEIntegrity" />
+                <parameter ref="IKEDH" />
+                <parameter ref="ESPEncrypt" />
+                <parameter ref="ESPIntegrity" />
+            </uniqueKey>
+           <uniqueKey functional="false">
+                <parameter ref="Alias" />
+            </uniqueKey>
+            <parameter name="Enable" access="readWrite">
+                <description>Enables and disables this entry.</description>
+                <syntax>
+                    <boolean />
+                    <default type="object" value="false" />
+                </syntax>
+            </parameter>
+            <parameter name="Alias" access="readWrite">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias" />
+                </syntax>
+            </parameter>
+            <parameter name="AuthMethod" access="readWrite">
+                <description>
+                    Specifies the Security mechanism and set of credentials used by the device to authenticate itself (either an instance of the ''.Security.Certificate.'' object defined in {{bibref|TR-157a5}} or an instance of the ''.Services.FAPService.{i}.Transport.Security.Secret.'' object defined in {{bibref|TR-196i2}}). 
+                    {{reference}} If the value is an {{empty}}, the device chooses the authentication method based on local policy.
+                    In order to configure the device for both device and hosting-party authentication, the object is populated with an enabled instance of the ''.Security.Certificate.''. object.</description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetType="row" />
+                        <size maxLength="256" />
+                    </string>
+                    <default type="object" value="" />
+                </syntax>
+            </parameter>
+            <parameter name="MaxChildSA" access="readWrite">
+                <description>Controls the maximum number of child SAs that can be negotiated by a single IKE session.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="2" maxInclusive="2" />
+                        <range minInclusive="4" maxInclusive="4" />
+                        <range minInclusive="6" maxInclusive="6" />
+                        <range minInclusive="8" maxInclusive="8" />
+                        <range minInclusive="10" maxInclusive="10" />
+                    </unsignedInt>
+                    <default type="object" value="2" />
+                </syntax>
+            </parameter>
+            <parameter name="IKEEncrypt" access="readWrite">
+                <description>
+                    IKEv2 encryption algorithm. {{bibref|RFC4307}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.</description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="3DES-CBC" />
+                        <enumeration value="AES-CBC" />
+                    </string>
+                    <default type="object" value="AES-CBC" />
+                </syntax>
+            </parameter>
+            <parameter name="IKEPRF" access="readWrite">
+                <description>
+                    IKEv2 pseudo-random function. {{bibref|RFC4307}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="HMAC-SHA1" />
+                        <enumeration value="AES-XCBC-PRF-128" />
+                    </string>
+                    <default type="object" value="HMAC-SHA1" />
+                </syntax>
+            </parameter>
+            <parameter name="IKEIntegrity" access="readWrite">
+                <description>
+                    IKEv2 integrity function. {{bibref|RFC4307}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="HMAC-SHA1-96" />
+                        <enumeration value="AES-XCBC-MAC-96" />
+                    </string>
+                    <default type="object" value="HMAC-SHA1-96" />
+                </syntax>
+            </parameter>
+            <parameter name="IKEDH" access="readWrite">
+                <description>
+                    IKEv2 pseudo-random function. {{bibref|RFC4307}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="1024" />
+                        <enumeration value="2048" />
+                    </string>
+                    <default type="object" value="2048" />
+                </syntax>
+            </parameter>
+            <parameter name="ESPEncrypt" access="readWrite">
+                <description>
+                    IPsec encryption algorithm. {{bibref|RFC4835|Section 3.1.1}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="3DES-CBC" />
+                        <enumeration value="AES-CBC" />
+                        <enumeration value="Null" />
+                    </string>
+                    <default type="object" value="AES-CBC" />
+                </syntax>
+            </parameter>
+            <parameter name="ESPIntegrity" access="readWrite">
+                <description>
+                    IPsec integrity function. {{bibref|RFC4835|Section 3.1.1}}
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <list />
+                    <string>
+                        <enumeration value="HMAC-SHA1-96" />
+                        <enumeration value="AES-XCBC-MAC-96" />
+                    </string>
+                    <default type="object" value="HMAC-SHA1-96" />
+                </syntax>
+            </parameter>
+            <parameter name="IPsecWindowSize" access="readWrite">
+                <description>
+                    The size of the Anti-Replay Window.
+                    If 0 Sequence Number Verification is disabled.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                    <default type="object" value="0" />
+                </syntax>
+            </parameter>
+            <parameter name="IKERekeyLifetime" access="readWrite">
+                <description>
+                    IKEv2 SA rekey timeout in {{units}}.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="IPsecRekeyLifetimeByte" access="readWrite">
+                <description>
+                    IPsec SA rekey timeout in {{units}}.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="Kilobytes" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="IPsecRekeyLifetimeTime" access="readWrite">
+                <description>
+                    IPsec SA rekey timeout in {{units}}.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="DPDTimer" access="readWrite">
+                <description>
+                    DPD timeout in {{units}}.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                    <default type="object" value="300" />
+                </syntax>
+            </parameter>
+            <parameter name="NATTKeepaliveTimer" access="readWrite">
+                <description>
+                    NAT-T keepalive timeout in {{units}}.
+                    For UMTS devices, see {{bibref|3GPP-TS.32.582}} and {{bibref|3GPP-TS.32.584}}. For LTE devices, see {{bibref|3GPP-TS.32.592}}. For CDMA2000 devices, see {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                    <default type="object" value="180" />
+                </syntax>
+            </parameter>
+           <parameter name="SecMaxFragSize" access="readWrite">
+                <description>
+                    Maximum fragment size, in {{units}}, from device before Encryption.
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="256" maxInclusive="1400" />
+                        <units value="bytes" />
+                    </unsignedInt>
+                    <default type="object" value="1200" />
+                </syntax>
+            </parameter>
+            <parameter name="SecDFBit" access="readWrite">
+                <description>
+                    Indicates if the 'Do Not Fragment' bit needs to be turned on/off.
+                    For CDMA2000 devices, see also {{bibref|3GPP2-S.S0132}}.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="On" />
+                        <enumeration value="Off" />
+                    </string>
+                    <default type="object" value="Off" />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.Tunnel.IKESA.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="IKESANumberOfEntries">
+            <description>IKE IPsec Security Association Table. This Table is a member of the IPsec Security Association Database (SAD). {{bibref|RFC4301}}.</description>
+            <uniqueKey>
+                <parameter ref="IPAddress" />
+                <parameter ref="SubnetMask" />
+            </uniqueKey>
+            <parameter name="Status" access="readOnly">
+                <description>The status of this IKE SA entry.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled" />
+                        <enumeration value="Active" />
+                        <enumeration value="Completed" />
+                        <enumeration value="Progressing" />
+                        <enumeration value="Error" optional="true">
+                            <description>This value MAY be used by the CPE to indicate a locally defined error condition.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="PeerAddress" access="readOnly">
+                <description>The IP address of the peer SecGW.</description>
+                <syntax>
+                    <dataType ref="IPAddress" />
+                </syntax>
+            </parameter>
+            <parameter name="CreationTime" access="readOnly">
+                <description>The time that the current IKE SA was set up.</description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="IPAddress" access="readOnly" activeNotify="forceDefaultEnabled">
+                <description>The current IP address assigned to this interface by IKEv2.</description>
+                <syntax>
+                    <dataType ref="IPAddress" />
+                </syntax>
+            </parameter>
+            <parameter name="SubnetMask" access="readOnly">
+                <description>The current subnet mask assigned to this interface by IKEv2.</description>
+                <syntax>
+                    <string />
+                </syntax>
+            </parameter>
+            <parameter name="DNSServers" access="readOnly">
+                <description>{{list}} Each item is an IP Address of a DNS server for this interface assigned to this interface by IKEv2.</description>
+                <syntax>
+                    <list>
+                        <size maxLength="256" />
+                    </list>
+                    <dataType ref="IPAddress" />
+                </syntax>
+            </parameter>
+            <parameter name="DHCPServers" access="readOnly">
+                <description>
+                    {{list}} Each item is an IP address of a DHCP server for this interface. 
+                    A non empty list instructs the CPE to send any internal DHCP request to the address contained within this parameter.
+                </description>
+                <syntax>
+                    <list>
+                        <size maxLength="256" />
+                    </list>
+                    <dataType ref="IPAddress" />
+                </syntax>
+            </parameter>
+            <parameter name="IntegrityErrors" access="readOnly" activeNotify="canDeny">
+                <description>The number of inbound packets discarded by the IKE SA due to Integrity checking errors.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="OtherErrors" access="readOnly" activeNotify="canDeny">
+                <description>The number of inbound packets discarded by the IKE SA due to other errors, such as anti-replay errors.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="AuthErrors" access="readOnly" activeNotify="canDeny">
+                <description>The number of inbound packets discarded by the IKE SA due to authentication errors.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.Tunnel.ChildSA.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ChildSANumberOfEntries">
+            <description>Child IPsec Security Association Table.  This Table is a member of the IPsec Security Association Database (SAD). {{bibref|RFC4301}}.</description>
+            <uniqueKey>
+                <parameter ref="SPI" />
+            </uniqueKey>
+            <parameter name="ParentID" access="readOnly">
+                <description>
+                    {{reference}}
+                </description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetParent="#.IKESA." targetType="row" />
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SPI" access="readOnly">
+                <description>SPI value of the Child SA.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="DirectionOutbound" access="readOnly">
+                <description>
+                    Traffic Direction.
+                    If {{true}} this Child SA refers to outbound traffic.
+                    If {{false}} this Child SA refers to inbound traffic.
+                </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="CreationTime" access="readOnly">
+                <description>The time that the current Child SA was set up.</description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+            <parameter name="Traffic" access="readOnly">
+                <description>The measured traffic in {{units}} transferred by the Child SA.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="bytes" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="IntegrityErrors" access="readOnly" activeNotify="canDeny">
+                <description>The number of inbound {{units}} discarded by the Child SA due to integrity checking errors.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="packets" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="ReplayErrors" access="readOnly" activeNotify="canDeny">
+                <description>The number of inbound {{units}} discarded by the Child SA due to anti-replay errors.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="packets" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.Tunnel.VirtualInterface.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="VirtualInterfaceNumberOfEntries" enableParameter="Enable">
+            <description>
+                Virtual Interfaces used for associating the tunnel (ephemeral) childSA pairs with QoS Classification and Queue tables as defined in {{bibref|TR-098a2}} (InternetGatewayDevice.QueueManagement.Classification.{i}. and InternetGatewayDevice.QueueManagement.Queue.{i}.) or {{bibref|TR-181i2}} (Device.QoS.Classification.{i}. and Device.QoS.Queue.{i}.).
+            </description>
+            <uniqueKey>
+                <parameter ref="CryptoProfile" />
+                <parameter ref="DSCPMarkPolicy" />
+            </uniqueKey>
+            <uniqueKey functional="false">
+                <parameter ref="Alias" />
+            </uniqueKey>
+            <parameter name="Enable" access="readWrite">
+                <description>Enables and disables this entry.</description>
+                <syntax>
+                    <boolean />
+                    <default type="object" value="false" />
+                </syntax>
+            </parameter>
+            <parameter name="Alias" access="readWrite">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias" />
+                </syntax>
+            </parameter>
+            <parameter name="CryptoProfile" access="readWrite">
+                <description>{{reference}} If multiple instances of VirtualInterface point to the same CryptoProfile instance, the associated {{param|#.CryptoProfile.{i}.MaxChildSA}} determines whether a new IKE session will be created (dynamically) to negotiate the child SA(s) for each of the virtual interfaces; otherwise, they are negotiated through the same IKE session.</description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetType="row" targetParent="#.CryptoProfile." />
+                        <size maxLength="256" />
+                    </string>
+                    <default type="object" value="" />
+                </syntax>
+            </parameter>
+            <parameter name="DSCPMarkPolicy" access="readWrite">
+                <description>
+                    DSCP to mark the outer IP header for traffic that is associated with this virtual interface.  
+                    A value of -1 indicates copy from the incoming packet. 
+                    A value of -2 indicates automatic marking of DSCP as defined for the UMTS QoS class {{bibref|3GPP-TS.23.107}} or CDMA2000 Subscriber QoS profile {{bibref|3GPP2-X.S0011}}. 
+                    De-tunneled packets are never re-marked.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-2" />
+                    </int>
+                    <default type="object" value="-1" />
+                </syntax>
+            </parameter>
+        </object>
+        <profile name="FAP_Tunnel:1">
+            <object ref="FAP.Tunnel." requirement="present">
+                <parameter ref="IKESANumberOfEntries" requirement="readOnly"></parameter>
+                <parameter ref="ChildSANumberOfEntries" requirement="readOnly"></parameter>
+                <parameter ref="MaxVirtualInterfaces" requirement="readOnly"></parameter>
+                <parameter ref="VirtualInterfaceNumberOfEntries" requirement="readOnly"></parameter>
+                <parameter ref="UseForCWMP" requirement="readWrite"></parameter>
+                <parameter ref="MaxChildSAPerIKE" requirement="readOnly" />
+                <parameter ref="MaxIKESessions" requirement="readOnly" />
+            </object>
+            <object ref="FAP.Tunnel.IKESA.{i}." requirement="present">
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="PeerAddress" requirement="readOnly"></parameter>
+                <parameter ref="CreationTime" requirement="readOnly"></parameter>
+                <parameter ref="IPAddress" requirement="readOnly"></parameter>
+                <parameter ref="SubnetMask" requirement="readOnly"></parameter>
+            </object>
+            <object ref="FAP.Tunnel.ChildSA.{i}." requirement="present">
+                <parameter ref="ParentID" requirement="readOnly"></parameter>
+                <parameter ref="SPI" requirement="readOnly"></parameter>
+                <parameter ref="DirectionOutbound" requirement="readOnly"></parameter>
+                <parameter ref="CreationTime" requirement="readOnly"></parameter>
+            </object>
+            <object ref="FAP.Tunnel.VirtualInterface.{i}." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="CryptoProfile" requirement="readWrite"></parameter>
+                <parameter ref="DSCPMarkPolicy" requirement="readWrite"></parameter>
+            </object>
+            <object ref="FAP.Tunnel.CryptoProfile.{i}." requirement="createDelete">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="AuthMethod" requirement="readWrite"></parameter>
+                <parameter ref="MaxChildSA" requirement="readWrite"></parameter>
+                <parameter ref="IKEEncrypt" requirement="readWrite"></parameter>
+                <parameter ref="IKEPRF" requirement="readWrite"></parameter>
+                <parameter ref="IKEIntegrity" requirement="readWrite"></parameter>
+                <parameter ref="IKEDH" requirement="readWrite"></parameter>
+                <parameter ref="ESPEncrypt" requirement="readWrite"></parameter>
+                <parameter ref="ESPIntegrity" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+    </component>
+    <component name="FAP_PerformanceMgmt">
+        <object name="FAP.PerfMgmt." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object contains parameters relating to Performance Management in a Femto-related environment.
+            </description>
+            <parameter name="ConfigNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.PerfMgmt.Config.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="ConfigNumberOfEntries" enableParameter="Enable">
+            <description>
+                 This object contains parameters relating to File Management configuration for uploading of Performance Files to a designated File Server. Each table entry can be referenced by zero or more radio-specific objects contained in the FAPService instances. The periodic upload will upload data for all of the radio-specific objects that reference it. 
+            </description>
+            <uniqueKey functional="false">
+                <parameter ref="Alias" />
+            </uniqueKey>
+            <uniqueKey functional="true">
+                <parameter ref="URL" />
+                <parameter ref="PeriodicUploadInterval" />
+                <parameter ref="PeriodicUploadTime" />
+            </uniqueKey>
+            <parameter name="Enable" access="readWrite">
+                <description>Enables or disables this entry.  If this entry is disabled then its periodic uploads are not performed.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Alias" access="readWrite">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias" />
+                </syntax>
+            </parameter>
+            <parameter name="URL" access="readWrite">
+                <description>
+                    URL specifying the destination file location. HTTP and HTTPS transports MUST be supported. Other transports MAY be supported.
+                    This argument specifies only the destination file location, and does not indicate in any way the name or location of the local file to be uploaded. 
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Username" access="readWrite">
+                <description>Username to be used by the device to authenticate with the file server. This string is set to {{empty}} if no authentication is used.</description>
+                <syntax>
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Password" access="readWrite">
+                <description>Password to be used by the device to authenticate with the file server. This string is set to {{empty}} if no authentication is used.</description>
+                <syntax hidden="true">
+                    <string>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="PeriodicUploadInterval" access="readWrite">
+                <description>The duration in {{units}} of the interval for which the device MUST create a Performance File and attempt to upload the file to {{param|URL}} if {{param|Enable}} is {{true}}.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="1" />
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="PeriodicUploadTime" access="readWrite">
+                <description>
+                    An absolute time reference in UTC to determine when the device will initiate the periodic file upload. Each file upload MUST occur at this reference time plus or minus an integer multiple of the {{param|PeriodicUploadInterval}}. 
+                    {{param}} is used only to set the "phase" of the periodic uploads. The actual value of {{param}} can be arbitrarily far into the past or future. 
+                    For example, if {{param|PeriodicUploadInterval}} is 86400 (a day) and if {{param}} is set to UTC midnight on some day (in the past, present, or future) then periodic file uploads will occur every day at UTC midnight. These MUST begin on the very next midnight, even if {{param}} refers to a day in the future.
+                    The Unknown Time value as defined in {{bibref|TR-106a4|Section 3.2}} indicates that no particular time reference is specified. That is, the device MAY locally choose the time reference, and is REQUIRED only to adhere to the specified {{param|PeriodicUploadInterval}}.
+                    If absolute time is not available to the device, its periodic file upload behavior MUST be the same as if the {{param}} parameter was set to the Unknown Time value.
+                </description>
+                <syntax>
+                    <dateTime />
+                </syntax>
+            </parameter>
+        </object>
+        <profile name="FAP_PerfMgmt:1">
+            <object ref="FAP.PerfMgmt." requirement="present">
+                <parameter ref="ConfigNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            <object ref="FAP.PerfMgmt.Config.{i}." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="URL" requirement="readWrite"></parameter>
+                <parameter ref="Username" requirement="readWrite"></parameter>
+                <parameter ref="Password" requirement="readWrite"></parameter>
+                <parameter ref="PeriodicUploadInterval" requirement="readWrite"></parameter>
+                <parameter ref="PeriodicUploadTime" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+    </component>
+    <component name="FAP_ApplicationPlatform">
+        <object name="FAP.ApplicationPlatform." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                    This object defines the data model for the following Femtozone APIs.
+                    * Femto Awareness
+                    * SMS
+                    * MMS
+                    * Terminal Location
+                    Femto Awareness, SMS, MMS, and Terminal Location APIs are defined in the Release 1 API Specifications of the Service SIG in the Femto Forum (non public document).
+                    {{bibref|TR-262|appendix I}} provides the "Theory of Operation" for the usage of this object.
+            </description>
+            <parameter name="Version" access="readOnly">
+                <description>Version of Femto Application Platform running on this device</description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Enable" access="readWrite">
+                <description>Enable or disable the Femto ApplicationPlatform</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>Current state of the Femto Application Platform.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled"><description>The Femto Application Platform is not available</description></enumeration>
+                        <enumeration value="Enabled"><description>The Femto Application Platform is available</description></enumeration>
+                        <enumeration value="Reset"><description>The FemtoApplicationPlatform is in the process of being reset and will transition to the {{enum|Disabled}} state when the reset operation is completed</description></enumeration>
+                        <enumeration value="Initializing"><description>The FemtoApplicationPlatform is being initialized and will transition to the {{enum|Enabled}} state once the initialization is completed</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxNumberOfApplications" access="readOnly">
+                <description>Determines how many Femtozone Applications can be supported by the Femto Application Platform simultaneously.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="CurrentNumberofApplications" access="readOnly">
+                <description>Specifies how many Femtozone Applications are currently communicating with the Femto Application Platform.</description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Capabilities." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the capabilities of the Femtozone Application Platform and the Femtozone APIs.</description>
+            <parameter name="PresenceApplicationSupport" access="readOnly">
+                <description>Specifies whether the Femto Application Platform supports Presence-Based Femtozone Applications</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="FemtoAwarenessAPISupport" access="readOnly">
+                <description>Specifies whether the Femto Awareness API is supported on this device.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="SMSAPISupport" access="readOnly">
+                <description>Specifies whether the SMS API is supported on this device.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="SubscribeToNotificationsOfSMSSentToApplicationSupport" access="readOnly">
+                <description>Specifies whether the SubscribeToNotificationsOfSMSSentToApplication functionality is supported by the FAP SMS API.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QuerySMSDeliveryStatusSupport" access="readOnly">
+                <description>Specifies whether the QuerySMSDeliveryStatus functionality is supported by the FAP SMS API.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="MMSAPISupport" access="readOnly">
+                <description>Specifies whether the MMS API is supported on this device.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueryMMSDeliveryStatusSupport" access="readOnly">
+                <description>Specifies whether the QueryMMSDeliveryStatus functionality is supported by the FAP MMS API.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="SubscribeToNotificationsOfMMSSentToApplicationSupport" access="readOnly">
+                <description>Specifies whether the SubscribeToNotificationsOfMMSSentToApplication functionality is supported by the FAP MMS API.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="TerminalLocationAPISupport" access="readOnly">
+                <description>Specifies whether the Terminal Location API is supported on this device.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="AuthenticationMethodsSupported" access="readOnly">
+                <description>Specifies the supported methods that 3rd Party Applications can use to authenticate with the Femto Application Platform at initialization. Comma separated list of strings.</description>
+                <syntax>
+                    <list/>
+                    <string>
+                        <enumeration value="Basic" />
+                        <enumeration value="Digest" />
+                        <enumeration value="DigitalSignature" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="AccessLevelsSupported" access="readOnly">
+                <description>Specifies the supported access levels that 3rd Party Applications can request when authenticating with the Femto Application Platform at initialization. This access level is with respect to resources within the Femto Application Platform only (not to be confused with Access Mode parameter in .FAPService.{i}.AccessMgmt).</description>
+                <syntax>
+                    <list/>
+                    <string>
+                        <enumeration value="Guest" />
+                        <enumeration value="Standard" />
+                        <enumeration value="Restricted" />
+                        <enumeration value="Administrator" />
+                        <enumeration value="Debug" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SendSMSTargetAddressType" access="readOnly">
+                <description>
+                    Specifies the supported types of addresses SMSs can be sent to.
+                </description>
+                <syntax>
+                    <list/>
+                    <string>
+                        <enumeration value="TelUri" />
+                        <enumeration value="AnonymousReference" />
+                        <enumeration value="All" />
+                    </string>
+                </syntax>
+            </parameter>  
+            <parameter name="SendMMSTargetAddressType" access="readOnly">
+                <description>
+                    Specifies the supported types of addresses MMSs can be sent to.
+                </description>
+                <syntax>
+                    <list/>                
+                    <string>
+                        <enumeration value="TelUri" />
+                        <enumeration value="AnonymousReference" />
+                        <enumeration value="All" />
+                    </string>
+                </syntax>
+            </parameter>                      
+        </object>
+        <object name="FAP.ApplicationPlatform.Control." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the operation of the Femtozone APIs.</description>
+            <parameter name="AuthenticationMethod" access="readWrite">
+                <description>
+                    Specifies how 3rd Party Applications have to authenticate against Femto APIs in order to use it. {{reference}}
+                    '''''Note:''''' The credentials are not part of the data model and have to be supplied externally.
+                </description>
+                <syntax>
+                    <string>
+                        <enumerationRef targetParam="#.Capabilities.AuthenticationMethodsSupported"/>
+                        <size maxLength="256" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="TunnelInst" access="readWrite">
+                <description>
+                    This is the reference to the IPsec tunnel instance to be used by the Application Platform traffic. 
+                    If InternetGatewayDevice:1 {{bibref|TR-098}} or Device:1 {{bibref|TR-181i1}}) is used as root data model the {{param}} MUST point to a row in the ''.FAP.Tunnel.IKESA.{i}.'' table.
+                    If the root data model used is Device:2 {{bibref|TR-181i2}} than the {{param}} MUST point to an tunnel instance defined in this data model.
+                    If the referenced object is deleted, the parameter value MUST be set to an empty string.
+                 </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256">
+                        </size>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Control.FemtoAwareness." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the Femto Awareness API.</description>
+            <parameter name="APIEnable" access="readWrite">
+                <description>Enable or disable FemtoAwareness API exposure on FAP  </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueueEnable" access="readWrite">
+                <description>Enable or disable Request queueing for the API</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Queueing " access="readWrite">
+                <description>Determines how FAP handles simultaneous requests from different Applications to Femto Awareness API.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="FiFo" />
+                        <enumeration value="Priority" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxAPIUsersNumber" access="readWrite">
+                <description>Determines the Max Number of different Applications that can send Requests to Femto Awareness API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="FemtozoneID" access="readWrite">
+                <description>Specifies Identifier of the Femtozone.</description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="NotificationsUserIdentifierMSISDN" access="readWrite">
+                <description>
+                    Specifies whether the Mobile Station International Subscriber Directory Number (MSISDN) has to be used as UserIdentifier in Femto Awareness Notifications. A value of {{true}} means that the MSISDN is send as user identifier, a value of {{false}} means that an anonymous reference is used.
+                </description>
+                <syntax>
+                    <boolean/>
+                </syntax>
+            </parameter>
+            <parameter name="SubscribeToNotificationsResponseCallbackData" access="readWrite">
+                <description>Specifies whether the OPTIONAL Argument "Callback Data" has to be used in Responses to Requests to "Subscribe To Femto Awareness Notifications".</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueryFemtocellResponseTimezone" access="readWrite">
+                <description>Specifies whether the OPTIONAL Argument "Timezone" has to be used in Responses to Requests to "Query Femtocell Status".</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Control.SMS." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the SMS API.</description>
+            <parameter name="APIEnable" access="readWrite">
+                <description>Enable or disable SMS API exposure on FAP  </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueueEnable" access="readWrite">
+                <description>Enable or disable Request queueing for the API</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Queueing " access="readWrite">
+                <description>Determines how FAP handles simultaneous requests from different Applications to SMS API.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="FiFo" />
+                        <enumeration value="Priority" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxAPIUsersNumber" access="readWrite">
+                <description>Determines the Max Number of different Applications that can send Requests to SMS API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="MinSendSMSTimeInterval" access="readWrite">
+                <description>Determines the Minimum Time Interval in {{units}} between two consecutive Send SMS Requests by the same Application.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                        <range minInclusive="0" maxInclusive="3599" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="EnableQuerySMSDeliveryStatus" access="readWrite">
+                <description>Enable or disable "QuerySMSDeliveryStatus" Operation on SMS API. When disabled, QuerySMSDeliveryStatus Requests to SMS API are ignored.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="EnableSubscribeToNotificationsOfMessageSentToApplication" access="readWrite">
+                <description>Enable or disable "SubscribeToNotificationsOfMessageSentToApplication" Operation on SMS API. When disabled, SubscribeTo NotificationsOfMessageSentToApplication Requests to SMS API are ignored.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Control.MMS." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the MMS API.</description>
+            <parameter name="APIEnable" access="readWrite">
+                <description>Enable or disable MMS API exposure on FAP  </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueueEnable" access="readWrite">
+                <description>Enable or disable Request queueing for the API</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Queueing " access="readWrite">
+                <description>Determines how FAP handles simultaneous requests from different Applications to MMS API.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="FiFo" />
+                        <enumeration value="Priority" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxAPIUsersNumber" access="readWrite">
+                <description>Determines the Max Number of different Applications that can send Requests to MMS API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="MinSendMMSTimeInterval" access="readWrite">
+                <description>Determines the Minimum Time Interval in {{units}} between two consecutive Send MMS Requests by the same Application.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                        <range minInclusive="0" maxInclusive="3599" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="EnableQueryMMSDeliveryStatus" access="readWrite">
+                <description>Enable or disable "QuerySMSDeliveryStatus" Operation on MMS API. When disabled, QuerySMSDeliveryStatus Requests to MMS API are ignored.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="EnableSubscribeToNotificationsOfMessageSentToApplication" access="readWrite">
+                <description>Enable or disable "SubscribeTo NotificationsOfMessageSentToApplication" Operation on MMS API. When disabled, SubscribeTo NotificationsOfMessageSentToApplication Requests to MMS API are ignored.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Control.TerminalLocation." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the TerminalLocation API.</description>
+            <parameter name="APIEnable" access="readWrite">
+                <description>Enable or disable TerminalLocation API exposure on FAP  </description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueueEnable" access="readWrite">
+                <description>Enable or disable Request queueing for the API</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="Queueing " access="readWrite">
+                <description>Determines how FAP handles simultaneous requests from different Applications to TerminalLocation API.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="FiFo" />
+                        <enumeration value="Priority" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxAPIUsersNumber" access="readWrite">
+                <description>Determines the Max Number of different Applications that can send Requests to TerminalLocation API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueryMobileLocationResponseAddress" access="readWrite">
+                <description>Specifies Terminal Address  Format to be used in QueryMobileLocation Responses.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="TelUri" />
+                        <enumeration value="AnonymousReference" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="QueryMobileLocationResponseLongitudeLatitude" access="readWrite">
+                <description>Include or exclude FAP Longitude and Latitude arguments in Responses to QueryMobileLocation Requests.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueryMobileLocationResponseAltitude" access="readWrite">
+                <description>Include or exclude FAP Altitude argument in Responses to QueryMobileLocation Requests .</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="QueryMobileLocationResponseTimestamp" access="readWrite">
+                <description>Specifies Response Timestamp in {{units}}.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                        <range minInclusive="0" maxInclusive="86399" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Monitoring." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the monitoring of the Femtozone Application Platform and the Femtozone APIs.</description>
+            <parameter name="Enable" access="readWrite">
+                <description>Enables and disables this entry.</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="MonitoringInterval" access="readWrite">
+                <description>Specifies the interval in {{units}} used to collect the monitoring measurements.</description>
+                <syntax>
+                    <unsignedInt>
+                        <units value="seconds" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="AuthenticationRequestsReceived" access="readOnly">
+                <description>
+                    Specifies the total number of authentication requests received by the Femto Application Platform. The counter will be reset whenever the device reboots or the {{param|Enable}} parameter is set to {{true}}. 
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="AuthenticationRequestsRejected" access="readOnly">
+                <description>
+                    Specifies the number of authentication requests received by the Femto Application Platform that were rejected. The counter will be reset whenever the device reboots or the {{param|Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Monitoring.FemtoAwareness." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the Monitoring of the FemtoAwareness API.</description>
+            <parameter name="APIAvailable" access="readOnly">
+                <description>Specifies whether the FemtoAwareness API is currently available on this device (the API could be disabled or could have exhausted its resources)</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="APIUsers" access="readOnly">
+                <description>Specifies the current number of Applications using the Femto Awareness API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueState" access="readOnly">
+                <description>Specifies the state of the Femto Awareness API Queue.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled" />
+                        <enumeration value="Ready" />
+                        <enumeration value="Flushed" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="QueueNum" access="readOnly">
+                <description>Specifies the current number of requests waiting in the Femto Awareness API Queue.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueReceived" access="readOnly">
+                <description>
+                    Specifies the number of requests in the Femto Awareness API Queue that have been received. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="QueueDiscarded" access="readOnly">
+                <description>
+                    Specifies the number of requests in the Femto Awareness API Queue that have been discarded. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Monitoring.SMS." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the Monitoring of the SMS API.</description>
+            <parameter name="APIAvailable" access="readOnly">
+                <description>Specifies whether the SMS API is currently available on this device (the API could be disabled or could have exhausted its resources)..</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="APIUsers" access="readOnly">
+                <description>Specifies the current number of Applications using the SMS API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueState" access="readOnly">
+                <description>Specifies the state of the SMS API Queue.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled" />
+                        <enumeration value="Ready" />
+                        <enumeration value="Flushed" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="QueueNum" access="readOnly">
+                <description>Specifies the current number of requests waiting in the SMS API Queue.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueReceived" access="readOnly">
+                <description>
+                    Specifies the number of requests in the SMS API Queue that have been received. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="QueueDiscarded" access="readOnly">
+                <description>
+                    Specifies the number of requests in the SMS API Queue that have been discarded. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Monitoring.MMS." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the Monitoring of the MMS API.</description>
+            <parameter name="APIAvailable" access="readOnly">
+                <description>Specifies whether the MMS API is currently available on this device (the API could be disabled or could have exhausted its resources)..</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="APIUsers" access="readOnly">
+                <description>Specifies the current number of Applications using the MMS API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueState" access="readOnly">
+                <description>Specifies the state of the MMS API Queue.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled" />
+                        <enumeration value="Ready" />
+                        <enumeration value="Flushed" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="QueueNum" access="readOnly">
+                <description>Specifies the current number of requests waiting in the MMS API Queue.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueReceived" access="readOnly">
+                <description>
+                    Specifies the number of requests in the MMS API Queue that have been received. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="QueueDiscarded" access="readOnly">
+                <description>
+                    Specifies the number of requests in the MMS API Queue that have been discarded. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <object name="FAP.ApplicationPlatform.Monitoring.TerminalLocation." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains parameters related to the Monitoring of the TerminalLocation API.</description>
+            <parameter name="APIAvailable" access="readOnly">
+                <description>Specifies whether the TerminalLocation API is currently available on this device (the API could be disabled or could have exhausted its resources)..</description>
+                <syntax>
+                    <boolean />
+                </syntax>
+            </parameter>
+            <parameter name="APIUsers" access="readOnly">
+                <description>Specifies the current number of Applications using the Terminal Location API.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueState" access="readOnly">
+                <description>Specifies the state of the Terminal Location API Queue.</description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled" />
+                        <enumeration value="Ready" />
+                        <enumeration value="Flushed" />
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="QueueNum" access="readOnly">
+                <description>Specifies the current number of requests waiting in the Terminal Location API Queue.</description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="0" maxInclusive="255" />
+                    </unsignedInt>
+                </syntax>
+            </parameter>
+            <parameter name="QueueReceived" access="readOnly">
+                <description>
+                    Specifies the number of requests in the Terminal Location API Queue that have been received. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+            <parameter name="QueueDiscarded" access="readOnly">
+                <description>
+                    Specifies the number of requests in the Terminal Location API Queue that have been discarded. The counter will be reset whenever the device reboots or the {{param|#.Enable}} parameter is set to {{true}}.
+                </description>
+                <syntax>
+                    <unsignedInt />
+                </syntax>
+            </parameter>
+        </object>
+        <profile name="FAP_ApplicationPlatform:1">
+            <object ref="FAP.ApplicationPlatform." requirement="present">
+                <parameter ref="Version" requirement="readOnly" />
+                <parameter ref="Enable" requirement="readWrite" />
+                <parameter ref="MaxNumberOfApplications" requirement="readOnly" />
+            </object>
+            <object ref="FAP.ApplicationPlatform.Control." requirement="present">
+                <parameter ref="AuthenticationMethod" requirement="readWrite" />
+            </object>
+            <object ref="FAP.ApplicationPlatform.Control.FemtoAwareness." requirement="present">
+                <parameter ref="APIEnable" requirement="readWrite" />
+                <parameter ref="MaxAPIUsersNumber" requirement="readWrite" />
+                <parameter ref="FemtozoneID" requirement="readWrite" />
+            </object>
+            <object ref="FAP.ApplicationPlatform.Control.SMS." requirement="present">
+                <parameter ref="APIEnable" requirement="readWrite" />
+                <parameter ref="MaxAPIUsersNumber" requirement="readWrite" />
+                <parameter ref="MinSendSMSTimeInterval" requirement="readWrite" />
+            </object>
+            <object ref="FAP.ApplicationPlatform.Control.MMS." requirement="present">
+                <parameter ref="APIEnable" requirement="readWrite" />
+                <parameter ref="MaxAPIUsersNumber" requirement="readWrite" />
+                <parameter ref="MinSendMMSTimeInterval" requirement="readWrite" />
+            </object>
+            <object ref="FAP.ApplicationPlatform.Control.TerminalLocation." requirement="present">
+                <parameter ref="APIEnable" requirement="readWrite" />
+                <parameter ref="MaxAPIUsersNumber" requirement="readWrite" />
+                <parameter ref="QueryMobileLocationResponseAddress" requirement="readWrite" />
+                <parameter ref="QueryMobileLocationResponseLongitudeLatitude" requirement="readWrite" />
+            </object>
+        </profile>
+    </component>
+</dm:document>

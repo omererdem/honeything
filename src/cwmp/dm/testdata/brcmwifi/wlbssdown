@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xbss" ] ; then
+  echo "down"
+fi
+exit 0

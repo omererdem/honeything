@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xinterference" ] ; then
+  echo "Wireless LAN Interference mitigation is enabled. (mode 2)"
+fi
+exit 0

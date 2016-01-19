@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device:1.2 Root Object errata and clarifications
+
+
+    Notice
+
+The Broadband Forum is a non-profit corporation organized to create guidelines for broadband network system development and deployment. This Broadband Forum Technical Report has been approved by members of the Forum. This Broadband Forum Technical Report is not binding on the Broadband Forum, any of its members, or any developer or service provider. This Broadband Forum Technical Report is subject to change, but only with approval of members of the Forum.  This Technical Report is copyrighted by the Broadband Forum, and all rights are reserved.  Portions of this Technical Report may be copyrighted by Broadband Forum members.
+
+This Broadband Forum Technical Report is provided AS IS, WITH ALL FAULTS. ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM TECHNICAL REPORT, OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+(A)	OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+(B)	THAT THE CONTENTS OF THIS BROADBAND FORUM TECHNICAL REPORT ARE SUITABLE FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+(C)	THAT THE IMPLEMENTATION OF THE CONTENTS OF THE TECHNICAL REPORT WILL NOT INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.
+
+By using this Broadband Forum Technical Report, users acknowledge that implementation may require licenses to patents.  The Broadband Forum encourages but does not require its members to identify such patents. For a list of declarations made by Broadband Forum member companies, please see http://www.broadband-forum.org.  No assurance is given that licenses to patents necessary to implement this Technical Report will be available for license at all or on reasonable and non-discriminatory terms.
+
+ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM TECHNICAL REPORT, OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR RELIANCE UPON THIS TECHNICAL REPORT; AND (B) ANY OBLIGATION TO UPDATE OR CORRECT THIS TECHNICAL REPORT.
+
+Broadband Forum Technical Reports may be copied, downloaded, stored on a server or otherwise re-distributed in their entirety only, and may not be modified without the advance written permission of the Broadband Forum.
+
+The text of this notice must be included in all copies of this Broadband Forum Technical Report.
+
+
+
+  Summary:
+TR-140 StorageService: 1.1 service data model update
+
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-1"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-1 cwmp-datamodel-1-1.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-140-1-1-0">
+  <import file="TR-140-1-0-2.xml" spec="urn:broadband-forum-org:tr-140-1-0">
+<model name="StorageService:1.0"></model>  
+  </import>
+  <model name="StorageService:1.1"  base="StorageService:1.0"  isService="true">
+    <parameter name="StorageServiceNumberOfEntries" access="readOnly">
+      <description>Number of entries in {{object|StorageService}}.</description>
+      <syntax>
+        <unsignedInt/>
+      </syntax>
+    </parameter>
+    <object base="StorageService.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="StorageServiceNumberOfEntries">
+    </object>
+    <object base="StorageService.{i}.LogicalVolume.{i}.Folder.{i}.UserAccess.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" enableParameter="Enable" numEntriesParameter="UserAccessNumberOfEntries">
+<parameter name="Enable" access="readWrite" dmr:previousParameter="">
+<description>Enables or disables the entry.</description>
+<syntax><boolean></boolean>
+<default type="object" value="false"></default>
+</syntax>
+</parameter>
+    </object>
+    <object base="StorageService.{i}.LogicalVolume.{i}.Folder.{i}.GroupAccess.{i}." access="readWrite" minEntries="0" maxEntries="unbounded"  enableParameter="Enable" numEntriesParameter="GroupAccessNumberOfEntries">
+<parameter name="Enable" access="readWrite" dmr:previousParameter="">
+<description>Enables or disables the entry.</description>
+<syntax><boolean></boolean>
+<default type="factory" value="false"></default>
+</syntax>
+</parameter>
+</object>
+    <profile name="Baseline:2" base="Baseline:1" >
+<parameter ref="StorageServiceNumberOfEntries" requirement="readOnly"></parameter>
+    </profile>
+    <profile name="UserAccess:2" base="UserAccess:1">
+      <object ref="StorageService.{i}.LogicalVolume.{i}.Folder.{i}.UserAccess.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite" dmr:previousParameter=""></parameter>
+      </object>
+    </profile>
+    <profile name="GroupAccess:2" base="GroupAccess:1">
+      <object ref="StorageService.{i}.LogicalVolume.{i}.Folder.{i}.GroupAccess.{i}." requirement="createDelete">
+        <parameter ref="Enable" requirement="readWrite" dmr:previousParameter=""></parameter>
+      </object>
+    </profile>
+
+  </model>
+</dm:document>

@@ -1,0 +1,1287 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Data Model Definition Schema (DM Schema) v1.1
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  XML Schema has been approved by members of the Forum. This document is
+  not binding on the Broadband Forum, any of its members, or any developer
+  or service provider. This document is subject to change, but only with
+  approval of members of the Forum.
+
+  This document is provided "as is," with all faults.  Any person holding a
+  copyright in this document, or any portion thereof, disclaims to the fullest
+  extent permitted by law any representation or warranty, express or implied,
+  including, but not limited to,
+  (a) any warranty of merchantability, fitness for a particular purpose,
+      non-infringement, or title;
+  (b) any warranty that the contents of the document are suitable for any
+      purpose, even if that purpose is known to the copyright holder;
+  (c) any warranty that the implementation of the contents of the documentation
+      will not infringe any third party patents, copyrights, trademarks or
+      other rights.
+
+  This publication may incorporate intellectual property. The Broadband Forum
+  encourages but does not require declaration of such intellectual property.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.
+
+  Copyright The Broadband Forum. All Rights Reserved.
+
+  Broadband Forum XML Schemas may be copied, downloaded, stored on a server or
+  otherwise re-distributed in their entirety only. The text of this
+  notice must be included in all copies.
+
+  Summary:
+  TR-069 Data Model Definition Schema (DM Schema).  DM Instances define TR-069
+  data models.  Within the schema, elements are grouped by category (simple
+  types, complex types etc), and are in alphabetical order within each
+  category.
+
+  Version History:
+  November  2008: cwmp-datamodel-1-0.xsd, corresponds to TR-106 Amendment 2
+  September 2009: cwmp-datamodel-1-1.xsd, corresponds to TR-106 Amendment 3
+                  - made import/@file a URI and optional (in line with
+                    DT Schema)
+                  - added RangeFacet step attribute
+-->
+<!DOCTYPE cwmp-datamodel [
+  <!ENTITY colon ":">
+  <!ENTITY dot "\.">
+  <!ENTITY inst "(\{i\})">
+  <!ENTITY name "([\i-[:]][\c-[:\.]]*)">
+  <!ENTITY Name "([\i-[a-z:]][\c-[:\.]]*)">
+  <!ENTITY num "(\d+)">
+]>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:broadband-forum-org:cwmp:datamodel-1-1" targetNamespace="urn:broadband-forum-org:cwmp:datamodel-1-1" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+  <!-- Simple types -->
+  <xs:simpleType name="ActiveNotify">
+    <xs:annotation>
+      <xs:documentation>Parameter active notify support.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="forceEnabled"/>
+      <xs:enumeration value="forceDefaultEnabled"/>
+      <xs:enumeration value="canDeny"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="AnyTypeName">
+    <xs:annotation>
+      <xs:documentation>Built-in or derived type name.</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="tns:BuiltinTypeName tns:DataTypeName"/>
+  </xs:simpleType>
+  <xs:simpleType name="BibrefId">
+    <xs:annotation>
+      <xs:documentation>Bibliographic reference ID; SHOULD uniquely identify this reference across all instance documents.
+For BBF DM Instances, the bibliographic reference ID rules specified in A.2.4 MUST be used.  For example, to reference TR-106 Issue 1 Amendment 2, the value of this attribute would be TR-106a2.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token"/>
+  </xs:simpleType>
+  <xs:simpleType name="BuiltinTypeName">
+    <xs:annotation>
+      <xs:documentation>Built-in type name.
+The type hierarchy is as for XML Schema, with "any" and "base64" mapping to the "anySimpleType" and "base64Binary" XML Schema types respectively.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="any"/>
+      <xs:enumeration value="base64"/>
+      <xs:enumeration value="boolean"/>
+      <xs:enumeration value="dateTime"/>
+      <xs:enumeration value="hexBinary"/>
+      <xs:enumeration value="integer"/>
+      <xs:enumeration value="int"/>
+      <xs:enumeration value="long"/>
+      <xs:enumeration value="string"/>
+      <xs:enumeration value="unsignedInt"/>
+      <xs:enumeration value="unsignedLong"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ComponentName">
+    <xs:annotation>
+      <xs:documentation>Component name; the same as xs:NCName except that dots are not permitted.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&name;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DataTypeName">
+    <xs:annotation>
+      <xs:documentation>Data type name; the same as xs:NCName except that cannot start with lower-case letter (to avoid conflict with built-in data type names) and dots are not permitted.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&Name;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DefaultType">
+    <xs:annotation>
+      <xs:documentation>Type of default.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="factory">
+        <xs:annotation>
+          <xs:documentation>Default from standard, e.g. RFC.  Also applies on object creation.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+      <xs:enumeration value="object">
+        <xs:annotation>
+          <xs:documentation>Default on object creation.</xs:documentation>
+        </xs:annotation>
+      </xs:enumeration>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="DescriptionAction">
+    <xs:annotation>
+      <xs:documentation>Description action.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="create"/>
+      <xs:enumeration value="append"/>
+      <xs:enumeration value="replace"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="MaxEntries">
+    <xs:annotation>
+      <xs:documentation>Positive integer or "unbounded".</xs:documentation>
+    </xs:annotation>
+    <xs:union memberTypes="xs:positiveInteger">
+      <xs:simpleType>
+        <xs:restriction base="xs:token">
+          <xs:enumeration value="unbounded"/>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:union>
+  </xs:simpleType>
+  <xs:simpleType name="ModelName">
+    <xs:annotation>
+      <xs:documentation>Model name, including major and minor versions.  The name part is the same as xs:NCName except that dots are not permitted.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&name;&colon;&num;&dot;&num;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectName">
+    <xs:annotation>
+      <xs:documentation>Object name (maximum length 256).  Each component is the same as xs:NCName except that dots are not permitted.  This name MUST in addition follow the vendor-specific object name requirements of section 3.3.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="256"/>
+      <xs:pattern value="(&name;&dot;(&inst;&dot;)?)+"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectReference">
+    <xs:annotation>
+      <xs:documentation>Object path that cannot contain "{i}" placeholders and that therefore references a single object.  The path MUST follow the requirements of A.2.3.4 (its scope will typically be specified via an attribute of type PathScope).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&dot;?(&name;&dot;)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectReferencePattern">
+    <xs:annotation>
+      <xs:documentation>Object path that can contain "{i}" placeholders and that can therefore references multiple objects.  The path MUST follow the requirements of A.2.3.4 (its scope will typically be specified via an attribute of type PathScope).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&dot;?(&name;&dot;(&inst;&dot;)?)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ObjectReferencePatterns">
+    <xs:annotation>
+      <xs:documentation>List of object paths, each of which can contain "{i}" placeholders.</xs:documentation>
+    </xs:annotation>
+    <xs:list itemType="tns:ObjectReferencePattern"/>
+  </xs:simpleType>
+  <xs:simpleType name="OpaqueID">
+    <xs:annotation>
+      <xs:documentation>Opaque ID.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="256"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParameterName">
+    <xs:annotation>
+      <xs:documentation>Parameter name (maximum length 256); the same as xs:NCName except that dots are not permitted.  This name MUST in addition follow the vendor-specific parameter name requirements of section 3.3.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="256"/>
+      <xs:pattern value="&name;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParameterReference">
+    <xs:annotation>
+      <xs:documentation>Parameter path that cannot contain "{i}" placeholders and that therefore references a single parameter.  The path MUST follow the requirements of A.2.3.4 (its scope will typically be specified via an attribute of type PathScope).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&dot;?(&name;&dot;)*&name;?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="PathScope">
+    <xs:annotation>
+      <xs:documentation>Object / parameter path name scope (A.2.3.4).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="normal"/>
+      <xs:enumeration value="model"/>
+      <xs:enumeration value="object"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProfileName">
+    <xs:annotation>
+      <xs:documentation>Profile name, including version.  The name part is the same as xs:NCName except that dots are not permitted.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&name;&colon;&num;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProfileNames">
+    <xs:annotation>
+      <xs:documentation>List of profile names.</xs:documentation>
+    </xs:annotation>
+    <xs:list itemType="tns:ProfileName"/>
+  </xs:simpleType>
+  <xs:simpleType name="ProfileObjectAccess">
+    <xs:annotation>
+      <xs:documentation>Object access (within profile).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="notSpecified"/>
+      <xs:enumeration value="present"/>
+      <xs:enumeration value="create"/>
+      <xs:enumeration value="delete"/>
+      <xs:enumeration value="createDelete"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ReadWriteAccess">
+    <xs:annotation>
+      <xs:documentation>Read-write access.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="readOnly"/>
+      <xs:enumeration value="readWrite"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ReferenceType">
+    <xs:annotation>
+      <xs:documentation>Reference type (A.2.3.6).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="weak"/>
+      <xs:enumeration value="strong"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Status">
+    <xs:annotation>
+      <xs:documentation>Item status (applies to most types of item).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="current"/>
+      <xs:enumeration value="deprecated"/>
+      <xs:enumeration value="obsoleted"/>
+      <xs:enumeration value="deleted"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="TargetType">
+    <xs:annotation>
+      <xs:documentation>(Reference) target type (used in path references).</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:enumeration value="any"/>
+      <xs:enumeration value="parameter"/>
+      <xs:enumeration value="object"/>
+      <xs:enumeration value="single"/>
+      <xs:enumeration value="table"/>
+      <xs:enumeration value="row"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="UnitsString">
+    <xs:annotation>
+      <xs:documentation>Units string.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:maxLength value="32"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <!-- Model groups -->
+  <xs:group name="AllBuiltinDataTypes">
+    <xs:annotation>
+      <xs:documentation>All built-in data types.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="base64">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet">
+                <xs:annotation>
+                  <xs:documentation>Length is that of the actual string, not the base64-encoded string.  See A.2.3.3.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="boolean">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="dateTime">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="hexBinary">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet">
+                <xs:annotation>
+                  <xs:documentation>Length is that of the actual string, not the hexBinary-encoded string.  See A.2.3.3.</xs:documentation>
+                </xs:annotation>
+              </xs:element>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="int">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="instanceRef" type="tns:InstanceRefFacet"/>
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="long">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="string">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="size" type="tns:SizeFacet"/>
+              <xs:element name="pathRef" type="tns:PathRefFacet"/>
+              <xs:element name="enumeration" type="tns:EnumerationFacet"/>
+              <xs:element name="enumerationRef" type="tns:EnumerationRefFacet"/>
+              <xs:element name="pattern" type="tns:PatternFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+        <xs:unique name="stringEnumerationValue">
+          <xs:selector xpath="enumeration"/>
+          <xs:field xpath="@value"/>
+        </xs:unique>
+        <xs:unique name="stringPatternValue">
+          <xs:selector xpath="pattern"/>
+          <xs:field xpath="@value"/>
+        </xs:unique>
+      </xs:element>
+      <xs:element name="unsignedInt">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="instanceRef" type="tns:InstanceRefFacet"/>
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="unsignedLong">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="range" type="tns:RangeFacet"/>
+              <xs:element name="units" type="tns:UnitsFacet"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <xs:group name="AllFacets">
+    <xs:annotation>
+      <xs:documentation>All facets.</xs:documentation>
+    </xs:annotation>
+    <xs:choice>
+      <xs:element name="size" type="tns:SizeFacet">
+        <xs:annotation>
+          <xs:documentation>Size facets, taken together, define the valid size ranges, e.g. (0:0) and (6:6) mean that the size has to be 0 or 6.
+The size facet MUST NOT be specified for non-string data types, i.e. data types that are not derived from base64, hexBinary or string.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="instanceRef" type="tns:InstanceRefFacet">
+        <xs:annotation>
+          <xs:documentation>InstanceRef facets specify how a parameter can reference an object instance (table row) via its instance number.
+The instanceRef facet MUST NOT be specified for data types that are not derived from int or unsignedInt.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="pathRef" type="tns:PathRefFacet">
+        <xs:annotation>
+          <xs:documentation>PathRef facets specify how a parameter can reference a parameter or object via its path name.
+The pathRef facet MUST NOT be specified for data types that are not derived from string.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="range" type="tns:RangeFacet">
+        <xs:annotation>
+          <xs:documentation>Range facets, taken together, define the valid value  ranges, e.g. [-1:-1] and [1:4094] mean that the value has to be -1 or 1:4094 (it cannot be 0).
+The range facet MUST NOT be specified for non-numeric data types, i.e. data types that are not derived from one of the integer types.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="enumeration" type="tns:EnumerationFacet">
+        <xs:annotation>
+          <xs:documentation>Enumeration facets, taken together, define the valid values, e.g. "a" and "b" mean that the value has to be a or b.
+The enumeration facet MUST NOT be specified for data types that are not derived from string. 
+Derived types MAY add additional enumeration values.  See A.2.5.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="enumerationRef" type="tns:EnumerationRefFacet">
+        <xs:annotation>
+          <xs:documentation>EnumerationRef facets allow a parameter's valid values to be obtained from another parameter.
+The enumerationRef facet MUST NOT be specified for data types that are not derived from string.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="pattern" type="tns:PatternFacet">
+        <xs:annotation>
+          <xs:documentation>Pattern attributes, taken together, define valid patterns, e.g. "" and "[0-9A-Fa-f]{6}" means that the value has to be empty or a 6 digit hex string.
+The pattern facet MUST NOT be specified for data types that are not derived from string. 
+Pattern syntax is the same as for XML Schema regular expressions.  See http://www.w3.org/TR/xmlschema-2/#regexs.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="units" type="tns:UnitsFacet">
+        <xs:annotation>
+          <xs:documentation>Multiple units facets MUST NOT be specified.
+The units facet MUST NOT be specified for data types that are not numeric, i.e. data types that are not derived from one of the integer types.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:choice>
+  </xs:group>
+  <!-- Complex types -->
+  <xs:complexType name="BaseStatusFacet" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Base facet (status attribute).</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="BaseAccessFacet" abstract="true">
+    <xs:annotation>
+      <xs:documentation>Base facet (access, status and optional attributes).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="access" type="tns:ReadWriteAccess" default="readWrite"/>
+        <xs:attribute name="optional" type="xs:boolean" default="false"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Bibliography">
+    <xs:annotation>
+      <xs:documentation>Bibliography definition.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:element name="reference" minOccurs="0" maxOccurs="unbounded">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="name" type="xs:token">
+              <xs:annotation>
+                <xs:documentation>Name by which the referenced document is usually known, e.g. TR-069, RFC 2863.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="title" type="xs:token" minOccurs="0"/>
+            <xs:element name="organization" type="xs:token" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>Organization that published the referenced document, e.g. BBF, IEEE, IETF.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="category" type="xs:token" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>Document category, e.g. TR (BBF), RFC (IETF).</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="date" type="xs:token" minOccurs="0">
+              <xs:annotation>
+                <xs:documentation>Publication date.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+              <xs:element name="hyperlink" type="xs:anyURI"/>
+            </xs:choice>
+            <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+          </xs:sequence>
+          <xs:attribute name="id" type="tns:BibrefId" use="required">
+            <xs:annotation>
+              <xs:documentation>Uniquely identifies the reference (this is checked by schema validation).  Can be referenced from descriptions by using the {{bibref}} template.  See A.2.2.4.</xs:documentation>
+            </xs:annotation>
+          </xs:attribute>
+          <xs:anyAttribute namespace="##other"/>
+        </xs:complexType>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ComponentDefinition">
+    <xs:annotation>
+      <xs:documentation>Component definition.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="component" type="tns:ComponentReference"/>
+        <xs:element name="parameter" type="tns:ModelParameter"/>
+        <xs:element name="object" type="tns:ModelObject">
+          <xs:unique name="componentObjectParameterName">
+            <xs:selector xpath="parameter"/>
+            <xs:field xpath="@name"/>
+          </xs:unique>
+          <xs:keyref name="componentEnableParameterRef" refer="tns:componentObjectParameterName">
+            <xs:selector xpath="."/>
+            <xs:field xpath="@enableParameter"/>
+          </xs:keyref>
+          <xs:keyref name="componentUniqueKeyRef" refer="tns:componentObjectParameterName">
+            <xs:selector xpath="uniqueKey/parameter"/>
+            <xs:field xpath="@ref"/>
+          </xs:keyref>
+        </xs:element>
+      </xs:choice>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="profile" type="tns:Profile"/>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:ComponentName" use="required">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the document, including imported components (this is checked by schema validation).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ComponentReference">
+    <xs:annotation>
+      <xs:documentation>Component reference.</xs:documentation>
+    </xs:annotation>
+    <xs:attribute name="ref" type="tns:ComponentName" use="required">
+      <xs:annotation>
+        <xs:documentation>Name of component to be referenced (included).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="path" type="tns:ObjectName">
+      <xs:annotation>
+        <xs:documentation>If specified, is relative path between point of reference (inclusion) and the component's items.  If not specified, behavior is as if an empty relative path was specified.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="DataTypeDefinition">
+    <xs:annotation>
+      <xs:documentation>Parameter data type definition.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:choice>
+        <xs:group ref="tns:AllFacets" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Facets MUST NOT be specified if the base attribute is omitted.</xs:documentation>
+          </xs:annotation>
+        </xs:group>
+        <xs:group ref="tns:AllBuiltinDataTypes" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>A built-in data type element MUST NOT be specified if the base attribute is present.
+See tns:AllFacets for notes and requirements on individual facets.</xs:documentation>
+          </xs:annotation>
+        </xs:group>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:DataTypeName" use="required">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the document, including imported data types (this is checked by schema validation).
+Cannot begin with a lower-case letter, in order to avoid confusion with built-in data types.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:DataTypeName">
+      <xs:annotation>
+        <xs:documentation>MUST be present if and only if deriving from a non-built-in data type.  See A.2.3.1.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="DataTypeReference">
+    <xs:annotation>
+      <xs:documentation>Parameter data type reference or anonymous restriction / extension.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:group ref="tns:AllFacets" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="tns:DataTypeName">
+      <xs:annotation>
+        <xs:documentation>If specified, content MUST be empty.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:DataTypeName">
+      <xs:annotation>
+        <xs:documentation>If specified, content MUST NOT be empty.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="DefaultFacet">
+    <xs:annotation>
+      <xs:documentation>Default facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="type" type="tns:DefaultType" use="required"/>
+        <xs:attribute name="value" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Value MUST be valid for the data type.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Description">
+    <xs:annotation>
+      <xs:documentation>Description: free text which MAY contain a limited amount of mediawiki-like markup as specified in A.2.2.  For example, use "*" at the start of a line to indicate a bulleted list.
+To avoid confusion, the description SHOULD NOT contain tab characters.
+For BBF standards, the character set MUST be restricted to printable characters in the Basic Latin Unicode block, i.e. to characters whose decimal ASCII representations are in the (inclusive) ranges 9-10 and 32-126.</xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:extension base="xs:string">
+        <xs:attribute name="action" type="tns:DescriptionAction" default="create">
+          <xs:annotation>
+            <xs:documentation>This MUST be specified when the description modifies that of a previously defined item.
+Specify "append" to append to the previous description, or "replace" to replace the previous description.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:anyAttribute namespace="##other"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:complexType name="EnumerationFacet">
+    <xs:annotation>
+      <xs:documentation>Enumeration facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+        <xs:attribute name="code" type="xs:integer"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="EnumerationRefFacet">
+    <xs:annotation>
+      <xs:documentation>Enumeration reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="targetParam" type="tns:ParameterReference" use="required">
+          <xs:annotation>
+            <xs:documentation>MUST reference a list-valued parameter.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetParamScope" type="tns:PathScope" default="normal">
+          <xs:annotation>
+            <xs:documentation>Specifies the point in the naming hierarchy relative to which targetParam applies (A.2.3.4).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="nullValue" type="xs:token">
+          <xs:annotation>
+            <xs:documentation>Specifies the value that indicates that none of the values of the referenced parameter currently apply.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Import">
+    <xs:annotation>
+      <xs:documentation>Import data types, components and models (Root and Service Objects) from external documents.  All such items MUST be imported (this is checked by schema validation).
+The optional ref attribute MAY be used in order to avoid name conflicts between imported and locally-defined items.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="dataType">
+          <xs:complexType>
+            <xs:attribute name="name" type="tns:DataTypeName" use="required"/>
+            <xs:attribute name="ref" type="tns:DataTypeName">
+              <xs:annotation>
+                <xs:documentation>If omitted, data type is known by the same name in both this and the referenced document.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="component">
+          <xs:complexType>
+            <xs:attribute name="name" type="tns:ComponentName" use="required"/>
+            <xs:attribute name="ref" type="tns:ComponentName">
+              <xs:annotation>
+                <xs:documentation>If omitted, component is known by the same name in both this and the referenced document.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="model">
+          <xs:complexType>
+            <xs:attribute name="name" type="tns:ModelName" use="required"/>
+            <xs:attribute name="ref" type="tns:ModelName">
+              <xs:annotation>
+                <xs:documentation>If omitted, model is known by the same name in both this and the referenced document.</xs:documentation>
+              </xs:annotation>
+            </xs:attribute>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="file" type="xs:anyURI">
+      <xs:annotation>
+        <xs:documentation>If specified, MUST be used to locate the DM Instance (A.2.1).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="spec" type="xs:anyURI">
+      <xs:annotation>
+        <xs:documentation>If file is specified, this MAY be specified, in which case processing tools MUST regard a mismatch between this and the external document's spec attribute as an error.
+If file is not specified, this MUST be specified and be used to locate the DM Instance (A.2.1).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="InstanceRefFacet">
+    <xs:annotation>
+      <xs:documentation>Instance number reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="refType" type="tns:ReferenceType" use="required">
+          <xs:annotation>
+            <xs:documentation>Specifies the type of reference (A.2.3.6).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetParent" type="tns:ObjectReference" use="required">
+          <xs:annotation>
+            <xs:documentation>MUST reference a multi-instance object (table) (A.2.3.4).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetParentScope" type="tns:PathScope" default="normal">
+          <xs:annotation>
+            <xs:documentation>Specifies the point in the naming hierarchy relative to which targetParent applies (A.2.3.4).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ListFacet">
+    <xs:annotation>
+      <xs:documentation>List facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:sequence>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="size" type="tns:SizeFacet">
+              <xs:annotation>
+                <xs:documentation>This specifies the size of the TR-069 list-valued parameter, not of the individual list items.</xs:documentation>
+              </xs:annotation>
+            </xs:element>
+          </xs:choice>
+        </xs:sequence>
+        <xs:attribute name="minItems" type="xs:nonNegativeInteger" default="0"/>
+        <xs:attribute name="maxItems" type="tns:MaxEntries" default="unbounded"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Model">
+    <xs:annotation>
+      <xs:documentation>Model (Root or Service Object) definition and reference.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="component" type="tns:ComponentReference"/>
+        <xs:element name="parameter" type="tns:ModelParameter"/>
+        <xs:element name="object" type="tns:ModelObject">
+          <xs:unique name="objectParameterName">
+            <xs:selector xpath="parameter"/>
+            <xs:field xpath="@name"/>
+          </xs:unique>
+          <xs:keyref name="objectEnableParameterRef" refer="tns:objectParameterName">
+            <xs:selector xpath="."/>
+            <xs:field xpath="@enableParameter"/>
+          </xs:keyref>
+          <xs:keyref name="objectUniqueKeyRef" refer="tns:objectParameterName">
+            <xs:selector xpath="uniqueKey/parameter"/>
+            <xs:field xpath="@ref"/>
+          </xs:keyref>
+        </xs:element>
+      </xs:choice>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="profile" type="tns:Profile"/>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:ModelName" use="required">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the document, including imported models (this is checked by schema validation).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:ModelName">
+      <xs:annotation>
+        <xs:documentation>MUST be present if and only if extending an existing model.  See A.2.10.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="isService" type="xs:boolean" default="false"/>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ModelObject">
+    <xs:annotation>
+      <xs:documentation>Object definition and reference.  See A.2.8.1 for details of how tables are represented.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:element name="uniqueKey" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>MUST NOT be present if the object is not a table (see maxEntries).
+The parameters referenced by each unique key element MUST constitute a unique key.
+For a table in which there is an enableParameter, the uniqueness requirement applies only to enabled table entries.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="parameter" maxOccurs="unbounded">
+              <xs:complexType>
+                <xs:attribute name="ref" type="tns:ParameterName" use="required"/>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+        <xs:unique name="uniqueKeyParameterRef">
+          <xs:selector xpath="parameter"/>
+          <xs:field xpath="@ref"/>
+        </xs:unique>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="component" type="tns:ComponentReference"/>
+        <xs:element name="parameter" type="tns:ModelParameter"/>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:ObjectName">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the component or model (this is checked by schema validation).
+MUST be present if and only if defining a new object.
+If the object is a table (see maxEntries), the final part of the name MUST be "{i}.".</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:ObjectName">
+      <xs:annotation>
+        <xs:documentation>MUST be present if and only if modifying an existing object.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="access" type="tns:ReadWriteAccess" use="required"/>
+    <xs:attribute name="minEntries" type="xs:nonNegativeInteger" use="required">
+      <xs:annotation>
+        <xs:documentation>minEntries MUST be less than or equal to maxEntries (all values are regarded as being less than "unbounded").</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="maxEntries" type="tns:MaxEntries" use="required">
+      <xs:annotation>
+        <xs:documentation>minEntries and maxEntries indicate whether the object is a table:
+* minEntries=0, maxEntries=1 : single-instance object which might not be allowed to exist, e.g. because only one of it and another object can exist at the same time
+* minEntries=1, maxEntries=1 : single-instance object that is always allowed to exist
+* all other cases : object is a table</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="numEntriesParameter" type="tns:ParameterName">
+      <xs:annotation>
+        <xs:documentation>MUST be specified for a table with a variable number of entries, i.e. for which maxEntries is greater than minEntries ("unbounded" is regarded as being greater than all values).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="enableParameter" type="tns:ParameterName">
+      <xs:annotation>
+        <xs:documentation>MUST be specified for a table in which the ACS can create entries and which has one or more uniqueKey elements.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ModelParameter">
+    <xs:annotation>
+      <xs:documentation>Parameter definition and reference.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0"/>
+      <xs:element name="syntax" type="tns:Syntax" minOccurs="0"/>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:ParameterName">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the parent object (this is checked by schema validation).
+MUST be present if and only if defining a new parameter.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:ParameterName">
+      <xs:annotation>
+        <xs:documentation>MUST be present if and only if modifying an existing parameter.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="access" type="tns:ReadWriteAccess" use="required"/>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="activeNotify" type="tns:ActiveNotify" default="normal"/>
+    <xs:attribute name="forcedInform" type="xs:boolean" default="false"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="PathRefFacet">
+    <xs:annotation>
+      <xs:documentation>Path name reference facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="refType" type="tns:ReferenceType" use="required">
+          <xs:annotation>
+            <xs:documentation>Specifies the type of reference (A.2.3.6).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetParent" type="tns:ObjectReferencePatterns" default="">
+          <xs:annotation>
+            <xs:documentation>If the list is non-empty, this parameter MUST only reference immediate children of matching objects (A.2.3.4).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetParentScope" type="tns:PathScope" default="normal">
+          <xs:annotation>
+            <xs:documentation>Specifies the point in the naming hierarchy relative to which targetParent applies (A.2.3.4).</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetType" type="tns:TargetType" default="any">
+          <xs:annotation>
+            <xs:documentation>Specifies the type of item that can be referenced.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="targetDataType" type="tns:AnyTypeName" default="any">
+          <xs:annotation>
+            <xs:documentation>Specifies the valid data types for a referenced parameter.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PatternFacet">
+    <xs:annotation>
+      <xs:documentation>Pattern facet (pattern syntax is as in XML Schema).</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="value" type="xs:string" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Profile">
+    <xs:annotation>
+      <xs:documentation>Profile definition and reference.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If the extends attribute is insufficient to express general profile requirements, any additional requirements MUST be specified here.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="parameter" type="tns:ProfileParameter"/>
+        <xs:element name="object" type="tns:ProfileObject"/>
+      </xs:choice>
+      <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="name" type="tns:ProfileName">
+      <xs:annotation>
+        <xs:documentation>MUST be unique within the model (this is checked by schema validation).
+MUST be present if and only if defining a new profile.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="base" type="tns:ProfileName">
+      <xs:annotation>
+        <xs:documentation>MUST specify base if modifying an existing profile or if the profile version is greater than 1.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="extends" type="tns:ProfileNames">
+      <xs:annotation>
+        <xs:documentation>MUST specify extends if the profile extends other profile(s).</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:attribute name="id" type="tns:OpaqueID"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ProfileObject">
+    <xs:annotation>
+      <xs:documentation>Profile object definition.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If the requirement attribute is insufficient to express the requirement, any additional requirements MUST be specified here and MAY override the attribute.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="parameter" type="tns:ProfileParameter" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attribute name="ref" type="tns:ObjectName" use="required"/>
+    <xs:attribute name="requirement" type="tns:ProfileObjectAccess" use="required"/>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="ProfileParameter">
+    <xs:annotation>
+      <xs:documentation>Profile parameter definition.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="description" type="tns:Description" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>If the requirement attribute is insufficient to express the requirement, any additional requirements MUST be specified here and MAY override the attribute.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="ref" type="tns:ParameterName" use="required"/>
+    <xs:attribute name="requirement" type="tns:ReadWriteAccess" use="required"/>
+    <xs:attribute name="status" type="tns:Status" default="current"/>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <xs:complexType name="RangeFacet">
+    <xs:annotation>
+      <xs:documentation>Range facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="minInclusive" type="xs:integer"/>
+        <xs:attribute name="maxInclusive" type="xs:integer"/>
+        <xs:attribute name="step" type="xs:positiveInteger" default="1"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="SizeFacet">
+    <xs:annotation>
+      <xs:documentation>Size facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseAccessFacet">
+        <xs:attribute name="minLength" type="xs:nonNegativeInteger" default="0"/>
+        <xs:attribute name="maxLength" type="xs:nonNegativeInteger" default="16"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="UnitsFacet">
+    <xs:annotation>
+      <xs:documentation>Units facet.</xs:documentation>
+    </xs:annotation>
+    <xs:complexContent>
+      <xs:extension base="tns:BaseStatusFacet">
+        <xs:attribute name="value" type="tns:UnitsString" use="required"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Syntax">
+    <xs:annotation>
+      <xs:documentation>Parameter syntax specification.</xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="list" type="tns:ListFacet" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>For lists, the TR-069 parameter is always a string and the data type specification applies to individual list items, not to the parameter value.
+See section 3.2 for comma-separated list formatting rules.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:choice>
+        <xs:group ref="tns:AllBuiltinDataTypes">
+          <xs:annotation>
+            <xs:documentation>Direct use of built-in data type, possibly modified via use of facets.</xs:documentation>
+          </xs:annotation>
+        </xs:group>
+        <xs:element name="dataType" type="tns:DataTypeReference">
+          <xs:annotation>
+            <xs:documentation>Use of named data type, possibly modified via use of facets.</xs:documentation>
+          </xs:annotation>
+          <xs:unique name="dtRefEnumerationValue">
+            <xs:selector xpath="enumeration"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+          <xs:unique name="dtRefPatternValue">
+            <xs:selector xpath="pattern"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+        </xs:element>
+      </xs:choice>
+      <xs:element name="default" type="tns:DefaultFacet" minOccurs="0"/>
+    </xs:sequence>
+    <xs:attribute name="hidden" type="xs:boolean" default="false">
+      <xs:annotation>
+        <xs:documentation>If true, readback is always false, 0 or empty string.</xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+    <xs:anyAttribute namespace="##other"/>
+  </xs:complexType>
+  <!-- Elements -->
+  <xs:element name="document">
+    <xs:annotation>
+      <xs:documentation>CWMP Data Model Definition XML Schema (DM Schema) instance documents can contain any or all of the following:
+* Data type definitions
+* Root Object definitions (including profiles)
+* Service Object definitions (including profiles)
+* Component definitions
+* Vendor extension definitions</xs:documentation>
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="description" type="tns:Description" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Top-level description.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="import" type="tns:Import" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Imported data types, components and models (Root and Service Objects).</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:element name="dataType" type="tns:DataTypeDefinition" minOccurs="0" maxOccurs="unbounded">
+          <xs:annotation>
+            <xs:documentation>Top-level data type definitions.</xs:documentation>
+          </xs:annotation>
+          <xs:unique name="dtDefEnumerationValue">
+            <xs:selector xpath="enumeration"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+          <xs:unique name="dtDefPatternValue">
+            <xs:selector xpath="pattern"/>
+            <xs:field xpath="@value"/>
+          </xs:unique>
+        </xs:element>
+        <xs:element name="bibliography" type="tns:Bibliography" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Bibliographic references.</xs:documentation>
+          </xs:annotation>
+        </xs:element>
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+          <xs:element name="component" type="tns:ComponentDefinition">
+            <xs:annotation>
+              <xs:documentation>Component definitions.</xs:documentation>
+            </xs:annotation>
+            <xs:unique name="componentParameterName">
+              <xs:selector xpath="parameter"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="componentObjectName">
+              <xs:selector xpath="object"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="componentProfileName">
+              <xs:selector xpath="profile"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+          </xs:element>
+          <xs:element name="model" type="tns:Model">
+            <xs:annotation>
+              <xs:documentation>Model (Root and Service Object) definitions.</xs:documentation>
+            </xs:annotation>
+            <xs:unique name="modelParameterName">
+              <xs:selector xpath="parameter"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="modelObjectName">
+              <xs:selector xpath="object"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+            <xs:unique name="modelProfileName">
+              <xs:selector xpath="profile"/>
+              <xs:field xpath="@name"/>
+            </xs:unique>
+          </xs:element>
+        </xs:choice>
+        <xs:any namespace="##other" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+      <xs:attribute name="spec" use="required">
+        <xs:annotation>
+          <xs:documentation>URI of the associated specification document, e.g. the BBF Technical Report.  This URI SHOULD uniquely identify the specification.  More than one DM Schema instance document MAY reference the same specification.
+Where the specification is a BBF document, the URI naming rules specified in A.2.1.1 MUST be used.  For example, to reference TR-106 Issue 1 Amendment 2, the value of this attribute would be urn:broadband-forum-org:tr-106-1-2.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:anyURI">
+            <xs:pattern value=".+"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+      <xs:anyAttribute namespace="##other"/>
+    </xs:complexType>
+    <xs:unique name="dataTypeName">
+      <xs:selector xpath="dataType|import/dataType"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="componentName">
+      <xs:selector xpath="component|import/component"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="modelName">
+      <xs:selector xpath="model|import/model"/>
+      <xs:field xpath="@name"/>
+    </xs:unique>
+    <xs:unique name="bibId">
+      <xs:selector xpath="bibliography/reference"/>
+      <xs:field xpath="@id"/>
+    </xs:unique>
+    <xs:keyref name="dataTypeBase" refer="tns:dataTypeName">
+      <xs:selector xpath="dataType|.//parameter/syntax/dataType"/>
+      <xs:field xpath="@base"/>
+    </xs:keyref>
+    <xs:keyref name="dataTypeRef" refer="tns:dataTypeName">
+      <xs:selector xpath=".//parameter/syntax/dataType"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="componentRef" refer="tns:componentName">
+      <xs:selector xpath=".//component"/>
+      <xs:field xpath="@ref"/>
+    </xs:keyref>
+    <xs:keyref name="modelBase" refer="tns:modelName">
+      <xs:selector xpath="model"/>
+      <xs:field xpath="@base"/>
+    </xs:keyref>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xpwr_percent" ] ; then
+  echo "25"
+fi
+exit 0

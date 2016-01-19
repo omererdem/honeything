@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 DT (Device Type) Features Schema (DTF Schema)
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  XML Schema has been approved by members of the Forum. This document is
+  not binding on the Broadband Forum, any of its members, or any developer
+  or service provider. This document is subject to change, but only with
+  approval of members of the Forum.
+
+  This document is provided "as is," with all faults.  Any person holding a
+  copyright in this document, or any portion thereof, disclaims to the fullest
+  extent permitted by law any representation or warranty, express or implied,
+  including, but not limited to,
+  (a) any warranty of merchantability, fitness for a particular purpose,
+      non-infringement, or title;
+  (b) any warranty that the contents of the document are suitable for any
+      purpose, even if that purpose is known to the copyright holder;
+  (c) any warranty that the implementation of the contents of the documentation
+      will not infringe any third party patents, copyrights, trademarks or
+      other rights.
+
+  This publication may incorporate intellectual property. The Broadband Forum
+  encourages but does not require declaration of such intellectual property.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.
+
+  Copyright The Broadband Forum. All Rights Reserved.
+
+  Broadband Forum XML Schemas may be copied, downloaded, stored on a server or
+  otherwise re-distributed in their entirety only. The text of this
+  notice must be included in all copies.
+
+  Summary:
+  TR-069 DT (Device Type) Features Schema.  Defines device features that 
+  can be described in DT Instances.
+
+  Version History:
+  September 2009: cwmp-devicetype-features.xsd, corresponds to TR-106
+                  Amendment 3
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:broadband-forum-org:cwmp:devicetype-features" targetNamespace="urn:broadband-forum-org:cwmp:devicetype-features" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+  <xs:simpleType name="FeatureName">
+    <xs:restriction base="xs:NCName">
+      <xs:pattern value="DNSClient"/>
+      <xs:pattern value="DNSServer"/>
+      <xs:pattern value="Firewall"/>
+      <xs:pattern value="IPv6"/>
+      <xs:pattern value="NAT"/>
+      <xs:pattern value="Router"/>
+      <xs:pattern value="X_.+"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

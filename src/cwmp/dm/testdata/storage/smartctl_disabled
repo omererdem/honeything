@@ -1,0 +1,34 @@
+#!/bin/sh
+
+echo "smartctl version 5.38 [x86_64-unknown-linux-gnu] Copyright (C) 2002-8 Bruce Allen
+Home page is http://smartmontools.sourceforge.net/
+"
+
+while (( "$#" )); do
+if [[ $1 == "--info" ]]; then
+echo "=== START OF INFORMATION SECTION ===
+Model Family:     Frobozzco Nearly Infinite Storage family
+Device Model:     device_model
+Serial Number:    serial_number
+Firmware Version: firmware_version
+User Capacity:    1,000,000,000,000,000,000,000,000,000,000,000,000,000 bytes
+Device is:        In smartctl database [for details use: -P show]
+ATA Version is:   8
+ATA Standard is:  Exact ATA specification draft version not indicated
+Local Time is:    Wed Feb  8 11:04:44 2012 PST
+SMART support is: Available - device has SMART capability.
+SMART support is: Disabled
+"
+fi
+
+if [[ $1 == "--health" ]]; then
+echo "=== START OF READ SMART DATA SECTION ===
+SMART overall-health self-assessment test result: PASSED
+"
+fi
+
+shift
+
+done
+
+exit 0

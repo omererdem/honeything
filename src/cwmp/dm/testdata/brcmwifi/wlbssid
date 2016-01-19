@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xbssid" ] ; then
+  echo "01:23:45:67:89:ab"
+fi
+exit 0

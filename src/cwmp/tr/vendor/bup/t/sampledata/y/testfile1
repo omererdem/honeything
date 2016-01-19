@@ -1,0 +1,5580 @@
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg bcgvbaf, qerphefr
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc qerphefr <cngu>
+--
+k,kqri,bar-svyr-flfgrz   qba'g pebff svyrflfgrz obhaqnevrf
+d,dhvrg  qba'g npghnyyl cevag svyranzrf
+cebsvyr  eha haqre gur clguba cebsvyre
+"""
+b = bcgvbaf.Bcgvbaf('ohc qerphefr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar svyranzr rkcrpgrq")
+
+vg = qerphefr.erphefvir_qveyvfg(rkgen, bcg.kqri)
+vs bcg.cebsvyr:
+    vzcbeg pCebsvyr
+    qrs qb_vg():
+        sbe v va vg:
+            cnff
+    pCebsvyr.eha('qb_vg()')
+ryfr:
+    vs bcg.dhvrg:
+        sbe v va vg:
+            cnff
+    ryfr:
+        sbe (anzr,fg) va vg:
+            cevag anzr
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc fcyvg [-gpo] [-a anzr] [--orapu] [svyranzrf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+o,oybof    bhgchg n frevrf bs oybo vqf
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+A,abbc     qba'g npghnyyl fnir gur qngn naljurer
+d,dhvrg    qba'g cevag cebterff zrffntrf
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+pbcl       whfg pbcl vachg gb bhgchg, unfufcyvggvat nybat gur jnl
+orapu      cevag orapuznex gvzvatf gb fgqree
+znk-cnpx-fvmr=  znkvzhz olgrf va n fvatyr cnpx
+znk-cnpx-bowrpgf=  znkvzhz ahzore bs bowrpgf va n fvatyr cnpx
+snabhg=  znkvzhz ahzore bs oybof va n fvatyr gerr
+"""
+b = bcgvbaf.Bcgvbaf('ohc fcyvg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.oybof be bcg.gerr be bcg.pbzzvg be bcg.anzr be
+        bcg.abbc be bcg.pbcl):
+    b.sngny("hfr bar be zber bs -o, -g, -p, -a, -A, --pbcl")
+vs (bcg.abbc be bcg.pbcl) naq (bcg.oybof be bcg.gerr be 
+                               bcg.pbzzvg be bcg.anzr):
+    b.sngny('-A vf vapbzcngvoyr jvgu -o, -g, -p, -a')
+
+vs bcg.ireobfr >= 2:
+    tvg.ireobfr = bcg.ireobfr - 1
+    bcg.orapu = 1
+vs bcg.znk_cnpx_fvmr:
+    unfufcyvg.znk_cnpx_fvmr = cnefr_ahz(bcg.znk_cnpx_fvmr)
+vs bcg.znk_cnpx_bowrpgf:
+    unfufcyvg.znk_cnpx_bowrpgf = cnefr_ahz(bcg.znk_cnpx_bowrpgf)
+vs bcg.snabhg:
+    unfufcyvg.snabhg = cnefr_ahz(bcg.snabhg)
+vs bcg.oybof:
+    unfufcyvg.snabhg = 0
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+fgneg_gvzr = gvzr.gvzr()
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.abbc be bcg.pbcl:
+    pyv = j = byqers = Abar
+ryvs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+svyrf = rkgen naq (bcra(sa) sbe sa va rkgen) be [flf.fgqva]
+vs j:
+    funyvfg = unfufcyvg.fcyvg_gb_funyvfg(j, svyrf)
+    gerr = j.arj_gerr(funyvfg)
+ryfr:
+    ynfg = 0
+    sbe (oybo, ovgf) va unfufcyvg.unfufcyvg_vgre(svyrf):
+        unfufcyvg.gbgny_fcyvg += yra(oybo)
+        vs bcg.pbcl:
+            flf.fgqbhg.jevgr(fge(oybo))
+        zrtf = unfufcyvg.gbgny_fcyvg/1024/1024
+        vs abg bcg.dhvrg naq ynfg != zrtf:
+            cebterff('%q Zolgrf ernq\e' % zrtf)
+            ynfg = zrtf
+    cebterff('%q Zolgrf ernq, qbar.\a' % zrtf)
+
+vs bcg.ireobfr:
+    ybt('\a')
+vs bcg.oybof:
+    sbe (zbqr,anzr,ova) va funyvfg:
+        cevag ova.rapbqr('urk')
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fcyvg\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+vs j:
+    j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+frpf = gvzr.gvzr() - fgneg_gvzr
+fvmr = unfufcyvg.gbgny_fcyvg
+vs bcg.orapu:
+    ybt('\aohc: %.2sxolgrf va %.2s frpf = %.2s xolgrf/frp\a'
+        % (fvmr/1024., frpf, fvmr/1024./frpf))
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, fgehpg, zznc
+sebz ohc vzcbeg tvg, bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs f_sebz_olgrf(olgrf):
+    pyvfg = [pue(o) sbe o va olgrf]
+    erghea ''.wbva(pyvfg)
+
+
+qrs ercbeg(pbhag):
+    svryqf = ['IzFvmr', 'IzEFF', 'IzQngn', 'IzFgx']
+    q = {}
+    sbe yvar va bcra('/cebp/frys/fgnghf').ernqyvarf():
+        y = er.fcyvg(e':\f*', yvar.fgevc(), 1)
+        q[y[0]] = y[1]
+    vs pbhag >= 0:
+        r1 = pbhag
+        svryqf = [q[x] sbe x va svryqf]
+    ryfr:
+        r1 = ''
+    cevag ('%9f  ' + ('%10f ' * yra(svryqf))) % ghcyr([r1] + svryqf)
+    flf.fgqbhg.syhfu()
+
+
+bcgfcrp = """
+ohc zrzgrfg [-a ryrzragf] [-p plpyrf]
+--
+a,ahzore=  ahzore bs bowrpgf cre plpyr
+p,plpyrf=  ahzore bs plpyrf gb eha
+vtaber-zvqk  vtaber .zvqk svyrf, hfr bayl .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zrzgrfg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+tvg.vtaber_zvqk = bcg.vtaber_zvqk
+
+tvg.purpx_ercb_be_qvr()
+z = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+
+plpyrf = bcg.plpyrf be 100
+ahzore = bcg.ahzore be 10000
+
+ercbeg(-1)
+s = bcra('/qri/henaqbz')
+n = zznc.zznc(-1, 20)
+ercbeg(0)
+sbe p va kenatr(plpyrf):
+    sbe a va kenatr(ahzore):
+        o = s.ernq(3)
+        vs 0:
+            olgrf = yvfg(fgehpg.hacnpx('!OOO', o)) + [0]*17
+            olgrf[2] &= 0ks0
+            ova = fgehpg.cnpx('!20f', f_sebz_olgrf(olgrf))
+        ryfr:
+            n[0:2] = o[0:2]
+            n[2] = pue(beq(o[2]) & 0ks0)
+            ova = fge(n[0:20])
+        #cevag ova.rapbqr('urk')
+        z.rkvfgf(ova)
+    ercbeg((p+1)*ahzore)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+qrs cevag_abqr(grkg, a):
+    cersvk = ''
+    vs bcg.unfu:
+        cersvk += "%f " % a.unfu.rapbqr('urk')
+    vs fgng.F_VFQVE(a.zbqr):
+        cevag '%f%f/' % (cersvk, grkg)
+    ryvs fgng.F_VFYAX(a.zbqr):
+        cevag '%f%f@' % (cersvk, grkg)
+    ryfr:
+        cevag '%f%f' % (cersvk, grkg)
+
+
+bcgfcrp = """
+ohc yf <qvef...>
+--
+f,unfu   fubj unfu sbe rnpu svyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc yf', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+
+vs abg rkgen:
+    rkgen = ['/']
+
+erg = 0
+sbe q va rkgen:
+    gel:
+        a = gbc.yerfbyir(q)
+        vs fgng.F_VFQVE(a.zbqr):
+            sbe fho va a:
+                cevag_abqr(fho.anzr, fho)
+        ryfr:
+            cevag_abqr(q, a)
+    rkprcg isf.AbqrReebe, r:
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er, fgng, ernqyvar, sazngpu
+sebz ohc vzcbeg bcgvbaf, tvg, fudhbgr, isf
+sebz ohc.urycref vzcbeg *
+
+qrs abqr_anzr(grkg, a):
+    vs fgng.F_VFQVE(a.zbqr):
+        erghea '%f/' % grkg
+    ryvs fgng.F_VFYAX(a.zbqr):
+        erghea '%f@' % grkg
+    ryfr:
+        erghea '%f' % grkg
+
+
+qrs qb_yf(cngu, a):
+    y = []
+    vs fgng.F_VFQVE(a.zbqr):
+        sbe fho va a:
+            y.nccraq(abqr_anzr(fho.anzr, fho))
+    ryfr:
+        y.nccraq(abqr_anzr(cngu, a))
+    cevag pbyhzangr(y, '')
+    
+
+qrs jevgr_gb_svyr(vas, bhgs):
+    sbe oybo va puhaxlernqre(vas):
+        bhgs.jevgr(oybo)
+    
+
+qrs vachgvgre():
+    vs bf.vfnggl(flf.fgqva.svyrab()):
+        juvyr 1:
+            gel:
+                lvryq enj_vachg('ohc> ')
+            rkprcg RBSReebe:
+                oernx
+    ryfr:
+        sbe yvar va flf.fgqva:
+            lvryq yvar
+
+
+qrs _pbzcyrgre_trg_fhof(yvar):
+    (dglcr, ynfgjbeq) = fudhbgr.hasvavfurq_jbeq(yvar)
+    (qve,anzr) = bf.cngu.fcyvg(ynfgjbeq)
+    #ybt('\apbzcyrgre: %e %e %e\a' % (dglcr, ynfgjbeq, grkg))
+    a = cjq.erfbyir(qve)
+    fhof = yvfg(svygre(ynzoqn k: k.anzr.fgnegfjvgu(anzr),
+                       a.fhof()))
+    erghea (qve, anzr, dglcr, ynfgjbeq, fhof)
+
+
+_ynfg_yvar = Abar
+_ynfg_erf = Abar
+qrs pbzcyrgre(grkg, fgngr):
+    tybony _ynfg_yvar
+    tybony _ynfg_erf
+    gel:
+        yvar = ernqyvar.trg_yvar_ohssre()[:ernqyvar.trg_raqvqk()]
+        vs _ynfg_yvar != yvar:
+            _ynfg_erf = _pbzcyrgre_trg_fhof(yvar)
+            _ynfg_yvar = yvar
+        (qve, anzr, dglcr, ynfgjbeq, fhof) = _ynfg_erf
+        vs fgngr < yra(fhof):
+            fa = fhof[fgngr]
+            fa1 = fa.erfbyir('')  # qrers flzyvaxf
+            shyyanzr = bf.cngu.wbva(qve, fa.anzr)
+            vs fgng.F_VFQVE(fa1.zbqr):
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr+'/',
+                                          grezvangr=Snyfr)
+            ryfr:
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr,
+                                          grezvangr=Gehr) + ' '
+            erghea grkg + erg
+    rkprcg Rkprcgvba, r:
+        ybt('\areebe va pbzcyrgvba: %f\a' % r)
+
+            
+bcgfcrp = """
+ohc sgc
+"""
+b = bcgvbaf.Bcgvbaf('ohc sgc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+gbc = isf.ErsYvfg(Abar)
+cjq = gbc
+
+vs rkgen:
+    yvarf = rkgen
+ryfr:
+    ernqyvar.frg_pbzcyrgre_qryvzf(' \g\a\e/')
+    ernqyvar.frg_pbzcyrgre(pbzcyrgre)
+    ernqyvar.cnefr_naq_ovaq("gno: pbzcyrgr")
+    yvarf = vachgvgre()
+
+sbe yvar va yvarf:
+    vs abg yvar.fgevc():
+        pbagvahr
+    jbeqf = [jbeq sbe (jbeqfgneg,jbeq) va fudhbgr.dhbgrfcyvg(yvar)]
+    pzq = jbeqf[0].ybjre()
+    #ybt('rkrphgr: %e %e\a' % (pzq, cnez))
+    gel:
+        vs pzq == 'yf':
+            sbe cnez va (jbeqf[1:] be ['.']):
+                qb_yf(cnez, cjq.erfbyir(cnez))
+        ryvs pzq == 'pq':
+            sbe cnez va jbeqf[1:]:
+                cjq = cjq.erfbyir(cnez)
+        ryvs pzq == 'cjq':
+            cevag cjq.shyyanzr()
+        ryvs pzq == 'png':
+            sbe cnez va jbeqf[1:]:
+                jevgr_gb_svyr(cjq.erfbyir(cnez).bcra(), flf.fgqbhg)
+        ryvs pzq == 'trg':
+            vs yra(jbeqf) abg va [2,3]:
+                envfr Rkprcgvba('Hfntr: trg <svyranzr> [ybpnyanzr]')
+            eanzr = jbeqf[1]
+            (qve,onfr) = bf.cngu.fcyvg(eanzr)
+            yanzr = yra(jbeqf)>2 naq jbeqf[2] be onfr
+            vas = cjq.erfbyir(eanzr).bcra()
+            ybt('Fnivat %e\a' % yanzr)
+            jevgr_gb_svyr(vas, bcra(yanzr, 'jo'))
+        ryvs pzq == 'ztrg':
+            sbe cnez va jbeqf[1:]:
+                (qve,onfr) = bf.cngu.fcyvg(cnez)
+                sbe a va cjq.erfbyir(qve).fhof():
+                    vs sazngpu.sazngpu(a.anzr, onfr):
+                        gel:
+                            ybt('Fnivat %e\a' % a.anzr)
+                            vas = a.bcra()
+                            bhgs = bcra(a.anzr, 'jo')
+                            jevgr_gb_svyr(vas, bhgs)
+                            bhgs.pybfr()
+                        rkprcg Rkprcgvba, r:
+                            ybt('  reebe: %f\a' % r)
+        ryvs pzq == 'uryc' be pzq == '?':
+            ybt('Pbzznaqf: yf pq cjq png trg ztrg uryc dhvg\a')
+        ryvs pzq == 'dhvg' be pzq == 'rkvg' be pzq == 'olr':
+            oernx
+        ryfr:
+            envfr Rkprcgvba('ab fhpu pbzznaq %e' % pzq)
+    rkprcg Rkprcgvba, r:
+        ybt('reebe: %f\a' % r)
+        #envfr
+#!/hfe/ova/rai clguba
+vzcbeg flf, zznc
+sebz ohc vzcbeg bcgvbaf, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc enaqbz [-F frrq] <ahzolgrf>
+--
+F,frrq=   bcgvbany enaqbz ahzore frrq (qrsnhyg 1)
+s,sbepr   cevag enaqbz qngn gb fgqbhg rira vs vg'f n ggl
+"""
+b = bcgvbaf.Bcgvbaf('ohc enaqbz', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+gbgny = cnefr_ahz(rkgen[0])
+
+vs bcg.sbepr be (abg bf.vfnggl(1) naq
+                 abg ngbv(bf.raiveba.trg('OHC_SBEPR_GGL')) & 1):
+    _unfufcyvg.jevgr_enaqbz(flf.fgqbhg.svyrab(), gbgny, bcg.frrq be 0)
+ryfr:
+    ybt('reebe: abg jevgvat ovanel qngn gb n grezvany. Hfr -s gb sbepr.\a')
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc uryc <pbzznaq>
+"""
+b = bcgvbaf.Bcgvbaf('ohc uryc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) == 0:
+    # gur jenccre cebtenz cebivqrf gur qrsnhyg hfntr fgevat
+    bf.rkrpic(bf.raiveba['OHC_ZNVA_RKR'], ['ohc'])
+ryvs yra(rkgen) == 1:
+    qbpanzr = (rkgen[0]=='ohc' naq 'ohc' be ('ohc-%f' % rkgen[0]))
+    rkr = flf.neti[0]
+    (rkrcngu, rkrsvyr) = bf.cngu.fcyvg(rkr)
+    znacngu = bf.cngu.wbva(rkrcngu, '../Qbphzragngvba/' + qbpanzr + '.[1-9]')
+    t = tybo.tybo(znacngu)
+    vs t:
+        bf.rkrpic('zna', ['zna', '-y', t[0]])
+    ryfr:
+        bf.rkrpic('zna', ['zna', qbpanzr])
+ryfr:
+    b.sngny("rknpgyl bar pbzznaq anzr rkcrpgrq")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng, reeab, shfr, er, gvzr, grzcsvyr
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+
+pynff Fgng(shfr.Fgng):
+    qrs __vavg__(frys):
+        frys.fg_zbqr = 0
+        frys.fg_vab = 0
+        frys.fg_qri = 0
+        frys.fg_ayvax = 0
+        frys.fg_hvq = 0
+        frys.fg_tvq = 0
+        frys.fg_fvmr = 0
+        frys.fg_ngvzr = 0
+        frys.fg_zgvzr = 0
+        frys.fg_pgvzr = 0
+        frys.fg_oybpxf = 0
+        frys.fg_oyxfvmr = 0
+        frys.fg_eqri = 0
+
+
+pnpur = {}
+qrs pnpur_trg(gbc, cngu):
+    cnegf = cngu.fcyvg('/')
+    pnpur[('',)] = gbc
+    p = Abar
+    znk = yra(cnegf)
+    #ybt('pnpur: %e\a' % pnpur.xrlf())
+    sbe v va enatr(znk):
+        cer = cnegf[:znk-v]
+        #ybt('pnpur gelvat: %e\a' % cer)
+        p = pnpur.trg(ghcyr(cer))
+        vs p:
+            erfg = cnegf[znk-v:]
+            sbe e va erfg:
+                #ybt('erfbyivat %e sebz %e\a' % (e, p.shyyanzr()))
+                p = p.yerfbyir(e)
+                xrl = ghcyr(cer + [e])
+                #ybt('fnivat: %e\a' % (xrl,))
+                pnpur[xrl] = p
+            oernx
+    nffreg(p)
+    erghea p
+        
+    
+
+pynff OhcSf(shfr.Shfr):
+    qrs __vavg__(frys, gbc):
+        shfr.Shfr.__vavg__(frys)
+        frys.gbc = gbc
+    
+    qrs trgngge(frys, cngu):
+        ybt('--trgngge(%e)\a' % cngu)
+        gel:
+            abqr = pnpur_trg(frys.gbc, cngu)
+            fg = Fgng()
+            fg.fg_zbqr = abqr.zbqr
+            fg.fg_ayvax = abqr.ayvaxf()
+            fg.fg_fvmr = abqr.fvmr()
+            fg.fg_zgvzr = abqr.zgvzr
+            fg.fg_pgvzr = abqr.pgvzr
+            fg.fg_ngvzr = abqr.ngvzr
+            erghea fg
+        rkprcg isf.AbFhpuSvyr:
+            erghea -reeab.RABRAG
+
+    qrs ernqqve(frys, cngu, bssfrg):
+        ybt('--ernqqve(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        lvryq shfr.Qveragel('.')
+        lvryq shfr.Qveragel('..')
+        sbe fho va abqr.fhof():
+            lvryq shfr.Qveragel(fho.anzr)
+
+    qrs ernqyvax(frys, cngu):
+        ybt('--ernqyvax(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        erghea abqr.ernqyvax()
+
+    qrs bcra(frys, cngu, syntf):
+        ybt('--bcra(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        nppzbqr = bf.B_EQBAYL | bf.B_JEBAYL | bf.B_EQJE
+        vs (syntf & nppzbqr) != bf.B_EQBAYL:
+            erghea -reeab.RNPPRF
+        abqr.bcra()
+
+    qrs eryrnfr(frys, cngu, syntf):
+        ybt('--eryrnfr(%e)\a' % cngu)
+
+    qrs ernq(frys, cngu, fvmr, bssfrg):
+        ybt('--ernq(%e)\a' % cngu)
+        a = pnpur_trg(frys.gbc, cngu)
+        b = a.bcra()
+        b.frrx(bssfrg)
+        erghea b.ernq(fvmr)
+
+
+vs abg unfngge(shfr, '__irefvba__'):
+    envfr EhagvzrReebe, "lbhe shfr zbqhyr vf gbb byq sbe shfr.__irefvba__"
+shfr.shfr_clguba_ncv = (0, 2)
+
+
+bcgfcrp = """
+ohc shfr [-q] [-s] <zbhagcbvag>
+--
+q,qroht   vapernfr qroht yriry
+s,sbertebhaq  eha va sbertebhaq
+"""
+b = bcgvbaf.Bcgvbaf('ohc shfr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+s = OhcSf(gbc)
+s.shfr_netf.zbhagcbvag = rkgen[0]
+vs bcg.qroht:
+    s.shfr_netf.nqq('qroht')
+vs bcg.sbertebhaq:
+    s.shfr_netf.frgzbq('sbertebhaq')
+cevag s.zhygvguernqrq
+s.zhygvguernqrq = Snyfr
+
+s.znva()
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+[OHC_QVE=...] ohc vavg [-e ubfg:cngu]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc vavg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+
+vs bcg.erzbgr:
+    tvg.vavg_ercb()  # ybpny ercb
+    tvg.purpx_ercb_be_qvr()
+    pyv = pyvrag.Pyvrag(bcg.erzbgr, perngr=Gehr)
+    pyv.pybfr()
+ryfr:
+    tvg.vavg_ercb()
+#!/hfe/ova/rai clguba
+vzcbeg flf, zngu, fgehpg, tybo
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+CNTR_FVMR=4096
+FUN_CRE_CNTR=CNTR_FVMR/200.
+
+
+qrs zretr(vqkyvfg, ovgf, gnoyr):
+    pbhag = 0
+    sbe r va tvg.vqkzretr(vqkyvfg):
+        pbhag += 1
+        cersvk = tvg.rkgenpg_ovgf(r, ovgf)
+        gnoyr[cersvk] = pbhag
+        lvryq r
+
+
+qrs qb_zvqk(bhgqve, bhgsvyranzr, vasvyranzrf):
+    vs abg bhgsvyranzr:
+        nffreg(bhgqve)
+        fhz = Fun1('\0'.wbva(vasvyranzrf)).urkqvtrfg()
+        bhgsvyranzr = '%f/zvqk-%f.zvqk' % (bhgqve, fhz)
+    
+    vac = []
+    gbgny = 0
+    sbe anzr va vasvyranzrf:
+        vk = tvg.CnpxVqk(anzr)
+        vac.nccraq(vk)
+        gbgny += yra(vk)
+
+    ybt('Zretvat %q vaqrkrf (%q bowrpgf).\a' % (yra(vasvyranzrf), gbgny))
+    vs (abg bcg.sbepr naq (gbgny < 1024 naq yra(vasvyranzrf) < 3)) \
+       be (bcg.sbepr naq abg gbgny):
+        ybt('zvqk: abguvat gb qb.\a')
+        erghea
+
+    cntrf = vag(gbgny/FUN_CRE_CNTR) be 1
+    ovgf = vag(zngu.prvy(zngu.ybt(cntrf, 2)))
+    ragevrf = 2**ovgf
+    ybt('Gnoyr fvmr: %q (%q ovgf)\a' % (ragevrf*4, ovgf))
+    
+    gnoyr = [0]*ragevrf
+
+    gel:
+        bf.hayvax(bhgsvyranzr)
+    rkprcg BFReebe:
+        cnff
+    s = bcra(bhgsvyranzr + '.gzc', 'j+')
+    s.jevgr('ZVQK\0\0\0\2')
+    s.jevgr(fgehpg.cnpx('!V', ovgf))
+    nffreg(s.gryy() == 12)
+    s.jevgr('\0'*4*ragevrf)
+    
+    sbe r va zretr(vac, ovgf, gnoyr):
+        s.jevgr(r)
+        
+    s.jevgr('\0'.wbva(bf.cngu.onfranzr(c) sbe c va vasvyranzrf))
+
+    s.frrx(12)
+    s.jevgr(fgehpg.cnpx('!%qV' % ragevrf, *gnoyr))
+    s.pybfr()
+    bf.eranzr(bhgsvyranzr + '.gzc', bhgsvyranzr)
+
+    # guvf vf whfg sbe grfgvat
+    vs 0:
+        c = tvg.CnpxZvqk(bhgsvyranzr)
+        nffreg(yra(c.vqkanzrf) == yra(vasvyranzrf))
+        cevag c.vqkanzrf
+        nffreg(yra(c) == gbgny)
+        cv = vgre(c)
+        sbe v va zretr(vac, gbgny, ovgf, gnoyr):
+            nffreg(v == cv.arkg())
+            nffreg(c.rkvfgf(v))
+
+    cevag bhgsvyranzr
+
+bcgfcrp = """
+ohc zvqk [bcgvbaf...] <vqkanzrf...>
+--
+b,bhgchg=  bhgchg zvqk svyranzr (qrsnhyg: nhgb-trarengrq)
+n,nhgb     nhgbzngvpnyyl perngr .zvqk sebz nal havaqrkrq .vqk svyrf
+s,sbepr    nhgbzngvpnyyl perngr .zvqk sebz *nyy* .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zvqk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen naq (bcg.nhgb be bcg.sbepr):
+    b.sngny("lbh pna'g hfr -s/-n naq nyfb cebivqr svyranzrf")
+
+tvg.purpx_ercb_be_qvr()
+
+vs rkgen:
+    qb_zvqk(tvg.ercb('bowrpgf/cnpx'), bcg.bhgchg, rkgen)
+ryvs bcg.nhgb be bcg.sbepr:
+    cnguf = [tvg.ercb('bowrpgf/cnpx')]
+    cnguf += tybo.tybo(tvg.ercb('vaqrk-pnpur/*/.'))
+    sbe cngu va cnguf:
+        ybt('zvqk: fpnaavat %f\a' % cngu)
+        vs bcg.sbepr:
+            qb_zvqk(cngu, bcg.bhgchg, tybo.tybo('%f/*.vqk' % cngu))
+        ryvs bcg.nhgb:
+            z = tvg.CnpxVqkYvfg(cngu)
+            arrqrq = {}
+            sbe cnpx va z.cnpxf:  # bayl .vqk svyrf jvgubhg n .zvqk ner bcra
+                vs cnpx.anzr.raqfjvgu('.vqk'):
+                    arrqrq[cnpx.anzr] = 1
+            qry z
+            qb_zvqk(cngu, bcg.bhgchg, arrqrq.xrlf())
+        ybt('\a')
+ryfr:
+    b.sngny("lbh zhfg hfr -s be -n be cebivqr vachg svyranzrf")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, enaqbz
+sebz ohc vzcbeg bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs enaqoybpx(a):
+    y = []
+    sbe v va kenatr(a):
+        y.nccraq(pue(enaqbz.enaqenatr(0,256)))
+    erghea ''.wbva(y)
+
+
+bcgfcrp = """
+ohc qnzntr [-a pbhag] [-f znkfvmr] [-F frrq] <svyranzrf...>
+--
+   JNEAVAT: GUVF PBZZNAQ VF RKGERZRYL QNATREBHF
+a,ahz=   ahzore bs oybpxf gb qnzntr
+f,fvmr=  znkvzhz fvmr bs rnpu qnzntrq oybpx
+creprag= znkvzhz fvmr bs rnpu qnzntrq oybpx (nf n creprag bs ragver svyr)
+rdhny    fcernq qnzntr rirayl guebhtubhg gur svyr
+F,frrq=  enaqbz ahzore frrq (sbe ercrngnoyr grfgf)
+"""
+b = bcgvbaf.Bcgvbaf('ohc qnzntr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg rkgen:
+    b.sngny('svyranzrf rkcrpgrq')
+
+vs bcg.frrq != Abar:
+    enaqbz.frrq(bcg.frrq)
+
+sbe anzr va rkgen:
+    ybt('Qnzntvat "%f"...\a' % anzr)
+    s = bcra(anzr, 'e+o')
+    fg = bf.sfgng(s.svyrab())
+    fvmr = fg.fg_fvmr
+    vs bcg.creprag be bcg.fvmr:
+        zf1 = vag(sybng(bcg.creprag be 0)/100.0*fvmr) be fvmr
+        zf2 = bcg.fvmr be fvmr
+        znkfvmr = zva(zf1, zf2)
+    ryfr:
+        znkfvmr = 1
+    puhaxf = bcg.ahz be 10
+    puhaxfvmr = fvmr/puhaxf
+    sbe e va enatr(puhaxf):
+        fm = enaqbz.enaqenatr(1, znkfvmr+1)
+        vs fm > fvmr:
+            fm = fvmr
+        vs bcg.rdhny:
+            bsf = e*puhaxfvmr
+        ryfr:
+            bsf = enaqbz.enaqenatr(0, fvmr - fm + 1)
+        ybt('  %6q olgrf ng %q\a' % (fm, bsf))
+        s.frrx(bsf)
+        s.jevgr(enaqoybpx(fm))
+    s.pybfr()
+#!/hfe/ova/rai clguba
+vzcbeg flf, fgehpg, zznc
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+fhfcraqrq_j = Abar
+
+
+qrs vavg_qve(pbaa, net):
+    tvg.vavg_ercb(net)
+    ybt('ohc freire: ohcqve vavgvnyvmrq: %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+
+qrs frg_qve(pbaa, net):
+    tvg.purpx_ercb_be_qvr(net)
+    ybt('ohc freire: ohcqve vf %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+    
+qrs yvfg_vaqrkrf(pbaa, whax):
+    tvg.purpx_ercb_be_qvr()
+    sbe s va bf.yvfgqve(tvg.ercb('bowrpgf/cnpx')):
+        vs s.raqfjvgu('.vqk'):
+            pbaa.jevgr('%f\a' % s)
+    pbaa.bx()
+
+
+qrs fraq_vaqrk(pbaa, anzr):
+    tvg.purpx_ercb_be_qvr()
+    nffreg(anzr.svaq('/') < 0)
+    nffreg(anzr.raqfjvgu('.vqk'))
+    vqk = tvg.CnpxVqk(tvg.ercb('bowrpgf/cnpx/%f' % anzr))
+    pbaa.jevgr(fgehpg.cnpx('!V', yra(vqk.znc)))
+    pbaa.jevgr(vqk.znc)
+    pbaa.bx()
+
+
+qrs erprvir_bowrpgf(pbaa, whax):
+    tybony fhfcraqrq_j
+    tvg.purpx_ercb_be_qvr()
+    fhttrfgrq = {}
+    vs fhfcraqrq_j:
+        j = fhfcraqrq_j
+        fhfcraqrq_j = Abar
+    ryfr:
+        j = tvg.CnpxJevgre()
+    juvyr 1:
+        af = pbaa.ernq(4)
+        vs abg af:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq yratgu urnqre, tbg RBS\a')
+        a = fgehpg.hacnpx('!V', af)[0]
+        #ybt('rkcrpgvat %q olgrf\a' % a)
+        vs abg a:
+            ybt('ohc freire: erprvirq %q bowrpg%f.\a' 
+                % (j.pbhag, j.pbhag!=1 naq "f" be ''))
+            shyycngu = j.pybfr()
+            vs shyycngu:
+                (qve, anzr) = bf.cngu.fcyvg(shyycngu)
+                pbaa.jevgr('%f.vqk\a' % anzr)
+            pbaa.bx()
+            erghea
+        ryvs a == 0kssssssss:
+            ybt('ohc freire: erprvir-bowrpgf fhfcraqrq.\a')
+            fhfcraqrq_j = j
+            pbaa.bx()
+            erghea
+            
+        ohs = pbaa.ernq(a)  # bowrpg fvmrf va ohc ner ernfbanoyl fznyy
+        #ybt('ernq %q olgrf\a' % a)
+        vs yra(ohs) < a:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq %q olgrf, tbg %q\a'
+                            % (a, yra(ohs)))
+        (glcr, pbagrag) = tvg._qrpbqr_cnpxbow(ohs)
+        fun = tvg.pnyp_unfu(glcr, pbagrag)
+        byqcnpx = j.rkvfgf(fun)
+        # SVKZR: jr bayl fhttrfg n fvatyr vaqrk cre plpyr, orpnhfr gur pyvrag
+        # vf pheeragyl qhzo gb qbjaybnq zber guna bar cre plpyr naljnl.
+        # Npghnyyl jr fubhyq svk gur pyvrag, ohg guvf vf n zvabe bcgvzvmngvba
+        # ba gur freire fvqr.
+        vs abg fhttrfgrq naq \
+          byqcnpx naq (byqcnpx == Gehr be byqcnpx.raqfjvgu('.zvqk')):
+            # SVKZR: jr fubhyqa'g ernyyl unir gb xabj nobhg zvqk svyrf
+            # ng guvf ynlre.  Ohg rkvfgf() ba n zvqk qbrfa'g erghea gur
+            # cnpxanzr (fvapr vg qbrfa'g xabj)... cebonoyl jr fubhyq whfg
+            # svk gung qrsvpvrapl bs zvqk svyrf riraghnyyl, nygubhtu vg'yy
+            # znxr gur svyrf ovttre.  Guvf zrgubq vf pregnvayl abg irel
+            # rssvpvrag.
+            j.bowpnpur.erserfu(fxvc_zvqk = Gehr)
+            byqcnpx = j.bowpnpur.rkvfgf(fun)
+            ybt('arj fhttrfgvba: %e\a' % byqcnpx)
+            nffreg(byqcnpx)
+            nffreg(byqcnpx != Gehr)
+            nffreg(abg byqcnpx.raqfjvgu('.zvqk'))
+            j.bowpnpur.erserfu(fxvc_zvqk = Snyfr)
+        vs abg fhttrfgrq naq byqcnpx:
+            nffreg(byqcnpx.raqfjvgu('.vqk'))
+            (qve,anzr) = bf.cngu.fcyvg(byqcnpx)
+            vs abg (anzr va fhttrfgrq):
+                ybt("ohc freire: fhttrfgvat vaqrk %f\a" % anzr)
+                pbaa.jevgr('vaqrk %f\a' % anzr)
+                fhttrfgrq[anzr] = 1
+        ryfr:
+            j._enj_jevgr([ohs])
+    # ABGERNPURQ
+
+
+qrs ernq_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    e = tvg.ernq_ers(ersanzr)
+    pbaa.jevgr('%f\a' % (e be '').rapbqr('urk'))
+    pbaa.bx()
+
+
+qrs hcqngr_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    arjiny = pbaa.ernqyvar().fgevc()
+    byqiny = pbaa.ernqyvar().fgevc()
+    tvg.hcqngr_ers(ersanzr, arjiny.qrpbqr('urk'), byqiny.qrpbqr('urk'))
+    pbaa.bx()
+
+
+qrs png(pbaa, vq):
+    tvg.purpx_ercb_be_qvr()
+    gel:
+        sbe oybo va tvg.png(vq):
+            pbaa.jevgr(fgehpg.cnpx('!V', yra(oybo)))
+            pbaa.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        ybt('freire: reebe: %f\a' % r)
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.reebe(r)
+    ryfr:
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.bx()
+
+
+bcgfcrp = """
+ohc freire
+"""
+b = bcgvbaf.Bcgvbaf('ohc freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+ybt('ohc freire: ernqvat sebz fgqva.\a')
+
+pbzznaqf = {
+    'vavg-qve': vavg_qve,
+    'frg-qve': frg_qve,
+    'yvfg-vaqrkrf': yvfg_vaqrkrf,
+    'fraq-vaqrk': fraq_vaqrk,
+    'erprvir-bowrpgf': erprvir_bowrpgf,
+    'ernq-ers': ernq_ers,
+    'hcqngr-ers': hcqngr_ers,
+    'png': png,
+}
+
+# SVKZR: guvf cebgbpby vf gbgnyyl ynzr naq abg ng nyy shgher-cebbs.
+# (Rfcrpvnyyl fvapr jr nobeg pbzcyrgryl nf fbba nf *nalguvat* onq unccraf)
+pbaa = Pbaa(flf.fgqva, flf.fgqbhg)
+ye = yvarernqre(pbaa)
+sbe _yvar va ye:
+    yvar = _yvar.fgevc()
+    vs abg yvar:
+        pbagvahr
+    ybt('ohc freire: pbzznaq: %e\a' % yvar)
+    jbeqf = yvar.fcyvg(' ', 1)
+    pzq = jbeqf[0]
+    erfg = yra(jbeqf)>1 naq jbeqf[1] be ''
+    vs pzq == 'dhvg':
+        oernx
+    ryfr:
+        pzq = pbzznaqf.trg(pzq)
+        vs pzq:
+            pzq(pbaa, erfg)
+        ryfr:
+            envfr Rkprcgvba('haxabja freire pbzznaq: %e\a' % yvar)
+
+ybt('ohc freire: qbar\a')
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc wbva [-e ubfg:cngu] [ersf be unfurf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc wbva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    rkgen = yvarernqre(flf.fgqva)
+
+erg = 0
+
+vs bcg.erzbgr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    png = pyv.png
+ryfr:
+    pc = tvg.PngCvcr()
+    png = pc.wbva
+
+sbe vq va rkgen:
+    gel:
+        sbe oybo va png(vq):
+            flf.fgqbhg.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        flf.fgqbhg.syhfu()
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, reeab, fgng, gvzr, zngu
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, vaqrk, pyvrag
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc fnir [-gp] [-a anzr] <svyranzrf...>
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+d,dhvrg    qba'g fubj cebterff zrgre
+fznyyre=   bayl onpx hc svyrf fznyyre guna a olgrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc fnir', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.gerr be bcg.pbzzvg be bcg.anzr):
+    b.sngny("hfr bar be zber bs -g, -p, -a")
+vs abg rkgen:
+    b.sngny("ab svyranzrf tvira")
+
+bcg.cebterff = (vfggl naq abg bcg.dhvrg)
+bcg.fznyyre = cnefr_ahz(bcg.fznyyre be 0)
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+unaqyr_pgey_p()
+
+
+qrs rngfynfu(qve):
+    vs qve.raqfjvgu('/'):
+        erghea qve[:-1]
+    ryfr:
+        erghea qve
+
+
+cnegf = ['']
+funyvfgf = [[]]
+
+qrs _chfu(cneg):
+    nffreg(cneg)
+    cnegf.nccraq(cneg)
+    funyvfgf.nccraq([])
+
+qrs _cbc(sbepr_gerr):
+    nffreg(yra(cnegf) >= 1)
+    cneg = cnegf.cbc()
+    funyvfg = funyvfgf.cbc()
+    gerr = sbepr_gerr be j.arj_gerr(funyvfg)
+    vs funyvfgf:
+        funyvfgf[-1].nccraq(('40000', cneg, gerr))
+    ryfr:  # guvf jnf gur gbcyriry, fb chg vg onpx sbe fnavgl
+        funyvfgf.nccraq(funyvfg)
+    erghea gerr
+
+ynfgerznva = Abar
+qrs cebterff_ercbeg(a):
+    tybony pbhag, fhopbhag, ynfgerznva
+    fhopbhag += a
+    pp = pbhag + fhopbhag
+    cpg = gbgny naq (pp*100.0/gbgny) be 0
+    abj = gvzr.gvzr()
+    ryncfrq = abj - gfgneg
+    xcf = ryncfrq naq vag(pp/1024./ryncfrq)
+    xcf_senp = 10 ** vag(zngu.ybt(xcf+1, 10) - 1)
+    xcf = vag(xcf/xcf_senp)*xcf_senp
+    vs pp:
+        erznva = ryncfrq*1.0/pp * (gbgny-pp)
+    ryfr:
+        erznva = 0.0
+    vs (ynfgerznva naq (erznva > ynfgerznva)
+          naq ((erznva - ynfgerznva)/ynfgerznva < 0.05)):
+        erznva = ynfgerznva
+    ryfr:
+        ynfgerznva = erznva
+    ubhef = vag(erznva/60/60)
+    zvaf = vag(erznva/60 - ubhef*60)
+    frpf = vag(erznva - ubhef*60*60 - zvaf*60)
+    vs ryncfrq < 30:
+        erznvafge = ''
+        xcffge = ''
+    ryfr:
+        xcffge = '%qx/f' % xcf
+        vs ubhef:
+            erznvafge = '%qu%qz' % (ubhef, zvaf)
+        ryvs zvaf:
+            erznvafge = '%qz%q' % (zvaf, frpf)
+        ryfr:
+            erznvafge = '%qf' % frpf
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf) %f %f\e'
+             % (cpg, pp/1024, gbgny/1024, spbhag, sgbgny,
+                erznvafge, xcffge))
+
+
+e = vaqrk.Ernqre(tvg.ercb('ohcvaqrk'))
+
+qrs nyernql_fnirq(rag):
+    erghea rag.vf_inyvq() naq j.rkvfgf(rag.fun) naq rag.fun
+
+qrs jnagerphefr_cer(rag):
+    erghea abg nyernql_fnirq(rag)
+
+qrs jnagerphefr_qhevat(rag):
+    erghea abg nyernql_fnirq(rag) be rag.fun_zvffvat()
+
+gbgny = sgbgny = 0
+vs bcg.cebterff:
+    sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_cer):
+        vs abg (sgbgny % 10024):
+            cebterff('Ernqvat vaqrk: %q\e' % sgbgny)
+        rkvfgf = rag.rkvfgf()
+        unfuinyvq = nyernql_fnirq(rag)
+        rag.frg_fun_zvffvat(abg unfuinyvq)
+        vs abg bcg.fznyyre be rag.fvmr < bcg.fznyyre:
+            vs rkvfgf naq abg unfuinyvq:
+                gbgny += rag.fvmr
+        sgbgny += 1
+    cebterff('Ernqvat vaqrk: %q, qbar.\a' % sgbgny)
+    unfufcyvg.cebterff_pnyyonpx = cebterff_ercbeg
+
+gfgneg = gvzr.gvzr()
+pbhag = fhopbhag = spbhag = 0
+ynfgfxvc_anzr = Abar
+ynfgqve = ''
+sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_qhevat):
+    (qve, svyr) = bf.cngu.fcyvg(rag.anzr)
+    rkvfgf = (rag.syntf & vaqrk.VK_RKVFGF)
+    unfuinyvq = nyernql_fnirq(rag)
+    jnfzvffvat = rag.fun_zvffvat()
+    byqfvmr = rag.fvmr
+    vs bcg.ireobfr:
+        vs abg rkvfgf:
+            fgnghf = 'Q'
+        ryvs abg unfuinyvq:
+            vs rag.fun == vaqrk.RZCGL_FUN:
+                fgnghf = 'N'
+            ryfr:
+                fgnghf = 'Z'
+        ryfr:
+            fgnghf = ' '
+        vs bcg.ireobfr >= 2:
+            ybt('%f %-70f\a' % (fgnghf, rag.anzr))
+        ryvs abg fgng.F_VFQVE(rag.zbqr) naq ynfgqve != qve:
+            vs abg ynfgqve.fgnegfjvgu(qve):
+                ybt('%f %-70f\a' % (fgnghf, bf.cngu.wbva(qve, '')))
+            ynfgqve = qve
+
+    vs bcg.cebterff:
+        cebterff_ercbeg(0)
+    spbhag += 1
+    
+    vs abg rkvfgf:
+        pbagvahr
+    vs bcg.fznyyre naq rag.fvmr >= bcg.fznyyre:
+        vs rkvfgf naq abg unfuinyvq:
+            nqq_reebe('fxvccvat ynetr svyr "%f"' % rag.anzr)
+            ynfgfxvc_anzr = rag.anzr
+        pbagvahr
+
+    nffreg(qve.fgnegfjvgu('/'))
+    qvec = qve.fcyvg('/')
+    juvyr cnegf > qvec:
+        _cbc(sbepr_gerr = Abar)
+    vs qve != '/':
+        sbe cneg va qvec[yra(cnegf):]:
+            _chfu(cneg)
+
+    vs abg svyr:
+        # ab svyranzr cbegvba zrnaf guvf vf n fhoqve.  Ohg
+        # fho/cneragqverpgbevrf nyernql unaqyrq va gur cbc/chfu() cneg nobir.
+        byqgerr = nyernql_fnirq(rag) # znl or Abar
+        arjgerr = _cbc(sbepr_gerr = byqgerr)
+        vs abg byqgerr:
+            vs ynfgfxvc_anzr naq ynfgfxvc_anzr.fgnegfjvgu(rag.anzr):
+                rag.vainyvqngr()
+            ryfr:
+                rag.inyvqngr(040000, arjgerr)
+            rag.ercnpx()
+        vs rkvfgf naq jnfzvffvat:
+            pbhag += byqfvmr
+        pbagvahr
+
+    # vg'f abg n qverpgbel
+    vq = Abar
+    vs unfuinyvq:
+        zbqr = '%b' % rag.tvgzbqr
+        vq = rag.fun
+        funyvfgf[-1].nccraq((zbqr, 
+                             tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                             vq))
+    ryfr:
+        vs fgng.F_VFERT(rag.zbqr):
+            gel:
+                s = unfufcyvg.bcra_abngvzr(rag.anzr)
+            rkprcg VBReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            rkprcg BFReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            ryfr:
+                (zbqr, vq) = unfufcyvg.fcyvg_gb_oybo_be_gerr(j, [s])
+        ryfr:
+            vs fgng.F_VFQVE(rag.zbqr):
+                nffreg(0)  # unaqyrq nobir
+            ryvs fgng.F_VFYAX(rag.zbqr):
+                gel:
+                    ey = bf.ernqyvax(rag.anzr)
+                rkprcg BFReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                rkprcg VBReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                ryfr:
+                    (zbqr, vq) = ('120000', j.arj_oybo(ey))
+            ryfr:
+                nqq_reebe(Rkprcgvba('fxvccvat fcrpvny svyr "%f"' % rag.anzr))
+                ynfgfxvc_anzr = rag.anzr
+        vs vq:
+            rag.inyvqngr(vag(zbqr, 8), vq)
+            rag.ercnpx()
+            funyvfgf[-1].nccraq((zbqr,
+                                 tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                                 vq))
+    vs rkvfgf naq jnfzvffvat:
+        pbhag += byqfvmr
+        fhopbhag = 0
+
+
+vs bcg.cebterff:
+    cpg = gbgny naq pbhag*100.0/gbgny be 100
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf), qbar.    \a'
+             % (cpg, pbhag/1024, gbgny/1024, spbhag, sgbgny))
+
+juvyr yra(cnegf) > 1:
+    _cbc(sbepr_gerr = Abar)
+nffreg(yra(funyvfgf) == 1)
+gerr = j.arj_gerr(funyvfgf[-1])
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fnir\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq juvyr fnivat.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc gvpx
+"""
+b = bcgvbaf.Bcgvbaf('ohc gvpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+g = gvzr.gvzr()
+gyrsg = 1 - (g - vag(g))
+gvzr.fyrrc(gyrsg)
+#!/hfe/ova/rai clguba
+vzcbeg bf, flf, fgng, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg, vaqrk, qerphefr
+sebz ohc.urycref vzcbeg *
+
+
+qrs zretr_vaqrkrf(bhg, e1, e2):
+    sbe r va vaqrk.ZretrVgre([e1, e2]):
+        # SVKZR: fubhyqa'g jr erzbir qryrgrq ragevrf riraghnyyl?  Jura?
+        bhg.nqq_vkragel(r)
+
+
+pynff VgreUrycre:
+    qrs __vavg__(frys, y):
+        frys.v = vgre(y)
+        frys.phe = Abar
+        frys.arkg()
+
+    qrs arkg(frys):
+        gel:
+            frys.phe = frys.v.arkg()
+        rkprcg FgbcVgrengvba:
+            frys.phe = Abar
+        erghea frys.phe
+
+
+qrs purpx_vaqrk(ernqre):
+    gel:
+        ybt('purpx: purpxvat sbejneq vgrengvba...\a')
+        r = Abar
+        q = {}
+        sbe r va ernqre.sbejneq_vgre():
+            vs r.puvyqera_a:
+                vs bcg.ireobfr:
+                    ybt('%08k+%-4q %e\a' % (r.puvyqera_bsf, r.puvyqera_a,
+                                            r.anzr))
+                nffreg(r.puvyqera_bsf)
+                nffreg(r.anzr.raqfjvgu('/'))
+                nffreg(abg q.trg(r.puvyqera_bsf))
+                q[r.puvyqera_bsf] = 1
+            vs r.syntf & vaqrk.VK_UNFUINYVQ:
+                nffreg(r.fun != vaqrk.RZCGL_FUN)
+                nffreg(r.tvgzbqr)
+        nffreg(abg r be r.anzr == '/')  # ynfg ragel vf *nyjnlf* /
+        ybt('purpx: purpxvat abezny vgrengvba...\a')
+        ynfg = Abar
+        sbe r va ernqre:
+            vs ynfg:
+                nffreg(ynfg > r.anzr)
+            ynfg = r.anzr
+    rkprcg:
+        ybt('vaqrk reebe! ng %e\a' % r)
+        envfr
+    ybt('purpx: cnffrq.\a')
+
+
+qrs hcqngr_vaqrk(gbc):
+    ev = vaqrk.Ernqre(vaqrksvyr)
+    jv = vaqrk.Jevgre(vaqrksvyr)
+    evt = VgreUrycre(ev.vgre(anzr=gbc))
+    gfgneg = vag(gvzr.gvzr())
+
+    unfutra = Abar
+    vs bcg.snxr_inyvq:
+        qrs unfutra(anzr):
+            erghea (0100644, vaqrk.SNXR_FUN)
+
+    gbgny = 0
+    sbe (cngu,cfg) va qerphefr.erphefvir_qveyvfg([gbc], kqri=bcg.kqri):
+        vs bcg.ireobfr>=2 be (bcg.ireobfr==1 naq fgng.F_VFQVE(cfg.fg_zbqr)):
+            flf.fgqbhg.jevgr('%f\a' % cngu)
+            flf.fgqbhg.syhfu()
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        ryvs abg (gbgny % 128):
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        gbgny += 1
+        juvyr evt.phe naq evt.phe.anzr > cngu:  # qryrgrq cnguf
+            vs evt.phe.rkvfgf():
+                evt.phe.frg_qryrgrq()
+                evt.phe.ercnpx()
+            evt.arkg()
+        vs evt.phe naq evt.phe.anzr == cngu:    # cnguf gung nyernql rkvfgrq
+            vs cfg:
+                evt.phe.sebz_fgng(cfg, gfgneg)
+            vs abg (evt.phe.syntf & vaqrk.VK_UNFUINYVQ):
+                vs unfutra:
+                    (evt.phe.tvgzbqr, evt.phe.fun) = unfutra(cngu)
+                    evt.phe.syntf |= vaqrk.VK_UNFUINYVQ
+            vs bcg.snxr_vainyvq:
+                evt.phe.vainyvqngr()
+            evt.phe.ercnpx()
+            evt.arkg()
+        ryfr:  # arj cnguf
+            jv.nqq(cngu, cfg, unfutra = unfutra)
+    cebterff('Vaqrkvat: %q, qbar.\a' % gbgny)
+    
+    vs ev.rkvfgf():
+        ev.fnir()
+        jv.syhfu()
+        vs jv.pbhag:
+            je = jv.arj_ernqre()
+            vs bcg.purpx:
+                ybt('purpx: orsber zretvat: byqsvyr\a')
+                purpx_vaqrk(ev)
+                ybt('purpx: orsber zretvat: arjsvyr\a')
+                purpx_vaqrk(je)
+            zv = vaqrk.Jevgre(vaqrksvyr)
+            zretr_vaqrkrf(zv, ev, je)
+            ev.pybfr()
+            zv.pybfr()
+            je.pybfr()
+        jv.nobeg()
+    ryfr:
+        jv.pybfr()
+
+
+bcgfcrp = """
+ohc vaqrk <-c|z|h> [bcgvbaf...] <svyranzrf...>
+--
+c,cevag    cevag gur vaqrk ragevrf sbe gur tvira anzrf (nyfb jbexf jvgu -h)
+z,zbqvsvrq cevag bayl nqqrq/qryrgrq/zbqvsvrq svyrf (vzcyvrf -c)
+f,fgnghf   cevag rnpu svyranzr jvgu n fgnghf pune (N/Z/Q) (vzcyvrf -c)
+U,unfu     cevag gur unfu sbe rnpu bowrpg arkg gb vgf anzr (vzcyvrf -c)
+y,ybat     cevag zber vasbezngvba nobhg rnpu svyr
+h,hcqngr   (erphefviryl) hcqngr gur vaqrk ragevrf sbe gur tvira svyranzrf
+k,kqri,bar-svyr-flfgrz  qba'g pebff svyrflfgrz obhaqnevrf
+snxr-inyvq znex nyy vaqrk ragevrf nf hc-gb-qngr rira vs gurl nera'g
+snxr-vainyvq znex nyy vaqrk ragevrf nf vainyvq
+purpx      pnershyyl purpx vaqrk svyr vagrtevgl
+s,vaqrksvyr=  gur anzr bs gur vaqrk svyr (qrsnhyg 'vaqrk')
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+"""
+b = bcgvbaf.Bcgvbaf('ohc vaqrk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg (bcg.zbqvsvrq be bcg['cevag'] be bcg.fgnghf be bcg.hcqngr be bcg.purpx):
+    b.sngny('fhccyl bar be zber bs -c, -f, -z, -h, be --purpx')
+vs (bcg.snxr_inyvq be bcg.snxr_vainyvq) naq abg bcg.hcqngr:
+    b.sngny('--snxr-{va,}inyvq ner zrnavatyrff jvgubhg -h')
+vs bcg.snxr_inyvq naq bcg.snxr_vainyvq:
+    b.sngny('--snxr-inyvq vf vapbzcngvoyr jvgu --snxr-vainyvq')
+
+tvg.purpx_ercb_be_qvr()
+vaqrksvyr = bcg.vaqrksvyr be tvg.ercb('ohcvaqrk')
+
+unaqyr_pgey_p()
+
+vs bcg.purpx:
+    ybt('purpx: fgnegvat vavgvny purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+cnguf = vaqrk.erqhpr_cnguf(rkgen)
+
+vs bcg.hcqngr:
+    vs abg cnguf:
+        b.sngny('hcqngr (-h) erdhrfgrq ohg ab cnguf tvira')
+    sbe (ec,cngu) va cnguf:
+        hcqngr_vaqrk(ec)
+
+vs bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq:
+    sbe (anzr, rag) va vaqrk.Ernqre(vaqrksvyr).svygre(rkgen be ['']):
+        vs (bcg.zbqvsvrq 
+            naq (rag.vf_inyvq() be rag.vf_qryrgrq() be abg rag.zbqr)):
+            pbagvahr
+        yvar = ''
+        vs bcg.fgnghf:
+            vs rag.vf_qryrgrq():
+                yvar += 'Q '
+            ryvs abg rag.vf_inyvq():
+                vs rag.fun == vaqrk.RZCGL_FUN:
+                    yvar += 'N '
+                ryfr:
+                    yvar += 'Z '
+            ryfr:
+                yvar += '  '
+        vs bcg.unfu:
+            yvar += rag.fun.rapbqr('urk') + ' '
+        vs bcg.ybat:
+            yvar += "%7f %7f " % (bpg(rag.zbqr), bpg(rag.tvgzbqr))
+        cevag yvar + (anzr be './')
+
+vs bcg.purpx naq (bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq be bcg.hcqngr):
+    ybt('purpx: fgnegvat svany purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg
+sebz ohc vzcbeg bcgvbaf, urycref
+
+bcgfcrp = """
+ohc eonpxhc-freire
+--
+    Guvf pbzznaq vf abg vagraqrq gb or eha znahnyyl.
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc-freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+# trg gur fhopbzznaq'f neti.
+# Abeznyyl jr pbhyq whfg cnff guvf ba gur pbzznaq yvar, ohg fvapr jr'yy bsgra
+# or trggvat pnyyrq ba gur bgure raq bs na ffu cvcr, juvpu graqf gb znatyr
+# neti (ol fraqvat vg ivn gur furyy), guvf jnl vf zhpu fnsre.
+ohs = flf.fgqva.ernq(4)
+fm = fgehpg.hacnpx('!V', ohs)[0]
+nffreg(fm > 0)
+nffreg(fm < 1000000)
+ohs = flf.fgqva.ernq(fm)
+nffreg(yra(ohs) == fm)
+neti = ohs.fcyvg('\0')
+
+# fgqva/fgqbhg ner fhccbfrqyl pbaarpgrq gb 'ohc freire' gung gur pnyyre
+# fgnegrq sbe hf (bsgra ba gur bgure raq bs na ffu ghaary), fb jr qba'g jnag
+# gb zvfhfr gurz.  Zbir gurz bhg bs gur jnl, gura ercynpr fgqbhg jvgu
+# n cbvagre gb fgqree va pnfr bhe fhopbzznaq jnagf gb qb fbzrguvat jvgu vg.
+#
+# Vg zvtug or avpr gb qb gur fnzr jvgu fgqva, ohg zl rkcrevzragf fubjrq gung
+# ffu frrzf gb znxr vgf puvyq'f fgqree n ernqnoyr-ohg-arire-ernqf-nalguvat
+# fbpxrg.  Gurl ernyyl fubhyq unir hfrq fuhgqbja(FUHG_JE) ba gur bgure raq
+# bs vg, ohg cebonoyl qvqa'g.  Naljnl, vg'f gbb zrffl, fb yrg'f whfg znxr fher
+# nalbar ernqvat sebz fgqva vf qvfnccbvagrq.
+#
+# (Lbh pna'g whfg yrnir fgqva/fgqbhg "abg bcra" ol pybfvat gur svyr
+# qrfpevcgbef.  Gura gur arkg svyr gung bcraf vf nhgbzngvpnyyl nffvtarq 0 be 1,
+# naq crbcyr *gelvat* gb ernq/jevgr fgqva/fgqbhg trg fperjrq.)
+bf.qhc2(0, 3)
+bf.qhc2(1, 4)
+bf.qhc2(2, 1)
+sq = bf.bcra('/qri/ahyy', bf.B_EQBAYL)
+bf.qhc2(sq, 0)
+bf.pybfr(sq)
+
+bf.raiveba['OHC_FREIRE_ERIREFR'] = urycref.ubfganzr()
+bf.rkrpic(neti[0], neti)
+flf.rkvg(99)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo, fhocebprff, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+cne2_bx = 0
+ahyys = bcra('/qri/ahyy')
+
+qrs qroht(f):
+    vs bcg.ireobfr:
+        ybt(f)
+
+qrs eha(neti):
+    # ng yrnfg va clguba 2.5, hfvat "fgqbhg=2" be "fgqbhg=flf.fgqree" orybj
+    # qbrfa'g npghnyyl jbex, orpnhfr fhocebprff pybfrf sq #2 evtug orsber
+    # rkrpvat sbe fbzr ernfba.  Fb jr jbex nebhaq vg ol qhcyvpngvat gur sq
+    # svefg.
+    sq = bf.qhc(2)  # pbcl fgqree
+    gel:
+        c = fhocebprff.Cbcra(neti, fgqbhg=sq, pybfr_sqf=Snyfr)
+        erghea c.jnvg()
+    svanyyl:
+        bf.pybfr(sq)
+
+qrs cne2_frghc():
+    tybony cne2_bx
+    ei = 1
+    gel:
+        c = fhocebprff.Cbcra(['cne2', '--uryc'],
+                             fgqbhg=ahyys, fgqree=ahyys, fgqva=ahyys)
+        ei = c.jnvg()
+    rkprcg BFReebe:
+        ybt('sfpx: jneavat: cne2 abg sbhaq; qvfnoyvat erpbirel srngherf.\a')
+    ryfr:
+        cne2_bx = 1
+
+qrs cnei(yiy):
+    vs bcg.ireobfr >= yiy:
+        vs vfggl:
+            erghea []
+        ryfr:
+            erghea ['-d']
+    ryfr:
+        erghea ['-dd']
+
+qrs cne2_trarengr(onfr):
+    erghea eha(['cne2', 'perngr', '-a1', '-p200'] + cnei(2)
+               + ['--', onfr, onfr+'.cnpx', onfr+'.vqk'])
+
+qrs cne2_irevsl(onfr):
+    erghea eha(['cne2', 'irevsl'] + cnei(3) + ['--', onfr])
+
+qrs cne2_ercnve(onfr):
+    erghea eha(['cne2', 'ercnve'] + cnei(2) + ['--', onfr])
+
+qrs dhvpx_irevsl(onfr):
+    s = bcra(onfr + '.cnpx', 'eo')
+    s.frrx(-20, 2)
+    jnagfhz = s.ernq(20)
+    nffreg(yra(jnagfhz) == 20)
+    s.frrx(0)
+    fhz = Fun1()
+    sbe o va puhaxlernqre(s, bf.sfgng(s.svyrab()).fg_fvmr - 20):
+        fhz.hcqngr(o)
+    vs fhz.qvtrfg() != jnagfhz:
+        envfr InyhrReebe('rkcrpgrq %e, tbg %e' % (jnagfhz.rapbqr('urk'),
+                                                  fhz.urkqvtrfg()))
+        
+
+qrs tvg_irevsl(onfr):
+    vs bcg.dhvpx:
+        gel:
+            dhvpx_irevsl(onfr)
+        rkprcg Rkprcgvba, r:
+            qroht('reebe: %f\a' % r)
+            erghea 1
+        erghea 0
+    ryfr:
+        erghea eha(['tvg', 'irevsl-cnpx', '--', onfr])
+    
+    
+qrs qb_cnpx(onfr, ynfg):
+    pbqr = 0
+    vs cne2_bx naq cne2_rkvfgf naq (bcg.ercnve be abg bcg.trarengr):
+        ierfhyg = cne2_irevsl(onfr)
+        vs ierfhyg != 0:
+            vs bcg.ercnve:
+                eerfhyg = cne2_ercnve(onfr)
+                vs eerfhyg != 0:
+                    cevag '%f cne2 ercnve: snvyrq (%q)' % (ynfg, eerfhyg)
+                    pbqr = eerfhyg
+                ryfr:
+                    cevag '%f cne2 ercnve: fhpprrqrq (0)' % ynfg
+                    pbqr = 100
+            ryfr:
+                cevag '%f cne2 irevsl: snvyrq (%q)' % (ynfg, ierfhyg)
+                pbqr = ierfhyg
+        ryfr:
+            cevag '%f bx' % ynfg
+    ryvs abg bcg.trarengr be (cne2_bx naq abg cne2_rkvfgf):
+        terfhyg = tvg_irevsl(onfr)
+        vs terfhyg != 0:
+            cevag '%f tvg irevsl: snvyrq (%q)' % (ynfg, terfhyg)
+            pbqr = terfhyg
+        ryfr:
+            vs cne2_bx naq bcg.trarengr:
+                cerfhyg = cne2_trarengr(onfr)
+                vs cerfhyg != 0:
+                    cevag '%f cne2 perngr: snvyrq (%q)' % (ynfg, cerfhyg)
+                    pbqr = cerfhyg
+                ryfr:
+                    cevag '%f bx' % ynfg
+            ryfr:
+                cevag '%f bx' % ynfg
+    ryfr:
+        nffreg(bcg.trarengr naq (abg cne2_bx be cne2_rkvfgf))
+        qroht('    fxvccrq: cne2 svyr nyernql trarengrq.\a')
+    erghea pbqr
+
+
+bcgfcrp = """
+ohc sfpx [bcgvbaf...] [svyranzrf...]
+--
+e,ercnve    nggrzcg gb ercnve reebef hfvat cne2 (qnatrebhf!)
+t,trarengr  trarengr nhgb-ercnve vasbezngvba hfvat cne2
+i,ireobfr   vapernfr ireobfvgl (pna or hfrq zber guna bapr)
+dhvpx       whfg purpx cnpx fun1fhz, qba'g hfr tvg irevsl-cnpx
+w,wbof=     eha 'a' wbof va cnenyyry
+cne2-bx     vzzrqvngryl erghea 0 vs cne2 vf bx, 1 vs abg
+qvfnoyr-cne2  vtaber cne2 rira vs vg vf ninvynoyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc sfpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+cne2_frghc()
+vs bcg.cne2_bx:
+    vs cne2_bx:
+        flf.rkvg(0)  # 'gehr' va fu
+    ryfr:
+        flf.rkvg(1)
+vs bcg.qvfnoyr_cne2:
+    cne2_bx = 0
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    qroht('sfpx: Ab svyranzrf tvira: purpxvat nyy cnpxf.\a')
+    rkgen = tybo.tybo(tvg.ercb('bowrpgf/cnpx/*.cnpx'))
+
+pbqr = 0
+pbhag = 0
+bhgfgnaqvat = {}
+sbe anzr va rkgen:
+    vs anzr.raqfjvgu('.cnpx'):
+        onfr = anzr[:-5]
+    ryvs anzr.raqfjvgu('.vqk'):
+        onfr = anzr[:-4]
+    ryvs anzr.raqfjvgu('.cne2'):
+        onfr = anzr[:-5]
+    ryvs bf.cngu.rkvfgf(anzr + '.cnpx'):
+        onfr = anzr
+    ryfr:
+        envfr Rkprcgvba('%f vf abg n cnpx svyr!' % anzr)
+    (qve,ynfg) = bf.cngu.fcyvg(onfr)
+    cne2_rkvfgf = bf.cngu.rkvfgf(onfr + '.cne2')
+    vs cne2_rkvfgf naq bf.fgng(onfr + '.cne2').fg_fvmr == 0:
+        cne2_rkvfgf = 0
+    flf.fgqbhg.syhfu()
+    qroht('sfpx: purpxvat %f (%f)\a' 
+          % (ynfg, cne2_bx naq cne2_rkvfgf naq 'cne2' be 'tvg'))
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+    
+    vs abg bcg.wbof:
+        ap = qb_cnpx(onfr, ynfg)
+        pbqr = pbqr be ap
+        pbhag += 1
+    ryfr:
+        juvyr yra(bhgfgnaqvat) >= bcg.wbof:
+            (cvq,ap) = bf.jnvg()
+            ap >>= 8
+            vs cvq va bhgfgnaqvat:
+                qry bhgfgnaqvat[cvq]
+                pbqr = pbqr be ap
+                pbhag += 1
+        cvq = bf.sbex()
+        vs cvq:  # cnerag
+            bhgfgnaqvat[cvq] = 1
+        ryfr: # puvyq
+            gel:
+                flf.rkvg(qb_cnpx(onfr, ynfg))
+            rkprcg Rkprcgvba, r:
+                ybt('rkprcgvba: %e\a' % r)
+                flf.rkvg(99)
+                
+juvyr yra(bhgfgnaqvat):
+    (cvq,ap) = bf.jnvg()
+    ap >>= 8
+    vs cvq va bhgfgnaqvat:
+        qry bhgfgnaqvat[cvq]
+        pbqr = pbqr be ap
+        pbhag += 1
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+
+vs abg bcg.ireobfr naq vfggl:
+    ybt('sfpx qbar.           \a')
+flf.rkvg(pbqr)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg, trgbcg, fhocebprff, fvtany
+sebz ohc vzcbeg bcgvbaf, ffu
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc eonpxhc <ubfganzr> vaqrk ...
+ohc eonpxhc <ubfganzr> fnir ...
+ohc eonpxhc <ubfganzr> fcyvg ...
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc', bcgfcrp, bcgshap=trgbcg.trgbcg)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs yra(rkgen) < 2:
+    b.sngny('nethzragf rkcrpgrq')
+
+pynff FvtRkprcgvba(Rkprcgvba):
+    qrs __vavg__(frys, fvtahz):
+        frys.fvtahz = fvtahz
+        Rkprcgvba.__vavg__(frys, 'fvtany %q erprvirq' % fvtahz)
+qrs unaqyre(fvtahz, senzr):
+    envfr FvtRkprcgvba(fvtahz)
+
+fvtany.fvtany(fvtany.FVTGREZ, unaqyre)
+fvtany.fvtany(fvtany.FVTVAG, unaqyre)
+
+fc = Abar
+c = Abar
+erg = 99
+
+gel:
+    ubfganzr = rkgen[0]
+    neti = rkgen[1:]
+    c = ffu.pbaarpg(ubfganzr, 'eonpxhc-freire')
+
+    netif = '\0'.wbva(['ohc'] + neti)
+    c.fgqva.jevgr(fgehpg.cnpx('!V', yra(netif)) + netif)
+    c.fgqva.syhfu()
+
+    znva_rkr = bf.raiveba.trg('OHC_ZNVA_RKR') be flf.neti[0]
+    fc = fhocebprff.Cbcra([znva_rkr, 'freire'], fgqva=c.fgqbhg, fgqbhg=c.fgqva)
+
+    c.fgqva.pybfr()
+    c.fgqbhg.pybfr()
+
+svanyyl:
+    juvyr 1:
+        # vs jr trg n fvtany juvyr jnvgvat, jr unir gb xrrc jnvgvat, whfg
+        # va pnfr bhe puvyq qbrfa'g qvr.
+        gel:
+            erg = c.jnvg()
+            fc.jnvg()
+            oernx
+        rkprcg FvtRkprcgvba, r:
+            ybt('\aohc eonpxhc: %f\a' % r)
+            bf.xvyy(c.cvq, r.fvtahz)
+            erg = 84
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc arjyvare
+"""
+b = bcgvbaf.Bcgvbaf('ohc arjyvare', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+e = er.pbzcvyr(e'([\e\a])')
+ynfgyra = 0
+nyy = ''
+juvyr 1:
+    y = e.fcyvg(nyy, 1)
+    vs yra(y) <= 1:
+        gel:
+            o = bf.ernq(flf.fgqva.svyrab(), 4096)
+        rkprcg XrlobneqVagreehcg:
+            oernx
+        vs abg o:
+            oernx
+        nyy += o
+    ryfr:
+        nffreg(yra(y) == 3)
+        (yvar, fcyvgpune, nyy) = y
+        #fcyvgpune = '\a'
+        flf.fgqbhg.jevgr('%-*f%f' % (ynfgyra, yvar, fcyvgpune))
+        vs fcyvgpune == '\e':
+            ynfgyra = yra(yvar)
+        ryfr:
+            ynfgyra = 0
+        flf.fgqbhg.syhfu()
+
+vs ynfgyra be nyy:
+    flf.fgqbhg.jevgr('%-*f\a' % (ynfgyra, nyy))
+#!/hfe/ova/rai clguba
+vzcbeg flf
+sebz ohc vzcbeg bcgvbaf, tvg, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc znetva
+"""
+b = bcgvbaf.Bcgvbaf('ohc znetva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+#tvg.vtaber_zvqk = 1
+
+zv = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+ynfg = '\0'*20
+ybatzngpu = 0
+sbe v va zv:
+    vs v == ynfg:
+        pbagvahr
+    #nffreg(fge(v) >= ynfg)
+    cz = _unfufcyvg.ovgzngpu(ynfg, v)
+    ybatzngpu = znk(ybatzngpu, cz)
+    ynfg = v
+cevag ybatzngpu
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg bcgvbaf, qerphefr
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc qerphefr <cngu>
+--
+k,kqri,bar-svyr-flfgrz   qba'g pebff svyrflfgrz obhaqnevrf
+d,dhvrg  qba'g npghnyyl cevag svyranzrf
+cebsvyr  eha haqre gur clguba cebsvyre
+"""
+b = bcgvbaf.Bcgvbaf('ohc qerphefr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar svyranzr rkcrpgrq")
+
+vg = qerphefr.erphefvir_qveyvfg(rkgen, bcg.kqri)
+vs bcg.cebsvyr:
+    vzcbeg pCebsvyr
+    qrs qb_vg():
+        sbe v va vg:
+            cnff
+    pCebsvyr.eha('qb_vg()')
+ryfr:
+    vs bcg.dhvrg:
+        sbe v va vg:
+            cnff
+    ryfr:
+        sbe (anzr,fg) va vg:
+            cevag anzr
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc fcyvg [-gpo] [-a anzr] [--orapu] [svyranzrf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+o,oybof    bhgchg n frevrf bs oybo vqf
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+A,abbc     qba'g npghnyyl fnir gur qngn naljurer
+d,dhvrg    qba'g cevag cebterff zrffntrf
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+pbcl       whfg pbcl vachg gb bhgchg, unfufcyvggvat nybat gur jnl
+orapu      cevag orapuznex gvzvatf gb fgqree
+znk-cnpx-fvmr=  znkvzhz olgrf va n fvatyr cnpx
+znk-cnpx-bowrpgf=  znkvzhz ahzore bs bowrpgf va n fvatyr cnpx
+snabhg=  znkvzhz ahzore bs oybof va n fvatyr gerr
+"""
+b = bcgvbaf.Bcgvbaf('ohc fcyvg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.oybof be bcg.gerr be bcg.pbzzvg be bcg.anzr be
+        bcg.abbc be bcg.pbcl):
+    b.sngny("hfr bar be zber bs -o, -g, -p, -a, -A, --pbcl")
+vs (bcg.abbc be bcg.pbcl) naq (bcg.oybof be bcg.gerr be 
+                               bcg.pbzzvg be bcg.anzr):
+    b.sngny('-A vf vapbzcngvoyr jvgu -o, -g, -p, -a')
+
+vs bcg.ireobfr >= 2:
+    tvg.ireobfr = bcg.ireobfr - 1
+    bcg.orapu = 1
+vs bcg.znk_cnpx_fvmr:
+    unfufcyvg.znk_cnpx_fvmr = cnefr_ahz(bcg.znk_cnpx_fvmr)
+vs bcg.znk_cnpx_bowrpgf:
+    unfufcyvg.znk_cnpx_bowrpgf = cnefr_ahz(bcg.znk_cnpx_bowrpgf)
+vs bcg.snabhg:
+    unfufcyvg.snabhg = cnefr_ahz(bcg.snabhg)
+vs bcg.oybof:
+    unfufcyvg.snabhg = 0
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+fgneg_gvzr = gvzr.gvzr()
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.abbc be bcg.pbcl:
+    pyv = j = byqers = Abar
+ryvs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+svyrf = rkgen naq (bcra(sa) sbe sa va rkgen) be [flf.fgqva]
+vs j:
+    funyvfg = unfufcyvg.fcyvg_gb_funyvfg(j, svyrf)
+    gerr = j.arj_gerr(funyvfg)
+ryfr:
+    ynfg = 0
+    sbe (oybo, ovgf) va unfufcyvg.unfufcyvg_vgre(svyrf):
+        unfufcyvg.gbgny_fcyvg += yra(oybo)
+        vs bcg.pbcl:
+            flf.fgqbhg.jevgr(fge(oybo))
+        zrtf = unfufcyvg.gbgny_fcyvg/1024/1024
+        vs abg bcg.dhvrg naq ynfg != zrtf:
+            cebterff('%q Zolgrf ernq\e' % zrtf)
+            ynfg = zrtf
+    cebterff('%q Zolgrf ernq, qbar.\a' % zrtf)
+
+vs bcg.ireobfr:
+    ybt('\a')
+vs bcg.oybof:
+    sbe (zbqr,anzr,ova) va funyvfg:
+        cevag ova.rapbqr('urk')
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fcyvg\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+vs j:
+    j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+frpf = gvzr.gvzr() - fgneg_gvzr
+fvmr = unfufcyvg.gbgny_fcyvg
+vs bcg.orapu:
+    ybt('\aohc: %.2sxolgrf va %.2s frpf = %.2s xolgrf/frp\a'
+        % (fvmr/1024., frpf, fvmr/1024./frpf))
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, fgehpg, zznc
+sebz ohc vzcbeg tvg, bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs f_sebz_olgrf(olgrf):
+    pyvfg = [pue(o) sbe o va olgrf]
+    erghea ''.wbva(pyvfg)
+
+
+qrs ercbeg(pbhag):
+    svryqf = ['IzFvmr', 'IzEFF', 'IzQngn', 'IzFgx']
+    q = {}
+    sbe yvar va bcra('/cebp/frys/fgnghf').ernqyvarf():
+        y = er.fcyvg(e':\f*', yvar.fgevc(), 1)
+        q[y[0]] = y[1]
+    vs pbhag >= 0:
+        r1 = pbhag
+        svryqf = [q[x] sbe x va svryqf]
+    ryfr:
+        r1 = ''
+    cevag ('%9f  ' + ('%10f ' * yra(svryqf))) % ghcyr([r1] + svryqf)
+    flf.fgqbhg.syhfu()
+
+
+bcgfcrp = """
+ohc zrzgrfg [-a ryrzragf] [-p plpyrf]
+--
+a,ahzore=  ahzore bs bowrpgf cre plpyr
+p,plpyrf=  ahzore bs plpyrf gb eha
+vtaber-zvqk  vtaber .zvqk svyrf, hfr bayl .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zrzgrfg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+tvg.vtaber_zvqk = bcg.vtaber_zvqk
+
+tvg.purpx_ercb_be_qvr()
+z = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+
+plpyrf = bcg.plpyrf be 100
+ahzore = bcg.ahzore be 10000
+
+ercbeg(-1)
+s = bcra('/qri/henaqbz')
+n = zznc.zznc(-1, 20)
+ercbeg(0)
+sbe p va kenatr(plpyrf):
+    sbe a va kenatr(ahzore):
+        o = s.ernq(3)
+        vs 0:
+            olgrf = yvfg(fgehpg.hacnpx('!OOO', o)) + [0]*17
+            olgrf[2] &= 0ks0
+            ova = fgehpg.cnpx('!20f', f_sebz_olgrf(olgrf))
+        ryfr:
+            n[0:2] = o[0:2]
+            n[2] = pue(beq(o[2]) & 0ks0)
+            ova = fge(n[0:20])
+        #cevag ova.rapbqr('urk')
+        z.rkvfgf(ova)
+    ercbeg((p+1)*ahzore)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+qrs cevag_abqr(grkg, a):
+    cersvk = ''
+    vs bcg.unfu:
+        cersvk += "%f " % a.unfu.rapbqr('urk')
+    vs fgng.F_VFQVE(a.zbqr):
+        cevag '%f%f/' % (cersvk, grkg)
+    ryvs fgng.F_VFYAX(a.zbqr):
+        cevag '%f%f@' % (cersvk, grkg)
+    ryfr:
+        cevag '%f%f' % (cersvk, grkg)
+
+
+bcgfcrp = """
+ohc yf <qvef...>
+--
+f,unfu   fubj unfu sbe rnpu svyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc yf', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+
+vs abg rkgen:
+    rkgen = ['/']
+
+erg = 0
+sbe q va rkgen:
+    gel:
+        a = gbc.yerfbyir(q)
+        vs fgng.F_VFQVE(a.zbqr):
+            sbe fho va a:
+                cevag_abqr(fho.anzr, fho)
+        ryfr:
+            cevag_abqr(q, a)
+    rkprcg isf.AbqrReebe, r:
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er, fgng, ernqyvar, sazngpu
+sebz ohc vzcbeg bcgvbaf, tvg, fudhbgr, isf
+sebz ohc.urycref vzcbeg *
+
+qrs abqr_anzr(grkg, a):
+    vs fgng.F_VFQVE(a.zbqr):
+        erghea '%f/' % grkg
+    ryvs fgng.F_VFYAX(a.zbqr):
+        erghea '%f@' % grkg
+    ryfr:
+        erghea '%f' % grkg
+
+
+qrs qb_yf(cngu, a):
+    y = []
+    vs fgng.F_VFQVE(a.zbqr):
+        sbe fho va a:
+            y.nccraq(abqr_anzr(fho.anzr, fho))
+    ryfr:
+        y.nccraq(abqr_anzr(cngu, a))
+    cevag pbyhzangr(y, '')
+    
+
+qrs jevgr_gb_svyr(vas, bhgs):
+    sbe oybo va puhaxlernqre(vas):
+        bhgs.jevgr(oybo)
+    
+
+qrs vachgvgre():
+    vs bf.vfnggl(flf.fgqva.svyrab()):
+        juvyr 1:
+            gel:
+                lvryq enj_vachg('ohc> ')
+            rkprcg RBSReebe:
+                oernx
+    ryfr:
+        sbe yvar va flf.fgqva:
+            lvryq yvar
+
+
+qrs _pbzcyrgre_trg_fhof(yvar):
+    (dglcr, ynfgjbeq) = fudhbgr.hasvavfurq_jbeq(yvar)
+    (qve,anzr) = bf.cngu.fcyvg(ynfgjbeq)
+    #ybt('\apbzcyrgre: %e %e %e\a' % (dglcr, ynfgjbeq, grkg))
+    a = cjq.erfbyir(qve)
+    fhof = yvfg(svygre(ynzoqn k: k.anzr.fgnegfjvgu(anzr),
+                       a.fhof()))
+    erghea (qve, anzr, dglcr, ynfgjbeq, fhof)
+
+
+_ynfg_yvar = Abar
+_ynfg_erf = Abar
+qrs pbzcyrgre(grkg, fgngr):
+    tybony _ynfg_yvar
+    tybony _ynfg_erf
+    gel:
+        yvar = ernqyvar.trg_yvar_ohssre()[:ernqyvar.trg_raqvqk()]
+        vs _ynfg_yvar != yvar:
+            _ynfg_erf = _pbzcyrgre_trg_fhof(yvar)
+            _ynfg_yvar = yvar
+        (qve, anzr, dglcr, ynfgjbeq, fhof) = _ynfg_erf
+        vs fgngr < yra(fhof):
+            fa = fhof[fgngr]
+            fa1 = fa.erfbyir('')  # qrers flzyvaxf
+            shyyanzr = bf.cngu.wbva(qve, fa.anzr)
+            vs fgng.F_VFQVE(fa1.zbqr):
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr+'/',
+                                          grezvangr=Snyfr)
+            ryfr:
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr,
+                                          grezvangr=Gehr) + ' '
+            erghea grkg + erg
+    rkprcg Rkprcgvba, r:
+        ybt('\areebe va pbzcyrgvba: %f\a' % r)
+
+            
+bcgfcrp = """
+ohc sgc
+"""
+b = bcgvbaf.Bcgvbaf('ohc sgc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+gbc = isf.ErsYvfg(Abar)
+cjq = gbc
+
+vs rkgen:
+    yvarf = rkgen
+ryfr:
+    ernqyvar.frg_pbzcyrgre_qryvzf(' \g\a\e/')
+    ernqyvar.frg_pbzcyrgre(pbzcyrgre)
+    ernqyvar.cnefr_naq_ovaq("gno: pbzcyrgr")
+    yvarf = vachgvgre()
+
+sbe yvar va yvarf:
+    vs abg yvar.fgevc():
+        pbagvahr
+    jbeqf = [jbeq sbe (jbeqfgneg,jbeq) va fudhbgr.dhbgrfcyvg(yvar)]
+    pzq = jbeqf[0].ybjre()
+    #ybt('rkrphgr: %e %e\a' % (pzq, cnez))
+    gel:
+        vs pzq == 'yf':
+            sbe cnez va (jbeqf[1:] be ['.']):
+                qb_yf(cnez, cjq.erfbyir(cnez))
+        ryvs pzq == 'pq':
+            sbe cnez va jbeqf[1:]:
+                cjq = cjq.erfbyir(cnez)
+        ryvs pzq == 'cjq':
+            cevag cjq.shyyanzr()
+        ryvs pzq == 'png':
+            sbe cnez va jbeqf[1:]:
+                jevgr_gb_svyr(cjq.erfbyir(cnez).bcra(), flf.fgqbhg)
+        ryvs pzq == 'trg':
+            vs yra(jbeqf) abg va [2,3]:
+                envfr Rkprcgvba('Hfntr: trg <svyranzr> [ybpnyanzr]')
+            eanzr = jbeqf[1]
+            (qve,onfr) = bf.cngu.fcyvg(eanzr)
+            yanzr = yra(jbeqf)>2 naq jbeqf[2] be onfr
+            vas = cjq.erfbyir(eanzr).bcra()
+            ybt('Fnivat %e\a' % yanzr)
+            jevgr_gb_svyr(vas, bcra(yanzr, 'jo'))
+        ryvs pzq == 'ztrg':
+            sbe cnez va jbeqf[1:]:
+                (qve,onfr) = bf.cngu.fcyvg(cnez)
+                sbe a va cjq.erfbyir(qve).fhof():
+                    vs sazngpu.sazngpu(a.anzr, onfr):
+                        gel:
+                            ybt('Fnivat %e\a' % a.anzr)
+                            vas = a.bcra()
+                            bhgs = bcra(a.anzr, 'jo')
+                            jevgr_gb_svyr(vas, bhgs)
+                            bhgs.pybfr()
+                        rkprcg Rkprcgvba, r:
+                            ybt('  reebe: %f\a' % r)
+        ryvs pzq == 'uryc' be pzq == '?':
+            ybt('Pbzznaqf: yf pq cjq png trg ztrg uryc dhvg\a')
+        ryvs pzq == 'dhvg' be pzq == 'rkvg' be pzq == 'olr':
+            oernx
+        ryfr:
+            envfr Rkprcgvba('ab fhpu pbzznaq %e' % pzq)
+    rkprcg Rkprcgvba, r:
+        ybt('reebe: %f\a' % r)
+        #envfr
+#!/hfe/ova/rai clguba
+vzcbeg flf, zznc
+sebz ohc vzcbeg bcgvbaf, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc enaqbz [-F frrq] <ahzolgrf>
+--
+F,frrq=   bcgvbany enaqbz ahzore frrq (qrsnhyg 1)
+s,sbepr   cevag enaqbz qngn gb fgqbhg rira vs vg'f n ggl
+"""
+b = bcgvbaf.Bcgvbaf('ohc enaqbz', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+gbgny = cnefr_ahz(rkgen[0])
+
+vs bcg.sbepr be (abg bf.vfnggl(1) naq
+                 abg ngbv(bf.raiveba.trg('OHC_SBEPR_GGL')) & 1):
+    _unfufcyvg.jevgr_enaqbz(flf.fgqbhg.svyrab(), gbgny, bcg.frrq be 0)
+ryfr:
+    ybt('reebe: abg jevgvat ovanel qngn gb n grezvany. Hfr -s gb sbepr.\a')
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc uryc <pbzznaq>
+"""
+b = bcgvbaf.Bcgvbaf('ohc uryc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) == 0:
+    # gur jenccre cebtenz cebivqrf gur qrsnhyg hfntr fgevat
+    bf.rkrpic(bf.raiveba['OHC_ZNVA_RKR'], ['ohc'])
+ryvs yra(rkgen) == 1:
+    qbpanzr = (rkgen[0]=='ohc' naq 'ohc' be ('ohc-%f' % rkgen[0]))
+    rkr = flf.neti[0]
+    (rkrcngu, rkrsvyr) = bf.cngu.fcyvg(rkr)
+    znacngu = bf.cngu.wbva(rkrcngu, '../Qbphzragngvba/' + qbpanzr + '.[1-9]')
+    t = tybo.tybo(znacngu)
+    vs t:
+        bf.rkrpic('zna', ['zna', '-y', t[0]])
+    ryfr:
+        bf.rkrpic('zna', ['zna', qbpanzr])
+ryfr:
+    b.sngny("rknpgyl bar pbzznaq anzr rkcrpgrq")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng, reeab, shfr, er, gvzr, grzcsvyr
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+
+pynff Fgng(shfr.Fgng):
+    qrs __vavg__(frys):
+        frys.fg_zbqr = 0
+        frys.fg_vab = 0
+        frys.fg_qri = 0
+        frys.fg_ayvax = 0
+        frys.fg_hvq = 0
+        frys.fg_tvq = 0
+        frys.fg_fvmr = 0
+        frys.fg_ngvzr = 0
+        frys.fg_zgvzr = 0
+        frys.fg_pgvzr = 0
+        frys.fg_oybpxf = 0
+        frys.fg_oyxfvmr = 0
+        frys.fg_eqri = 0
+
+
+pnpur = {}
+qrs pnpur_trg(gbc, cngu):
+    cnegf = cngu.fcyvg('/')
+    pnpur[('',)] = gbc
+    p = Abar
+    znk = yra(cnegf)
+    #ybt('pnpur: %e\a' % pnpur.xrlf())
+    sbe v va enatr(znk):
+        cer = cnegf[:znk-v]
+        #ybt('pnpur gelvat: %e\a' % cer)
+        p = pnpur.trg(ghcyr(cer))
+        vs p:
+            erfg = cnegf[znk-v:]
+            sbe e va erfg:
+                #ybt('erfbyivat %e sebz %e\a' % (e, p.shyyanzr()))
+                p = p.yerfbyir(e)
+                xrl = ghcyr(cer + [e])
+                #ybt('fnivat: %e\a' % (xrl,))
+                pnpur[xrl] = p
+            oernx
+    nffreg(p)
+    erghea p
+        
+    
+
+pynff OhcSf(shfr.Shfr):
+    qrs __vavg__(frys, gbc):
+        shfr.Shfr.__vavg__(frys)
+        frys.gbc = gbc
+    
+    qrs trgngge(frys, cngu):
+        ybt('--trgngge(%e)\a' % cngu)
+        gel:
+            abqr = pnpur_trg(frys.gbc, cngu)
+            fg = Fgng()
+            fg.fg_zbqr = abqr.zbqr
+            fg.fg_ayvax = abqr.ayvaxf()
+            fg.fg_fvmr = abqr.fvmr()
+            fg.fg_zgvzr = abqr.zgvzr
+            fg.fg_pgvzr = abqr.pgvzr
+            fg.fg_ngvzr = abqr.ngvzr
+            erghea fg
+        rkprcg isf.AbFhpuSvyr:
+            erghea -reeab.RABRAG
+
+    qrs ernqqve(frys, cngu, bssfrg):
+        ybt('--ernqqve(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        lvryq shfr.Qveragel('.')
+        lvryq shfr.Qveragel('..')
+        sbe fho va abqr.fhof():
+            lvryq shfr.Qveragel(fho.anzr)
+
+    qrs ernqyvax(frys, cngu):
+        ybt('--ernqyvax(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        erghea abqr.ernqyvax()
+
+    qrs bcra(frys, cngu, syntf):
+        ybt('--bcra(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        nppzbqr = bf.B_EQBAYL | bf.B_JEBAYL | bf.B_EQJE
+        vs (syntf & nppzbqr) != bf.B_EQBAYL:
+            erghea -reeab.RNPPRF
+        abqr.bcra()
+
+    qrs eryrnfr(frys, cngu, syntf):
+        ybt('--eryrnfr(%e)\a' % cngu)
+
+    qrs ernq(frys, cngu, fvmr, bssfrg):
+        ybt('--ernq(%e)\a' % cngu)
+        a = pnpur_trg(frys.gbc, cngu)
+        b = a.bcra()
+        b.frrx(bssfrg)
+        erghea b.ernq(fvmr)
+
+
+vs abg unfngge(shfr, '__irefvba__'):
+    envfr EhagvzrReebe, "lbhe shfr zbqhyr vf gbb byq sbe shfr.__irefvba__"
+shfr.shfr_clguba_ncv = (0, 2)
+
+
+bcgfcrp = """
+ohc shfr [-q] [-s] <zbhagcbvag>
+--
+q,qroht   vapernfr qroht yriry
+s,sbertebhaq  eha va sbertebhaq
+"""
+b = bcgvbaf.Bcgvbaf('ohc shfr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+s = OhcSf(gbc)
+s.shfr_netf.zbhagcbvag = rkgen[0]
+vs bcg.qroht:
+    s.shfr_netf.nqq('qroht')
+vs bcg.sbertebhaq:
+    s.shfr_netf.frgzbq('sbertebhaq')
+cevag s.zhygvguernqrq
+s.zhygvguernqrq = Snyfr
+
+s.znva()
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+[OHC_QVE=...] ohc vavg [-e ubfg:cngu]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc vavg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+
+vs bcg.erzbgr:
+    tvg.vavg_ercb()  # ybpny ercb
+    tvg.purpx_ercb_be_qvr()
+    pyv = pyvrag.Pyvrag(bcg.erzbgr, perngr=Gehr)
+    pyv.pybfr()
+ryfr:
+    tvg.vavg_ercb()
+#!/hfe/ova/rai clguba
+vzcbeg flf, zngu, fgehpg, tybo
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+CNTR_FVMR=4096
+FUN_CRE_CNTR=CNTR_FVMR/200.
+
+
+qrs zretr(vqkyvfg, ovgf, gnoyr):
+    pbhag = 0
+    sbe r va tvg.vqkzretr(vqkyvfg):
+        pbhag += 1
+        cersvk = tvg.rkgenpg_ovgf(r, ovgf)
+        gnoyr[cersvk] = pbhag
+        lvryq r
+
+
+qrs qb_zvqk(bhgqve, bhgsvyranzr, vasvyranzrf):
+    vs abg bhgsvyranzr:
+        nffreg(bhgqve)
+        fhz = Fun1('\0'.wbva(vasvyranzrf)).urkqvtrfg()
+        bhgsvyranzr = '%f/zvqk-%f.zvqk' % (bhgqve, fhz)
+    
+    vac = []
+    gbgny = 0
+    sbe anzr va vasvyranzrf:
+        vk = tvg.CnpxVqk(anzr)
+        vac.nccraq(vk)
+        gbgny += yra(vk)
+
+    ybt('Zretvat %q vaqrkrf (%q bowrpgf).\a' % (yra(vasvyranzrf), gbgny))
+    vs (abg bcg.sbepr naq (gbgny < 1024 naq yra(vasvyranzrf) < 3)) \
+       be (bcg.sbepr naq abg gbgny):
+        ybt('zvqk: abguvat gb qb.\a')
+        erghea
+
+    cntrf = vag(gbgny/FUN_CRE_CNTR) be 1
+    ovgf = vag(zngu.prvy(zngu.ybt(cntrf, 2)))
+    ragevrf = 2**ovgf
+    ybt('Gnoyr fvmr: %q (%q ovgf)\a' % (ragevrf*4, ovgf))
+    
+    gnoyr = [0]*ragevrf
+
+    gel:
+        bf.hayvax(bhgsvyranzr)
+    rkprcg BFReebe:
+        cnff
+    s = bcra(bhgsvyranzr + '.gzc', 'j+')
+    s.jevgr('ZVQK\0\0\0\2')
+    s.jevgr(fgehpg.cnpx('!V', ovgf))
+    nffreg(s.gryy() == 12)
+    s.jevgr('\0'*4*ragevrf)
+    
+    sbe r va zretr(vac, ovgf, gnoyr):
+        s.jevgr(r)
+        
+    s.jevgr('\0'.wbva(bf.cngu.onfranzr(c) sbe c va vasvyranzrf))
+
+    s.frrx(12)
+    s.jevgr(fgehpg.cnpx('!%qV' % ragevrf, *gnoyr))
+    s.pybfr()
+    bf.eranzr(bhgsvyranzr + '.gzc', bhgsvyranzr)
+
+    # guvf vf whfg sbe grfgvat
+    vs 0:
+        c = tvg.CnpxZvqk(bhgsvyranzr)
+        nffreg(yra(c.vqkanzrf) == yra(vasvyranzrf))
+        cevag c.vqkanzrf
+        nffreg(yra(c) == gbgny)
+        cv = vgre(c)
+        sbe v va zretr(vac, gbgny, ovgf, gnoyr):
+            nffreg(v == cv.arkg())
+            nffreg(c.rkvfgf(v))
+
+    cevag bhgsvyranzr
+
+bcgfcrp = """
+ohc zvqk [bcgvbaf...] <vqkanzrf...>
+--
+b,bhgchg=  bhgchg zvqk svyranzr (qrsnhyg: nhgb-trarengrq)
+n,nhgb     nhgbzngvpnyyl perngr .zvqk sebz nal havaqrkrq .vqk svyrf
+s,sbepr    nhgbzngvpnyyl perngr .zvqk sebz *nyy* .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zvqk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen naq (bcg.nhgb be bcg.sbepr):
+    b.sngny("lbh pna'g hfr -s/-n naq nyfb cebivqr svyranzrf")
+
+tvg.purpx_ercb_be_qvr()
+
+vs rkgen:
+    qb_zvqk(tvg.ercb('bowrpgf/cnpx'), bcg.bhgchg, rkgen)
+ryvs bcg.nhgb be bcg.sbepr:
+    cnguf = [tvg.ercb('bowrpgf/cnpx')]
+    cnguf += tybo.tybo(tvg.ercb('vaqrk-pnpur/*/.'))
+    sbe cngu va cnguf:
+        ybt('zvqk: fpnaavat %f\a' % cngu)
+        vs bcg.sbepr:
+            qb_zvqk(cngu, bcg.bhgchg, tybo.tybo('%f/*.vqk' % cngu))
+        ryvs bcg.nhgb:
+            z = tvg.CnpxVqkYvfg(cngu)
+            arrqrq = {}
+            sbe cnpx va z.cnpxf:  # bayl .vqk svyrf jvgubhg n .zvqk ner bcra
+                vs cnpx.anzr.raqfjvgu('.vqk'):
+                    arrqrq[cnpx.anzr] = 1
+            qry z
+            qb_zvqk(cngu, bcg.bhgchg, arrqrq.xrlf())
+        ybt('\a')
+ryfr:
+    b.sngny("lbh zhfg hfr -s be -n be cebivqr vachg svyranzrf")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, enaqbz
+sebz ohc vzcbeg bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs enaqoybpx(a):
+    y = []
+    sbe v va kenatr(a):
+        y.nccraq(pue(enaqbz.enaqenatr(0,256)))
+    erghea ''.wbva(y)
+
+
+bcgfcrp = """
+ohc qnzntr [-a pbhag] [-f znkfvmr] [-F frrq] <svyranzrf...>
+--
+   JNEAVAT: GUVF PBZZNAQ VF RKGERZRYL QNATREBHF
+a,ahz=   ahzore bs oybpxf gb qnzntr
+f,fvmr=  znkvzhz fvmr bs rnpu qnzntrq oybpx
+creprag= znkvzhz fvmr bs rnpu qnzntrq oybpx (nf n creprag bs ragver svyr)
+rdhny    fcernq qnzntr rirayl guebhtubhg gur svyr
+F,frrq=  enaqbz ahzore frrq (sbe ercrngnoyr grfgf)
+"""
+b = bcgvbaf.Bcgvbaf('ohc qnzntr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg rkgen:
+    b.sngny('svyranzrf rkcrpgrq')
+
+vs bcg.frrq != Abar:
+    enaqbz.frrq(bcg.frrq)
+
+sbe anzr va rkgen:
+    ybt('Qnzntvat "%f"...\a' % anzr)
+    s = bcra(anzr, 'e+o')
+    fg = bf.sfgng(s.svyrab())
+    fvmr = fg.fg_fvmr
+    vs bcg.creprag be bcg.fvmr:
+        zf1 = vag(sybng(bcg.creprag be 0)/100.0*fvmr) be fvmr
+        zf2 = bcg.fvmr be fvmr
+        znkfvmr = zva(zf1, zf2)
+    ryfr:
+        znkfvmr = 1
+    puhaxf = bcg.ahz be 10
+    puhaxfvmr = fvmr/puhaxf
+    sbe e va enatr(puhaxf):
+        fm = enaqbz.enaqenatr(1, znkfvmr+1)
+        vs fm > fvmr:
+            fm = fvmr
+        vs bcg.rdhny:
+            bsf = e*puhaxfvmr
+        ryfr:
+            bsf = enaqbz.enaqenatr(0, fvmr - fm + 1)
+        ybt('  %6q olgrf ng %q\a' % (fm, bsf))
+        s.frrx(bsf)
+        s.jevgr(enaqoybpx(fm))
+    s.pybfr()
+#!/hfe/ova/rai clguba
+vzcbeg flf, fgehpg, zznc
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+fhfcraqrq_j = Abar
+
+
+qrs vavg_qve(pbaa, net):
+    tvg.vavg_ercb(net)
+    ybt('ohc freire: ohcqve vavgvnyvmrq: %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+
+qrs frg_qve(pbaa, net):
+    tvg.purpx_ercb_be_qvr(net)
+    ybt('ohc freire: ohcqve vf %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+    
+qrs yvfg_vaqrkrf(pbaa, whax):
+    tvg.purpx_ercb_be_qvr()
+    sbe s va bf.yvfgqve(tvg.ercb('bowrpgf/cnpx')):
+        vs s.raqfjvgu('.vqk'):
+            pbaa.jevgr('%f\a' % s)
+    pbaa.bx()
+
+
+qrs fraq_vaqrk(pbaa, anzr):
+    tvg.purpx_ercb_be_qvr()
+    nffreg(anzr.svaq('/') < 0)
+    nffreg(anzr.raqfjvgu('.vqk'))
+    vqk = tvg.CnpxVqk(tvg.ercb('bowrpgf/cnpx/%f' % anzr))
+    pbaa.jevgr(fgehpg.cnpx('!V', yra(vqk.znc)))
+    pbaa.jevgr(vqk.znc)
+    pbaa.bx()
+
+
+qrs erprvir_bowrpgf(pbaa, whax):
+    tybony fhfcraqrq_j
+    tvg.purpx_ercb_be_qvr()
+    fhttrfgrq = {}
+    vs fhfcraqrq_j:
+        j = fhfcraqrq_j
+        fhfcraqrq_j = Abar
+    ryfr:
+        j = tvg.CnpxJevgre()
+    juvyr 1:
+        af = pbaa.ernq(4)
+        vs abg af:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq yratgu urnqre, tbg RBS\a')
+        a = fgehpg.hacnpx('!V', af)[0]
+        #ybt('rkcrpgvat %q olgrf\a' % a)
+        vs abg a:
+            ybt('ohc freire: erprvirq %q bowrpg%f.\a' 
+                % (j.pbhag, j.pbhag!=1 naq "f" be ''))
+            shyycngu = j.pybfr()
+            vs shyycngu:
+                (qve, anzr) = bf.cngu.fcyvg(shyycngu)
+                pbaa.jevgr('%f.vqk\a' % anzr)
+            pbaa.bx()
+            erghea
+        ryvs a == 0kssssssss:
+            ybt('ohc freire: erprvir-bowrpgf fhfcraqrq.\a')
+            fhfcraqrq_j = j
+            pbaa.bx()
+            erghea
+            
+        ohs = pbaa.ernq(a)  # bowrpg fvmrf va ohc ner ernfbanoyl fznyy
+        #ybt('ernq %q olgrf\a' % a)
+        vs yra(ohs) < a:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq %q olgrf, tbg %q\a'
+                            % (a, yra(ohs)))
+        (glcr, pbagrag) = tvg._qrpbqr_cnpxbow(ohs)
+        fun = tvg.pnyp_unfu(glcr, pbagrag)
+        byqcnpx = j.rkvfgf(fun)
+        # SVKZR: jr bayl fhttrfg n fvatyr vaqrk cre plpyr, orpnhfr gur pyvrag
+        # vf pheeragyl qhzo gb qbjaybnq zber guna bar cre plpyr naljnl.
+        # Npghnyyl jr fubhyq svk gur pyvrag, ohg guvf vf n zvabe bcgvzvmngvba
+        # ba gur freire fvqr.
+        vs abg fhttrfgrq naq \
+          byqcnpx naq (byqcnpx == Gehr be byqcnpx.raqfjvgu('.zvqk')):
+            # SVKZR: jr fubhyqa'g ernyyl unir gb xabj nobhg zvqk svyrf
+            # ng guvf ynlre.  Ohg rkvfgf() ba n zvqk qbrfa'g erghea gur
+            # cnpxanzr (fvapr vg qbrfa'g xabj)... cebonoyl jr fubhyq whfg
+            # svk gung qrsvpvrapl bs zvqk svyrf riraghnyyl, nygubhtu vg'yy
+            # znxr gur svyrf ovttre.  Guvf zrgubq vf pregnvayl abg irel
+            # rssvpvrag.
+            j.bowpnpur.erserfu(fxvc_zvqk = Gehr)
+            byqcnpx = j.bowpnpur.rkvfgf(fun)
+            ybt('arj fhttrfgvba: %e\a' % byqcnpx)
+            nffreg(byqcnpx)
+            nffreg(byqcnpx != Gehr)
+            nffreg(abg byqcnpx.raqfjvgu('.zvqk'))
+            j.bowpnpur.erserfu(fxvc_zvqk = Snyfr)
+        vs abg fhttrfgrq naq byqcnpx:
+            nffreg(byqcnpx.raqfjvgu('.vqk'))
+            (qve,anzr) = bf.cngu.fcyvg(byqcnpx)
+            vs abg (anzr va fhttrfgrq):
+                ybt("ohc freire: fhttrfgvat vaqrk %f\a" % anzr)
+                pbaa.jevgr('vaqrk %f\a' % anzr)
+                fhttrfgrq[anzr] = 1
+        ryfr:
+            j._enj_jevgr([ohs])
+    # ABGERNPURQ
+
+
+qrs ernq_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    e = tvg.ernq_ers(ersanzr)
+    pbaa.jevgr('%f\a' % (e be '').rapbqr('urk'))
+    pbaa.bx()
+
+
+qrs hcqngr_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    arjiny = pbaa.ernqyvar().fgevc()
+    byqiny = pbaa.ernqyvar().fgevc()
+    tvg.hcqngr_ers(ersanzr, arjiny.qrpbqr('urk'), byqiny.qrpbqr('urk'))
+    pbaa.bx()
+
+
+qrs png(pbaa, vq):
+    tvg.purpx_ercb_be_qvr()
+    gel:
+        sbe oybo va tvg.png(vq):
+            pbaa.jevgr(fgehpg.cnpx('!V', yra(oybo)))
+            pbaa.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        ybt('freire: reebe: %f\a' % r)
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.reebe(r)
+    ryfr:
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.bx()
+
+
+bcgfcrp = """
+ohc freire
+"""
+b = bcgvbaf.Bcgvbaf('ohc freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+ybt('ohc freire: ernqvat sebz fgqva.\a')
+
+pbzznaqf = {
+    'vavg-qve': vavg_qve,
+    'frg-qve': frg_qve,
+    'yvfg-vaqrkrf': yvfg_vaqrkrf,
+    'fraq-vaqrk': fraq_vaqrk,
+    'erprvir-bowrpgf': erprvir_bowrpgf,
+    'ernq-ers': ernq_ers,
+    'hcqngr-ers': hcqngr_ers,
+    'png': png,
+}
+
+# SVKZR: guvf cebgbpby vf gbgnyyl ynzr naq abg ng nyy shgher-cebbs.
+# (Rfcrpvnyyl fvapr jr nobeg pbzcyrgryl nf fbba nf *nalguvat* onq unccraf)
+pbaa = Pbaa(flf.fgqva, flf.fgqbhg)
+ye = yvarernqre(pbaa)
+sbe _yvar va ye:
+    yvar = _yvar.fgevc()
+    vs abg yvar:
+        pbagvahr
+    ybt('ohc freire: pbzznaq: %e\a' % yvar)
+    jbeqf = yvar.fcyvg(' ', 1)
+    pzq = jbeqf[0]
+    erfg = yra(jbeqf)>1 naq jbeqf[1] be ''
+    vs pzq == 'dhvg':
+        oernx
+    ryfr:
+        pzq = pbzznaqf.trg(pzq)
+        vs pzq:
+            pzq(pbaa, erfg)
+        ryfr:
+            envfr Rkprcgvba('haxabja freire pbzznaq: %e\a' % yvar)
+
+ybt('ohc freire: qbar\a')
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc wbva [-e ubfg:cngu] [ersf be unfurf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc wbva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    rkgen = yvarernqre(flf.fgqva)
+
+erg = 0
+
+vs bcg.erzbgr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    png = pyv.png
+ryfr:
+    pc = tvg.PngCvcr()
+    png = pc.wbva
+
+sbe vq va rkgen:
+    gel:
+        sbe oybo va png(vq):
+            flf.fgqbhg.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        flf.fgqbhg.syhfu()
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, reeab, fgng, gvzr, zngu
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, vaqrk, pyvrag
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc fnir [-gp] [-a anzr] <svyranzrf...>
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+d,dhvrg    qba'g fubj cebterff zrgre
+fznyyre=   bayl onpx hc svyrf fznyyre guna a olgrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc fnir', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.gerr be bcg.pbzzvg be bcg.anzr):
+    b.sngny("hfr bar be zber bs -g, -p, -a")
+vs abg rkgen:
+    b.sngny("ab svyranzrf tvira")
+
+bcg.cebterff = (vfggl naq abg bcg.dhvrg)
+bcg.fznyyre = cnefr_ahz(bcg.fznyyre be 0)
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+unaqyr_pgey_p()
+
+
+qrs rngfynfu(qve):
+    vs qve.raqfjvgu('/'):
+        erghea qve[:-1]
+    ryfr:
+        erghea qve
+
+
+cnegf = ['']
+funyvfgf = [[]]
+
+qrs _chfu(cneg):
+    nffreg(cneg)
+    cnegf.nccraq(cneg)
+    funyvfgf.nccraq([])
+
+qrs _cbc(sbepr_gerr):
+    nffreg(yra(cnegf) >= 1)
+    cneg = cnegf.cbc()
+    funyvfg = funyvfgf.cbc()
+    gerr = sbepr_gerr be j.arj_gerr(funyvfg)
+    vs funyvfgf:
+        funyvfgf[-1].nccraq(('40000', cneg, gerr))
+    ryfr:  # guvf jnf gur gbcyriry, fb chg vg onpx sbe fnavgl
+        funyvfgf.nccraq(funyvfg)
+    erghea gerr
+
+ynfgerznva = Abar
+qrs cebterff_ercbeg(a):
+    tybony pbhag, fhopbhag, ynfgerznva
+    fhopbhag += a
+    pp = pbhag + fhopbhag
+    cpg = gbgny naq (pp*100.0/gbgny) be 0
+    abj = gvzr.gvzr()
+    ryncfrq = abj - gfgneg
+    xcf = ryncfrq naq vag(pp/1024./ryncfrq)
+    xcf_senp = 10 ** vag(zngu.ybt(xcf+1, 10) - 1)
+    xcf = vag(xcf/xcf_senp)*xcf_senp
+    vs pp:
+        erznva = ryncfrq*1.0/pp * (gbgny-pp)
+    ryfr:
+        erznva = 0.0
+    vs (ynfgerznva naq (erznva > ynfgerznva)
+          naq ((erznva - ynfgerznva)/ynfgerznva < 0.05)):
+        erznva = ynfgerznva
+    ryfr:
+        ynfgerznva = erznva
+    ubhef = vag(erznva/60/60)
+    zvaf = vag(erznva/60 - ubhef*60)
+    frpf = vag(erznva - ubhef*60*60 - zvaf*60)
+    vs ryncfrq < 30:
+        erznvafge = ''
+        xcffge = ''
+    ryfr:
+        xcffge = '%qx/f' % xcf
+        vs ubhef:
+            erznvafge = '%qu%qz' % (ubhef, zvaf)
+        ryvs zvaf:
+            erznvafge = '%qz%q' % (zvaf, frpf)
+        ryfr:
+            erznvafge = '%qf' % frpf
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf) %f %f\e'
+             % (cpg, pp/1024, gbgny/1024, spbhag, sgbgny,
+                erznvafge, xcffge))
+
+
+e = vaqrk.Ernqre(tvg.ercb('ohcvaqrk'))
+
+qrs nyernql_fnirq(rag):
+    erghea rag.vf_inyvq() naq j.rkvfgf(rag.fun) naq rag.fun
+
+qrs jnagerphefr_cer(rag):
+    erghea abg nyernql_fnirq(rag)
+
+qrs jnagerphefr_qhevat(rag):
+    erghea abg nyernql_fnirq(rag) be rag.fun_zvffvat()
+
+gbgny = sgbgny = 0
+vs bcg.cebterff:
+    sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_cer):
+        vs abg (sgbgny % 10024):
+            cebterff('Ernqvat vaqrk: %q\e' % sgbgny)
+        rkvfgf = rag.rkvfgf()
+        unfuinyvq = nyernql_fnirq(rag)
+        rag.frg_fun_zvffvat(abg unfuinyvq)
+        vs abg bcg.fznyyre be rag.fvmr < bcg.fznyyre:
+            vs rkvfgf naq abg unfuinyvq:
+                gbgny += rag.fvmr
+        sgbgny += 1
+    cebterff('Ernqvat vaqrk: %q, qbar.\a' % sgbgny)
+    unfufcyvg.cebterff_pnyyonpx = cebterff_ercbeg
+
+gfgneg = gvzr.gvzr()
+pbhag = fhopbhag = spbhag = 0
+ynfgfxvc_anzr = Abar
+ynfgqve = ''
+sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_qhevat):
+    (qve, svyr) = bf.cngu.fcyvg(rag.anzr)
+    rkvfgf = (rag.syntf & vaqrk.VK_RKVFGF)
+    unfuinyvq = nyernql_fnirq(rag)
+    jnfzvffvat = rag.fun_zvffvat()
+    byqfvmr = rag.fvmr
+    vs bcg.ireobfr:
+        vs abg rkvfgf:
+            fgnghf = 'Q'
+        ryvs abg unfuinyvq:
+            vs rag.fun == vaqrk.RZCGL_FUN:
+                fgnghf = 'N'
+            ryfr:
+                fgnghf = 'Z'
+        ryfr:
+            fgnghf = ' '
+        vs bcg.ireobfr >= 2:
+            ybt('%f %-70f\a' % (fgnghf, rag.anzr))
+        ryvs abg fgng.F_VFQVE(rag.zbqr) naq ynfgqve != qve:
+            vs abg ynfgqve.fgnegfjvgu(qve):
+                ybt('%f %-70f\a' % (fgnghf, bf.cngu.wbva(qve, '')))
+            ynfgqve = qve
+
+    vs bcg.cebterff:
+        cebterff_ercbeg(0)
+    spbhag += 1
+    
+    vs abg rkvfgf:
+        pbagvahr
+    vs bcg.fznyyre naq rag.fvmr >= bcg.fznyyre:
+        vs rkvfgf naq abg unfuinyvq:
+            nqq_reebe('fxvccvat ynetr svyr "%f"' % rag.anzr)
+            ynfgfxvc_anzr = rag.anzr
+        pbagvahr
+
+    nffreg(qve.fgnegfjvgu('/'))
+    qvec = qve.fcyvg('/')
+    juvyr cnegf > qvec:
+        _cbc(sbepr_gerr = Abar)
+    vs qve != '/':
+        sbe cneg va qvec[yra(cnegf):]:
+            _chfu(cneg)
+
+    vs abg svyr:
+        # ab svyranzr cbegvba zrnaf guvf vf n fhoqve.  Ohg
+        # fho/cneragqverpgbevrf nyernql unaqyrq va gur cbc/chfu() cneg nobir.
+        byqgerr = nyernql_fnirq(rag) # znl or Abar
+        arjgerr = _cbc(sbepr_gerr = byqgerr)
+        vs abg byqgerr:
+            vs ynfgfxvc_anzr naq ynfgfxvc_anzr.fgnegfjvgu(rag.anzr):
+                rag.vainyvqngr()
+            ryfr:
+                rag.inyvqngr(040000, arjgerr)
+            rag.ercnpx()
+        vs rkvfgf naq jnfzvffvat:
+            pbhag += byqfvmr
+        pbagvahr
+
+    # vg'f abg n qverpgbel
+    vq = Abar
+    vs unfuinyvq:
+        zbqr = '%b' % rag.tvgzbqr
+        vq = rag.fun
+        funyvfgf[-1].nccraq((zbqr, 
+                             tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                             vq))
+    ryfr:
+        vs fgng.F_VFERT(rag.zbqr):
+            gel:
+                s = unfufcyvg.bcra_abngvzr(rag.anzr)
+            rkprcg VBReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            rkprcg BFReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            ryfr:
+                (zbqr, vq) = unfufcyvg.fcyvg_gb_oybo_be_gerr(j, [s])
+        ryfr:
+            vs fgng.F_VFQVE(rag.zbqr):
+                nffreg(0)  # unaqyrq nobir
+            ryvs fgng.F_VFYAX(rag.zbqr):
+                gel:
+                    ey = bf.ernqyvax(rag.anzr)
+                rkprcg BFReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                rkprcg VBReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                ryfr:
+                    (zbqr, vq) = ('120000', j.arj_oybo(ey))
+            ryfr:
+                nqq_reebe(Rkprcgvba('fxvccvat fcrpvny svyr "%f"' % rag.anzr))
+                ynfgfxvc_anzr = rag.anzr
+        vs vq:
+            rag.inyvqngr(vag(zbqr, 8), vq)
+            rag.ercnpx()
+            funyvfgf[-1].nccraq((zbqr,
+                                 tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                                 vq))
+    vs rkvfgf naq jnfzvffvat:
+        pbhag += byqfvmr
+        fhopbhag = 0
+
+
+vs bcg.cebterff:
+    cpg = gbgny naq pbhag*100.0/gbgny be 100
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf), qbar.    \a'
+             % (cpg, pbhag/1024, gbgny/1024, spbhag, sgbgny))
+
+juvyr yra(cnegf) > 1:
+    _cbc(sbepr_gerr = Abar)
+nffreg(yra(funyvfgf) == 1)
+gerr = j.arj_gerr(funyvfgf[-1])
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fnir\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq juvyr fnivat.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc gvpx
+"""
+b = bcgvbaf.Bcgvbaf('ohc gvpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+g = gvzr.gvzr()
+gyrsg = 1 - (g - vag(g))
+gvzr.fyrrc(gyrsg)
+#!/hfe/ova/rai clguba
+vzcbeg bf, flf, fgng, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg, vaqrk, qerphefr
+sebz ohc.urycref vzcbeg *
+
+
+qrs zretr_vaqrkrf(bhg, e1, e2):
+    sbe r va vaqrk.ZretrVgre([e1, e2]):
+        # SVKZR: fubhyqa'g jr erzbir qryrgrq ragevrf riraghnyyl?  Jura?
+        bhg.nqq_vkragel(r)
+
+
+pynff VgreUrycre:
+    qrs __vavg__(frys, y):
+        frys.v = vgre(y)
+        frys.phe = Abar
+        frys.arkg()
+
+    qrs arkg(frys):
+        gel:
+            frys.phe = frys.v.arkg()
+        rkprcg FgbcVgrengvba:
+            frys.phe = Abar
+        erghea frys.phe
+
+
+qrs purpx_vaqrk(ernqre):
+    gel:
+        ybt('purpx: purpxvat sbejneq vgrengvba...\a')
+        r = Abar
+        q = {}
+        sbe r va ernqre.sbejneq_vgre():
+            vs r.puvyqera_a:
+                vs bcg.ireobfr:
+                    ybt('%08k+%-4q %e\a' % (r.puvyqera_bsf, r.puvyqera_a,
+                                            r.anzr))
+                nffreg(r.puvyqera_bsf)
+                nffreg(r.anzr.raqfjvgu('/'))
+                nffreg(abg q.trg(r.puvyqera_bsf))
+                q[r.puvyqera_bsf] = 1
+            vs r.syntf & vaqrk.VK_UNFUINYVQ:
+                nffreg(r.fun != vaqrk.RZCGL_FUN)
+                nffreg(r.tvgzbqr)
+        nffreg(abg r be r.anzr == '/')  # ynfg ragel vf *nyjnlf* /
+        ybt('purpx: purpxvat abezny vgrengvba...\a')
+        ynfg = Abar
+        sbe r va ernqre:
+            vs ynfg:
+                nffreg(ynfg > r.anzr)
+            ynfg = r.anzr
+    rkprcg:
+        ybt('vaqrk reebe! ng %e\a' % r)
+        envfr
+    ybt('purpx: cnffrq.\a')
+
+
+qrs hcqngr_vaqrk(gbc):
+    ev = vaqrk.Ernqre(vaqrksvyr)
+    jv = vaqrk.Jevgre(vaqrksvyr)
+    evt = VgreUrycre(ev.vgre(anzr=gbc))
+    gfgneg = vag(gvzr.gvzr())
+
+    unfutra = Abar
+    vs bcg.snxr_inyvq:
+        qrs unfutra(anzr):
+            erghea (0100644, vaqrk.SNXR_FUN)
+
+    gbgny = 0
+    sbe (cngu,cfg) va qerphefr.erphefvir_qveyvfg([gbc], kqri=bcg.kqri):
+        vs bcg.ireobfr>=2 be (bcg.ireobfr==1 naq fgng.F_VFQVE(cfg.fg_zbqr)):
+            flf.fgqbhg.jevgr('%f\a' % cngu)
+            flf.fgqbhg.syhfu()
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        ryvs abg (gbgny % 128):
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        gbgny += 1
+        juvyr evt.phe naq evt.phe.anzr > cngu:  # qryrgrq cnguf
+            vs evt.phe.rkvfgf():
+                evt.phe.frg_qryrgrq()
+                evt.phe.ercnpx()
+            evt.arkg()
+        vs evt.phe naq evt.phe.anzr == cngu:    # cnguf gung nyernql rkvfgrq
+            vs cfg:
+                evt.phe.sebz_fgng(cfg, gfgneg)
+            vs abg (evt.phe.syntf & vaqrk.VK_UNFUINYVQ):
+                vs unfutra:
+                    (evt.phe.tvgzbqr, evt.phe.fun) = unfutra(cngu)
+                    evt.phe.syntf |= vaqrk.VK_UNFUINYVQ
+            vs bcg.snxr_vainyvq:
+                evt.phe.vainyvqngr()
+            evt.phe.ercnpx()
+            evt.arkg()
+        ryfr:  # arj cnguf
+            jv.nqq(cngu, cfg, unfutra = unfutra)
+    cebterff('Vaqrkvat: %q, qbar.\a' % gbgny)
+    
+    vs ev.rkvfgf():
+        ev.fnir()
+        jv.syhfu()
+        vs jv.pbhag:
+            je = jv.arj_ernqre()
+            vs bcg.purpx:
+                ybt('purpx: orsber zretvat: byqsvyr\a')
+                purpx_vaqrk(ev)
+                ybt('purpx: orsber zretvat: arjsvyr\a')
+                purpx_vaqrk(je)
+            zv = vaqrk.Jevgre(vaqrksvyr)
+            zretr_vaqrkrf(zv, ev, je)
+            ev.pybfr()
+            zv.pybfr()
+            je.pybfr()
+        jv.nobeg()
+    ryfr:
+        jv.pybfr()
+
+
+bcgfcrp = """
+ohc vaqrk <-c|z|h> [bcgvbaf...] <svyranzrf...>
+--
+c,cevag    cevag gur vaqrk ragevrf sbe gur tvira anzrf (nyfb jbexf jvgu -h)
+z,zbqvsvrq cevag bayl nqqrq/qryrgrq/zbqvsvrq svyrf (vzcyvrf -c)
+f,fgnghf   cevag rnpu svyranzr jvgu n fgnghf pune (N/Z/Q) (vzcyvrf -c)
+U,unfu     cevag gur unfu sbe rnpu bowrpg arkg gb vgf anzr (vzcyvrf -c)
+y,ybat     cevag zber vasbezngvba nobhg rnpu svyr
+h,hcqngr   (erphefviryl) hcqngr gur vaqrk ragevrf sbe gur tvira svyranzrf
+k,kqri,bar-svyr-flfgrz  qba'g pebff svyrflfgrz obhaqnevrf
+snxr-inyvq znex nyy vaqrk ragevrf nf hc-gb-qngr rira vs gurl nera'g
+snxr-vainyvq znex nyy vaqrk ragevrf nf vainyvq
+purpx      pnershyyl purpx vaqrk svyr vagrtevgl
+s,vaqrksvyr=  gur anzr bs gur vaqrk svyr (qrsnhyg 'vaqrk')
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+"""
+b = bcgvbaf.Bcgvbaf('ohc vaqrk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg (bcg.zbqvsvrq be bcg['cevag'] be bcg.fgnghf be bcg.hcqngr be bcg.purpx):
+    b.sngny('fhccyl bar be zber bs -c, -f, -z, -h, be --purpx')
+vs (bcg.snxr_inyvq be bcg.snxr_vainyvq) naq abg bcg.hcqngr:
+    b.sngny('--snxr-{va,}inyvq ner zrnavatyrff jvgubhg -h')
+vs bcg.snxr_inyvq naq bcg.snxr_vainyvq:
+    b.sngny('--snxr-inyvq vf vapbzcngvoyr jvgu --snxr-vainyvq')
+
+tvg.purpx_ercb_be_qvr()
+vaqrksvyr = bcg.vaqrksvyr be tvg.ercb('ohcvaqrk')
+
+unaqyr_pgey_p()
+
+vs bcg.purpx:
+    ybt('purpx: fgnegvat vavgvny purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+cnguf = vaqrk.erqhpr_cnguf(rkgen)
+
+vs bcg.hcqngr:
+    vs abg cnguf:
+        b.sngny('hcqngr (-h) erdhrfgrq ohg ab cnguf tvira')
+    sbe (ec,cngu) va cnguf:
+        hcqngr_vaqrk(ec)
+
+vs bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq:
+    sbe (anzr, rag) va vaqrk.Ernqre(vaqrksvyr).svygre(rkgen be ['']):
+        vs (bcg.zbqvsvrq 
+            naq (rag.vf_inyvq() be rag.vf_qryrgrq() be abg rag.zbqr)):
+            pbagvahr
+        yvar = ''
+        vs bcg.fgnghf:
+            vs rag.vf_qryrgrq():
+                yvar += 'Q '
+            ryvs abg rag.vf_inyvq():
+                vs rag.fun == vaqrk.RZCGL_FUN:
+                    yvar += 'N '
+                ryfr:
+                    yvar += 'Z '
+            ryfr:
+                yvar += '  '
+        vs bcg.unfu:
+            yvar += rag.fun.rapbqr('urk') + ' '
+        vs bcg.ybat:
+            yvar += "%7f %7f " % (bpg(rag.zbqr), bpg(rag.tvgzbqr))
+        cevag yvar + (anzr be './')
+
+vs bcg.purpx naq (bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq be bcg.hcqngr):
+    ybt('purpx: fgnegvat svany purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg
+sebz ohc vzcbeg bcgvbaf, urycref
+
+bcgfcrp = """
+ohc eonpxhc-freire
+--
+    Guvf pbzznaq vf abg vagraqrq gb or eha znahnyyl.
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc-freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+# trg gur fhopbzznaq'f neti.
+# Abeznyyl jr pbhyq whfg cnff guvf ba gur pbzznaq yvar, ohg fvapr jr'yy bsgra
+# or trggvat pnyyrq ba gur bgure raq bs na ffu cvcr, juvpu graqf gb znatyr
+# neti (ol fraqvat vg ivn gur furyy), guvf jnl vf zhpu fnsre.
+ohs = flf.fgqva.ernq(4)
+fm = fgehpg.hacnpx('!V', ohs)[0]
+nffreg(fm > 0)
+nffreg(fm < 1000000)
+ohs = flf.fgqva.ernq(fm)
+nffreg(yra(ohs) == fm)
+neti = ohs.fcyvg('\0')
+
+# fgqva/fgqbhg ner fhccbfrqyl pbaarpgrq gb 'ohc freire' gung gur pnyyre
+# fgnegrq sbe hf (bsgra ba gur bgure raq bs na ffu ghaary), fb jr qba'g jnag
+# gb zvfhfr gurz.  Zbir gurz bhg bs gur jnl, gura ercynpr fgqbhg jvgu
+# n cbvagre gb fgqree va pnfr bhe fhopbzznaq jnagf gb qb fbzrguvat jvgu vg.
+#
+# Vg zvtug or avpr gb qb gur fnzr jvgu fgqva, ohg zl rkcrevzragf fubjrq gung
+# ffu frrzf gb znxr vgf puvyq'f fgqree n ernqnoyr-ohg-arire-ernqf-nalguvat
+# fbpxrg.  Gurl ernyyl fubhyq unir hfrq fuhgqbja(FUHG_JE) ba gur bgure raq
+# bs vg, ohg cebonoyl qvqa'g.  Naljnl, vg'f gbb zrffl, fb yrg'f whfg znxr fher
+# nalbar ernqvat sebz fgqva vf qvfnccbvagrq.
+#
+# (Lbh pna'g whfg yrnir fgqva/fgqbhg "abg bcra" ol pybfvat gur svyr
+# qrfpevcgbef.  Gura gur arkg svyr gung bcraf vf nhgbzngvpnyyl nffvtarq 0 be 1,
+# naq crbcyr *gelvat* gb ernq/jevgr fgqva/fgqbhg trg fperjrq.)
+bf.qhc2(0, 3)
+bf.qhc2(1, 4)
+bf.qhc2(2, 1)
+sq = bf.bcra('/qri/ahyy', bf.B_EQBAYL)
+bf.qhc2(sq, 0)
+bf.pybfr(sq)
+
+bf.raiveba['OHC_FREIRE_ERIREFR'] = urycref.ubfganzr()
+bf.rkrpic(neti[0], neti)
+flf.rkvg(99)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo, fhocebprff, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+cne2_bx = 0
+ahyys = bcra('/qri/ahyy')
+
+qrs qroht(f):
+    vs bcg.ireobfr:
+        ybt(f)
+
+qrs eha(neti):
+    # ng yrnfg va clguba 2.5, hfvat "fgqbhg=2" be "fgqbhg=flf.fgqree" orybj
+    # qbrfa'g npghnyyl jbex, orpnhfr fhocebprff pybfrf sq #2 evtug orsber
+    # rkrpvat sbe fbzr ernfba.  Fb jr jbex nebhaq vg ol qhcyvpngvat gur sq
+    # svefg.
+    sq = bf.qhc(2)  # pbcl fgqree
+    gel:
+        c = fhocebprff.Cbcra(neti, fgqbhg=sq, pybfr_sqf=Snyfr)
+        erghea c.jnvg()
+    svanyyl:
+        bf.pybfr(sq)
+
+qrs cne2_frghc():
+    tybony cne2_bx
+    ei = 1
+    gel:
+        c = fhocebprff.Cbcra(['cne2', '--uryc'],
+                             fgqbhg=ahyys, fgqree=ahyys, fgqva=ahyys)
+        ei = c.jnvg()
+    rkprcg BFReebe:
+        ybt('sfpx: jneavat: cne2 abg sbhaq; qvfnoyvat erpbirel srngherf.\a')
+    ryfr:
+        cne2_bx = 1
+
+qrs cnei(yiy):
+    vs bcg.ireobfr >= yiy:
+        vs vfggl:
+            erghea []
+        ryfr:
+            erghea ['-d']
+    ryfr:
+        erghea ['-dd']
+
+qrs cne2_trarengr(onfr):
+    erghea eha(['cne2', 'perngr', '-a1', '-p200'] + cnei(2)
+               + ['--', onfr, onfr+'.cnpx', onfr+'.vqk'])
+
+qrs cne2_irevsl(onfr):
+    erghea eha(['cne2', 'irevsl'] + cnei(3) + ['--', onfr])
+
+qrs cne2_ercnve(onfr):
+    erghea eha(['cne2', 'ercnve'] + cnei(2) + ['--', onfr])
+
+qrs dhvpx_irevsl(onfr):
+    s = bcra(onfr + '.cnpx', 'eo')
+    s.frrx(-20, 2)
+    jnagfhz = s.ernq(20)
+    nffreg(yra(jnagfhz) == 20)
+    s.frrx(0)
+    fhz = Fun1()
+    sbe o va puhaxlernqre(s, bf.sfgng(s.svyrab()).fg_fvmr - 20):
+        fhz.hcqngr(o)
+    vs fhz.qvtrfg() != jnagfhz:
+        envfr InyhrReebe('rkcrpgrq %e, tbg %e' % (jnagfhz.rapbqr('urk'),
+                                                  fhz.urkqvtrfg()))
+        
+
+qrs tvg_irevsl(onfr):
+    vs bcg.dhvpx:
+        gel:
+            dhvpx_irevsl(onfr)
+        rkprcg Rkprcgvba, r:
+            qroht('reebe: %f\a' % r)
+            erghea 1
+        erghea 0
+    ryfr:
+        erghea eha(['tvg', 'irevsl-cnpx', '--', onfr])
+    
+    
+qrs qb_cnpx(onfr, ynfg):
+    pbqr = 0
+    vs cne2_bx naq cne2_rkvfgf naq (bcg.ercnve be abg bcg.trarengr):
+        ierfhyg = cne2_irevsl(onfr)
+        vs ierfhyg != 0:
+            vs bcg.ercnve:
+                eerfhyg = cne2_ercnve(onfr)
+                vs eerfhyg != 0:
+                    cevag '%f cne2 ercnve: snvyrq (%q)' % (ynfg, eerfhyg)
+                    pbqr = eerfhyg
+                ryfr:
+                    cevag '%f cne2 ercnve: fhpprrqrq (0)' % ynfg
+                    pbqr = 100
+            ryfr:
+                cevag '%f cne2 irevsl: snvyrq (%q)' % (ynfg, ierfhyg)
+                pbqr = ierfhyg
+        ryfr:
+            cevag '%f bx' % ynfg
+    ryvs abg bcg.trarengr be (cne2_bx naq abg cne2_rkvfgf):
+        terfhyg = tvg_irevsl(onfr)
+        vs terfhyg != 0:
+            cevag '%f tvg irevsl: snvyrq (%q)' % (ynfg, terfhyg)
+            pbqr = terfhyg
+        ryfr:
+            vs cne2_bx naq bcg.trarengr:
+                cerfhyg = cne2_trarengr(onfr)
+                vs cerfhyg != 0:
+                    cevag '%f cne2 perngr: snvyrq (%q)' % (ynfg, cerfhyg)
+                    pbqr = cerfhyg
+                ryfr:
+                    cevag '%f bx' % ynfg
+            ryfr:
+                cevag '%f bx' % ynfg
+    ryfr:
+        nffreg(bcg.trarengr naq (abg cne2_bx be cne2_rkvfgf))
+        qroht('    fxvccrq: cne2 svyr nyernql trarengrq.\a')
+    erghea pbqr
+
+
+bcgfcrp = """
+ohc sfpx [bcgvbaf...] [svyranzrf...]
+--
+e,ercnve    nggrzcg gb ercnve reebef hfvat cne2 (qnatrebhf!)
+t,trarengr  trarengr nhgb-ercnve vasbezngvba hfvat cne2
+i,ireobfr   vapernfr ireobfvgl (pna or hfrq zber guna bapr)
+dhvpx       whfg purpx cnpx fun1fhz, qba'g hfr tvg irevsl-cnpx
+w,wbof=     eha 'a' wbof va cnenyyry
+cne2-bx     vzzrqvngryl erghea 0 vs cne2 vf bx, 1 vs abg
+qvfnoyr-cne2  vtaber cne2 rira vs vg vf ninvynoyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc sfpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+cne2_frghc()
+vs bcg.cne2_bx:
+    vs cne2_bx:
+        flf.rkvg(0)  # 'gehr' va fu
+    ryfr:
+        flf.rkvg(1)
+vs bcg.qvfnoyr_cne2:
+    cne2_bx = 0
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    qroht('sfpx: Ab svyranzrf tvira: purpxvat nyy cnpxf.\a')
+    rkgen = tybo.tybo(tvg.ercb('bowrpgf/cnpx/*.cnpx'))
+
+pbqr = 0
+pbhag = 0
+bhgfgnaqvat = {}
+sbe anzr va rkgen:
+    vs anzr.raqfjvgu('.cnpx'):
+        onfr = anzr[:-5]
+    ryvs anzr.raqfjvgu('.vqk'):
+        onfr = anzr[:-4]
+    ryvs anzr.raqfjvgu('.cne2'):
+        onfr = anzr[:-5]
+    ryvs bf.cngu.rkvfgf(anzr + '.cnpx'):
+        onfr = anzr
+    ryfr:
+        envfr Rkprcgvba('%f vf abg n cnpx svyr!' % anzr)
+    (qve,ynfg) = bf.cngu.fcyvg(onfr)
+    cne2_rkvfgf = bf.cngu.rkvfgf(onfr + '.cne2')
+    vs cne2_rkvfgf naq bf.fgng(onfr + '.cne2').fg_fvmr == 0:
+        cne2_rkvfgf = 0
+    flf.fgqbhg.syhfu()
+    qroht('sfpx: purpxvat %f (%f)\a' 
+          % (ynfg, cne2_bx naq cne2_rkvfgf naq 'cne2' be 'tvg'))
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+    
+    vs abg bcg.wbof:
+        ap = qb_cnpx(onfr, ynfg)
+        pbqr = pbqr be ap
+        pbhag += 1
+    ryfr:
+        juvyr yra(bhgfgnaqvat) >= bcg.wbof:
+            (cvq,ap) = bf.jnvg()
+            ap >>= 8
+            vs cvq va bhgfgnaqvat:
+                qry bhgfgnaqvat[cvq]
+                pbqr = pbqr be ap
+                pbhag += 1
+        cvq = bf.sbex()
+        vs cvq:  # cnerag
+            bhgfgnaqvat[cvq] = 1
+        ryfr: # puvyq
+            gel:
+                flf.rkvg(qb_cnpx(onfr, ynfg))
+            rkprcg Rkprcgvba, r:
+                ybt('rkprcgvba: %e\a' % r)
+                flf.rkvg(99)
+                
+juvyr yra(bhgfgnaqvat):
+    (cvq,ap) = bf.jnvg()
+    ap >>= 8
+    vs cvq va bhgfgnaqvat:
+        qry bhgfgnaqvat[cvq]
+        pbqr = pbqr be ap
+        pbhag += 1
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+
+vs abg bcg.ireobfr naq vfggl:
+    ybt('sfpx qbar.           \a')
+flf.rkvg(pbqr)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg, trgbcg, fhocebprff, fvtany
+sebz ohc vzcbeg bcgvbaf, ffu
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc eonpxhc <ubfganzr> vaqrk ...
+ohc eonpxhc <ubfganzr> fnir ...
+ohc eonpxhc <ubfganzr> fcyvg ...
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc', bcgfcrp, bcgshap=trgbcg.trgbcg)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs yra(rkgen) < 2:
+    b.sngny('nethzragf rkcrpgrq')
+
+pynff FvtRkprcgvba(Rkprcgvba):
+    qrs __vavg__(frys, fvtahz):
+        frys.fvtahz = fvtahz
+        Rkprcgvba.__vavg__(frys, 'fvtany %q erprvirq' % fvtahz)
+qrs unaqyre(fvtahz, senzr):
+    envfr FvtRkprcgvba(fvtahz)
+
+fvtany.fvtany(fvtany.FVTGREZ, unaqyre)
+fvtany.fvtany(fvtany.FVTVAG, unaqyre)
+
+fc = Abar
+c = Abar
+erg = 99
+
+gel:
+    ubfganzr = rkgen[0]
+    neti = rkgen[1:]
+    c = ffu.pbaarpg(ubfganzr, 'eonpxhc-freire')
+
+    netif = '\0'.wbva(['ohc'] + neti)
+    c.fgqva.jevgr(fgehpg.cnpx('!V', yra(netif)) + netif)
+    c.fgqva.syhfu()
+
+    znva_rkr = bf.raiveba.trg('OHC_ZNVA_RKR') be flf.neti[0]
+    fc = fhocebprff.Cbcra([znva_rkr, 'freire'], fgqva=c.fgqbhg, fgqbhg=c.fgqva)
+
+    c.fgqva.pybfr()
+    c.fgqbhg.pybfr()
+
+svanyyl:
+    juvyr 1:
+        # vs jr trg n fvtany juvyr jnvgvat, jr unir gb xrrc jnvgvat, whfg
+        # va pnfr bhe puvyq qbrfa'g qvr.
+        gel:
+            erg = c.jnvg()
+            fc.jnvg()
+            oernx
+        rkprcg FvtRkprcgvba, r:
+            ybt('\aohc eonpxhc: %f\a' % r)
+            bf.xvyy(c.cvq, r.fvtahz)
+            erg = 84
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc arjyvare
+"""
+b = bcgvbaf.Bcgvbaf('ohc arjyvare', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+e = er.pbzcvyr(e'([\e\a])')
+ynfgyra = 0
+nyy = ''
+juvyr 1:
+    y = e.fcyvg(nyy, 1)
+    vs yra(y) <= 1:
+        gel:
+            o = bf.ernq(flf.fgqva.svyrab(), 4096)
+        rkprcg XrlobneqVagreehcg:
+            oernx
+        vs abg o:
+            oernx
+        nyy += o
+    ryfr:
+        nffreg(yra(y) == 3)
+        (yvar, fcyvgpune, nyy) = y
+        #fcyvgpune = '\a'
+        flf.fgqbhg.jevgr('%-*f%f' % (ynfgyra, yvar, fcyvgpune))
+        vs fcyvgpune == '\e':
+            ynfgyra = yra(yvar)
+        ryfr:
+            ynfgyra = 0
+        flf.fgqbhg.syhfu()
+
+vs ynfgyra be nyy:
+    flf.fgqbhg.jevgr('%-*f\a' % (ynfgyra, nyy))
+#!/hfe/ova/rai clguba
+vzcbeg flf
+sebz ohc vzcbeg bcgvbaf, tvg, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc znetva
+"""
+b = bcgvbaf.Bcgvbaf('ohc znetva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+#tvg.vtaber_zvqk = 1
+
+zv = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+ynfg = '\0'*20
+ybatzngpu = 0
+sbe v va zv:
+    vs v == ynfg:
+        pbagvahr
+    #nffreg(fge(v) >= ynfg)
+    cz = _unfufcyvg.ovgzngpu(ynfg, v)
+    ybatzngpu = znk(ybatzngpu, cz)
+    ynfg = v
+cevag ybatzngpu
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg bcgvbaf, qerphefr
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc qerphefr <cngu>
+--
+k,kqri,bar-svyr-flfgrz   qba'g pebff svyrflfgrz obhaqnevrf
+d,dhvrg  qba'g npghnyyl cevag svyranzrf
+cebsvyr  eha haqre gur clguba cebsvyre
+"""
+b = bcgvbaf.Bcgvbaf('ohc qerphefr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar svyranzr rkcrpgrq")
+
+vg = qerphefr.erphefvir_qveyvfg(rkgen, bcg.kqri)
+vs bcg.cebsvyr:
+    vzcbeg pCebsvyr
+    qrs qb_vg():
+        sbe v va vg:
+            cnff
+    pCebsvyr.eha('qb_vg()')
+ryfr:
+    vs bcg.dhvrg:
+        sbe v va vg:
+            cnff
+    ryfr:
+        sbe (anzr,fg) va vg:
+            cevag anzr
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc fcyvg [-gpo] [-a anzr] [--orapu] [svyranzrf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+o,oybof    bhgchg n frevrf bs oybo vqf
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+A,abbc     qba'g npghnyyl fnir gur qngn naljurer
+d,dhvrg    qba'g cevag cebterff zrffntrf
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+pbcl       whfg pbcl vachg gb bhgchg, unfufcyvggvat nybat gur jnl
+orapu      cevag orapuznex gvzvatf gb fgqree
+znk-cnpx-fvmr=  znkvzhz olgrf va n fvatyr cnpx
+znk-cnpx-bowrpgf=  znkvzhz ahzore bs bowrpgf va n fvatyr cnpx
+snabhg=  znkvzhz ahzore bs oybof va n fvatyr gerr
+"""
+b = bcgvbaf.Bcgvbaf('ohc fcyvg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.oybof be bcg.gerr be bcg.pbzzvg be bcg.anzr be
+        bcg.abbc be bcg.pbcl):
+    b.sngny("hfr bar be zber bs -o, -g, -p, -a, -A, --pbcl")
+vs (bcg.abbc be bcg.pbcl) naq (bcg.oybof be bcg.gerr be 
+                               bcg.pbzzvg be bcg.anzr):
+    b.sngny('-A vf vapbzcngvoyr jvgu -o, -g, -p, -a')
+
+vs bcg.ireobfr >= 2:
+    tvg.ireobfr = bcg.ireobfr - 1
+    bcg.orapu = 1
+vs bcg.znk_cnpx_fvmr:
+    unfufcyvg.znk_cnpx_fvmr = cnefr_ahz(bcg.znk_cnpx_fvmr)
+vs bcg.znk_cnpx_bowrpgf:
+    unfufcyvg.znk_cnpx_bowrpgf = cnefr_ahz(bcg.znk_cnpx_bowrpgf)
+vs bcg.snabhg:
+    unfufcyvg.snabhg = cnefr_ahz(bcg.snabhg)
+vs bcg.oybof:
+    unfufcyvg.snabhg = 0
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+fgneg_gvzr = gvzr.gvzr()
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.abbc be bcg.pbcl:
+    pyv = j = byqers = Abar
+ryvs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+svyrf = rkgen naq (bcra(sa) sbe sa va rkgen) be [flf.fgqva]
+vs j:
+    funyvfg = unfufcyvg.fcyvg_gb_funyvfg(j, svyrf)
+    gerr = j.arj_gerr(funyvfg)
+ryfr:
+    ynfg = 0
+    sbe (oybo, ovgf) va unfufcyvg.unfufcyvg_vgre(svyrf):
+        unfufcyvg.gbgny_fcyvg += yra(oybo)
+        vs bcg.pbcl:
+            flf.fgqbhg.jevgr(fge(oybo))
+        zrtf = unfufcyvg.gbgny_fcyvg/1024/1024
+        vs abg bcg.dhvrg naq ynfg != zrtf:
+            cebterff('%q Zolgrf ernq\e' % zrtf)
+            ynfg = zrtf
+    cebterff('%q Zolgrf ernq, qbar.\a' % zrtf)
+
+vs bcg.ireobfr:
+    ybt('\a')
+vs bcg.oybof:
+    sbe (zbqr,anzr,ova) va funyvfg:
+        cevag ova.rapbqr('urk')
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fcyvg\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+vs j:
+    j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+frpf = gvzr.gvzr() - fgneg_gvzr
+fvmr = unfufcyvg.gbgny_fcyvg
+vs bcg.orapu:
+    ybt('\aohc: %.2sxolgrf va %.2s frpf = %.2s xolgrf/frp\a'
+        % (fvmr/1024., frpf, fvmr/1024./frpf))
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, fgehpg, zznc
+sebz ohc vzcbeg tvg, bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs f_sebz_olgrf(olgrf):
+    pyvfg = [pue(o) sbe o va olgrf]
+    erghea ''.wbva(pyvfg)
+
+
+qrs ercbeg(pbhag):
+    svryqf = ['IzFvmr', 'IzEFF', 'IzQngn', 'IzFgx']
+    q = {}
+    sbe yvar va bcra('/cebp/frys/fgnghf').ernqyvarf():
+        y = er.fcyvg(e':\f*', yvar.fgevc(), 1)
+        q[y[0]] = y[1]
+    vs pbhag >= 0:
+        r1 = pbhag
+        svryqf = [q[x] sbe x va svryqf]
+    ryfr:
+        r1 = ''
+    cevag ('%9f  ' + ('%10f ' * yra(svryqf))) % ghcyr([r1] + svryqf)
+    flf.fgqbhg.syhfu()
+
+
+bcgfcrp = """
+ohc zrzgrfg [-a ryrzragf] [-p plpyrf]
+--
+a,ahzore=  ahzore bs bowrpgf cre plpyr
+p,plpyrf=  ahzore bs plpyrf gb eha
+vtaber-zvqk  vtaber .zvqk svyrf, hfr bayl .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zrzgrfg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+tvg.vtaber_zvqk = bcg.vtaber_zvqk
+
+tvg.purpx_ercb_be_qvr()
+z = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+
+plpyrf = bcg.plpyrf be 100
+ahzore = bcg.ahzore be 10000
+
+ercbeg(-1)
+s = bcra('/qri/henaqbz')
+n = zznc.zznc(-1, 20)
+ercbeg(0)
+sbe p va kenatr(plpyrf):
+    sbe a va kenatr(ahzore):
+        o = s.ernq(3)
+        vs 0:
+            olgrf = yvfg(fgehpg.hacnpx('!OOO', o)) + [0]*17
+            olgrf[2] &= 0ks0
+            ova = fgehpg.cnpx('!20f', f_sebz_olgrf(olgrf))
+        ryfr:
+            n[0:2] = o[0:2]
+            n[2] = pue(beq(o[2]) & 0ks0)
+            ova = fge(n[0:20])
+        #cevag ova.rapbqr('urk')
+        z.rkvfgf(ova)
+    ercbeg((p+1)*ahzore)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+qrs cevag_abqr(grkg, a):
+    cersvk = ''
+    vs bcg.unfu:
+        cersvk += "%f " % a.unfu.rapbqr('urk')
+    vs fgng.F_VFQVE(a.zbqr):
+        cevag '%f%f/' % (cersvk, grkg)
+    ryvs fgng.F_VFYAX(a.zbqr):
+        cevag '%f%f@' % (cersvk, grkg)
+    ryfr:
+        cevag '%f%f' % (cersvk, grkg)
+
+
+bcgfcrp = """
+ohc yf <qvef...>
+--
+f,unfu   fubj unfu sbe rnpu svyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc yf', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+
+vs abg rkgen:
+    rkgen = ['/']
+
+erg = 0
+sbe q va rkgen:
+    gel:
+        a = gbc.yerfbyir(q)
+        vs fgng.F_VFQVE(a.zbqr):
+            sbe fho va a:
+                cevag_abqr(fho.anzr, fho)
+        ryfr:
+            cevag_abqr(q, a)
+    rkprcg isf.AbqrReebe, r:
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er, fgng, ernqyvar, sazngpu
+sebz ohc vzcbeg bcgvbaf, tvg, fudhbgr, isf
+sebz ohc.urycref vzcbeg *
+
+qrs abqr_anzr(grkg, a):
+    vs fgng.F_VFQVE(a.zbqr):
+        erghea '%f/' % grkg
+    ryvs fgng.F_VFYAX(a.zbqr):
+        erghea '%f@' % grkg
+    ryfr:
+        erghea '%f' % grkg
+
+
+qrs qb_yf(cngu, a):
+    y = []
+    vs fgng.F_VFQVE(a.zbqr):
+        sbe fho va a:
+            y.nccraq(abqr_anzr(fho.anzr, fho))
+    ryfr:
+        y.nccraq(abqr_anzr(cngu, a))
+    cevag pbyhzangr(y, '')
+    
+
+qrs jevgr_gb_svyr(vas, bhgs):
+    sbe oybo va puhaxlernqre(vas):
+        bhgs.jevgr(oybo)
+    
+
+qrs vachgvgre():
+    vs bf.vfnggl(flf.fgqva.svyrab()):
+        juvyr 1:
+            gel:
+                lvryq enj_vachg('ohc> ')
+            rkprcg RBSReebe:
+                oernx
+    ryfr:
+        sbe yvar va flf.fgqva:
+            lvryq yvar
+
+
+qrs _pbzcyrgre_trg_fhof(yvar):
+    (dglcr, ynfgjbeq) = fudhbgr.hasvavfurq_jbeq(yvar)
+    (qve,anzr) = bf.cngu.fcyvg(ynfgjbeq)
+    #ybt('\apbzcyrgre: %e %e %e\a' % (dglcr, ynfgjbeq, grkg))
+    a = cjq.erfbyir(qve)
+    fhof = yvfg(svygre(ynzoqn k: k.anzr.fgnegfjvgu(anzr),
+                       a.fhof()))
+    erghea (qve, anzr, dglcr, ynfgjbeq, fhof)
+
+
+_ynfg_yvar = Abar
+_ynfg_erf = Abar
+qrs pbzcyrgre(grkg, fgngr):
+    tybony _ynfg_yvar
+    tybony _ynfg_erf
+    gel:
+        yvar = ernqyvar.trg_yvar_ohssre()[:ernqyvar.trg_raqvqk()]
+        vs _ynfg_yvar != yvar:
+            _ynfg_erf = _pbzcyrgre_trg_fhof(yvar)
+            _ynfg_yvar = yvar
+        (qve, anzr, dglcr, ynfgjbeq, fhof) = _ynfg_erf
+        vs fgngr < yra(fhof):
+            fa = fhof[fgngr]
+            fa1 = fa.erfbyir('')  # qrers flzyvaxf
+            shyyanzr = bf.cngu.wbva(qve, fa.anzr)
+            vs fgng.F_VFQVE(fa1.zbqr):
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr+'/',
+                                          grezvangr=Snyfr)
+            ryfr:
+                erg = fudhbgr.jung_gb_nqq(dglcr, ynfgjbeq, shyyanzr,
+                                          grezvangr=Gehr) + ' '
+            erghea grkg + erg
+    rkprcg Rkprcgvba, r:
+        ybt('\areebe va pbzcyrgvba: %f\a' % r)
+
+            
+bcgfcrp = """
+ohc sgc
+"""
+b = bcgvbaf.Bcgvbaf('ohc sgc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+gbc = isf.ErsYvfg(Abar)
+cjq = gbc
+
+vs rkgen:
+    yvarf = rkgen
+ryfr:
+    ernqyvar.frg_pbzcyrgre_qryvzf(' \g\a\e/')
+    ernqyvar.frg_pbzcyrgre(pbzcyrgre)
+    ernqyvar.cnefr_naq_ovaq("gno: pbzcyrgr")
+    yvarf = vachgvgre()
+
+sbe yvar va yvarf:
+    vs abg yvar.fgevc():
+        pbagvahr
+    jbeqf = [jbeq sbe (jbeqfgneg,jbeq) va fudhbgr.dhbgrfcyvg(yvar)]
+    pzq = jbeqf[0].ybjre()
+    #ybt('rkrphgr: %e %e\a' % (pzq, cnez))
+    gel:
+        vs pzq == 'yf':
+            sbe cnez va (jbeqf[1:] be ['.']):
+                qb_yf(cnez, cjq.erfbyir(cnez))
+        ryvs pzq == 'pq':
+            sbe cnez va jbeqf[1:]:
+                cjq = cjq.erfbyir(cnez)
+        ryvs pzq == 'cjq':
+            cevag cjq.shyyanzr()
+        ryvs pzq == 'png':
+            sbe cnez va jbeqf[1:]:
+                jevgr_gb_svyr(cjq.erfbyir(cnez).bcra(), flf.fgqbhg)
+        ryvs pzq == 'trg':
+            vs yra(jbeqf) abg va [2,3]:
+                envfr Rkprcgvba('Hfntr: trg <svyranzr> [ybpnyanzr]')
+            eanzr = jbeqf[1]
+            (qve,onfr) = bf.cngu.fcyvg(eanzr)
+            yanzr = yra(jbeqf)>2 naq jbeqf[2] be onfr
+            vas = cjq.erfbyir(eanzr).bcra()
+            ybt('Fnivat %e\a' % yanzr)
+            jevgr_gb_svyr(vas, bcra(yanzr, 'jo'))
+        ryvs pzq == 'ztrg':
+            sbe cnez va jbeqf[1:]:
+                (qve,onfr) = bf.cngu.fcyvg(cnez)
+                sbe a va cjq.erfbyir(qve).fhof():
+                    vs sazngpu.sazngpu(a.anzr, onfr):
+                        gel:
+                            ybt('Fnivat %e\a' % a.anzr)
+                            vas = a.bcra()
+                            bhgs = bcra(a.anzr, 'jo')
+                            jevgr_gb_svyr(vas, bhgs)
+                            bhgs.pybfr()
+                        rkprcg Rkprcgvba, r:
+                            ybt('  reebe: %f\a' % r)
+        ryvs pzq == 'uryc' be pzq == '?':
+            ybt('Pbzznaqf: yf pq cjq png trg ztrg uryc dhvg\a')
+        ryvs pzq == 'dhvg' be pzq == 'rkvg' be pzq == 'olr':
+            oernx
+        ryfr:
+            envfr Rkprcgvba('ab fhpu pbzznaq %e' % pzq)
+    rkprcg Rkprcgvba, r:
+        ybt('reebe: %f\a' % r)
+        #envfr
+#!/hfe/ova/rai clguba
+vzcbeg flf, zznc
+sebz ohc vzcbeg bcgvbaf, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc enaqbz [-F frrq] <ahzolgrf>
+--
+F,frrq=   bcgvbany enaqbz ahzore frrq (qrsnhyg 1)
+s,sbepr   cevag enaqbz qngn gb fgqbhg rira vs vg'f n ggl
+"""
+b = bcgvbaf.Bcgvbaf('ohc enaqbz', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+gbgny = cnefr_ahz(rkgen[0])
+
+vs bcg.sbepr be (abg bf.vfnggl(1) naq
+                 abg ngbv(bf.raiveba.trg('OHC_SBEPR_GGL')) & 1):
+    _unfufcyvg.jevgr_enaqbz(flf.fgqbhg.svyrab(), gbgny, bcg.frrq be 0)
+ryfr:
+    ybt('reebe: abg jevgvat ovanel qngn gb n grezvany. Hfr -s gb sbepr.\a')
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc uryc <pbzznaq>
+"""
+b = bcgvbaf.Bcgvbaf('ohc uryc', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) == 0:
+    # gur jenccre cebtenz cebivqrf gur qrsnhyg hfntr fgevat
+    bf.rkrpic(bf.raiveba['OHC_ZNVA_RKR'], ['ohc'])
+ryvs yra(rkgen) == 1:
+    qbpanzr = (rkgen[0]=='ohc' naq 'ohc' be ('ohc-%f' % rkgen[0]))
+    rkr = flf.neti[0]
+    (rkrcngu, rkrsvyr) = bf.cngu.fcyvg(rkr)
+    znacngu = bf.cngu.wbva(rkrcngu, '../Qbphzragngvba/' + qbpanzr + '.[1-9]')
+    t = tybo.tybo(znacngu)
+    vs t:
+        bf.rkrpic('zna', ['zna', '-y', t[0]])
+    ryfr:
+        bf.rkrpic('zna', ['zna', qbpanzr])
+ryfr:
+    b.sngny("rknpgyl bar pbzznaq anzr rkcrpgrq")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgng, reeab, shfr, er, gvzr, grzcsvyr
+sebz ohc vzcbeg bcgvbaf, tvg, isf
+sebz ohc.urycref vzcbeg *
+
+
+pynff Fgng(shfr.Fgng):
+    qrs __vavg__(frys):
+        frys.fg_zbqr = 0
+        frys.fg_vab = 0
+        frys.fg_qri = 0
+        frys.fg_ayvax = 0
+        frys.fg_hvq = 0
+        frys.fg_tvq = 0
+        frys.fg_fvmr = 0
+        frys.fg_ngvzr = 0
+        frys.fg_zgvzr = 0
+        frys.fg_pgvzr = 0
+        frys.fg_oybpxf = 0
+        frys.fg_oyxfvmr = 0
+        frys.fg_eqri = 0
+
+
+pnpur = {}
+qrs pnpur_trg(gbc, cngu):
+    cnegf = cngu.fcyvg('/')
+    pnpur[('',)] = gbc
+    p = Abar
+    znk = yra(cnegf)
+    #ybt('pnpur: %e\a' % pnpur.xrlf())
+    sbe v va enatr(znk):
+        cer = cnegf[:znk-v]
+        #ybt('pnpur gelvat: %e\a' % cer)
+        p = pnpur.trg(ghcyr(cer))
+        vs p:
+            erfg = cnegf[znk-v:]
+            sbe e va erfg:
+                #ybt('erfbyivat %e sebz %e\a' % (e, p.shyyanzr()))
+                p = p.yerfbyir(e)
+                xrl = ghcyr(cer + [e])
+                #ybt('fnivat: %e\a' % (xrl,))
+                pnpur[xrl] = p
+            oernx
+    nffreg(p)
+    erghea p
+        
+    
+
+pynff OhcSf(shfr.Shfr):
+    qrs __vavg__(frys, gbc):
+        shfr.Shfr.__vavg__(frys)
+        frys.gbc = gbc
+    
+    qrs trgngge(frys, cngu):
+        ybt('--trgngge(%e)\a' % cngu)
+        gel:
+            abqr = pnpur_trg(frys.gbc, cngu)
+            fg = Fgng()
+            fg.fg_zbqr = abqr.zbqr
+            fg.fg_ayvax = abqr.ayvaxf()
+            fg.fg_fvmr = abqr.fvmr()
+            fg.fg_zgvzr = abqr.zgvzr
+            fg.fg_pgvzr = abqr.pgvzr
+            fg.fg_ngvzr = abqr.ngvzr
+            erghea fg
+        rkprcg isf.AbFhpuSvyr:
+            erghea -reeab.RABRAG
+
+    qrs ernqqve(frys, cngu, bssfrg):
+        ybt('--ernqqve(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        lvryq shfr.Qveragel('.')
+        lvryq shfr.Qveragel('..')
+        sbe fho va abqr.fhof():
+            lvryq shfr.Qveragel(fho.anzr)
+
+    qrs ernqyvax(frys, cngu):
+        ybt('--ernqyvax(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        erghea abqr.ernqyvax()
+
+    qrs bcra(frys, cngu, syntf):
+        ybt('--bcra(%e)\a' % cngu)
+        abqr = pnpur_trg(frys.gbc, cngu)
+        nppzbqr = bf.B_EQBAYL | bf.B_JEBAYL | bf.B_EQJE
+        vs (syntf & nppzbqr) != bf.B_EQBAYL:
+            erghea -reeab.RNPPRF
+        abqr.bcra()
+
+    qrs eryrnfr(frys, cngu, syntf):
+        ybt('--eryrnfr(%e)\a' % cngu)
+
+    qrs ernq(frys, cngu, fvmr, bssfrg):
+        ybt('--ernq(%e)\a' % cngu)
+        a = pnpur_trg(frys.gbc, cngu)
+        b = a.bcra()
+        b.frrx(bssfrg)
+        erghea b.ernq(fvmr)
+
+
+vs abg unfngge(shfr, '__irefvba__'):
+    envfr EhagvzrReebe, "lbhe shfr zbqhyr vf gbb byq sbe shfr.__irefvba__"
+shfr.shfr_clguba_ncv = (0, 2)
+
+
+bcgfcrp = """
+ohc shfr [-q] [-s] <zbhagcbvag>
+--
+q,qroht   vapernfr qroht yriry
+s,sbertebhaq  eha va sbertebhaq
+"""
+b = bcgvbaf.Bcgvbaf('ohc shfr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs yra(rkgen) != 1:
+    b.sngny("rknpgyl bar nethzrag rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+gbc = isf.ErsYvfg(Abar)
+s = OhcSf(gbc)
+s.shfr_netf.zbhagcbvag = rkgen[0]
+vs bcg.qroht:
+    s.shfr_netf.nqq('qroht')
+vs bcg.sbertebhaq:
+    s.shfr_netf.frgzbq('sbertebhaq')
+cevag s.zhygvguernqrq
+s.zhygvguernqrq = Snyfr
+
+s.znva()
+#!/hfe/ova/rai clguba
+sebz ohc vzcbeg tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+[OHC_QVE=...] ohc vavg [-e ubfg:cngu]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc vavg', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+
+vs bcg.erzbgr:
+    tvg.vavg_ercb()  # ybpny ercb
+    tvg.purpx_ercb_be_qvr()
+    pyv = pyvrag.Pyvrag(bcg.erzbgr, perngr=Gehr)
+    pyv.pybfr()
+ryfr:
+    tvg.vavg_ercb()
+#!/hfe/ova/rai clguba
+vzcbeg flf, zngu, fgehpg, tybo
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+CNTR_FVMR=4096
+FUN_CRE_CNTR=CNTR_FVMR/200.
+
+
+qrs zretr(vqkyvfg, ovgf, gnoyr):
+    pbhag = 0
+    sbe r va tvg.vqkzretr(vqkyvfg):
+        pbhag += 1
+        cersvk = tvg.rkgenpg_ovgf(r, ovgf)
+        gnoyr[cersvk] = pbhag
+        lvryq r
+
+
+qrs qb_zvqk(bhgqve, bhgsvyranzr, vasvyranzrf):
+    vs abg bhgsvyranzr:
+        nffreg(bhgqve)
+        fhz = Fun1('\0'.wbva(vasvyranzrf)).urkqvtrfg()
+        bhgsvyranzr = '%f/zvqk-%f.zvqk' % (bhgqve, fhz)
+    
+    vac = []
+    gbgny = 0
+    sbe anzr va vasvyranzrf:
+        vk = tvg.CnpxVqk(anzr)
+        vac.nccraq(vk)
+        gbgny += yra(vk)
+
+    ybt('Zretvat %q vaqrkrf (%q bowrpgf).\a' % (yra(vasvyranzrf), gbgny))
+    vs (abg bcg.sbepr naq (gbgny < 1024 naq yra(vasvyranzrf) < 3)) \
+       be (bcg.sbepr naq abg gbgny):
+        ybt('zvqk: abguvat gb qb.\a')
+        erghea
+
+    cntrf = vag(gbgny/FUN_CRE_CNTR) be 1
+    ovgf = vag(zngu.prvy(zngu.ybt(cntrf, 2)))
+    ragevrf = 2**ovgf
+    ybt('Gnoyr fvmr: %q (%q ovgf)\a' % (ragevrf*4, ovgf))
+    
+    gnoyr = [0]*ragevrf
+
+    gel:
+        bf.hayvax(bhgsvyranzr)
+    rkprcg BFReebe:
+        cnff
+    s = bcra(bhgsvyranzr + '.gzc', 'j+')
+    s.jevgr('ZVQK\0\0\0\2')
+    s.jevgr(fgehpg.cnpx('!V', ovgf))
+    nffreg(s.gryy() == 12)
+    s.jevgr('\0'*4*ragevrf)
+    
+    sbe r va zretr(vac, ovgf, gnoyr):
+        s.jevgr(r)
+        
+    s.jevgr('\0'.wbva(bf.cngu.onfranzr(c) sbe c va vasvyranzrf))
+
+    s.frrx(12)
+    s.jevgr(fgehpg.cnpx('!%qV' % ragevrf, *gnoyr))
+    s.pybfr()
+    bf.eranzr(bhgsvyranzr + '.gzc', bhgsvyranzr)
+
+    # guvf vf whfg sbe grfgvat
+    vs 0:
+        c = tvg.CnpxZvqk(bhgsvyranzr)
+        nffreg(yra(c.vqkanzrf) == yra(vasvyranzrf))
+        cevag c.vqkanzrf
+        nffreg(yra(c) == gbgny)
+        cv = vgre(c)
+        sbe v va zretr(vac, gbgny, ovgf, gnoyr):
+            nffreg(v == cv.arkg())
+            nffreg(c.rkvfgf(v))
+
+    cevag bhgsvyranzr
+
+bcgfcrp = """
+ohc zvqk [bcgvbaf...] <vqkanzrf...>
+--
+b,bhgchg=  bhgchg zvqk svyranzr (qrsnhyg: nhgb-trarengrq)
+n,nhgb     nhgbzngvpnyyl perngr .zvqk sebz nal havaqrkrq .vqk svyrf
+s,sbepr    nhgbzngvpnyyl perngr .zvqk sebz *nyy* .vqk svyrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc zvqk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen naq (bcg.nhgb be bcg.sbepr):
+    b.sngny("lbh pna'g hfr -s/-n naq nyfb cebivqr svyranzrf")
+
+tvg.purpx_ercb_be_qvr()
+
+vs rkgen:
+    qb_zvqk(tvg.ercb('bowrpgf/cnpx'), bcg.bhgchg, rkgen)
+ryvs bcg.nhgb be bcg.sbepr:
+    cnguf = [tvg.ercb('bowrpgf/cnpx')]
+    cnguf += tybo.tybo(tvg.ercb('vaqrk-pnpur/*/.'))
+    sbe cngu va cnguf:
+        ybt('zvqk: fpnaavat %f\a' % cngu)
+        vs bcg.sbepr:
+            qb_zvqk(cngu, bcg.bhgchg, tybo.tybo('%f/*.vqk' % cngu))
+        ryvs bcg.nhgb:
+            z = tvg.CnpxVqkYvfg(cngu)
+            arrqrq = {}
+            sbe cnpx va z.cnpxf:  # bayl .vqk svyrf jvgubhg n .zvqk ner bcra
+                vs cnpx.anzr.raqfjvgu('.vqk'):
+                    arrqrq[cnpx.anzr] = 1
+            qry z
+            qb_zvqk(cngu, bcg.bhgchg, arrqrq.xrlf())
+        ybt('\a')
+ryfr:
+    b.sngny("lbh zhfg hfr -s be -n be cebivqr vachg svyranzrf")
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, enaqbz
+sebz ohc vzcbeg bcgvbaf
+sebz ohc.urycref vzcbeg *
+
+
+qrs enaqoybpx(a):
+    y = []
+    sbe v va kenatr(a):
+        y.nccraq(pue(enaqbz.enaqenatr(0,256)))
+    erghea ''.wbva(y)
+
+
+bcgfcrp = """
+ohc qnzntr [-a pbhag] [-f znkfvmr] [-F frrq] <svyranzrf...>
+--
+   JNEAVAT: GUVF PBZZNAQ VF RKGERZRYL QNATREBHF
+a,ahz=   ahzore bs oybpxf gb qnzntr
+f,fvmr=  znkvzhz fvmr bs rnpu qnzntrq oybpx
+creprag= znkvzhz fvmr bs rnpu qnzntrq oybpx (nf n creprag bs ragver svyr)
+rdhny    fcernq qnzntr rirayl guebhtubhg gur svyr
+F,frrq=  enaqbz ahzore frrq (sbe ercrngnoyr grfgf)
+"""
+b = bcgvbaf.Bcgvbaf('ohc qnzntr', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg rkgen:
+    b.sngny('svyranzrf rkcrpgrq')
+
+vs bcg.frrq != Abar:
+    enaqbz.frrq(bcg.frrq)
+
+sbe anzr va rkgen:
+    ybt('Qnzntvat "%f"...\a' % anzr)
+    s = bcra(anzr, 'e+o')
+    fg = bf.sfgng(s.svyrab())
+    fvmr = fg.fg_fvmr
+    vs bcg.creprag be bcg.fvmr:
+        zf1 = vag(sybng(bcg.creprag be 0)/100.0*fvmr) be fvmr
+        zf2 = bcg.fvmr be fvmr
+        znkfvmr = zva(zf1, zf2)
+    ryfr:
+        znkfvmr = 1
+    puhaxf = bcg.ahz be 10
+    puhaxfvmr = fvmr/puhaxf
+    sbe e va enatr(puhaxf):
+        fm = enaqbz.enaqenatr(1, znkfvmr+1)
+        vs fm > fvmr:
+            fm = fvmr
+        vs bcg.rdhny:
+            bsf = e*puhaxfvmr
+        ryfr:
+            bsf = enaqbz.enaqenatr(0, fvmr - fm + 1)
+        ybt('  %6q olgrf ng %q\a' % (fm, bsf))
+        s.frrx(bsf)
+        s.jevgr(enaqoybpx(fm))
+    s.pybfr()
+#!/hfe/ova/rai clguba
+vzcbeg flf, fgehpg, zznc
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+fhfcraqrq_j = Abar
+
+
+qrs vavg_qve(pbaa, net):
+    tvg.vavg_ercb(net)
+    ybt('ohc freire: ohcqve vavgvnyvmrq: %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+
+qrs frg_qve(pbaa, net):
+    tvg.purpx_ercb_be_qvr(net)
+    ybt('ohc freire: ohcqve vf %e\a' % tvg.ercbqve)
+    pbaa.bx()
+
+    
+qrs yvfg_vaqrkrf(pbaa, whax):
+    tvg.purpx_ercb_be_qvr()
+    sbe s va bf.yvfgqve(tvg.ercb('bowrpgf/cnpx')):
+        vs s.raqfjvgu('.vqk'):
+            pbaa.jevgr('%f\a' % s)
+    pbaa.bx()
+
+
+qrs fraq_vaqrk(pbaa, anzr):
+    tvg.purpx_ercb_be_qvr()
+    nffreg(anzr.svaq('/') < 0)
+    nffreg(anzr.raqfjvgu('.vqk'))
+    vqk = tvg.CnpxVqk(tvg.ercb('bowrpgf/cnpx/%f' % anzr))
+    pbaa.jevgr(fgehpg.cnpx('!V', yra(vqk.znc)))
+    pbaa.jevgr(vqk.znc)
+    pbaa.bx()
+
+
+qrs erprvir_bowrpgf(pbaa, whax):
+    tybony fhfcraqrq_j
+    tvg.purpx_ercb_be_qvr()
+    fhttrfgrq = {}
+    vs fhfcraqrq_j:
+        j = fhfcraqrq_j
+        fhfcraqrq_j = Abar
+    ryfr:
+        j = tvg.CnpxJevgre()
+    juvyr 1:
+        af = pbaa.ernq(4)
+        vs abg af:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq yratgu urnqre, tbg RBS\a')
+        a = fgehpg.hacnpx('!V', af)[0]
+        #ybt('rkcrpgvat %q olgrf\a' % a)
+        vs abg a:
+            ybt('ohc freire: erprvirq %q bowrpg%f.\a' 
+                % (j.pbhag, j.pbhag!=1 naq "f" be ''))
+            shyycngu = j.pybfr()
+            vs shyycngu:
+                (qve, anzr) = bf.cngu.fcyvg(shyycngu)
+                pbaa.jevgr('%f.vqk\a' % anzr)
+            pbaa.bx()
+            erghea
+        ryvs a == 0kssssssss:
+            ybt('ohc freire: erprvir-bowrpgf fhfcraqrq.\a')
+            fhfcraqrq_j = j
+            pbaa.bx()
+            erghea
+            
+        ohs = pbaa.ernq(a)  # bowrpg fvmrf va ohc ner ernfbanoyl fznyy
+        #ybt('ernq %q olgrf\a' % a)
+        vs yra(ohs) < a:
+            j.nobeg()
+            envfr Rkprcgvba('bowrpg ernq: rkcrpgrq %q olgrf, tbg %q\a'
+                            % (a, yra(ohs)))
+        (glcr, pbagrag) = tvg._qrpbqr_cnpxbow(ohs)
+        fun = tvg.pnyp_unfu(glcr, pbagrag)
+        byqcnpx = j.rkvfgf(fun)
+        # SVKZR: jr bayl fhttrfg n fvatyr vaqrk cre plpyr, orpnhfr gur pyvrag
+        # vf pheeragyl qhzo gb qbjaybnq zber guna bar cre plpyr naljnl.
+        # Npghnyyl jr fubhyq svk gur pyvrag, ohg guvf vf n zvabe bcgvzvmngvba
+        # ba gur freire fvqr.
+        vs abg fhttrfgrq naq \
+          byqcnpx naq (byqcnpx == Gehr be byqcnpx.raqfjvgu('.zvqk')):
+            # SVKZR: jr fubhyqa'g ernyyl unir gb xabj nobhg zvqk svyrf
+            # ng guvf ynlre.  Ohg rkvfgf() ba n zvqk qbrfa'g erghea gur
+            # cnpxanzr (fvapr vg qbrfa'g xabj)... cebonoyl jr fubhyq whfg
+            # svk gung qrsvpvrapl bs zvqk svyrf riraghnyyl, nygubhtu vg'yy
+            # znxr gur svyrf ovttre.  Guvf zrgubq vf pregnvayl abg irel
+            # rssvpvrag.
+            j.bowpnpur.erserfu(fxvc_zvqk = Gehr)
+            byqcnpx = j.bowpnpur.rkvfgf(fun)
+            ybt('arj fhttrfgvba: %e\a' % byqcnpx)
+            nffreg(byqcnpx)
+            nffreg(byqcnpx != Gehr)
+            nffreg(abg byqcnpx.raqfjvgu('.zvqk'))
+            j.bowpnpur.erserfu(fxvc_zvqk = Snyfr)
+        vs abg fhttrfgrq naq byqcnpx:
+            nffreg(byqcnpx.raqfjvgu('.vqk'))
+            (qve,anzr) = bf.cngu.fcyvg(byqcnpx)
+            vs abg (anzr va fhttrfgrq):
+                ybt("ohc freire: fhttrfgvat vaqrk %f\a" % anzr)
+                pbaa.jevgr('vaqrk %f\a' % anzr)
+                fhttrfgrq[anzr] = 1
+        ryfr:
+            j._enj_jevgr([ohs])
+    # ABGERNPURQ
+
+
+qrs ernq_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    e = tvg.ernq_ers(ersanzr)
+    pbaa.jevgr('%f\a' % (e be '').rapbqr('urk'))
+    pbaa.bx()
+
+
+qrs hcqngr_ers(pbaa, ersanzr):
+    tvg.purpx_ercb_be_qvr()
+    arjiny = pbaa.ernqyvar().fgevc()
+    byqiny = pbaa.ernqyvar().fgevc()
+    tvg.hcqngr_ers(ersanzr, arjiny.qrpbqr('urk'), byqiny.qrpbqr('urk'))
+    pbaa.bx()
+
+
+qrs png(pbaa, vq):
+    tvg.purpx_ercb_be_qvr()
+    gel:
+        sbe oybo va tvg.png(vq):
+            pbaa.jevgr(fgehpg.cnpx('!V', yra(oybo)))
+            pbaa.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        ybt('freire: reebe: %f\a' % r)
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.reebe(r)
+    ryfr:
+        pbaa.jevgr('\0\0\0\0')
+        pbaa.bx()
+
+
+bcgfcrp = """
+ohc freire
+"""
+b = bcgvbaf.Bcgvbaf('ohc freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+ybt('ohc freire: ernqvat sebz fgqva.\a')
+
+pbzznaqf = {
+    'vavg-qve': vavg_qve,
+    'frg-qve': frg_qve,
+    'yvfg-vaqrkrf': yvfg_vaqrkrf,
+    'fraq-vaqrk': fraq_vaqrk,
+    'erprvir-bowrpgf': erprvir_bowrpgf,
+    'ernq-ers': ernq_ers,
+    'hcqngr-ers': hcqngr_ers,
+    'png': png,
+}
+
+# SVKZR: guvf cebgbpby vf gbgnyyl ynzr naq abg ng nyy shgher-cebbs.
+# (Rfcrpvnyyl fvapr jr nobeg pbzcyrgryl nf fbba nf *nalguvat* onq unccraf)
+pbaa = Pbaa(flf.fgqva, flf.fgqbhg)
+ye = yvarernqre(pbaa)
+sbe _yvar va ye:
+    yvar = _yvar.fgevc()
+    vs abg yvar:
+        pbagvahr
+    ybt('ohc freire: pbzznaq: %e\a' % yvar)
+    jbeqf = yvar.fcyvg(' ', 1)
+    pzq = jbeqf[0]
+    erfg = yra(jbeqf)>1 naq jbeqf[1] be ''
+    vs pzq == 'dhvg':
+        oernx
+    ryfr:
+        pzq = pbzznaqf.trg(pzq)
+        vs pzq:
+            pzq(pbaa, erfg)
+        ryfr:
+            envfr Rkprcgvba('haxabja freire pbzznaq: %e\a' % yvar)
+
+ybt('ohc freire: qbar\a')
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr, fgehpg
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, pyvrag
+sebz ohc.urycref vzcbeg *
+sebz fhocebprff vzcbeg CVCR
+
+
+bcgfcrp = """
+ohc wbva [-e ubfg:cngu] [ersf be unfurf...]
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+"""
+b = bcgvbaf.Bcgvbaf('ohc wbva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    rkgen = yvarernqre(flf.fgqva)
+
+erg = 0
+
+vs bcg.erzbgr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    png = pyv.png
+ryfr:
+    pc = tvg.PngCvcr()
+    png = pc.wbva
+
+sbe vq va rkgen:
+    gel:
+        sbe oybo va png(vq):
+            flf.fgqbhg.jevgr(oybo)
+    rkprcg XrlReebe, r:
+        flf.fgqbhg.syhfu()
+        ybt('reebe: %f\a' % r)
+        erg = 1
+
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, er, reeab, fgng, gvzr, zngu
+sebz ohc vzcbeg unfufcyvg, tvg, bcgvbaf, vaqrk, pyvrag
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc fnir [-gp] [-a anzr] <svyranzrf...>
+--
+e,erzbgr=  erzbgr ercbfvgbel cngu
+g,gerr     bhgchg n gerr vq
+p,pbzzvg   bhgchg n pbzzvg vq
+a,anzr=    anzr bs onpxhc frg gb hcqngr (vs nal)
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+d,dhvrg    qba'g fubj cebterff zrgre
+fznyyre=   bayl onpx hc svyrf fznyyre guna a olgrf
+"""
+b = bcgvbaf.Bcgvbaf('ohc fnir', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+tvg.purpx_ercb_be_qvr()
+vs abg (bcg.gerr be bcg.pbzzvg be bcg.anzr):
+    b.sngny("hfr bar be zber bs -g, -p, -a")
+vs abg rkgen:
+    b.sngny("ab svyranzrf tvira")
+
+bcg.cebterff = (vfggl naq abg bcg.dhvrg)
+bcg.fznyyre = cnefr_ahz(bcg.fznyyre be 0)
+
+vf_erirefr = bf.raiveba.trg('OHC_FREIRE_ERIREFR')
+vs vf_erirefr naq bcg.erzbgr:
+    b.sngny("qba'g hfr -e va erirefr zbqr; vg'f nhgbzngvp")
+
+ersanzr = bcg.anzr naq 'ersf/urnqf/%f' % bcg.anzr be Abar
+vs bcg.erzbgr be vf_erirefr:
+    pyv = pyvrag.Pyvrag(bcg.erzbgr)
+    byqers = ersanzr naq pyv.ernq_ers(ersanzr) be Abar
+    j = pyv.arj_cnpxjevgre()
+ryfr:
+    pyv = Abar
+    byqers = ersanzr naq tvg.ernq_ers(ersanzr) be Abar
+    j = tvg.CnpxJevgre()
+
+unaqyr_pgey_p()
+
+
+qrs rngfynfu(qve):
+    vs qve.raqfjvgu('/'):
+        erghea qve[:-1]
+    ryfr:
+        erghea qve
+
+
+cnegf = ['']
+funyvfgf = [[]]
+
+qrs _chfu(cneg):
+    nffreg(cneg)
+    cnegf.nccraq(cneg)
+    funyvfgf.nccraq([])
+
+qrs _cbc(sbepr_gerr):
+    nffreg(yra(cnegf) >= 1)
+    cneg = cnegf.cbc()
+    funyvfg = funyvfgf.cbc()
+    gerr = sbepr_gerr be j.arj_gerr(funyvfg)
+    vs funyvfgf:
+        funyvfgf[-1].nccraq(('40000', cneg, gerr))
+    ryfr:  # guvf jnf gur gbcyriry, fb chg vg onpx sbe fnavgl
+        funyvfgf.nccraq(funyvfg)
+    erghea gerr
+
+ynfgerznva = Abar
+qrs cebterff_ercbeg(a):
+    tybony pbhag, fhopbhag, ynfgerznva
+    fhopbhag += a
+    pp = pbhag + fhopbhag
+    cpg = gbgny naq (pp*100.0/gbgny) be 0
+    abj = gvzr.gvzr()
+    ryncfrq = abj - gfgneg
+    xcf = ryncfrq naq vag(pp/1024./ryncfrq)
+    xcf_senp = 10 ** vag(zngu.ybt(xcf+1, 10) - 1)
+    xcf = vag(xcf/xcf_senp)*xcf_senp
+    vs pp:
+        erznva = ryncfrq*1.0/pp * (gbgny-pp)
+    ryfr:
+        erznva = 0.0
+    vs (ynfgerznva naq (erznva > ynfgerznva)
+          naq ((erznva - ynfgerznva)/ynfgerznva < 0.05)):
+        erznva = ynfgerznva
+    ryfr:
+        ynfgerznva = erznva
+    ubhef = vag(erznva/60/60)
+    zvaf = vag(erznva/60 - ubhef*60)
+    frpf = vag(erznva - ubhef*60*60 - zvaf*60)
+    vs ryncfrq < 30:
+        erznvafge = ''
+        xcffge = ''
+    ryfr:
+        xcffge = '%qx/f' % xcf
+        vs ubhef:
+            erznvafge = '%qu%qz' % (ubhef, zvaf)
+        ryvs zvaf:
+            erznvafge = '%qz%q' % (zvaf, frpf)
+        ryfr:
+            erznvafge = '%qf' % frpf
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf) %f %f\e'
+             % (cpg, pp/1024, gbgny/1024, spbhag, sgbgny,
+                erznvafge, xcffge))
+
+
+e = vaqrk.Ernqre(tvg.ercb('ohcvaqrk'))
+
+qrs nyernql_fnirq(rag):
+    erghea rag.vf_inyvq() naq j.rkvfgf(rag.fun) naq rag.fun
+
+qrs jnagerphefr_cer(rag):
+    erghea abg nyernql_fnirq(rag)
+
+qrs jnagerphefr_qhevat(rag):
+    erghea abg nyernql_fnirq(rag) be rag.fun_zvffvat()
+
+gbgny = sgbgny = 0
+vs bcg.cebterff:
+    sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_cer):
+        vs abg (sgbgny % 10024):
+            cebterff('Ernqvat vaqrk: %q\e' % sgbgny)
+        rkvfgf = rag.rkvfgf()
+        unfuinyvq = nyernql_fnirq(rag)
+        rag.frg_fun_zvffvat(abg unfuinyvq)
+        vs abg bcg.fznyyre be rag.fvmr < bcg.fznyyre:
+            vs rkvfgf naq abg unfuinyvq:
+                gbgny += rag.fvmr
+        sgbgny += 1
+    cebterff('Ernqvat vaqrk: %q, qbar.\a' % sgbgny)
+    unfufcyvg.cebterff_pnyyonpx = cebterff_ercbeg
+
+gfgneg = gvzr.gvzr()
+pbhag = fhopbhag = spbhag = 0
+ynfgfxvc_anzr = Abar
+ynfgqve = ''
+sbe (genafanzr,rag) va e.svygre(rkgen, jnagerphefr=jnagerphefr_qhevat):
+    (qve, svyr) = bf.cngu.fcyvg(rag.anzr)
+    rkvfgf = (rag.syntf & vaqrk.VK_RKVFGF)
+    unfuinyvq = nyernql_fnirq(rag)
+    jnfzvffvat = rag.fun_zvffvat()
+    byqfvmr = rag.fvmr
+    vs bcg.ireobfr:
+        vs abg rkvfgf:
+            fgnghf = 'Q'
+        ryvs abg unfuinyvq:
+            vs rag.fun == vaqrk.RZCGL_FUN:
+                fgnghf = 'N'
+            ryfr:
+                fgnghf = 'Z'
+        ryfr:
+            fgnghf = ' '
+        vs bcg.ireobfr >= 2:
+            ybt('%f %-70f\a' % (fgnghf, rag.anzr))
+        ryvs abg fgng.F_VFQVE(rag.zbqr) naq ynfgqve != qve:
+            vs abg ynfgqve.fgnegfjvgu(qve):
+                ybt('%f %-70f\a' % (fgnghf, bf.cngu.wbva(qve, '')))
+            ynfgqve = qve
+
+    vs bcg.cebterff:
+        cebterff_ercbeg(0)
+    spbhag += 1
+    
+    vs abg rkvfgf:
+        pbagvahr
+    vs bcg.fznyyre naq rag.fvmr >= bcg.fznyyre:
+        vs rkvfgf naq abg unfuinyvq:
+            nqq_reebe('fxvccvat ynetr svyr "%f"' % rag.anzr)
+            ynfgfxvc_anzr = rag.anzr
+        pbagvahr
+
+    nffreg(qve.fgnegfjvgu('/'))
+    qvec = qve.fcyvg('/')
+    juvyr cnegf > qvec:
+        _cbc(sbepr_gerr = Abar)
+    vs qve != '/':
+        sbe cneg va qvec[yra(cnegf):]:
+            _chfu(cneg)
+
+    vs abg svyr:
+        # ab svyranzr cbegvba zrnaf guvf vf n fhoqve.  Ohg
+        # fho/cneragqverpgbevrf nyernql unaqyrq va gur cbc/chfu() cneg nobir.
+        byqgerr = nyernql_fnirq(rag) # znl or Abar
+        arjgerr = _cbc(sbepr_gerr = byqgerr)
+        vs abg byqgerr:
+            vs ynfgfxvc_anzr naq ynfgfxvc_anzr.fgnegfjvgu(rag.anzr):
+                rag.vainyvqngr()
+            ryfr:
+                rag.inyvqngr(040000, arjgerr)
+            rag.ercnpx()
+        vs rkvfgf naq jnfzvffvat:
+            pbhag += byqfvmr
+        pbagvahr
+
+    # vg'f abg n qverpgbel
+    vq = Abar
+    vs unfuinyvq:
+        zbqr = '%b' % rag.tvgzbqr
+        vq = rag.fun
+        funyvfgf[-1].nccraq((zbqr, 
+                             tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                             vq))
+    ryfr:
+        vs fgng.F_VFERT(rag.zbqr):
+            gel:
+                s = unfufcyvg.bcra_abngvzr(rag.anzr)
+            rkprcg VBReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            rkprcg BFReebe, r:
+                nqq_reebe(r)
+                ynfgfxvc_anzr = rag.anzr
+            ryfr:
+                (zbqr, vq) = unfufcyvg.fcyvg_gb_oybo_be_gerr(j, [s])
+        ryfr:
+            vs fgng.F_VFQVE(rag.zbqr):
+                nffreg(0)  # unaqyrq nobir
+            ryvs fgng.F_VFYAX(rag.zbqr):
+                gel:
+                    ey = bf.ernqyvax(rag.anzr)
+                rkprcg BFReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                rkprcg VBReebe, r:
+                    nqq_reebe(r)
+                    ynfgfxvc_anzr = rag.anzr
+                ryfr:
+                    (zbqr, vq) = ('120000', j.arj_oybo(ey))
+            ryfr:
+                nqq_reebe(Rkprcgvba('fxvccvat fcrpvny svyr "%f"' % rag.anzr))
+                ynfgfxvc_anzr = rag.anzr
+        vs vq:
+            rag.inyvqngr(vag(zbqr, 8), vq)
+            rag.ercnpx()
+            funyvfgf[-1].nccraq((zbqr,
+                                 tvg.znatyr_anzr(svyr, rag.zbqr, rag.tvgzbqr),
+                                 vq))
+    vs rkvfgf naq jnfzvffvat:
+        pbhag += byqfvmr
+        fhopbhag = 0
+
+
+vs bcg.cebterff:
+    cpg = gbgny naq pbhag*100.0/gbgny be 100
+    cebterff('Fnivat: %.2s%% (%q/%qx, %q/%q svyrf), qbar.    \a'
+             % (cpg, pbhag/1024, gbgny/1024, spbhag, sgbgny))
+
+juvyr yra(cnegf) > 1:
+    _cbc(sbepr_gerr = Abar)
+nffreg(yra(funyvfgf) == 1)
+gerr = j.arj_gerr(funyvfgf[-1])
+vs bcg.gerr:
+    cevag gerr.rapbqr('urk')
+vs bcg.pbzzvg be bcg.anzr:
+    zft = 'ohc fnir\a\aTrarengrq ol pbzznaq:\a%e' % flf.neti
+    ers = bcg.anzr naq ('ersf/urnqf/%f' % bcg.anzr) be Abar
+    pbzzvg = j.arj_pbzzvg(byqers, gerr, zft)
+    vs bcg.pbzzvg:
+        cevag pbzzvg.rapbqr('urk')
+
+j.pybfr()  # zhfg pybfr orsber jr pna hcqngr gur ers
+        
+vs bcg.anzr:
+    vs pyv:
+        pyv.hcqngr_ers(ersanzr, pbzzvg, byqers)
+    ryfr:
+        tvg.hcqngr_ers(ersanzr, pbzzvg, byqers)
+
+vs pyv:
+    pyv.pybfr()
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq juvyr fnivat.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, gvzr
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc gvpx
+"""
+b = bcgvbaf.Bcgvbaf('ohc gvpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+g = gvzr.gvzr()
+gyrsg = 1 - (g - vag(g))
+gvzr.fyrrc(gyrsg)
+#!/hfe/ova/rai clguba
+vzcbeg bf, flf, fgng, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg, vaqrk, qerphefr
+sebz ohc.urycref vzcbeg *
+
+
+qrs zretr_vaqrkrf(bhg, e1, e2):
+    sbe r va vaqrk.ZretrVgre([e1, e2]):
+        # SVKZR: fubhyqa'g jr erzbir qryrgrq ragevrf riraghnyyl?  Jura?
+        bhg.nqq_vkragel(r)
+
+
+pynff VgreUrycre:
+    qrs __vavg__(frys, y):
+        frys.v = vgre(y)
+        frys.phe = Abar
+        frys.arkg()
+
+    qrs arkg(frys):
+        gel:
+            frys.phe = frys.v.arkg()
+        rkprcg FgbcVgrengvba:
+            frys.phe = Abar
+        erghea frys.phe
+
+
+qrs purpx_vaqrk(ernqre):
+    gel:
+        ybt('purpx: purpxvat sbejneq vgrengvba...\a')
+        r = Abar
+        q = {}
+        sbe r va ernqre.sbejneq_vgre():
+            vs r.puvyqera_a:
+                vs bcg.ireobfr:
+                    ybt('%08k+%-4q %e\a' % (r.puvyqera_bsf, r.puvyqera_a,
+                                            r.anzr))
+                nffreg(r.puvyqera_bsf)
+                nffreg(r.anzr.raqfjvgu('/'))
+                nffreg(abg q.trg(r.puvyqera_bsf))
+                q[r.puvyqera_bsf] = 1
+            vs r.syntf & vaqrk.VK_UNFUINYVQ:
+                nffreg(r.fun != vaqrk.RZCGL_FUN)
+                nffreg(r.tvgzbqr)
+        nffreg(abg r be r.anzr == '/')  # ynfg ragel vf *nyjnlf* /
+        ybt('purpx: purpxvat abezny vgrengvba...\a')
+        ynfg = Abar
+        sbe r va ernqre:
+            vs ynfg:
+                nffreg(ynfg > r.anzr)
+            ynfg = r.anzr
+    rkprcg:
+        ybt('vaqrk reebe! ng %e\a' % r)
+        envfr
+    ybt('purpx: cnffrq.\a')
+
+
+qrs hcqngr_vaqrk(gbc):
+    ev = vaqrk.Ernqre(vaqrksvyr)
+    jv = vaqrk.Jevgre(vaqrksvyr)
+    evt = VgreUrycre(ev.vgre(anzr=gbc))
+    gfgneg = vag(gvzr.gvzr())
+
+    unfutra = Abar
+    vs bcg.snxr_inyvq:
+        qrs unfutra(anzr):
+            erghea (0100644, vaqrk.SNXR_FUN)
+
+    gbgny = 0
+    sbe (cngu,cfg) va qerphefr.erphefvir_qveyvfg([gbc], kqri=bcg.kqri):
+        vs bcg.ireobfr>=2 be (bcg.ireobfr==1 naq fgng.F_VFQVE(cfg.fg_zbqr)):
+            flf.fgqbhg.jevgr('%f\a' % cngu)
+            flf.fgqbhg.syhfu()
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        ryvs abg (gbgny % 128):
+            cebterff('Vaqrkvat: %q\e' % gbgny)
+        gbgny += 1
+        juvyr evt.phe naq evt.phe.anzr > cngu:  # qryrgrq cnguf
+            vs evt.phe.rkvfgf():
+                evt.phe.frg_qryrgrq()
+                evt.phe.ercnpx()
+            evt.arkg()
+        vs evt.phe naq evt.phe.anzr == cngu:    # cnguf gung nyernql rkvfgrq
+            vs cfg:
+                evt.phe.sebz_fgng(cfg, gfgneg)
+            vs abg (evt.phe.syntf & vaqrk.VK_UNFUINYVQ):
+                vs unfutra:
+                    (evt.phe.tvgzbqr, evt.phe.fun) = unfutra(cngu)
+                    evt.phe.syntf |= vaqrk.VK_UNFUINYVQ
+            vs bcg.snxr_vainyvq:
+                evt.phe.vainyvqngr()
+            evt.phe.ercnpx()
+            evt.arkg()
+        ryfr:  # arj cnguf
+            jv.nqq(cngu, cfg, unfutra = unfutra)
+    cebterff('Vaqrkvat: %q, qbar.\a' % gbgny)
+    
+    vs ev.rkvfgf():
+        ev.fnir()
+        jv.syhfu()
+        vs jv.pbhag:
+            je = jv.arj_ernqre()
+            vs bcg.purpx:
+                ybt('purpx: orsber zretvat: byqsvyr\a')
+                purpx_vaqrk(ev)
+                ybt('purpx: orsber zretvat: arjsvyr\a')
+                purpx_vaqrk(je)
+            zv = vaqrk.Jevgre(vaqrksvyr)
+            zretr_vaqrkrf(zv, ev, je)
+            ev.pybfr()
+            zv.pybfr()
+            je.pybfr()
+        jv.nobeg()
+    ryfr:
+        jv.pybfr()
+
+
+bcgfcrp = """
+ohc vaqrk <-c|z|h> [bcgvbaf...] <svyranzrf...>
+--
+c,cevag    cevag gur vaqrk ragevrf sbe gur tvira anzrf (nyfb jbexf jvgu -h)
+z,zbqvsvrq cevag bayl nqqrq/qryrgrq/zbqvsvrq svyrf (vzcyvrf -c)
+f,fgnghf   cevag rnpu svyranzr jvgu n fgnghf pune (N/Z/Q) (vzcyvrf -c)
+U,unfu     cevag gur unfu sbe rnpu bowrpg arkg gb vgf anzr (vzcyvrf -c)
+y,ybat     cevag zber vasbezngvba nobhg rnpu svyr
+h,hcqngr   (erphefviryl) hcqngr gur vaqrk ragevrf sbe gur tvira svyranzrf
+k,kqri,bar-svyr-flfgrz  qba'g pebff svyrflfgrz obhaqnevrf
+snxr-inyvq znex nyy vaqrk ragevrf nf hc-gb-qngr rira vs gurl nera'g
+snxr-vainyvq znex nyy vaqrk ragevrf nf vainyvq
+purpx      pnershyyl purpx vaqrk svyr vagrtevgl
+s,vaqrksvyr=  gur anzr bs gur vaqrk svyr (qrsnhyg 'vaqrk')
+i,ireobfr  vapernfr ybt bhgchg (pna or hfrq zber guna bapr)
+"""
+b = bcgvbaf.Bcgvbaf('ohc vaqrk', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs abg (bcg.zbqvsvrq be bcg['cevag'] be bcg.fgnghf be bcg.hcqngr be bcg.purpx):
+    b.sngny('fhccyl bar be zber bs -c, -f, -z, -h, be --purpx')
+vs (bcg.snxr_inyvq be bcg.snxr_vainyvq) naq abg bcg.hcqngr:
+    b.sngny('--snxr-{va,}inyvq ner zrnavatyrff jvgubhg -h')
+vs bcg.snxr_inyvq naq bcg.snxr_vainyvq:
+    b.sngny('--snxr-inyvq vf vapbzcngvoyr jvgu --snxr-vainyvq')
+
+tvg.purpx_ercb_be_qvr()
+vaqrksvyr = bcg.vaqrksvyr be tvg.ercb('ohcvaqrk')
+
+unaqyr_pgey_p()
+
+vs bcg.purpx:
+    ybt('purpx: fgnegvat vavgvny purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+cnguf = vaqrk.erqhpr_cnguf(rkgen)
+
+vs bcg.hcqngr:
+    vs abg cnguf:
+        b.sngny('hcqngr (-h) erdhrfgrq ohg ab cnguf tvira')
+    sbe (ec,cngu) va cnguf:
+        hcqngr_vaqrk(ec)
+
+vs bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq:
+    sbe (anzr, rag) va vaqrk.Ernqre(vaqrksvyr).svygre(rkgen be ['']):
+        vs (bcg.zbqvsvrq 
+            naq (rag.vf_inyvq() be rag.vf_qryrgrq() be abg rag.zbqr)):
+            pbagvahr
+        yvar = ''
+        vs bcg.fgnghf:
+            vs rag.vf_qryrgrq():
+                yvar += 'Q '
+            ryvs abg rag.vf_inyvq():
+                vs rag.fun == vaqrk.RZCGL_FUN:
+                    yvar += 'N '
+                ryfr:
+                    yvar += 'Z '
+            ryfr:
+                yvar += '  '
+        vs bcg.unfu:
+            yvar += rag.fun.rapbqr('urk') + ' '
+        vs bcg.ybat:
+            yvar += "%7f %7f " % (bpg(rag.zbqr), bpg(rag.tvgzbqr))
+        cevag yvar + (anzr be './')
+
+vs bcg.purpx naq (bcg['cevag'] be bcg.fgnghf be bcg.zbqvsvrq be bcg.hcqngr):
+    ybt('purpx: fgnegvat svany purpx.\a')
+    purpx_vaqrk(vaqrk.Ernqre(vaqrksvyr))
+
+vs fnirq_reebef:
+    ybt('JNEAVAT: %q reebef rapbhagrerq.\a' % yra(fnirq_reebef))
+    flf.rkvg(1)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg
+sebz ohc vzcbeg bcgvbaf, urycref
+
+bcgfcrp = """
+ohc eonpxhc-freire
+--
+    Guvf pbzznaq vf abg vagraqrq gb or eha znahnyyl.
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc-freire', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs rkgen:
+    b.sngny('ab nethzragf rkcrpgrq')
+
+# trg gur fhopbzznaq'f neti.
+# Abeznyyl jr pbhyq whfg cnff guvf ba gur pbzznaq yvar, ohg fvapr jr'yy bsgra
+# or trggvat pnyyrq ba gur bgure raq bs na ffu cvcr, juvpu graqf gb znatyr
+# neti (ol fraqvat vg ivn gur furyy), guvf jnl vf zhpu fnsre.
+ohs = flf.fgqva.ernq(4)
+fm = fgehpg.hacnpx('!V', ohs)[0]
+nffreg(fm > 0)
+nffreg(fm < 1000000)
+ohs = flf.fgqva.ernq(fm)
+nffreg(yra(ohs) == fm)
+neti = ohs.fcyvg('\0')
+
+# fgqva/fgqbhg ner fhccbfrqyl pbaarpgrq gb 'ohc freire' gung gur pnyyre
+# fgnegrq sbe hf (bsgra ba gur bgure raq bs na ffu ghaary), fb jr qba'g jnag
+# gb zvfhfr gurz.  Zbir gurz bhg bs gur jnl, gura ercynpr fgqbhg jvgu
+# n cbvagre gb fgqree va pnfr bhe fhopbzznaq jnagf gb qb fbzrguvat jvgu vg.
+#
+# Vg zvtug or avpr gb qb gur fnzr jvgu fgqva, ohg zl rkcrevzragf fubjrq gung
+# ffu frrzf gb znxr vgf puvyq'f fgqree n ernqnoyr-ohg-arire-ernqf-nalguvat
+# fbpxrg.  Gurl ernyyl fubhyq unir hfrq fuhgqbja(FUHG_JE) ba gur bgure raq
+# bs vg, ohg cebonoyl qvqa'g.  Naljnl, vg'f gbb zrffl, fb yrg'f whfg znxr fher
+# nalbar ernqvat sebz fgqva vf qvfnccbvagrq.
+#
+# (Lbh pna'g whfg yrnir fgqva/fgqbhg "abg bcra" ol pybfvat gur svyr
+# qrfpevcgbef.  Gura gur arkg svyr gung bcraf vf nhgbzngvpnyyl nffvtarq 0 be 1,
+# naq crbcyr *gelvat* gb ernq/jevgr fgqva/fgqbhg trg fperjrq.)
+bf.qhc2(0, 3)
+bf.qhc2(1, 4)
+bf.qhc2(2, 1)
+sq = bf.bcra('/qri/ahyy', bf.B_EQBAYL)
+bf.qhc2(sq, 0)
+bf.pybfr(sq)
+
+bf.raiveba['OHC_FREIRE_ERIREFR'] = urycref.ubfganzr()
+bf.rkrpic(neti[0], neti)
+flf.rkvg(99)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, tybo, fhocebprff, gvzr
+sebz ohc vzcbeg bcgvbaf, tvg
+sebz ohc.urycref vzcbeg *
+
+cne2_bx = 0
+ahyys = bcra('/qri/ahyy')
+
+qrs qroht(f):
+    vs bcg.ireobfr:
+        ybt(f)
+
+qrs eha(neti):
+    # ng yrnfg va clguba 2.5, hfvat "fgqbhg=2" be "fgqbhg=flf.fgqree" orybj
+    # qbrfa'g npghnyyl jbex, orpnhfr fhocebprff pybfrf sq #2 evtug orsber
+    # rkrpvat sbe fbzr ernfba.  Fb jr jbex nebhaq vg ol qhcyvpngvat gur sq
+    # svefg.
+    sq = bf.qhc(2)  # pbcl fgqree
+    gel:
+        c = fhocebprff.Cbcra(neti, fgqbhg=sq, pybfr_sqf=Snyfr)
+        erghea c.jnvg()
+    svanyyl:
+        bf.pybfr(sq)
+
+qrs cne2_frghc():
+    tybony cne2_bx
+    ei = 1
+    gel:
+        c = fhocebprff.Cbcra(['cne2', '--uryc'],
+                             fgqbhg=ahyys, fgqree=ahyys, fgqva=ahyys)
+        ei = c.jnvg()
+    rkprcg BFReebe:
+        ybt('sfpx: jneavat: cne2 abg sbhaq; qvfnoyvat erpbirel srngherf.\a')
+    ryfr:
+        cne2_bx = 1
+
+qrs cnei(yiy):
+    vs bcg.ireobfr >= yiy:
+        vs vfggl:
+            erghea []
+        ryfr:
+            erghea ['-d']
+    ryfr:
+        erghea ['-dd']
+
+qrs cne2_trarengr(onfr):
+    erghea eha(['cne2', 'perngr', '-a1', '-p200'] + cnei(2)
+               + ['--', onfr, onfr+'.cnpx', onfr+'.vqk'])
+
+qrs cne2_irevsl(onfr):
+    erghea eha(['cne2', 'irevsl'] + cnei(3) + ['--', onfr])
+
+qrs cne2_ercnve(onfr):
+    erghea eha(['cne2', 'ercnve'] + cnei(2) + ['--', onfr])
+
+qrs dhvpx_irevsl(onfr):
+    s = bcra(onfr + '.cnpx', 'eo')
+    s.frrx(-20, 2)
+    jnagfhz = s.ernq(20)
+    nffreg(yra(jnagfhz) == 20)
+    s.frrx(0)
+    fhz = Fun1()
+    sbe o va puhaxlernqre(s, bf.sfgng(s.svyrab()).fg_fvmr - 20):
+        fhz.hcqngr(o)
+    vs fhz.qvtrfg() != jnagfhz:
+        envfr InyhrReebe('rkcrpgrq %e, tbg %e' % (jnagfhz.rapbqr('urk'),
+                                                  fhz.urkqvtrfg()))
+        
+
+qrs tvg_irevsl(onfr):
+    vs bcg.dhvpx:
+        gel:
+            dhvpx_irevsl(onfr)
+        rkprcg Rkprcgvba, r:
+            qroht('reebe: %f\a' % r)
+            erghea 1
+        erghea 0
+    ryfr:
+        erghea eha(['tvg', 'irevsl-cnpx', '--', onfr])
+    
+    
+qrs qb_cnpx(onfr, ynfg):
+    pbqr = 0
+    vs cne2_bx naq cne2_rkvfgf naq (bcg.ercnve be abg bcg.trarengr):
+        ierfhyg = cne2_irevsl(onfr)
+        vs ierfhyg != 0:
+            vs bcg.ercnve:
+                eerfhyg = cne2_ercnve(onfr)
+                vs eerfhyg != 0:
+                    cevag '%f cne2 ercnve: snvyrq (%q)' % (ynfg, eerfhyg)
+                    pbqr = eerfhyg
+                ryfr:
+                    cevag '%f cne2 ercnve: fhpprrqrq (0)' % ynfg
+                    pbqr = 100
+            ryfr:
+                cevag '%f cne2 irevsl: snvyrq (%q)' % (ynfg, ierfhyg)
+                pbqr = ierfhyg
+        ryfr:
+            cevag '%f bx' % ynfg
+    ryvs abg bcg.trarengr be (cne2_bx naq abg cne2_rkvfgf):
+        terfhyg = tvg_irevsl(onfr)
+        vs terfhyg != 0:
+            cevag '%f tvg irevsl: snvyrq (%q)' % (ynfg, terfhyg)
+            pbqr = terfhyg
+        ryfr:
+            vs cne2_bx naq bcg.trarengr:
+                cerfhyg = cne2_trarengr(onfr)
+                vs cerfhyg != 0:
+                    cevag '%f cne2 perngr: snvyrq (%q)' % (ynfg, cerfhyg)
+                    pbqr = cerfhyg
+                ryfr:
+                    cevag '%f bx' % ynfg
+            ryfr:
+                cevag '%f bx' % ynfg
+    ryfr:
+        nffreg(bcg.trarengr naq (abg cne2_bx be cne2_rkvfgf))
+        qroht('    fxvccrq: cne2 svyr nyernql trarengrq.\a')
+    erghea pbqr
+
+
+bcgfcrp = """
+ohc sfpx [bcgvbaf...] [svyranzrf...]
+--
+e,ercnve    nggrzcg gb ercnve reebef hfvat cne2 (qnatrebhf!)
+t,trarengr  trarengr nhgb-ercnve vasbezngvba hfvat cne2
+i,ireobfr   vapernfr ireobfvgl (pna or hfrq zber guna bapr)
+dhvpx       whfg purpx cnpx fun1fhz, qba'g hfr tvg irevsl-cnpx
+w,wbof=     eha 'a' wbof va cnenyyry
+cne2-bx     vzzrqvngryl erghea 0 vs cne2 vf bx, 1 vs abg
+qvfnoyr-cne2  vtaber cne2 rira vs vg vf ninvynoyr
+"""
+b = bcgvbaf.Bcgvbaf('ohc sfpx', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+cne2_frghc()
+vs bcg.cne2_bx:
+    vs cne2_bx:
+        flf.rkvg(0)  # 'gehr' va fu
+    ryfr:
+        flf.rkvg(1)
+vs bcg.qvfnoyr_cne2:
+    cne2_bx = 0
+
+tvg.purpx_ercb_be_qvr()
+
+vs abg rkgen:
+    qroht('sfpx: Ab svyranzrf tvira: purpxvat nyy cnpxf.\a')
+    rkgen = tybo.tybo(tvg.ercb('bowrpgf/cnpx/*.cnpx'))
+
+pbqr = 0
+pbhag = 0
+bhgfgnaqvat = {}
+sbe anzr va rkgen:
+    vs anzr.raqfjvgu('.cnpx'):
+        onfr = anzr[:-5]
+    ryvs anzr.raqfjvgu('.vqk'):
+        onfr = anzr[:-4]
+    ryvs anzr.raqfjvgu('.cne2'):
+        onfr = anzr[:-5]
+    ryvs bf.cngu.rkvfgf(anzr + '.cnpx'):
+        onfr = anzr
+    ryfr:
+        envfr Rkprcgvba('%f vf abg n cnpx svyr!' % anzr)
+    (qve,ynfg) = bf.cngu.fcyvg(onfr)
+    cne2_rkvfgf = bf.cngu.rkvfgf(onfr + '.cne2')
+    vs cne2_rkvfgf naq bf.fgng(onfr + '.cne2').fg_fvmr == 0:
+        cne2_rkvfgf = 0
+    flf.fgqbhg.syhfu()
+    qroht('sfpx: purpxvat %f (%f)\a' 
+          % (ynfg, cne2_bx naq cne2_rkvfgf naq 'cne2' be 'tvg'))
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+    
+    vs abg bcg.wbof:
+        ap = qb_cnpx(onfr, ynfg)
+        pbqr = pbqr be ap
+        pbhag += 1
+    ryfr:
+        juvyr yra(bhgfgnaqvat) >= bcg.wbof:
+            (cvq,ap) = bf.jnvg()
+            ap >>= 8
+            vs cvq va bhgfgnaqvat:
+                qry bhgfgnaqvat[cvq]
+                pbqr = pbqr be ap
+                pbhag += 1
+        cvq = bf.sbex()
+        vs cvq:  # cnerag
+            bhgfgnaqvat[cvq] = 1
+        ryfr: # puvyq
+            gel:
+                flf.rkvg(qb_cnpx(onfr, ynfg))
+            rkprcg Rkprcgvba, r:
+                ybt('rkprcgvba: %e\a' % r)
+                flf.rkvg(99)
+                
+juvyr yra(bhgfgnaqvat):
+    (cvq,ap) = bf.jnvg()
+    ap >>= 8
+    vs cvq va bhgfgnaqvat:
+        qry bhgfgnaqvat[cvq]
+        pbqr = pbqr be ap
+        pbhag += 1
+    vs abg bcg.ireobfr:
+        cebterff('sfpx (%q/%q)\e' % (pbhag, yra(rkgen)))
+
+vs abg bcg.ireobfr naq vfggl:
+    ybt('sfpx qbar.           \a')
+flf.rkvg(pbqr)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, fgehpg, trgbcg, fhocebprff, fvtany
+sebz ohc vzcbeg bcgvbaf, ffu
+sebz ohc.urycref vzcbeg *
+
+bcgfcrp = """
+ohc eonpxhc <ubfganzr> vaqrk ...
+ohc eonpxhc <ubfganzr> fnir ...
+ohc eonpxhc <ubfganzr> fcyvg ...
+"""
+b = bcgvbaf.Bcgvbaf('ohc eonpxhc', bcgfcrp, bcgshap=trgbcg.trgbcg)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+vs yra(rkgen) < 2:
+    b.sngny('nethzragf rkcrpgrq')
+
+pynff FvtRkprcgvba(Rkprcgvba):
+    qrs __vavg__(frys, fvtahz):
+        frys.fvtahz = fvtahz
+        Rkprcgvba.__vavg__(frys, 'fvtany %q erprvirq' % fvtahz)
+qrs unaqyre(fvtahz, senzr):
+    envfr FvtRkprcgvba(fvtahz)
+
+fvtany.fvtany(fvtany.FVTGREZ, unaqyre)
+fvtany.fvtany(fvtany.FVTVAG, unaqyre)
+
+fc = Abar
+c = Abar
+erg = 99
+
+gel:
+    ubfganzr = rkgen[0]
+    neti = rkgen[1:]
+    c = ffu.pbaarpg(ubfganzr, 'eonpxhc-freire')
+
+    netif = '\0'.wbva(['ohc'] + neti)
+    c.fgqva.jevgr(fgehpg.cnpx('!V', yra(netif)) + netif)
+    c.fgqva.syhfu()
+
+    znva_rkr = bf.raiveba.trg('OHC_ZNVA_RKR') be flf.neti[0]
+    fc = fhocebprff.Cbcra([znva_rkr, 'freire'], fgqva=c.fgqbhg, fgqbhg=c.fgqva)
+
+    c.fgqva.pybfr()
+    c.fgqbhg.pybfr()
+
+svanyyl:
+    juvyr 1:
+        # vs jr trg n fvtany juvyr jnvgvat, jr unir gb xrrc jnvgvat, whfg
+        # va pnfr bhe puvyq qbrfa'g qvr.
+        gel:
+            erg = c.jnvg()
+            fc.jnvg()
+            oernx
+        rkprcg FvtRkprcgvba, r:
+            ybt('\aohc eonpxhc: %f\a' % r)
+            bf.xvyy(c.cvq, r.fvtahz)
+            erg = 84
+flf.rkvg(erg)
+#!/hfe/ova/rai clguba
+vzcbeg flf, bf, er
+sebz ohc vzcbeg bcgvbaf
+
+bcgfcrp = """
+ohc arjyvare
+"""
+b = bcgvbaf.Bcgvbaf('ohc arjyvare', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+e = er.pbzcvyr(e'([\e\a])')
+ynfgyra = 0
+nyy = ''
+juvyr 1:
+    y = e.fcyvg(nyy, 1)
+    vs yra(y) <= 1:
+        gel:
+            o = bf.ernq(flf.fgqva.svyrab(), 4096)
+        rkprcg XrlobneqVagreehcg:
+            oernx
+        vs abg o:
+            oernx
+        nyy += o
+    ryfr:
+        nffreg(yra(y) == 3)
+        (yvar, fcyvgpune, nyy) = y
+        #fcyvgpune = '\a'
+        flf.fgqbhg.jevgr('%-*f%f' % (ynfgyra, yvar, fcyvgpune))
+        vs fcyvgpune == '\e':
+            ynfgyra = yra(yvar)
+        ryfr:
+            ynfgyra = 0
+        flf.fgqbhg.syhfu()
+
+vs ynfgyra be nyy:
+    flf.fgqbhg.jevgr('%-*f\a' % (ynfgyra, nyy))
+#!/hfe/ova/rai clguba
+vzcbeg flf
+sebz ohc vzcbeg bcgvbaf, tvg, _unfufcyvg
+sebz ohc.urycref vzcbeg *
+
+
+bcgfcrp = """
+ohc znetva
+"""
+b = bcgvbaf.Bcgvbaf('ohc znetva', bcgfcrp)
+(bcg, syntf, rkgen) = b.cnefr(flf.neti[1:])
+
+vs rkgen:
+    b.sngny("ab nethzragf rkcrpgrq")
+
+tvg.purpx_ercb_be_qvr()
+#tvg.vtaber_zvqk = 1
+
+zv = tvg.CnpxVqkYvfg(tvg.ercb('bowrpgf/cnpx'))
+ynfg = '\0'*20
+ybatzngpu = 0
+sbe v va zv:
+    vs v == ynfg:
+        pbagvahr
+    #nffreg(fge(v) >= ynfg)
+    cz = _unfufcyvg.ovgzngpu(ynfg, v)
+    ybatzngpu = znk(ybatzngpu, cz)
+    ynfg = v
+cevag ybatzngpu

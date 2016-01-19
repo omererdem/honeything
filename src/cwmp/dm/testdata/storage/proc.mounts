@@ -1,0 +1,9 @@
+rootfs / rootfs rw 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=1000k,nr_inodes=1000,mode=755 0 0
+proc /proc proc rw,relatime 0 0
+tmpfs /tmp tmpfs rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+none /proc/bus/usb usbfs rw,relatime 0 0
+/dev/mtdblock1 / squashfs ro,relatime 0 0
+ubi1:foo /foo ubifs rw,relatime 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620 0 0

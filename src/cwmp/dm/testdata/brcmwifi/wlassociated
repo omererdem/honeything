@@ -1,0 +1,60 @@
+#!/bin/sh
+
+if [ x"$3" = "xassoclist" ] ; then
+  echo "assoclist A0:B0:C0:00:00:01"
+  echo "assoclist A0:B0:C0:00:00:02"
+  echo "assoclist A0:B0:C0:00:00:03"
+fi
+
+if [ x"$3" = "xsta_info" ] && [ x"$4" = x"A0:B0:C0:00:00:01" ] ; then
+echo "STA A0:B0:C0:00:00:01:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 48 54 ]"
+echo "   idle 1 seconds"
+echo "   in network 11 seconds"
+echo "   state: AUTHENTICATED ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 1"
+echo "   tx failures: 2"
+echo "   rx ucast pkts: 3"
+echo "   rx mcast/bcast pkts: 4"
+echo "   rate of last tx pkt: 1000 kbps"
+echo "   rate of last rx pkt: 1000 kbps"
+echo "   rx decrypt succeeds: 5"
+echo "   rx decrypt failures: 6"
+fi
+
+if [ x"$3" = "xsta_info" ] && [ x"$4" = x"A0:B0:C0:00:00:02" ] ; then
+echo "STA A0:B0:C0:00:00:02:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 48 ]"
+echo "   idle 2 seconds"
+echo "   in network 22 seconds"
+echo "   state: ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 7"
+echo "   tx failures: 8"
+echo "   rx ucast pkts: 9"
+echo "   rx mcast/bcast pkts: 10"
+echo "   rate of last tx pkt: 2000 kbps"
+echo "   rate of last rx pkt: 2000 kbps"
+echo "   rx decrypt succeeds: 11"
+echo "   rx decrypt failures: 12"
+fi
+
+if [ x"$3" = "xsta_info" ] && [ x"$4" = x"A0:B0:C0:00:00:03" ] ; then
+echo "STA A0:B0:C0:00:00:03:"
+echo "   rateset [ 1 2 5.5 6 9 11 12 18 24 36 ]"
+echo "   idle 3 seconds"
+echo "   in network 33 seconds"
+echo "   state: AUTHENTICATED ASSOCIATED"
+echo "   flags 0x601b: BRCM WME N_CAP"
+echo "   tx pkts: 13"
+echo "   tx failures: 14"
+echo "   rx ucast pkts: 15"
+echo "   rx mcast/bcast pkts: 16"
+echo "   rate of last tx pkt: 3000 kbps"
+echo "   rate of last rx pkt: 3000 kbps"
+echo "   rx decrypt succeeds: 17"
+echo "   rx decrypt failures: 18"
+fi
+
+exit 0

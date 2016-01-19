@@ -1,0 +1,104 @@
+{
+  "STBService": [
+    {
+      "MainStream": [
+        {
+          "StreamId": 8,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 100,
+            "PacketsDiscontinuityCounter": 10
+          },
+          "TCPStats": {
+            "Packets Received": 1000,
+            "Bytes Received": 256000,
+            "Packets Retransmitted": 1
+          }
+        },
+        {
+          "StreamId": 7,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 200,
+            "PacketsDiscontinuityCounter": 20
+          },
+          "TCPStats": {
+            "Packets Received": 2000,
+            "Bytes Received": 512000,
+            "Packets Retransmitted": 3
+          }
+        },
+        {
+          "StreamId": 6,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 300,
+            "PacketsDiscontinuityCounter": 30
+          },
+          "TCPStats": {
+            "Packets Received": 3000,
+            "Bytes Received": 768000,
+            "Packets Retransmitted": 2
+          }
+        },
+        {
+          "StreamId": 5,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 400,
+            "PacketsDiscontinuityCounter": 40
+          },
+          "TCPStats": {
+            "Packets Received": 4000,
+            "Bytes Received": 1024000,
+            "Packets Retransmitted": 5
+          }
+        },
+        {
+          "StreamId": 4,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 500,
+            "PacketsDiscontinuityCounter": 50
+          },
+          "TCPStats": {
+            "Packets Received": 5000,
+            "Bytes Received": 1280000,
+            "Packets Retransmitted": 4
+          }
+        },
+        {
+          "StreamId": 3,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 600,
+            "PacketsDiscontinuityCounter": 60
+          },
+          "TCPStats": {
+            "Packets Received": 6000,
+            "Bytes Received": 1536000,
+            "Packets Retransmitted": 7
+          }
+        },
+        {
+          "StreamId": 2,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 700,
+            "PacketsDiscontinuityCounter": 70
+          },
+          "TCPStats": {
+            "Packets Received": 7000,
+            "Bytes Received": 1792000,
+            "Packets Retransmitted": 6
+          }
+        },
+        {
+          "StreamId": 1,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 800,
+            "PacketsDiscontinuityCounter": 80
+          },
+          "TCPStats": {
+            "Packets Received": 8000,
+            "Bytes Received": 2048000,
+            "Packets Retransmitted": 9
+          }
+        }
+      ]
+    }
+  ]
+}

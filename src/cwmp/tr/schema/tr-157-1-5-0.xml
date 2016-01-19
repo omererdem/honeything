@@ -1,0 +1,1044 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Component Objects for CWMP
+    
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+  
+  Summary:
+    This document defines objects for use in CWMP managed devices.  The objects
+    may exist at the top level of a hierarchy, or in some cases within an 
+    existing object.  The objects are intended for use in all CWMP Root 
+    objects. The objects define varying functionality, diagnostics, etc. that 
+    are agnostic to the type of device.
+
+
+  Editors:
+    Tim Carey, Alcatel-Lucent
+    Heather Kirksey, Alcatel-Lucent
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Jason Walls, UNH
+
+  Chief Editor: 
+    Michael Hanrahan, Huawei Technologies
+
+
+  Version History:
+    * March 2009: tr-157-1-0-0.xml, corresponds to TR-157 Issue 1, Section 4 
+       (Data Model Definition) and Section 5 (Profile Definition).
+    * September 2009: tr-157-1-1-0.xml, corresponds to TR-157 Issue 1 
+       Amendment 1, Section 4 (Data Model Definition) and Section 5 (Profile 
+       Definition).
+    * May 2010: tr-157-1-2-0.xml, corresponds to TR-157 Issue 1 Amendment 2.
+    * December 2010: tr-157-1-3-0.xml, corresponds to TR-157 Issue 1 Amendment 3.
+    * July 2011: tr-157-1-4-0.xml, new components for CWMP Proxy Management and
+       updates of existing components for Alias-Based Addressing
+  * November 2011: tr-157-1-5-0.xml
+      Corresponds to TR-157 Issue 1 Amendment 5.
+      Added new components for FaultManagement and Location
+      Extended Software Modules
+      Corrected errata on PeriodicStatistics, VendorLogFile, UIRemoteAccess
+
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4" 
+                            xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1" 
+                            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+                            xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                                                                      http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd
+                                                                    urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                                                      http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+                            spec="urn:broadband-forum-org:tr-157-1-5-0" file="tr-157-1-5-0.xml">
+  <description>TR-157 Issue 1 Amendment 5</description>
+  
+  <!--Import of current General Biblography compnents-->
+  <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+  
+  <!--Import of current TR-157 compnents-->
+  <import file="tr-157-1-4.xml" spec="urn:broadband-forum-org:tr-157-1-4">
+    <component name="DI_Processors"/>
+    <component name="DI_MemoryStatus"/>
+    <component name="DI_ProcessStatus"/>
+    <component name="DI_TemperatureStatus"/>
+    <component name="DI_NetworkProperties"/>
+    <component name="DI_SupportedDataModel"/>
+    <component name="DI_ProxierInfo"/>
+    <component name="MS_DUStateChangeCompletePolicy"/>
+    <component name="MS_AutonomousTransferCompletePolicy"/>
+    <component name="MS_EmbeddedDevice"/>
+    <component name="MS_EmbeddedDevice_Device2"/>
+    <component name="MS_VirtualDevice"/>
+    <component name="MS_VirtualDevice_Device2"/>
+    <component name="UI_LocalDisplay"/>
+    <component name="User"/>
+    <component name="UPnP"/>
+    <component name="DLNACapabilities"/>
+    <component name="SmartCardReader"/>
+    <component name="SelfTestDiag"/>
+    <component name="NSLookupDiag"/>
+    <component name="SimpleFirewall"/>
+    <component name="USBHosts"/>
+    <component name="USBHosts_Device2"/>
+    <component name="DownloadAvailability"/>
+<!-- Components validation errors that are fixed-->
+    <component name="_PeriodicStatistics" ref="PeriodicStatistics"/>
+    <component name="_DI_VendorLogFiles" ref="DI_VendorLogFiles"/>
+        <component name="_UI_RemoteAccess" ref="UI_RemoteAccess"/>
+<!-- Components extended-->
+    <component name="_SoftwareModules" ref="SoftwareModules"/>
+ </import>
+  
+  <!--Update to PeriodicStatistics object to remove non-ascii characters-->
+  <component name="PeriodicStatisticsDiffs">
+    <object base="PeriodicStatistics.SampleSet.{i}.Parameter.{i}." access="readWrite" numEntriesParameter="ParameterNumberOfEntries" enableParameter="Enable" 
+                              minEntries="0" maxEntries="unbounded">
+      <parameter base="Failures" access="readOnly">
+                <description action="replace">
+                    Counts the number of times (since this object instance was last enabled) that a newly-calculated sample value (accounting for {{param|SampleMode}}) transitioned from the &quot;in range&quot; state to the &quot;out of range&quot; state, or between the &quot;out of range (low)&quot; and &quot;out of range (high)&quot; states.  The states are defined as follows:
+                    * &quot;in range&quot; : current value is greater than {{param|LowThreshold}} and less than {{param|HighThreshold}}.
+                    * &quot;out of range&quot; : current value is less than or equal to {{param|LowThreshold}}, or greater than or equal to {{param|HighThreshold}}.
+                    * &quot;out of range (low)&quot; : current value is less than or equal to {{param|LowThreshold}}.
+                    * &quot;out of range (high)&quot; : current value is greater than or equal to {{param|HighThreshold}}.
+                    Note that, if {{param|LowThreshold}} and {{param|HighThreshold}} are both the same, the threshold/failure mechanism is disabled, so the value of this parameter will not increment.
+                    This parameter can be incremented at any time during a sample interval, and might be incremented more than once during a single sample interval.  For this reason, the CPE SHOULD place a locally specified limit on the frequency at which it will notify the ACS of such changes, as described in {{bibref|TR-069a2|Section 3.2.1}}.
+                    Parameters of non-numeric types cannot support the threshold/failure mechanism.  The value of this parameter MUST be ignored for such parameters.
+                </description>
+            </parameter>
+    </object>
+  </component>
+  <component name="PeriodicStatistics">
+    <component ref="_PeriodicStatistics"/>
+    <component ref="PeriodicStatisticsDiffs"/>
+  </component>
+  
+    
+  <!--Update to VendorLogFiles object to remove non-ascii characters-->
+ <component name="DI_VendorLogFilesDiffs">
+   <object base="DeviceInfo.VendorLogFile.{i}." access="readOnly" minEntries="0" maxEntries="unbounded"
+                 numEntriesParameter="VendorLogFileNumberOfEntries">
+      <parameter base="MaximumSize" access="readOnly">
+        <description action="replace">The maximum size of the log file in {{units}}.  If the device doesn&apos;t know the maximum file size then {{param}} will be 0.</description>
+      </parameter>
+   </object>
+  </component>
+  <component name="DI_VendorLogFiles">
+    <component ref="_DI_VendorLogFiles"/>
+    <component ref="DI_VendorLogFilesDiffs"/>
+  </component>
+      
+<!--Update to UI_RemoteAccess object to remove non-ascii characters-->
+ <component name="UI_RemoteAccessDiffs">
+    <object base="UserInterface.RemoteAccess." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="Enable" access="readWrite">
+        <description action="replace">Enables/Disables remotely accessing the CPE&quot;s user interface.</description>
+      </parameter>
+      </object>
+  </component>
+  <component name="UI_RemoteAccess">
+      <component ref="_UI_RemoteAccess"/>
+    <component ref="UI_RemoteAccessDiffs"/>
+  </component>
+  
+  <!--Update to Software Modules ExecEnv object to add run level parameter requested by OSGi-->
+  <component name="SoftwareModulesDiffs">
+    <object base="SoftwareModules.ExecEnv.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ExecEnvNumberOfEntries">
+      <parameter name="InitialExecutionUnitRunLevel" access="readWrite" dmr:previousParameter="CurrentRunLevel">
+        <description>
+            Indicates the initial value on creation for {{param|#.ExecutionUnit.{i}.RunLevel}} for all Execution Unit instances associated with this {{object}}.  
+            If the value of {{param|CurrentRunLevel}} is -1, then the value of this parameter is irrelevant when read and setting its value has no impact on the Run Level of any Execution Unit.
+        </description>
+        <syntax>
+          <int>
+            <range minInclusive="-1" maxInclusive="65535"/>
+          </int>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="SoftwareModules">
+    <component ref="_SoftwareModules"/>
+    <component ref="SoftwareModulesDiffs"/>
+  </component>
+  
+  <!--New component: Location component-->
+  <component name="DI_Location">
+    <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="LocationNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="DeviceInfo.Location.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="LocationNumberOfEntries">
+      <description>This object contains Location information.</description>
+      <uniqueKey>
+        <parameter ref="Source"/>
+        <parameter ref="ExternalSource"/>
+      </uniqueKey>
+      <parameter name="Source" access="readOnly">
+        <description>Identifies the source of the location data.</description>
+        <syntax>
+          <string>
+            <enumeration value="GPS"/>
+            <enumeration value="AGPS"/>
+            <enumeration value="Manual"/>
+            <enumeration value="External"/>
+          </string>
+          <default type="object" value="External"/>
+        </syntax>
+      </parameter>
+      <parameter name="AcquiredTime" access="readOnly">
+        <description>The time when the location was acquired.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="ExternalSource" access="readOnly">
+        <description>
+          URL, MAC address, or other identifier that identifies an &quot;External&quot; source of this location.
+          Meaningful only if {{param|Source}} has a value of {{enum|External|Source}}, otherwise it MUST be {{empty}}.
+          If {{param|ExternalProtocol}} has a value of {{enum|CWMP|ExternalProtocol}},  this is the URL or IP address of the ACS.
+        </description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="ExternalProtocol" access="readOnly">
+        <description>
+          Protocol used to acquire a location from an &quot;External&quot; source. {{enum}}
+          Meaningful only if {{param|Source}} has a value of {{enum|External|Source}}, otherwise it MUST be {{empty}}.
+        </description>
+        <syntax>
+          <string>
+            <enumeration value="">
+              <description>{{empty}}</description>
+            </enumeration>
+            <enumeration value="CWMP"/>
+            <enumeration value="OMA-DM"/>
+            <enumeration value="SNMP"/>
+            <enumeration value="UPnP"/>
+            <enumeration value="HELD"/>
+            <enumeration value="DHCPv4"/>
+            <enumeration value="DHCPv6"/>
+            <enumeration value="LLDP-MED"/>
+            <enumeration value="MLP"/>
+            <enumeration value="Other"/>
+          </string>
+          <default type="object" value="CWMP"/>
+        </syntax>
+      </parameter>
+      <parameter name="DataObject" access="readWrite">
+        <description>
+          The currently valid location information.
+          Writable only when {{param|ExternalProtocol}} has a value of {{enum|CWMP|ExternalProtocol}}.
+          If obtained through the local GPS/AGPS then the location information is formatted according to {{bibref|RFC5491}}.
+          
+          If manually configured then location information will be XML-formatted according to {{bibref|RFC5491}} (geographical information) and {{bibref|RFC5139}} (civic addresses).
+          If obtained by an external source this is the location information as received.
+          If it&apos;s an XML document (e.g. CWMP, OMA-DM, UPnP, HELD, MLP) the location information will be represented as-is, otherwise it will be converted to base64.
+          CWMP configured location information will be XML-formatted according to {{bibref|RFC5491}} (geographical information) and {{bibref|RFC5139}} (civic addresses).
+          Only zero or one Location object instance with value {{enum|CWMP|ExternalProtocol}} MUST exist at any given time.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="1200"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+     <profile name="Location:1">
+      <object ref="DeviceInfo." requirement="present">
+        <parameter ref="LocationNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="DeviceInfo.Location.{i}." requirement="createDelete">
+        <parameter ref="Source" requirement="readOnly"/>
+        <parameter ref="AcquiredTime" requirement="readOnly"/>
+        <parameter ref="ExternalSource" requirement="readOnly"/>
+        <parameter ref="ExternalProtocol" requirement="readOnly"/>
+        <parameter ref="DataObject" requirement="readWrite"/>
+      </object>
+    </profile>
+  </component>
+  
+  <!-- New component:  FaultMgmt Objects -->
+  <component name="FaultManagement">
+    <object name="FaultMgmt." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains parameters relating to Fault/Alarm Management.</description>
+      <parameter name="SupportedAlarmNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxCurrentAlarmEntries" access="readOnly">
+        <description>The maximum number of entries allowed in the {{object|.FaultMgmt.CurrentAlarm.{i}.}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentAlarmNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="HistoryEventNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ExpeditedEventNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QueuedEventNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="FaultMgmt.SupportedAlarm.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="SupportedAlarmNumberOfEntries">
+      <description>
+        Supported Alarm Entries which can be raised by the device. 
+        The instance numbers for this table SHOULD be maintained across firmware upgrades of the device.
+      </description>
+      <uniqueKey>
+        <parameter ref="EventType"/>
+        <parameter ref="ProbableCause"/>
+        <parameter ref="SpecificProblem"/>
+        <parameter ref="PerceivedSeverity"/>
+      </uniqueKey>
+      <parameter name="EventType" access="readOnly">
+        <description>
+          Indicates the type of event.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProbableCause" access="readOnly">
+        <description>
+          Qualifies the alarm and provides further information than {{param|EventType}}.  
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SpecificProblem" access="readOnly">
+        <description>
+          Provides further qualification on the alarm beyond {{param|EventType}} and {{param|ProbableCause}}.
+          This is vendor defined and will be {{empty}} if the device doesn&apos;t support unique indexing of the table using {{param}}.
+          The string can be set to &quot;*&quot; to indicate the default case if only a subset of {{param}} are to be contained within the table.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="128"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PerceivedSeverity" access="readOnly">
+        <description>
+          Indicates the relative level of urgency for operator attention, see {{bibref|ITU-X.733}}. {{enum}}
+          This will be {{empty}} if the device doesn&apos;t support unique indexing of the table using {{param}}. 
+          The string can be set to &quot;*&quot; to indicate the default case if only a subset of {{param}} are to be contained within the table.
+        </description>
+        <syntax>
+          <string>
+            <enumeration value="">
+              <description>{{empty}}</description>
+            </enumeration>
+            <enumeration value="*"/>
+            <enumeration value="Cleared"/>
+            <enumeration value="Critical"/>
+            <enumeration value="Major"/>
+            <enumeration value="Minor"/>
+            <enumeration value="Warning"/>
+            <enumeration value="Indeterminate"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ReportingMechanism" access="readWrite">
+        <description>Indicates the reporting mechanism setting of the alarm. {{enum}}</description>
+        <syntax>
+          <string>
+            <enumeration value="0 Expedited">
+              <description>The device inserts the alarm into the {{object|.FaultMgmt.ExpeditedEvent.{i}.}} table and the {{object|.FaultMgmt.ExpeditedEvent.{i}.}} table.</description>
+            </enumeration>
+            <enumeration value="1 Queued">
+              <description>The device inserts the alarm into the {{object|.FaultMgmt.QueuedEvent.{i}.}} table and the {{object|.FaultMgmt.QueuedEvent.{i}.}} table.</description>
+            </enumeration>
+            <enumeration value="2 Logged">
+              <description>The device inserts the alarm into the {{object|.FaultMgmt.HistoryEvent.{i}.}} table.</description>
+            </enumeration>
+            <enumeration value="3 Disabled">
+              <description>The device ignores the alarm.</description>
+            </enumeration>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="FaultMgmt.CurrentAlarm.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="CurrentAlarmNumberOfEntries">
+      <description>
+        Contains all currently active alarms (whose {{param|.FaultMgmt.SupportedAlarm.{i}.PerceivedSeverity}} is not {{enum|Cleared|.FaultMgmt.SupportedAlarm.{i}.PerceivedSeverity}}).
+        Newly raised alarms result in a new entry in this table being added, any changes to the alarm as a result of an update event are updated in the existing table entry, and a clear event raised against an alarm results in the alarm being removed from this table.
+        
+        If maximum entries as indicated by {{param|.FaultMgmt.MaxCurrentAlarmEntries}} is reached, the next event overrides the object with the oldest {{param|AlarmChangedTime}}.
+        When a new alarm replaces an existing alarm, then all parameter values for that instance are considered as changed for the purposes of value change notifications to the ACS (even if their new values are identical to those of the prior alarm).
+      </description>
+      <uniqueKey>
+        <parameter ref="AlarmIdentifier"/>
+      </uniqueKey>
+      <uniqueKey>
+        <parameter ref="EventType"/>
+        <parameter ref="ProbableCause"/>
+        <parameter ref="SpecificProblem"/>
+      </uniqueKey>
+      <parameter name="AlarmIdentifier" access="readOnly">
+        <description>Identifies one Alarm Entry in the Alarm List.  This value MUST be uniquely allocated by the device to the alarm instance during the lifetime of the individual alarm.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AlarmRaisedTime" access="readOnly">
+        <description>Indicates the date and time when the alarm was first raised by the device.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="AlarmChangedTime" access="readOnly">
+        <description>Indicates the date and time when the alarm was last changed by the device.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="ManagedObjectInstance" access="readOnly">
+        <description>
+          Specifies the instance of the Informational Object Class in which the alarm occurred by carrying the Distinguished Name (DN) of this object instance. The format of the DN is specific to the application that is using this {{object}}.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="512"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EventType" access="readOnly">
+        <description>Indicates the type of event.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProbableCause" access="readOnly">
+        <description>
+          Qualifies the alarm and provides further information than {{param|EventType}}.  
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SpecificProblem" access="readOnly">
+        <description>
+          Provides further qualification on the alarm beyond {{param|EventType}} and {{param|ProbableCause}}.
+          This is vendor defined and will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+      </description>
+        <syntax>
+          <string>
+            <size maxLength="128"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PerceivedSeverity" access="readOnly">
+        <description>
+           Indicates the relative level of urgency for operator attention, see {{bibref|ITU-X.733}}. {{enum}}
+        </description>
+        <syntax>
+          <string>
+            <enumeration value="Critical"/>
+            <enumeration value="Major"/>
+            <enumeration value="Minor"/>
+            <enumeration value="Warning"/>
+            <enumeration value="Indeterminate"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalText" access="readOnly">
+        <description>
+          This provides a textual string which is vendor defined.
+          This will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalInformation" access="readOnly">
+        <description>This contains additional information about the alarm and is vendor defined.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="FaultMgmt.HistoryEvent.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="HistoryEventNumberOfEntries">
+      <description>
+        Alarm events added or updated in {{object|.FaultMgmt.CurrentAlarm.{i}.}} are simultaneously entered into the this table. This table also contains alarm clearing events.
+        Active alarms at the time of a power failure or reboot might not get an alarm clearing event.
+        This object has a fixed number of entries with instance numbers from 1 to {{param|.FaultMgmt.HistoryEventNumberOfEntries}}.  
+        If maximum instance number {{param|.FaultMgmt.HistoryEventNumberOfEntries}} is reached, the next event overrides the object with instance number 1.  Subsequent entries override objects at sequentially increasing instance numbers.  This logic provides for automatic "rolling" of records.
+      </description>
+      <uniqueKey>
+        <parameter ref="EventTime"/>
+        <parameter ref="AlarmIdentifier"/>
+      </uniqueKey>
+      <parameter name="EventTime" access="readOnly">
+        <description>Indicates the date and time when the alarm event occurs.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="AlarmIdentifier" access="readOnly">
+        <description>Identifies one Alarm Entry in the Alarm List.  This value MUST be uniquely allocated by the device to the alarm instance during the lifetime of the individual alarm.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NotificationType" access="readOnly">
+        <description>Indicates the reason for the specific alarm notification event. {{enum}}</description>
+        <syntax>
+          <string>
+            <enumeration value="NewAlarm"/>
+            <enumeration value="ChangedAlarm"/>
+            <enumeration value="ClearedAlarm"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ManagedObjectInstance" access="readOnly">
+        <description>Specifies the instance of the Informational Object Class in which the alarm occurred by carrying the Distinguished Name (DN) of this object instance. The format of the DN is specific to the application that is using this {{object}}. </description>
+        <syntax>
+          <string>
+            <size maxLength="512"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EventType" access="readOnly">
+        <description>
+                    Indicates the type of event.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProbableCause" access="readOnly">
+        <description>
+                    Qualifies the alarm and provides further information than {{param|EventType}}.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SpecificProblem" access="readOnly">
+        <description>
+          Provides further qualification on the alarm beyond {{param|EventType}} and {{param|ProbableCause}}.
+          This is vendor defined and will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="128"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PerceivedSeverity" access="readOnly">
+        <description>
+          Indicates the relative level of urgency for operator attention, see {{bibref|ITU-X.733}}. {{enum}}
+      </description>
+        <syntax>
+          <string>
+            <enumeration value="Cleared"/>
+            <enumeration value="Critical"/>
+            <enumeration value="Major"/>
+            <enumeration value="Minor"/>
+            <enumeration value="Warning"/>
+            <enumeration value="Indeterminate"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalText" access="readOnly">
+        <description>
+          This provides a textual string which is vendor defined.
+          This will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalInformation" access="readOnly">
+        <description>This contains additional information about the alarm and is vendor defined.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="FaultMgmt.ExpeditedEvent.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ExpeditedEventNumberOfEntries">
+      <description>
+        Alarm events added or updated in {{object|.FaultMgmt.CurrentAlarm.{i}.}} are simultaneously entered into the this table if their corresponding entry in {{object|.FaultMgmt.SupportedAlarm.{i}.}} has {{param|.FaultMgmt.SupportedAlarm.{i}.ReportingMechanism}} set to {{enum|0 Expedited|.FaultMgmt.SupportedAlarm.{i}.ReportingMechanism}}. This table also contains alarm clearing events. 
+        This object has a fixed number of entries with instance numbers from 1 to {{param|.FaultMgmt.ExpeditedEventNumberOfEntries}}.  
+        Initially the table starts with all instances having {{param|EventTime}} set to the Unknown Time value, as defined in {{bibref|TR-106a4}}.
+        If maximum instance number {{param|.FaultMgmt.ExpeditedEventNumberOfEntries}} is reached, the next event overrides the object with instance number 1.  Subsequent entries override objects at sequentially increasing instance numbers.  This logic provides for automatic "rolling" of records.
+        When a new alarm replaces an existing alarm, then all parameter values for that instance are considered as changed for the purposes of value change notifications to the ACS (even if their new values are identical to those of the prior alarm).
+      </description>
+      <uniqueKey>
+        <parameter ref="AlarmIdentifier"/>
+      </uniqueKey>
+      <parameter name="EventTime" access="readOnly">
+        <description>
+          Indicates the date and time when the alarm event occurs. 
+          For an unpopulated entry, the value is the Unknown Time as defined in {{bibref|TR-106a4}}.
+        </description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="AlarmIdentifier" access="readOnly">
+        <description>
+          Identifies one Alarm Entry in the Alarm List.  This value MUST be uniquely allocated by the device to the alarm instance during the lifetime of the individual alarm.
+          For an unpopulated entry, the value is {{empty}}.
+       </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NotificationType" access="readOnly">
+        <description>Indicates the reason for the specific alarm notification event. {{enum}}</description>
+        <syntax>
+          <string>
+            <enumeration value="NewAlarm"/>
+            <enumeration value="ChangedAlarm"/>
+            <enumeration value="ClearedAlarm"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ManagedObjectInstance" access="readOnly">
+        <description>
+          Specifies the instance of the Informational Object Class in which the alarm occurred by carrying the Distinguished Name (DN) of this object instance. The format of the DN is specific to the application that is using this {{object}}.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="512"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EventType" access="readOnly">
+        <description>
+                    Indicates the type of event.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProbableCause" access="readOnly">
+        <description>
+                    Qualifies the alarm and provides further information than {{param|EventType}}.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SpecificProblem" access="readOnly">
+        <description>
+          Provides further qualification on the alarm beyond {{param|EventType}} and {{param|ProbableCause}}.
+          This is vendor defined and will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="128"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PerceivedSeverity" access="readOnly">
+        <description>
+          Indicates the relative level of urgency for operator attention, see {{bibref|ITU-X.733}}. {{enum}}
+       </description>
+        <syntax>
+          <string>
+            <enumeration value="Cleared"/>
+            <enumeration value="Critical"/>
+            <enumeration value="Major"/>
+            <enumeration value="Minor"/>
+            <enumeration value="Warning"/>
+            <enumeration value="Indeterminate"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalText" access="readOnly">
+        <description>
+          This provides a textual string which is vendor defined.
+          This will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+       </description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalInformation" access="readOnly">
+        <description>This contains additional information about the alarm and is vendor defined.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="FaultMgmt.QueuedEvent.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="QueuedEventNumberOfEntries">
+      <description>
+        Alarm events added or updated in {{object|.FaultMgmt.CurrentAlarm.{i}.}} are simultaneously entered into the this table if their corresponding entry in {{object|.FaultMgmt.SupportedAlarm.{i}.}} has {{param|.FaultMgmt.SupportedAlarm.{i}.ReportingMechanism}} set to {{enum|1 Queued|.FaultMgmt.SupportedAlarm.{i}.ReportingMechanism}}. This table also contains alarm clearing events. 
+        This object has a fixed number of entries with instance numbers from 1 to {{param|.FaultMgmt.QueuedEventNumberOfEntries}}.  
+        Initially the table starts with all instances having {{param|EventTime}} set to the Unknown Time value, as defined in {{bibref|TR-106a4}}.
+        If maximum instance number {{param|.FaultMgmt.QueuedEventNumberOfEntries}} is reached, the next event overrides the object with instance number 1.  Subsequent entries override objects at sequentially increasing instance numbers.  This logic provides for automatic "rolling" of records.
+        When a new alarm replaces an existing alarm, then all parameter values for that instance are considered as changed for the purposes of value change notifications to the ACS (even if their new values are identical to those of the prior alarm).
+     </description>
+      <uniqueKey>
+        <parameter ref="AlarmIdentifier"/>
+      </uniqueKey>
+      <parameter name="EventTime" access="readOnly">
+        <description>
+          Indicates the date and time when the alarm event occurs. 
+          For an unpopulated entry, the value is the Unknown Time as defined in {{bibref|TR-106a4}}.
+        </description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="AlarmIdentifier" access="readOnly">
+        <description>
+          Identifies one Alarm Entry in the Alarm List.  This value MUST be uniquely allocated by the device to the alarm instance during the lifetime of the individual alarm.
+          For an unpopulated entry, the value is {{empty}}.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NotificationType" access="readOnly">
+        <description>Indicates the reason for the specific alarm notification event. {{enum}}</description>
+        <syntax>
+          <string>
+            <enumeration value="NewAlarm"/>
+            <enumeration value="ChangedAlarm"/>
+            <enumeration value="ClearedAlarm"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ManagedObjectInstance" access="readOnly">
+        <description>
+          Specifies the instance of the Informational Object Class in which the alarm occurred by carrying the Distinguished Name (DN) of this object instance. The format of the DN is specific to the application that is using this {{object}}.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="512"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EventType" access="readOnly">
+        <description>
+                    Indicates the type of event.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProbableCause" access="readOnly">
+        <description>
+                    Qualifies the alarm and provides further information than {{param|EventType}}.  
+                </description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SpecificProblem" access="readOnly">
+        <description>
+          Provides further qualification on the alarm beyond {{param|EventType}} and {{param|ProbableCause}}.
+          This is vendor defined and will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="128"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PerceivedSeverity" access="readOnly">
+        <description>
+          Indicates the relative level of urgency for operator attention, see {{bibref|ITU-X.733}}. {{enum}}
+       </description>
+        <syntax>
+          <string>
+            <enumeration value="Cleared"/>
+            <enumeration value="Critical"/>
+            <enumeration value="Major"/>
+            <enumeration value="Minor"/>
+            <enumeration value="Warning"/>
+            <enumeration value="Indeterminate"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalText" access="readOnly">
+        <description>
+          This provides a textual string which is vendor defined.
+          This will be {{empty}} if the device doesn&apos;t support inclusion of this information.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalInformation" access="readOnly">
+        <description>This contains additional information about the alarm and is vendor defined.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <profile name="FaultMgmtSupportedAlarms:1">
+      <object ref="FaultMgmt." requirement="present">
+        <parameter ref="SupportedAlarmNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="FaultMgmt.SupportedAlarm.{i}." requirement="present">
+        <parameter ref="EventType" requirement="readOnly"/>
+        <parameter ref="ProbableCause" requirement="readOnly"/>
+        <parameter ref="SpecificProblem" requirement="readOnly"/>
+        <parameter ref="PerceivedSeverity" requirement="readOnly"/>
+        <parameter ref="ReportingMechanism" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="FaultMgmtActive:1 ">
+      <object ref="FaultMgmt." requirement="present">
+        <parameter ref="CurrentAlarmNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="FaultMgmt.CurrentAlarm.{i}." requirement="present">
+        <parameter ref="AlarmIdentifier" requirement="readOnly"/>
+        <parameter ref="AlarmRaisedTime" requirement="readOnly"/>
+        <parameter ref="AlarmChangedTime" requirement="readOnly"/>
+        <parameter ref="EventType" requirement="readOnly"/>
+        <parameter ref="ProbableCause" requirement="readOnly"/>
+        <parameter ref="PerceivedSeverity" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="FaultMgmtHistory:1">
+      <object ref="FaultMgmt." requirement="present">
+        <parameter ref="HistoryEventNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="FaultMgmt.HistoryEvent.{i}." requirement="present">
+        <parameter ref="EventTime" requirement="readOnly"/>
+        <parameter ref="AlarmIdentifier" requirement="readOnly"/>
+        <parameter ref="NotificationType" requirement="readOnly"/>
+        <parameter ref="EventType" requirement="readOnly"/>
+        <parameter ref="ProbableCause" requirement="readOnly"/>
+        <parameter ref="PerceivedSeverity" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="FaultMgmtExpedited:1">
+      <object ref="FaultMgmt." requirement="present">
+        <parameter ref="ExpeditedEventNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="FaultMgmt.ExpeditedEvent.{i}." requirement="present">
+        <parameter ref="EventTime" requirement="readOnly"/>
+        <parameter ref="AlarmIdentifier" requirement="readOnly"/>
+        <parameter ref="NotificationType" requirement="readOnly"/>
+        <parameter ref="EventType" requirement="readOnly"/>
+        <parameter ref="ProbableCause" requirement="readOnly"/>
+        <parameter ref="PerceivedSeverity" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="FaultMgmtQueued:1">
+      <object ref="FaultMgmt." requirement="present">
+        <parameter ref="QueuedEventNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="FaultMgmt.QueuedEvent.{i}." requirement="present">
+        <parameter ref="EventTime" requirement="readOnly"/>
+        <parameter ref="AlarmIdentifier" requirement="readOnly"/>
+        <parameter ref="NotificationType" requirement="readOnly"/>
+        <parameter ref="EventType" requirement="readOnly"/>
+        <parameter ref="ProbableCause" requirement="readOnly"/>
+        <parameter ref="PerceivedSeverity" requirement="readOnly"/>
+      </object>
+    </profile>
+  </component>
+  <!--New Component: Security-->
+  <component name="Security">
+    <object name="Security." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains general information related to managing security features on the device.</description>
+      <parameter name="CertificateNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="Security.Certificate.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="CertificateNumberOfEntries">
+      <description>
+        This table provides information about all types of public key-based credentials, such as X.509 certificates, see {{bibref|RFC5280}}.
+      </description>
+      <uniqueKey>
+        <parameter ref="SerialNumber"/>
+        <parameter ref="Issuer"/>
+      </uniqueKey>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables this certificate.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="LastModif" access="readOnly">
+        <description>The last modification time of this certificate.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="SerialNumber" access="readOnly">
+        <description>The Serial Number field in an X.509 certificate, see {{bibref|RFC5280}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Issuer" access="readOnly">
+        <description>The Issuer field in an X.509 certificate, see {{bibref|RFC5280}}; i.e. the Distinguished Name (DN) of the entity who has signed the certificate.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NotBefore" access="readOnly">
+        <description>The beginning of the certificate validity period; i.e. the Not Before field in an X.509 certificate, see {{bibref|RFC5280}}.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="NotAfter" access="readOnly">
+        <description>The end of the certificate validity period; i.e., the Not After field in an X.509 certificate, see {{bibref|RFC5280}}.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="Subject" access="readOnly">
+        <description>The Distinguished Name (DN) of the entity associated with the Public Key; i.e., the Subject field in an X.509 certificate, see {{bibref|RFC5280}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SubjectAlt" access="readOnly">
+        <description>
+          {{list}} Each item is a DNS Name.
+          The Subject Alternative Names extension field in an X.509 certificate, see {{bibref|RFC5280}}.
+        </description>
+        <syntax>
+          <list>
+            <size maxLength="256"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="SignatureAlgorithm" access="readOnly">
+        <description>The algorithm used in signing the certificate; i.e. the Signature Algorithm field in an X.509 certificate, see {{bibref|RFC5280}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+</dm:document>

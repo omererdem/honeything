@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Component Objects for CWMP
+    
+    Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+    
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+    
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+    PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+    FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+    HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+    INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+    OTHER RIGHTS.
+    
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+    
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+    
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+    
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+    
+    Summary:
+    This document defines objects for use in CWMP managed devices.  The objects
+    may exist at the top level of a hierarchy, or in some cases within an 
+    existing object.  The objects are intended for use in all CWMP Root 
+    objects. The objects define varying functionality, diagnostics, etc. that 
+    are agnostic to the type of device.
+    
+    Version History:
+    * March 2009: tr-157-1-0-0.xml, corresponds to TR-157 Issue 1, Section 4 
+       (Data Model Definition) and Section 5 (Profile Definition).
+    * September 2009: tr-157-1-1-0.xml, corresponds to TR-157 Issue 1 
+       Amendment 1, Section 4 (Data Model Definition) and Section 5 (Profile 
+       Definition).
+    * May 2010: tr-157-1-2-0.xml, corresponds to TR-157 Issue 1 Amendment 2.
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-2"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-2 cwmp-datamodel-1-2.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd" 
+             spec="urn:broadband-forum-org:tr-157-1-2-0">
+
+    <import file="tr-157-1-1.xml" spec="urn:broadband-forum-org:tr-157-1-1">
+        <component name="DI_MemoryStatus"/>
+        <component name="_DI_ProcessStatus" ref="DI_ProcessStatus"/>
+        <component name="_DI_TemperatureStatus" ref="DI_TemperatureStatus"/>
+        <component name="DI_NetworkProperties"/>
+        <component name="_DI_SupportedDataModel" ref="DI_SupportedDataModel"/>
+        <component name="_MS_AutonomousTransferCompletePolicy" ref="MS_AutonomousTransferCompletePolicy"/>
+        <component name="_UI_RemoteAccess" ref="UI_RemoteAccess"/>
+        <component name="UI_LocalDisplay"/>
+        <component name="_User" ref="User"/>
+        <component name="_UPnP" ref="UPnP"/>
+        <component name="DLNACapabilities"/>
+        <component name="_SmartCardReader" ref="SmartCardReader"/>
+        <component name="_SelfTestDiag" ref="SelfTestDiag"/>
+        <component name="_NSLookupDiag" ref="NSLookupDiag"/>
+        <component name="SimpleFirewall"/>
+        <component name="_USBHosts" ref="USBHosts"/>
+        <component name="_PeriodicStatistics" ref="PeriodicStatistics"/>
+        <component name="_DownloadAvailability" ref="DownloadAvailability"/>
+        
+        <model name="InternetGatewayDevice:1.6"/>
+    </import>
+    
+    <import file="tr-181-1-0.xml" spec="urn:broadband-forum-org:tr-181-1-0">
+        <model name="Device:1.5"/>
+    </import>
+    
+   
+    <!-- Differences for Components -->
+    <component name="UserDiffs">
+        <parameter base="UserNumberOfEntries" access="readOnly">
+            <description action="replace">{{numentries}}</description>
+        </parameter>
+    </component>
+    
+    <component name="UPnPDiffs">
+        <object base="UPnP.Device." access="readOnly" minEntries="1" maxEntries="1">
+            <description action="replace">This object defines the UPnP devices and UPnP services that are implemented by the CPE.</description>
+            
+            <parameter name="UPnPDMBasicMgmt" access="readWrite">
+                <description>Enables/Disables UPnP-DM Basic Management.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPDMConfigurationMgmt" access="readWrite">
+                <description>Enables/Disables UPnP-DM Configuration Management.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPDMSoftwareMgmt" access="readWrite">
+                <description>Enables/Disables UPnP-DM Software Management.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+        </object>
+        
+        <object base="UPnP.Device.Capabilities." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="UPnPArchitecture" access="readOnly">
+                <description action="replace">
+                    Numeric value indicating the major version of the supported UPnP architecture. 
+                    If UPnP 1.1 is supported the value is 1.  If UPnP 2.0 is supported the value is 2.
+                    A value of 0 indicates no UPnP support.
+                </description>
+            </parameter>
+            <parameter name="UPnPArchitectureMinorVer" access="readOnly" dmr:previousParameter="UPnPArchitecture">
+                <description>
+                    Numeric value indicating the minor version of the supported UPnP architecture.
+                    If UPnP 1.1 is supported the value is 1.  If UPnP 2.0 is supported the value is 0.
+                    If {{param|UPnPArchitecture}} is 0 then this parameter SHOULD be ignored.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPDMBasicMgmt" access="readOnly" dmr:previousParameter="UPnPIGD">
+                <description>
+                    Numeric value indicating the supported revision for UPnP-DM Basic Management.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPDMConfigurationMgmt" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP-DM Configuration Management.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPDMSoftwareMgmt" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP-DM Software Management.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object base="UPnP.Discovery." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="RootDeviceNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+            <parameter base="DeviceNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+            <parameter base="ServiceNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="USBHostsDiffs">
+        <object base="USBHosts." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="HostNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+        
+        <object base="USBHosts.Host.{i}." access="readOnly" 
+                numEntriesParameter="HostNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <parameter base="DeviceNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+        
+        <object base="USBHosts.Host.{i}.Device.{i}." access="readOnly"
+                numEntriesParameter="DeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <parameter base="Parent" access="readOnly">
+                <description action="replace">
+                    {{reference}} This is a reference to the parent USB device (e.g. hub device).
+                    This is {{empty}} for a device connected to the Host controller (root hub).
+                </description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetParent="#.Device." targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter base="ConfigurationNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+        
+        <object base="USBHosts.Host.{i}.Device.{i}.Configuration.{i}." access="readOnly"
+                numEntriesParameter="ConfigurationNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <parameter base="InterfaceNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="NSLookupDiagDiffs">
+        <object base="NSLookupDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+                <syntax>
+                    <string>
+                        <enumeration value="None" access="readOnly"></enumeration>
+                        <enumeration value="Requested"></enumeration>
+                        <enumeration value="Complete" access="readOnly"></enumeration>
+                        <enumeration value="Error_DNSServerNotResolved" access="readOnly">
+                            <description>Unable to resolve DNSServer Name</description>
+                        </enumeration>
+                        <enumeration value="Error_Internal" access="readOnly"></enumeration>
+                        <enumeration value="Error_Other" access="readOnly"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter base="ResultNumberOfEntries" access="readOnly" activeNotify="canDeny">
+                <description action="replace">
+                    {{numentries}}
+                    Total number of Result entries from the most recent invocation of the test.
+                </description>
+            </parameter>
+        </object>
+        
+        <object base="NSLookupDiagnostics.Result.{i}." access="readOnly" 
+                numEntriesParameter="ResultNumberOfEntries" minEntries="0" maxEntries="unbounded"
+                dmr:noUniqueKeys="true">
+            <parameter base="Status" access="readOnly" activeNotify="canDeny">
+                <description action="replace">
+                    Result Parameter to represent whether the NS Lookup was successful or not.  
+                    Errors for individual Result instances do not get bubbled up to {{param|#.DiagnosticsState}}.  
+                    A failure on a specific attempt does not mean that the overall test failed, but a failure on all attempts means that {{param|#.DiagnosticsState}} SHOULD be {{enum|Error_Other}}.
+                </description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="SelfTestDiagDiffs">
+        <object base="SelfTestDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+                <syntax>
+                    <string>
+                        <enumeration value="None" access="readOnly"></enumeration>
+                        <enumeration value="Requested"></enumeration>
+                        <enumeration value="Complete" access="readOnly"></enumeration>
+                        <enumeration value="Error_Internal" access="readOnly"></enumeration>
+                        <enumeration value="Error_Other" access="readOnly"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="SmartCardReaderDiffs">
+        <parameter base="SmartCardReaderNumberOfEntries" access="readOnly">
+            <description action="replace">{{numentries}}</description>
+        </parameter>
+    </component>
+    
+    <component name="UI_RemoteAccessDiffs">
+        <object base="UserInterface.RemoteAccess." access="readOnly" minEntries="1" maxEntries="1">
+            <description action="replace">
+                This object contains parameters relating to remotely accessing the CPE's user interface.
+                Remote access is defined as any entity not of a local subnet attempting to connect to the CPE.
+                Remote access requires user authentication.  To provide remote access authentication the CPE MUST support a "User" table with at least one instance that has "RemoteAccessCapable" set to {{true}}.
+            </description>
+        </object>
+    </component>
+    
+    <component name="DI_ProcessStatusDiffs">
+        <object base="DeviceInfo.ProcessStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="ProcessNumberOfEntries" access="readOnly">
+                <description action="replace">
+                    {{numentries}}
+                    Since a Process can come and go very quickly, the CPE SHOULD place a locally specified limit on the frequency at which it will notify the ACS of value changes, as described in {{bibref|TR-069a2|Section 3.2.1}}.
+                </description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="PeriodicStatisticsDiffs">
+        <object base="PeriodicStatistics." access="readOnly" minEntries="1" maxEntries="1"> 
+            <parameter base="SampleSetNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+        
+        <object base="PeriodicStatistics.SampleSet.{i}." access="readWrite"
+                numEntriesParameter="SampleSetNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <parameter base="ParameterNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="DownloadAvailabilityDiffs">
+        <object base="DownloadAvailability.Announcement." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="GroupNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="DI_TemperatureStatusDiffs">
+        <object base="DeviceInfo.TemperatureStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="TemperatureSensorNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="DI_SupportedDataModelDiffs">
+        <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="SupportedDataModelNumberOfEntries" access="readOnly">
+                <description action="replace">{{numentries}}</description>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="MS_AutonomousTransferCompletePolicyDiffs">
+        <object base="ManagementServer.AutonomousTransferCompletePolicy." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter name="ResultTypeFilter" access="readWrite" dmr:previousParameter="TransferTypeFilter">
+                <description>
+                    Indicates the transfer results that MUST be included when the CPE notifies the ACS of AUTONOMOUS TRANSFER COMPLETE events.  Transfer results omitted from this list MUST NOT be included when the CPE notifies the ACS.
+                    Note that this includes any backup or restore operations that were not specifically requested by the ACS.  A backup is regarded as an Upload and a restore is regarded as a Download.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Success">
+                            <description>The autonomous file transfer completed successfully; i.e., the FaultCode was zero</description>
+                        </enumeration>
+                        <enumeration value="Failure">
+                            <description>The autonomous file transfer did not complete successfully; i.e., the FaultCode was non-zero</description>
+                        </enumeration>
+                        <enumeration value="Both">
+                            <description>Success and Failure</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    
+    <!-- IGD:1 and Device:1 Full Component Definitions -->
+    <component name="User">
+        <component ref="_User"/>
+        <component ref="UserDiffs"/>
+    </component>
+    
+    <component name="UPnP">
+        <component ref="_UPnP"/>
+        <component ref="UPnPDiffs"/>
+    </component>
+    
+    <component name="USBHosts">
+        <component ref="_USBHosts"/>
+        <component ref="USBHostsDiffs"/>
+    </component>
+    
+    <component name="NSLookupDiag">
+        <component ref="_NSLookupDiag"/>
+        <component ref="NSLookupDiagDiffs"/>
+    </component>
+    
+    <component name="SelfTestDiag">
+        <component ref="_SelfTestDiag"/>
+        <component ref="SelfTestDiagDiffs"/>
+    </component>
+    
+    <component name="SmartCardReader">
+        <component ref="_SmartCardReader"/>
+        <component ref="SmartCardReaderDiffs"/>
+    </component>
+    
+    <component name="UI_RemoteAccess">
+        <component ref="_UI_RemoteAccess"/>
+        <component ref="UI_RemoteAccessDiffs"/>
+    </component>
+    
+    <component name="DI_ProcessStatus">
+        <component ref="_DI_ProcessStatus"/>
+        <component ref="DI_ProcessStatusDiffs"/>
+    </component>
+    
+    <component name="PeriodicStatistics">
+        <component ref="_PeriodicStatistics"/>
+        <component ref="PeriodicStatisticsDiffs"/>
+    </component>
+    
+    <component name="DI_TemperatureStatus">
+        <component ref="_DI_TemperatureStatus"/>
+        <component ref="DI_TemperatureStatusDiffs"/>
+    </component>
+    
+    <component name="DownloadAvailability">
+        <component ref="_DownloadAvailability"/>
+        <component ref="DownloadAvailabilityDiffs"/>
+    </component>
+    
+    <component name="DI_SupportedDataModel">
+        <component ref="_DI_SupportedDataModel"/>
+        <component ref="DI_SupportedDataModelDiffs"/>
+    </component>
+    
+    <component name="MS_AutonomousTransferCompletePolicy">
+        <component ref="_MS_AutonomousTransferCompletePolicy"/>
+        <component ref="MS_AutonomousTransferCompletePolicyDiffs"/>
+    </component>
+    
+    
+    <!-- Device:2 Full Component Definitions -->
+    <component name="USBHosts_Device2">
+        <component ref="_USBHosts"/>
+        <component ref="USBHostsDiffs"/>
+        
+        <object base="USBHosts.Host.{i}.Device.{i}." access="readOnly"
+                numEntriesParameter="DeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <parameter name="USBPort" access="readOnly" dmr:previousParameter="Port">
+                <description>{{reference}} This is a reference to the USB host device to which this (external) USB device is connected.</description>
+                <syntax>
+                    <string>
+                        <!-- This is a path reference to the Device:2 USB Component that defines a Port as an interface -->
+                        <pathRef refType="strong"  targetParent=".USB.Port." targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+
+    <model name="Device:1.6" base="Device:1.5">
+        <component path="Device." ref="UserDiffs"/>
+        <component path="Device." ref="UPnPDiffs"/>
+        <component path="Device." ref="USBHostsDiffs"/>
+        <component path="Device." ref="NSLookupDiagDiffs"/>
+        <component path="Device." ref="SelfTestDiagDiffs"/>
+        <component path="Device." ref="SmartCardReaderDiffs"/>
+        <component path="Device." ref="UI_RemoteAccessDiffs"/>
+        <component path="Device." ref="DI_ProcessStatusDiffs"/>
+        <component path="Device." ref="PeriodicStatisticsDiffs"/>
+        <component path="Device." ref="DI_TemperatureStatusDiffs"/>
+        <component path="Device." ref="DownloadAvailabilityDiffs"/>
+        <component path="Device." ref="DI_SupportedDataModelDiffs"/>
+        <component path="Device." ref="MS_AutonomousTransferCompletePolicyDiffs"/>
+    </model>
+
+    <model name="InternetGatewayDevice:1.7" base="InternetGatewayDevice:1.6">
+        <component path="InternetGatewayDevice." ref="UserDiffs"/>
+        <component path="InternetGatewayDevice." ref="UPnPDiffs"/>
+        <component path="InternetGatewayDevice." ref="USBHostsDiffs"/>
+        <component path="InternetGatewayDevice." ref="NSLookupDiagDiffs"/>
+        <component path="InternetGatewayDevice." ref="SelfTestDiagDiffs"/>
+        <component path="InternetGatewayDevice." ref="SmartCardReaderDiffs"/>
+        <component path="InternetGatewayDevice." ref="UI_RemoteAccessDiffs"/>
+        <component path="InternetGatewayDevice." ref="DI_ProcessStatusDiffs"/>
+        <component path="InternetGatewayDevice." ref="PeriodicStatisticsDiffs"/>
+        <component path="InternetGatewayDevice." ref="DI_TemperatureStatusDiffs"/>
+        <component path="InternetGatewayDevice." ref="DownloadAvailabilityDiffs"/>
+        <component path="InternetGatewayDevice." ref="DI_SupportedDataModelDiffs"/>
+        <component path="InternetGatewayDevice." ref="MS_AutonomousTransferCompletePolicyDiffs"/>
+    </model>
+    
+</dm:document>

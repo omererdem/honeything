@@ -1,0 +1,43 @@
+#!/bin/sh
+
+if [ x"$3" = "xcounters" ] ; then
+  echo "txframe 1 txbyte 2 txretrans 3 txerror 4 rxframe 5 rxbyte 6 rxerror 7"
+  echo "txprshort 8 txdmawar 9 txnobuf 10 txnoassoc 11 txchit 12 txcmiss 13"
+  echo "reset 14 txserr 15 txphyerr 16 txphycrs 17 txfail 18 tbtt 19"
+  echo "d11_txfrag 20 d11_txmulti 21 d11_txretry 22 d11_txretrie "
+  echo "d11_txrts 24 d11_txnocts 25 d11_txnoack 26 d11_txfrmsnt "
+  echo "rxcrc 28 rxnobuf 29 rxnondata 30 rxbadds 31 rxbadcm 32 rxdup 33 rxfragerr 34"
+  echo "rxrunt 35 rxgiant 36 rxnoscb 37 rxbadproto 38 rxbadsrcmac 39"
+  echo "d11_rxfrag 40 d11_rxmulti 41 d11_rxundec "
+  echo "rxctl 42 rxbadda 43 rxfilter 44"
+  echo "rxuflo: 45 46 47 48 49 50"
+  echo "txallfrm 51 txrtsfrm 52 txctsfrm 53 txackfrm 54"
+  echo "txdnlfrm 55 txbcnfrm 56 txtplunfl 57 txphyerr 58"
+  echo "txfunfl: 59 60 61 62 63 64"
+  echo
+  echo "tkipmicfaill 65 tkipicverr 66 tkipcntrmsr 67"
+  echo "tkipreplay 68 ccmpfmterr 69 ccmpreplay 70"
+  echo "ccmpundec 71 fourwayfail 72 wepundec 73"
+  echo "wepicverr 74 decsuccess 75 rxundec 76"
+  echo
+  echo "rxfrmtoolong 77 rxfrmtooshrt 78 rxinvmachdr 79 rxbadfcs 80"
+  echo "rxbadplcp 81 rxcrsglitch 82 rxstrt 83 rxdfrmucastmbss 84"
+  echo "rxmfrmucastmbss 85 rxcfrmucast 86 rxrtsucast 87 rxctsucast 88"
+  echo "rxackucast 89 rxdfrmocast 90 rxmfrmocast 91 rxcfrmocast 92"
+  echo "rxrtsocast 93 rxctsocast 94 rxdfrmmcast 95 rxmfrmmcast 96"
+  echo "rxcfrmmcast 97 rxbeaconmbss 98 rxdfrmucastobss 99 rxbeaconobss 100"
+  echo "rxrsptmout 101 bcntxcancl 102 rxf0ovfl 103 rxf1ovfl 104"
+  echo "rxf2ovfl 105 txsfovfl 106 pmqovfl 107"
+  echo "rxcgprqfrm 108 rxcgprsqovfl 109 txcgprsfail 110 txcgprssuc 111"
+  echo "prs_timeout 112 rxnack 113 frmscons 114 txnack 115 txglitch_nack 116"
+  echo "txburst 117 txphyerror 118"
+  echo "txchanrej 119"
+  echo "rx1mbps 120 rx2mbps 121 rx5mbps5 122"
+  echo "rx6mbps 123 rx9mbps 124 rx11mbps 125"
+  echo "rx12mbps 126 rx18mbps 127 rx24mbps 128"
+  echo "rx36mbps 129 rx48mbps 130 rx54mbps 131"
+  echo "pktengrxducast 132 pktengrxdmcast 133"
+  echo "txmpdu_sgi 134 rxmpdu_sgi 135 txmpdu_stbc 136 rxmpdu_stbc 137"
+fi
+
+exit 0

@@ -1,0 +1,43 @@
+curtain is a helper mixin class and accompanying decorator for people who
+would like to implement HTTP Digest authentication (RFC 2617) in their tornado
+applications (http://tornadoweb.org)
+
+To use these tools, you can add the DigestAuthHandler mixin class to your
+app's handler's inheritance tree, like this: 
+
+from curtain import digest
+class MainHandler(digest.DigestAuthMixin, tornado.web.RequestHandler):
+
+From there you *can* call methods from within the DigestAuthMixin class
+directly, but you more than likely want to treat the digest auth
+implementation as a black box. In that case, the only thing you need is: 
+
+1. A string representing the "realm" 
+2. A callback function used to grab user credentials from whatever credential
+store you happen to use (LDAP, SQL, NIS, etc)
+
+You'll pass both of these to the digest_auth decorator, and decorate whatever
+methods you want protected. Here's a simplistic, contrived example: 
+
+class MainHandler(digest.DigestAuthMixin, tornado.web.RequestHandler):
+    def getcreds(uname):
+        creds = {'auth_username': 'jonesy', 'auth_password': 'foobar'}
+	if uname == creds['auth_username']:
+	    return creds
+
+    @digest.digest_auth('Authusers', getcreds)
+    def get(self):
+	self.write("Hello, World!")
+
+In the above, my realm is "Authusers" and the function that returns the
+credentials is called 'getcreds'. The DigestAuthMixin class uses this function
+to grab a password for the authenticating user, which is used to determine if
+the hashed auth "response" from the user is valid. 
+
+
+TODO: 
+* cleanup
+* Implement proper errors and lose the 'print' statements. 
+* Return 'stale=True' if nonce is stale, but hashes to a valid response.
+* Testing for MD5-Sess and qop=auth-int
+* Work through the rest of the RFC to catch other edge cases. 

@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-181 catawampus.org vendor extension
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3" 
+    xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd 
+                        urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd" 
+    spec="urn:catawampus-org:x-catawampus-tr181-2-0">
+  <description>Device:2.x data model (Catawampus additions).</description>
+
+  <import file="tr-181-2-4.xml" spec="urn:broadband-forum-org:tr-181-2-4">
+    <model name="Device:2.4"/>
+  </import>
+
+  <model name="X_CATAWAMPUS-ORG_Device:2.0" base="Device:2.4">
+    <object base="Device." access="readOnly" minEntries="1" maxEntries="1"/>
+    <object base="Device.Ethernet." access="readOnly" minEntries="1" maxEntries="1"/>
+
+    <object base="Device.Ethernet.Interface.{i}." access="readOnly" numEntriesParameter="InterfaceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <parameter name="X_CATAWAMPUS-ORG_ActualBitRate" access="readOnly" dmr:previousParameter="MaxBitRate">
+        <description>The current link speed of this interface (expressed in {{units}}).</description>
+        <syntax>
+          <unsignedInt>
+            <units value="Mbps"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="X_CATAWAMPUS-ORG_ActualDuplexMode" access="readOnly" dmr:previousParameter="DuplexMode">
+        <description>The current duplex mode of this connection.</description>
+        <syntax>
+          <string>
+            <enumeration value="Half"/>
+            <enumeration value="Full"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="X_CATAWAMPUS-ORG_LedStatusNumberOfEntries" access="readOnly">
+        <description>The number of instances of {{object|.X_CATAWAMPUS-ORG_LedStatus.{i}.}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="DeviceInfo.X_CATAWAMPUS-ORG_LedStatus.{i}." access="readOnly"
+            numEntriesParameter="X_CATAWAMPUS-ORG_LedStatusNumberOfEntries" minEntries="0" maxEntries="unbounded">
+        <description>This object reflects the state of an LED or other indicator light.</description>
+        <uniqueKey><parameter ref="Name"/></uniqueKey>
+        <parameter name="Name" access="readOnly">
+            <description>Name of this LED. This text MUST be sufficient to distinguish this object from others.</description>
+            <syntax><string><size maxLength="256"/></string></syntax>
+        </parameter>
+        <parameter name="Status" access="readOnly">
+            <description>
+              A description of the state of the indicator.
+            </description>
+            <syntax>
+              <string/>
+            </syntax>
+        </parameter>
+    </object>
+    <object name="DeviceInfo.TemperatureStatus." access="readOnly" minEntries="1" maxEntries="1" />
+    <object name="DeviceInfo.TemperatureStatus.X_CATAWAMPUS-ORG_Fan.{i}." access="readOnly" 
+            numEntriesParameter="X_CATAWAMPUS-ORG_FanNumberOfEntries" minEntries="0" maxEntries="unbounded">
+        <description>This object represents information that the device has obtained via sampling a fan, blower, or other temperature management device.</description>
+        <uniqueKey><parameter ref="Name"/></uniqueKey>
+        <parameter name="Name" access="readOnly">
+            <description>Name of this fan. This text MUST be sufficient to distinguish this fan from others.</description>
+            <syntax><string><size maxLength="256"/></string></syntax>
+        </parameter>
+        <parameter name="RPM" access="readOnly">
+            <description>
+              Measured speed of the fan, in revolutions/minute.
+            </description>
+            <syntax>
+              <int/>
+            </syntax>
+        </parameter>
+        <parameter name="DesiredRPM" access="readOnly">
+            <description>
+              The calculated speed the system believes the fan should run at, given the current temperature. Measured in revolutions/minute.
+            </description>
+            <syntax>
+              <int/>
+            </syntax>
+        </parameter>
+        <parameter name="DesiredPercentage" access="readOnly">
+            <description>
+              Percentage for the level that the fan should run at.
+            </description>
+            <syntax>
+              <int/>
+            </syntax>
+        </parameter>
+    </object>
+  </model>
+</dm:document>

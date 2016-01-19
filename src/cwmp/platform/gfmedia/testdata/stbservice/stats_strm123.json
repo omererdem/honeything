@@ -1,0 +1,59 @@
+{
+  "STBService": [
+    {
+      "MainStream": [
+        {
+          "StreamId": 3,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 600,
+            "PacketsDiscontinuityCounter": 60
+          },
+          "DejitteringStats": {
+            "EmptyBufferTime": 31,
+            "Overruns": 6,
+            "Underruns": 13
+          },
+          "TCPStats": {
+            "Packets Received": 6000,
+            "Bytes Received": 1536000,
+            "Packets Retransmitted": 7
+          }
+        },
+        {
+          "StreamId": 2,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 700,
+            "PacketsDiscontinuityCounter": 70
+          },
+          "DejitteringStats": {
+            "EmptyBufferTime": 41,
+            "Overruns": 7,
+            "Underruns": 12
+          },
+          "TCPStats": {
+            "Packets Received": 7000,
+            "Bytes Received": 1792000,
+            "Packets Retransmitted": 6
+          }
+        },
+        {
+          "StreamId": 1,
+          "MPEG2TSStats": {
+            "TSPacketsReceived": 800,
+            "PacketsDiscontinuityCounter": 80
+          },
+          "DejitteringStats": {
+            "EmptyBufferTime": 47,
+            "Overruns": 8,
+            "Underruns": 11
+          },
+          "TCPStats": {
+            "Packets Received": 8000,
+            "Bytes Received": 2048000,
+            "Packets Retransmitted": 9
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  TR-069 Device:2.4 Root Object definition
+
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+  Summary:
+    TR-069 Device:2.4 Root Object definition.
+
+
+  Editor:
+    William Lupton, Pace
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Jason Walls, UNH
+
+  Chief Editor: 
+    Michael Hanrahan, Huawei Technologies
+
+
+  Version History:
+    * May 2010: tr-181-2-0-0.xml, corresponds to TR-181 Issue 2:
+        - original
+    * November 2010: tr-181-2-1-0.xml, 
+        corresponds to TR-181 Issue 2 Amendment 1:
+        - TR-157 Amendment 3 components (Software Module Management
+          etc)
+    * March 2011: tr-181-2-2-0,
+        corresponds to TR-181 Issue 2 Amendment 2
+        - IPv6 support
+    * September 2011: tr-181-2-3-0,
+        corresponds to TR-181 Issue 2 Amendment 3:
+        - Proxy management and alias-based addressing
+    * November 2011: tr-181-2-4-0,
+        corresponds to TR-181 Issue 2 Amendment 4:
+        - G.hn and Optical interfaces (including Ethernet RMON);
+          additional WiFi parameters
+
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+    xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                           http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd
+                        urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                           http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+    spec="urn:broadband-forum-org:tr-181-2-4-0" file="tr-181-2-4-0.xml">
+
+  <description>
+    G.hn and Optical interfaces (including Ethernet RMON); additional WiFi parameters
+  </description>
+
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="Alias"/>
+    <dataType name="Dbm1000"/>
+    <dataType name="IPAddress"/>
+    <dataType name="MACAddress"/>
+    <dataType name="StatsCounter32"/>
+    <dataType name="StatsCounter64"/>
+  </import>
+
+  <import file="tr-157-1-5.xml" spec="urn:broadband-forum-org:tr-157-1-5">
+    <component name="DI_Location"/>
+    <component name="FaultManagement"/>
+    <component name="Security"/>
+    <component name="SoftwareModulesDiffs"/>
+  </import>
+
+  <import file="tr-262-1-0.xml" spec="urn:broadband-forum-org:tr-262-1-0">
+    <component name="FAP"/>
+    <component name="FAP_GPS"/>
+    <component name="FAP_PerformanceMgmt"/>
+    <component name="FAP_ApplicationPlatform"/>
+  </import>
+    
+  <import file="tr-181-2-3.xml" spec="urn:broadband-forum-org:tr-181-2-3">
+    <model name="Device:2.3"/>
+  </import>
+
+  <model name="Device:2.4" base="Device:2.3">
+
+    <!-- new/modified components from tr-157-1-5 -->
+    <component path="Device." ref="DI_Location"/>
+    <component path="Device." ref="FaultManagement"/>
+    <component path="Device." ref="Security"/>
+    <component path="Device." ref="SoftwareModulesDiffs"/>
+
+    <!-- new common Femto objects from tr-262-1-0 -->
+    <component path="Device." ref="FAP"/>
+    <component path="Device." ref="FAP_GPS"/>
+    <component path="Device." ref="FAP_PerformanceMgmt"/>
+    <component path="Device." ref="FAP_ApplicationPlatform"/>
+
+
+    <object base="Device." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="RootDataModelVersion" access="readOnly" forcedInform="true" dmr:previousParameter="">
+        <description>
+          Root data model version, e.g. ''2.4''.  For a vendor-defined root data model, this is the standard Broadband Forum model on which the vendor-defined model is based.
+        </description>
+        <syntax>
+          <string>
+            <size maxLength="32"/>
+            <pattern value="2\.\d+"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Optical." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="Device.DSL.">
+      <description>This object models optical interface technologies.  It defines an {{object|Interface}} object that models a layer 1 optical interface that is capable of transporting Ethernet packets.  The data model definition is based on parts of {{bibref|G.988}}.</description>
+      <parameter name="InterfaceNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Optical.Interface.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="InterfaceNumberOfEntries" dmr:fixedObject="true">
+      <description>Optical interface table (a stackable interface object as described in {{bibref|TR-181i2|Section 4.2}}).  This table models physical optical interfaces.</description>
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables the optical interface.
+This parameter is based on ''ifAdminStatus'' from {{bibref|RFC2863}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>The current operational state of the optical interface (see {{bibref|TR-181i2|Section 4.2.2}}). {{enum}}
+When {{param|Enable}} is {{false}} then {{param}} SHOULD normally be {{enum|Down}} (or {{enum|NotPresent}} or {{enum|Error}} if there is a fault condition on the interface). 
+When {{param|Enable}} is changed to {{true}} then {{param}} SHOULD change to {{enum|Up}} if and only if the interface is able to transmit and receive network traffic; it SHOULD change to {{enum|Dormant}} if and only if the interface is operable but is waiting for external actions before it can transmit and receive network traffic (and subsequently change to {{enum|Up}} if still operable when the expected actions have completed); it SHOULD change to {{enum|LowerLayerDown}} if and only if the interface is prevented from entering the {{enum|Up}} state because one or more of the interfaces beneath it is down; it SHOULD remain in the {{enum|Error}} state if there is an error or other fault condition detected on the interface; it SHOULD remain in the {{enum|NotPresent}} state if the interface has missing (typically hardware) components; it SHOULD change to {{enum|Unknown}} if the state of the interface can not be determined for some reason.
+This parameter is based on ''ifOperStatus'' from {{bibref|RFC2863}}.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="Down"/>
+            <enumeration value="Unknown"/>
+            <enumeration value="Dormant"/>
+            <enumeration value="NotPresent"/>
+            <enumeration value="LowerLayerDown"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Alias" access="readWrite">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>The textual name of the optical interface as assigned by the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="LastChange" access="readOnly" activeNotify="canDeny">
+        <description>The accumulated time in {{units}} since the optical interface entered its current operational state.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="LowerLayers" access="readWrite">
+        <description>{{list}}  {{reference|an interface object that is stacked immediately below this interface object}}  See {{bibref|TR-181i2|Section 4.2.1}}.
+Note: Since {{object}} is a layer 1 interface, it is expected that {{param}} will not be used.</description>
+        <syntax>
+          <list>
+            <size maxLength="1024"/>
+          </list>
+          <string>
+            <pathRef refType="strong" targetType="row"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Upstream" access="readOnly">
+        <description>Indicates whether the interface points towards the Internet ({{true}}) or towards End Devices ({{false}}).
+For example:
+* For an Internet Gateway Device, {{param}} will be {{true}} for all WAN interfaces and {{false}} for all LAN interfaces.
+* For a standalone WiFi Access Point that is connected via Ethernet to an Internet Gateway Device, {{param}} will be {{true}} for the Ethernet interface and {{false}} for the WiFi Radio interface.
+* For an End Device, {{param}} will be {{true}} for all interfaces.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="OpticalSignalLevel" access="readOnly">
+        <description>Current measurement of total downstream optical signal level.
+{{datatype|expand}}
+Valid values are -65.536 dBm (coded as -65536), to 65.534 dBm (coded as 65534) in 0.002 dB increments.
+This parameter is based on ''Optical signal level'' from {{bibref|G.988|Section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-65536" maxInclusive="65534" step="2"/>
+          </dataType>
+        </syntax>
+      </parameter>
+      <parameter name="LowerOpticalThreshold" access="readOnly">
+        <description>Optical level that is used to declare the downstream low received optical power alarm.
+{{datatype|expand}}
+Valid values are -127.5 dBm (coded as -127500) to 0 dBm (coded as 0) in 0.5 dB increments.  The value -127500 indicates the device's internal policy.
+This parameter is based on ''Lower optical threshold'' from {{bibref|G.988|section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-127000" maxInclusive="0" step="500"/>
+          </dataType>
+        </syntax>
+      </parameter>
+      <parameter name="UpperOpticalThreshold" access="readOnly">
+        <description>Optical level that is used to declare the downstream high received optical power alarm.
+{{datatype|expand}}
+Valid values are -127.5 dBm (coded as -127500) to 0 dBm (coded as 0) in 0.5 dB increments.  The value -127500 indicates the device's internal policy.
+This parameter is based on ''Upper optical threshold'' from {{bibref|G.988|section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-127000" maxInclusive="0" step="500"/>
+          </dataType>
+        </syntax>
+      </parameter>
+      <parameter name="TransmitOpticalLevel" access="readOnly">
+        <description>Current measurement of mean optical launch power.
+{{datatype|expand}}
+Valid values are -127.5 dBm (coded as -127500) to 0 dBm (coded as 0) in 0.5 dB increments.  The value -127500 indicates the device's internal policy.
+This parameter is based on ''Transmit optical level'' from {{bibref|G.988|section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-127000" maxInclusive="0" step="500"/>
+          </dataType>
+        </syntax>
+      </parameter>
+      <parameter name="LowerTransmitPowerThreshold" access="readOnly">
+        <description>Minimum mean optical launch power that is used to declare the low transmit optical power alarm.
+{{datatype|expand}}
+Valid values are -63.5 dBm (coded as -63500) to +63.5 dBm (coded as 63500) in 0.5 dB increments.  The value -63500 indicates the device's internal policy.
+This parameter is based on ''Lower transmit power threshold'' from {{bibref|G.988|section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-63500" maxInclusive="63500" step="500"/>
+          </dataType>
+        </syntax>
+      </parameter>
+      <parameter name="UpperTransmitPowerThreshold" access="readOnly">
+        <description>Maximum mean optical launch power that is used to declare the high transmit optical power alarm.
+{{datatype|expand}}
+Valid values are -63.5 dBm (coded as -63500) to +63.5 dBm (coded as 63500) in 0.5 dB increments.  The value -63500 indicates the device's internal policy.
+This parameter is based on ''Upper transmit power threshold'' from {{bibref|G.988|section 9.2.1}}.</description>
+        <syntax>
+          <dataType ref="Dbm1000">
+            <range minInclusive="-63500" maxInclusive="63500" step="500"/>
+          </dataType>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Optical.Interface.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Throughput statistics for this interface.
+The CPE MUST reset the interface's Stats parameters (unless otherwise stated in individual object or parameter descriptions) either when the interface becomes operationally down due to a previous administrative down (i.e. the interface's {{param|#.Status}} parameter transitions to a down state after the interface is disabled) or when the interface becomes administratively up (i.e. the interface's {{param|#.Enable}} parameter transitions from {{false}} to {{true}}). Administrative and operational interface status is discussed in {{bibref|TR-181i2|section 4.2.2}}.</description>
+      <parameter name="BytesSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of bytes transmitted out of the interface, including framing characters. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="BytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of bytes received on the interface, including framing characters. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="PacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets transmitted out of the interface.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="PacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets received on the interface.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="ErrorsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of outbound packets that could not be transmitted because of errors. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ErrorsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DiscardPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DiscardPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of inbound packets which were chosen to be discarded even though no errors had been detected to prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="Device.Ethernet." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="RMONStatsNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Ethernet.RMONStats.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="RMONStatsNumberOfEntries" enableParameter="Enable">
+      <description>Ethernet statistics based on the {{bibref|RFC2819}} ''RMON-MIB'' ''etherStatsTable'', with some extensions inspired by {{bibref|G.988|Section 9.3.32}}.
+Each instance is associated with an interface capable of transporting Ethernet-encapsulated packets, and contains a set of unidirectional Ethernet statistics.
+The statistics are sampled either on ingress or on egress.  This is determined as follows:
+* If the instance is associated with an egress queue (or queues) via the {{param|Queue}} parameter or by setting {{param|AllQueues}} to {{true}} then data is sampled on egress.  In this case {{param|Bytes}} etc measure the data that has been sent on the interface, possibly filtered by {{param|Queue}} or {{param|VLANID}}.
+* Otherwise data is sampled on ingress.  In this case {{param|Bytes}} etc measure the data that has been received on the interface, possibly filtered by {{param|VLANID}}.
+When sampling on egress, the term ''received'' means ''received by the queuing sub-system''.
+Multiple instances can be associated with a single interface: individual instances can be configured to collect data associated with the entire interface, or with a particular VLAN and/or queue.
+The CPE MUST reset each instances's Stats parameters whenever the instance is disabled and re-enabled.  Whether this reset occurs when the instance becomes operationally disabled ({{param|Status}} = {{enum|Disabled|Status}}) or administratively enabled ({{param|Enable}} = {{true}}) is a local matter to the CPE.  This is similar to the behavior of interface statistics, e.g. as specified for {{object|Device.Ethernet.Interface.{i}.Stats}}.  Furthermore, this instance's Stats parameters MUST be reset whenever the referenced interface's Stats parameters are reset, or when the referenced queue or VLAN is disabled and re-enabled.
+For enabled table entries, if {{param|Interface}} references an interface that is not capable of transporting Ethernet-encapsulated packets, or if {{param|Queue}} references a queue that is not instantiated on {{param|Interface}}, or if {{param|Queue}} is not a valid reference and {{param|AllQueues}} is {{false}}, the table entry is inoperable and the CPE MUST set {{param|Status}} to {{enum|Error_Misconfigured|Status}}.
+Note: The {{object}} table includes unique key parameters that are strong references. If a strongly referenced object is deleted, the CPE will set the referencing parameter to {{empty}}. However, doing so under these circumstances might cause the updated {{object}} row to then violate the table's unique key constraint; if this occurs, the CPE MUST set {{param|Status}} to {{enum|Error_Misconfigured|Status}} and disable the offending {{object}} row.</description>
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <uniqueKey>
+        <parameter ref="Interface"/>
+        <parameter ref="VLANID"/>
+        <parameter ref="Queue"/>
+      </uniqueKey>
+      
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables this instance.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>The status of this instance.  {{enum}}
+The {{enum|Error_Misconfigured}} value indicates that a necessary configuration value is undefined or invalid.
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error_Misconfigured"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter name="Alias" access="readWrite">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>The textual name of the {{object}} entry as assigned by the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Interface" access="readWrite">
+        <description>
+          The interface associated with this instance.  {{reference|an interface that is capable of transporting Ethernet-encapsulated packets}}
+          The term "capable of transporting Ethernet-encapsulated packets" means "has an Ethernet header" and therefore refers to any interface that is at or below an ''Ethernet''.{{object|#.Link}} instance in the interface stack.
+        </description>
+        <syntax>
+          <string>
+            <pathRef refType="strong" targetType="row"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="VLANID" access="readWrite">
+        <description>Filter criterion.
+The VLAN ID for which statistics are to be collected.
+A zero value indicates that all packets, whether or not they have a VLAN header, will be considered.
+A non-zero value indicates that only packets that have the the specified VLAN ID will be considered.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="4094"/>
+          </unsignedInt>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Queue" access="readWrite">
+        <description>Filter criterion.
+The egress queue with which this instance is associated.
+Only packets that are sent to the referenced queue will be considered.</description>
+        <syntax>
+          <string>
+            <pathRef refType="strong" targetType="row" targetParent="Device.QoS.Queue."/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter name="AllQueues" access="readWrite">
+        <description>Indicates whether this instance applies to all queues.  If {{true}}, the value of {{param|Queue}} is ignored since all egress queues are indicated.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter name="DropEvents" access="readOnly" activeNotify="canDeny">
+        <description>The total number of events in which packets were dropped due to lack of resources.  Note that this number is not necessarily the number of packets dropped; it is just the number of times this condition has been detected.
+This parameter is based on ''etherStatsDropEvents'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including those in bad packets) received (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsOctets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="bytes"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets, broadcast packets, and multicast packets) received.
+This parameter is based on ''etherStatsPkts'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="BroadcastPackets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of good {{units}} received that were directed to the broadcast address.  Note that this does not include multicast packets.
+This parameter is based on ''etherStatsBroadcastPkts'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="MulticastPackets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of good {{units}} received that were directed to a multicast address.  Note that this number does not include packets directed to the broadcast address.
+This parameter is based on ''etherStatsMulticastPkts'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="CRCErroredPackets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} received that had a length (excluding framing bits, but including FCS bytes) of between 64 and 1518 bytes, inclusive, but had either a bad Frame Check Sequence (FCS) with an integral number of bytes (FCS Error) or a bad FCS with a non-integral number of bytes (Alignment Error).
+This parameter is based on ''etherStatsCRCAlignErrors'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="packets"/>
+          </unsignedInt>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="UndersizePackets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} received that were less than 64 bytes long (excluding framing bits, but including FCS bytes) and were otherwise well formed.
+This parameter is based on ''etherStatsUndersizePkts'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="packets"/>
+          </unsignedInt>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="OversizePackets" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} received that were longer than 1518 bytes (excluding framing bits, but including FCS bytes) and were otherwise well formed.
+This parameter is based on ''etherStatsOversizePkts'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="packets"/>
+          </unsignedInt>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets64Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were 64 bytes in length (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts64Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets65to127Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were between 65 and 127 bytes in length inclusive (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts65to127Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets128to255Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were between 128 and 255 bytes in length inclusive (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts6128to255Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets256to511Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were between 256 and 511 bytes in length inclusive (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts256to511Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets512to1023Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were between 512 and 1023 bytes in length inclusive (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts512to1023Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter name="Packets1024to1518Bytes" access="readOnly" activeNotify="canDeny">
+        <description>The total number of {{units}} (including bad packets) received that were between 1024 and 1518 bytes in length inclusive (excluding framing bits but including FCS bytes).
+This parameter is based on ''etherStatsPkts1024to1518Octets'' from {{bibref|RFC2819}}.</description>
+        <syntax>
+          <unsignedLong>
+            <units value="packets"/>
+          </unsignedLong>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Ghn." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="Device.MoCA.">
+	<description>G.hn object that contains an {{object|Interface}} table for G.hn supported CPE. The ITU-T G.hn specifications {{bibref|G.9960}} and {{bibref|G.9961}} define Physical and MAC Layers for communication between two or more G.hn nodes in the home network over multiple wired media such as power line, phone line and coaxial cable.</description> 
+      <parameter name="InterfaceNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Ghn.Interface.{i}." access="readOnly" numEntriesParameter="InterfaceNumberOfEntries" minEntries="0"  maxEntries="unbounded" dmr:fixedObject="true">
+      <description>G.hn interface table (a stackable interface object as described in {{bibref|TR-181i2|Section 4.2}}). Each table entry models the PHY {{bibref|G.9960}} and MAC {{bibref|G.9961}} layers of a G.hn interface.</description>
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables the interface.
+This parameter is based on ''ifAdminStatus'' from {{bibref|RFC2863}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>The current operational state of the interface (see {{bibref|TR-181i2|Section 4.2.2}}). {{enum}}
+When {{param|Enable}} is {{false}} then {{param}} SHOULD normally be {{enum|Down}} (or {{enum|NotPresent}} or {{enum|Error}} if there is a fault condition on the interface). 
+When {{param|Enable}} is changed to {{true}} then {{param}} SHOULD change to {{enum|Up}} if and only if the interface is able to transmit and receive network traffic; it SHOULD change to {{enum|Dormant}} if and only if the interface is operable but is waiting for external actions before it can transmit and receive network traffic (and subsequently change to {{enum|Up}} if still operable when the expected actions have completed); it SHOULD change to {{enum|LowerLayerDown}} if and only if the interface is prevented from entering the {{enum|Up}} state because one or more of the interfaces beneath it is down; it SHOULD remain in the {{enum|Error}} state if there is an error or other fault condition detected on the interface; it SHOULD remain in the {{enum|NotPresent}} state if the interface has missing (typically hardware) components; it SHOULD change to {{enum|Unknown}} if the state of the interface can not be determined for some reason.
+This parameter is based on ''ifOperStatus'' from {{bibref|RFC2863}}.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="Down"/>
+            <enumeration value="Unknown"/>
+            <enumeration value="Dormant"/>
+            <enumeration value="NotPresent"/>
+            <enumeration value="LowerLayerDown"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Alias" access="readWrite">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>The textual name of the interface as assigned by the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="LastChange" access="readOnly" activeNotify="canDeny">
+        <description>The accumulated time in {{units}} since the interface entered its current operational state.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="LowerLayers" access="readWrite">
+        <description>{{list}}  {{reference|an interface object that is stacked immediately below this interface object}}  See {{bibref|TR-181i2|Section 4.2.1}}.
+Note: Since {{object}} is a layer 1 interface, it is expected that {{param}} will not be used.</description>
+        <syntax>
+          <list>
+            <size maxLength="1024"/>
+          </list>
+          <string>
+            <pathRef refType="strong" targetType="row"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Upstream" access="readOnly">
+        <description>Indicates whether the interface points towards the Internet ({{true}}) or towards End Devices ({{false}}).
+For example:
+* For an Internet Gateway Device, {{param}} will be {{true}} for all WAN interfaces and {{false}} for all LAN interfaces.
+* For a standalone WiFi Access Point that is connected via Ethernet to an Internet Gateway Device, {{param}} will be {{true}} for the Ethernet interface and {{false}} for the WiFi Radio interface.
+* For an End Device, {{param}} will be {{true}} for all interfaces.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="MACAddress" access="readOnly">
+        <description>The MAC Address of the interface, denoted as node MAC address or REGID in {{bibref|G.9961}}.
+Note: This is not necessarily the same as the Ethernet header source or destination MAC address, which is associated with the IP interface and is modeled via the {{param|.Ethernet.Link.{i}.MACAddress}} parameter.</description>
+        <syntax>
+          <dataType ref="MACAddress"/>
+        </syntax>
+      </parameter>
+      <parameter name="FirmwareVersion" access="readOnly">
+        <description>The firmware version of the interface.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConnectionType" access="readOnly">
+        <description>Connection type for which the G.hn protocol is active.</description>
+        <syntax>
+          <string>
+            <enumeration value="Powerline"/>
+            <enumeration value="Phone"/>
+            <enumeration value="Coax"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="TargetDomainNames" access="readWrite">
+      <description>{{list}}  Identifies the target domains configured by the user, as described in {{bibref|G.9961|Section 8.6.1}}. When registering or re-registering, the G.hn interface SHOULD try to register to one of these domains in the given order.</description>
+        <syntax>
+          <list>
+            <size maxLength="1024"/>
+          </list>
+          <string>
+            <size maxLength="32"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="DomainName" access="readOnly">
+      <description>This is the domain name to which the interface is currently registered.
+{{empty}} indicates that the interface is currently not registered.</description>
+        <syntax>
+          <string>
+            <size maxLength="32"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="DomainNameIdentifier" access="readOnly">
+        <description>The Domain Name Identifier, a shortened version of {{param|DomainName}}, denoted as DNI in {{bibref|G.9961|Section 8.6.11.2.1}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DomainId" access="readOnly">
+        <description>The Domain Identifier of the domain to which the interface is registered, denoted as DOD in {{bibref|G.9961}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DeviceId" access="readOnly">
+        <description>The Device Identifier assigned by the Domain Master, denoted as DEVICE_ID in {{bibref|G.9961}}.
+The value 0 indicates that the device is not currently registered.</description>
+        <syntax>
+            <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaxBitRate" access="readOnly">
+        <description>The maximum PHY bit rate supported by this interface (expressed in {{units}}).</description>
+        <syntax>
+          <unsignedInt>
+            <units value="Mbps"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="NodeTypeDMCapable" access="readOnly">
+        <description>Indicates whether this interface has the capability to act as Domain Master in the G.hn domain.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="NodeTypeSCCapable" access="readOnly">
+        <description>Indicates whether this interface has the capability to act as Security Controller in the G.hn domain.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="NodeTypeDMConfig" access="readWrite">
+        <description>Requests the interface to become the Domain Master in the G.hn domain.
+This parameter is valid only if {{param|NodeTypeDMCapable}} is {{true}}.
+Note that, if more than one node is configured to act as Domain Master, G.hn specifies a protocol to ensure only one device actually becomes DM.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="NodeTypeDMStatus" access="readOnly">
+        <description>Indicates whether the interface is acting as Domain Master ({{true}}) or not ({{false}}).
+See Note in {{param|NodeTypeDMConfig}} regarding the possibility of more than one node being configured with {{param|NodeTypeDMConfig}} = {{true}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="NodeTypeSCStatus" access="readOnly">
+        <description>Indicates whether the interface is acting as Security Controller ({{true}}) or not ({{false}}).
+</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="AssociatedDeviceNumberOfEntries" access="readOnly">
+        <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Ghn.Interface.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Throughput statistics for this interface.
+The CPE MUST reset the interface's Stats parameters (unless otherwise stated in individual object or parameter descriptions) either when the interface becomes operationally down due to a previous administrative down (i.e. the interface's {{param|#.Status}} parameter transitions to a down state after the interface is disabled) or when the interface becomes administratively up (i.e. the interface's {{param|#.Enable}} parameter transitions from {{false}} to {{true}}). Administrative and operational interface status is discussed in {{bibref|TR-181i2|section 4.2.2}}.</description>
+      <parameter name="BytesSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of bytes transmitted out of the interface, including framing characters. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="BytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of bytes received on the interface, including framing characters. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="PacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets transmitted out of the interface.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="PacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets received on the interface.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="ErrorsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of outbound packets that could not be transmitted because of errors. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ErrorsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of inbound packets that contained errors preventing them from being delivered to a higher-layer protocol. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="UnicastPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets requested for transmission which were not addressed to a multicast or broadcast address at this layer, including those that were discarded or not sent. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="UnicastPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of received packets, delivered by this layer to a higher layer, which were not addressed to a multicast or broadcast address at this layer. 
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="DiscardPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of outbound packets which were chosen to be discarded even though no errors had been detected to prevent their being transmitted. One possible reason for discarding such a packet could be to free up buffer space. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="DiscardPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of inbound packets which were chosen to be discarded even though no errors had been detected to  prevent their being delivered. One possible reason for discarding such a packet could be to free up buffer space. 
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MulticastPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets that higher-level protocols requested for transmission and which were addressed to a multicast address at this layer, including those that were discarded or not sent.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="MulticastPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of received packets, delivered by this layer to a higher layer, which were addressed to a multicast address at this layer.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="BroadcastPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets that higher-level protocols requested for transmission and which were addressed to a broadcast address at this layer, including those that were discarded or not sent.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="BroadcastPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of received packets, delivered by this layer to a higher layer, which were addressed to a broadcast address at this layer.
+</description>
+        <syntax>
+          <unsignedLong/>
+        </syntax>
+      </parameter>
+      <parameter name="UnknownProtoPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>The total number of packets received via the interface which were discarded because of an unknown or unsupported  protocol.
+</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object name="Device.Ghn.Interface.{i}.AssociatedDevice.{i}." access="readOnly"  numEntriesParameter="AssociatedDeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <description>This table contains information about other G.hn devices connected to this G.hn interface.</description>
+      <uniqueKey>
+        <parameter ref="MACAddress"/>
+      </uniqueKey>
+      <parameter name="MACAddress" access="readOnly">
+        <description>MAC address of remote G.hn device.</description>
+        <syntax>
+          <dataType ref="MACAddress"/>
+        </syntax>
+      </parameter>
+      <parameter name="DeviceId" access="readOnly">
+        <description>Device Id (as defined in G.hn) for the remote G.hn device, denoted as DEVICE_ID in  {{bibref|G.9961}}.  Unregistered devices (with Device Id 0) SHOULD not be present in this table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="TxPhyRate" access="readOnly" activeNotify="canDeny">
+        <description>The PHY transmit Rate (expressed in {{units}}) to this remote device, denoted as PHY data rate in {{bibref|G.9961}}.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="Mbps"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="RxPhyRate" access="readOnly" activeNotify="canDeny">
+        <description>The PHY receive Rate (expressed in {{units}}) from this remote device, denoted as PHY data rate in {{bibref|G.9961}}.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="Mbps"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="Active" access="readOnly">
+        <description>Whether or not this device is currently present in the G.hn domain.
+The ability to list inactive nodes is OPTIONAL. If the CPE includes inactive nodes in this table, {{param}} MUST be set to {{false}} for each inactive node. The length of time an inactive node remains listed in this table is a local matter to the CPE.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="Device.WiFi.AccessPoint.{i}." access="readWrite" numEntriesParameter="AccessPointNumberOfEntries"  enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+      <parameter name="MaxAssociatedDevices" access="readWrite">
+        <description>The maximum number of devices that can simultaneously be connected to the access point.
+A value of 0 means that there is no specific limit.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>    
+      <parameter name="IsolationEnable" access="readWrite">
+        <description>Enables or disables device isolation.
+A value of {{true}} means that the devices connected to the Access Point are isolated from all other devices within the home network (as is typically the case for a Wireless Hotspot).</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>   
+    </object>
+
+    <object base="Device.WiFi.AccessPoint.{i}.Security." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="Reset" access="readWrite" dmr:previousParameter="">
+        <description>When set to {{true}}, this {{object|#}} instance's WiFi security settings are reset to their factory default values.  The affected settings include {{param|ModeEnabled}}, {{param|WEPKey}}, {{param|PreSharedKey}} and {{param|KeyPassphrase}}.
+If the parameter cannot be set, the CPE MUST reject the request as an invalid parameter value.  Possible failure reasons include a lack of default values or if {{param|ModeEnabled}} is an Enterprise type, i.e. {{enum|WPA-Enterprise|ModesSupported}}, {{enum|WPA2-Enterprise|ModesSupported}} or {{enum|WPA-WPA2-Enterprise|ModesSupported}}.</description>
+        <syntax command="true">
+          <boolean/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="Device.Bridging.Filter.{i}." access="readWrite" minEntries="0" maxEntries="unbounded">
+      <parameter base="SourceMACFromClientIDFilter" access="readWrite">
+        <description action="append">Note: DHCPv6 Option 1 (Client Identifier) is sometimes referred to as ''DUID''.</description>
+      </parameter>
+      <parameter base="DestMACFromClientIDFilter" access="readWrite">
+        <description action="append">Note: DHCPv6 Option 1 (Client Identifier) is sometimes referred to as ''DUID''.</description>
+      </parameter>
+    </object>
+
+    <object base="Device.DSLite.InterfaceSetting.{i}." access="readOnly" minEntries="0" maxEntries="unbounded">
+      <parameter base="EndpointName" access="readWrite">
+        <description action="replace">The Fully Qualified Domain Name (FQDN) of the tunnel concentrator (remote endpoint).
+This parameter is based on ''OPTION_DS_LITE_NAME'' from {{bibref|DSLite-options|Section 4}} and can be assigned statically (e.g. present in the factory default configuration or set by the ACS) or can be updated dynamically (via DHCPv6). If both statically and dynamically assigned, then {{param|EndpointAssignmentPrecedence}} indicates whether it is the static configuration or the DHCPv6 configuration that is actually applied to {{param}}.</description>
+      </parameter>
+      <parameter base="EndpointAddress" access="readWrite">
+        <description action="replace">The address of the tunnel concentrator (remote endpoint).
+This parameter can be assigned statically (e.g. present in the factory default configuration or set by the ACS) or can be updated dynamically (via a DNS lookup) when {{param|EndpointName}} is set.  If both statically and dynamically assigned, then {{param|EndpointAssignmentPrecedence}} indicates whether it is the static configuration or the DHCPv6-derived configuration that is actually applied to {{param}}.</description>
+      </parameter>
+    </object>
+
+    <object base="Device.NAT.PortMapping.{i}." access="readWrite" minEntries="0" maxEntries="unbounded">
+      <description action="replace">
+        Port mapping table.
+        This table MUST contain all NAT port mappings associated with this connection, including static and dynamic port mappings programmatically created via local control protocol, such as UPnP.
+        This table MUST NOT contain dynamic NAT binding entries associated with the normal operation of NAT.
+        If the CPE hosts a firewall, it is assumed that it will appropriately configure the firewall for the port mapping.
+        For enabled table entries, if {{param|InternalClient}} is {{empty}}, or if {{param|Interface}} is not a valid reference and {{param|AllInterfaces}} is {{false}}, then the table entry is inoperable and the CPE MUST set {{param|Status}} to {{enum|Error_Misconfigured|Status}}.
+      </description>
+    </object>
+
+    <object base="Device.DHCPv6.Server.Pool.{i}." access="readWrite" minEntries="0" maxEntries="unbounded">
+      <parameter base="DUID" access="readWrite">
+        <description action="append">Note: DHCPv6 Option 1 (DUID) is sometimes referred to as ''Client Identifier''.</description>
+      </parameter>
+    </object>
+
+    <object base="Device.Firewall.Chain.{i}.Rule.{i}." access="readWrite" minEntries="0" maxEntries="unbounded">
+      <description action="replace">
+        Firewall Rule table. Each entry defines a Firewall packet selection rule. The {{param|Target}} parameter defines the action to perform for traffic matching this rule: the packet can be dropped, accepted, rejected or passed to another {{object|#}}.
+        This table MUST NOT contain dynamic Firewall rules associated with {{enum|Stateful|##.Type}} Firewall sessions.
+        All entries are created by the creator of the parent {{object|#}}, as indicated by its {{param|#.Creator}} parameter.  {{object}} entries in a {{object|#}} with a {{param|#.Creator}} of {{enum|Defaults|#.Creator}}, {{enum|ACS|#.Creator}}, {{enum|UserInterface|#.Creator}} or (maybe) {{enum|Other|#.Creator}} are referred to as ''Static'' {{object}}s.  Whether or not a {{object}} in a {{object|#}} with {{param|#.Creator}} {{enum|Other|#.Creator}} is regarded as ''Static'' is a local matter to the CPE.  Some of this object's parameter descriptions refer to whether a {{object}} is ''Static'' when specifying whether or not the parameter value can be modified.
+        For enabled table entries, if {{param|SourceInterface}} is not a valid reference and {{param|SourceAllInterfaces}} is {{false}}, or if {{param|DestInterface}} is not a valid reference and {{param|DestAllInterfaces}} is {{false}}, then the table entry is inoperable and the CPE MUST set {{param|Status}} to {{enum|Error_Misconfigured|Status}}.
+      </description>
+    </object>
+
+    <profile name="Baseline:3" base="Baseline:2">
+      <object ref="Device." requirement="present">
+        <parameter ref="RootDataModelVersion" requirement="readOnly"/>
+      </object>
+    </profile>
+
+    <profile name="Optical:1">
+      <object ref="Device.Optical." requirement="present">
+        <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Optical.Interface.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="Upstream" requirement="readOnly"/>
+        <parameter ref="OpticalSignalLevel" requirement="readOnly"/>
+        <parameter ref="TransmitOpticalLevel" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Optical.Interface.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+        <parameter ref="ErrorsSent" requirement="readOnly"/>
+        <parameter ref="ErrorsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+
+    <profile name="EthernetRMONStats:1">
+      <object ref="Device.Ethernet." requirement="present">
+        <parameter ref="RMONStatsNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ethernet.RMONStats.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Interface" requirement="readOnly"/>
+        <parameter ref="Bytes" requirement="readOnly"/>
+        <parameter ref="Packets" requirement="readOnly"/>
+        <parameter ref="CRCErroredPackets" requirement="readOnly"/>
+      </object>
+    </profile>
+
+    <profile name="Ghn:1">
+      <object ref="Device.Ghn." requirement="present">
+        <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ghn.Interface.{i}." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="Alias" requirement="readWrite"/>
+        <parameter ref="Name" requirement="readOnly"/>
+        <parameter ref="LastChange" requirement="readOnly"/>
+        <parameter ref="Upstream" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="FirmwareVersion" requirement="readOnly"/>
+        <parameter ref="TargetDomainNames" requirement="readWrite"/>
+        <parameter ref="DomainName" requirement="readOnly"/>
+        <parameter ref="DomainNameIdentifier" requirement="readOnly"/>
+        <parameter ref="DomainId" requirement="readOnly"/>
+        <parameter ref="DeviceId" requirement="readOnly"/>
+        <parameter ref="MaxBitRate" requirement="readOnly"/>
+        <parameter ref="NodeTypeDMCapable" requirement="readOnly"/>
+        <parameter ref="NodeTypeSCCapable" requirement="readOnly"/>
+        <parameter ref="NodeTypeDMConfig" requirement="readOnly"/>
+        <parameter ref="NodeTypeDMStatus" requirement="readOnly"/>
+        <parameter ref="NodeTypeSCStatus" requirement="readOnly"/>
+        <parameter ref="AssociatedDeviceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ghn.Interface.{i}.Stats." requirement="present">
+        <parameter ref="BytesSent" requirement="readOnly"/>
+        <parameter ref="BytesReceived" requirement="readOnly"/>
+        <parameter ref="PacketsSent" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+      </object>
+      <object ref="Device.Ghn.Interface.{i}.AssociatedDevice.{i}." requirement="present">
+        <parameter ref="MACAddress" requirement="readOnly"/>
+        <parameter ref="DeviceId" requirement="readOnly"/>
+        <parameter ref="TxPhyRate" requirement="readOnly"/>
+        <parameter ref="RxPhyRate" requirement="readOnly"/>
+        <parameter ref="Active" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+
+</dm:document>

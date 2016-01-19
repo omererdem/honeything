@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Data Model Report Schema (DMR Schema)
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  XML Schema has been approved by members of the Forum. This document is
+  not binding on the Broadband Forum, any of its members, or any developer
+  or service provider. This document is subject to change, but only with
+  approval of members of the Forum.
+
+  This document is provided "as is," with all faults.  Any person holding a
+  copyright in this document, or any portion thereof, disclaims to the fullest
+  extent permitted by law any representation or warranty, express or implied,
+  including, but not limited to,
+  (a) any warranty of merchantability, fitness for a particular purpose,
+      non-infringement, or title;
+  (b) any warranty that the contents of the document are suitable for any
+      purpose, even if that purpose is known to the copyright holder;
+  (c) any warranty that the implementation of the contents of the documentation
+      will not infringe any third party patents, copyrights,
+      trademarks or other rights.
+
+  This publication may incorporate intellectual property. The Broadband Forum
+  encourages but does not require declaration of such intellectual property.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.
+
+  Copyright The Broadband Forum. All Rights Reserved.
+
+  Broadband Forum XML Schemas may be copied, downloaded, stored on a server or
+  otherwise re-distributed in their entirety only. The text of this
+  notice must be included in all copies.
+
+  Summary:
+  TR-069 Data Model Report Schema (DMR Schema).  Non-normative definitions that
+  can be used in DM Instances to provide additional information to reporting
+  tools.
+
+  Version History:
+  November  2008: cwmp-datamodel-report.xsd, corresponds to TR-106 Amendment 2
+  September 2009: cwmp-datamodel-report.xsd, corresponds to TR-106 Amendment 3
+                  - removed dependence on the DM Schema; added header comments
+                  - added noUniqueKeys to indicate that an object has no unique
+                    keys (so report tools shouldn't issue a warning)
+-->
+<!-- Entity and type definitions duplicated from DM Schema to avoid
+     dependence on a particular version of DM Schema. -->
+<!DOCTYPE cwmp-datamodel-report [
+  <!ENTITY colon ":">
+  <!ENTITY dot "\.">
+  <!ENTITY inst "(\{i\})">
+  <!ENTITY name "([\i-[:]][\c-[:\.]]*)">
+  <!ENTITY Name "([\i-[a-z:]][\c-[:\.]]*)">
+  <!ENTITY num "(\d+)">
+]>
+<!-- Don't want the "0-1" because this schema is unversioned, but have to
+     keep it for backwards compatibility -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:broadband-forum-org:cwmp:datamodel-report-0-1" targetNamespace="urn:broadband-forum-org:cwmp:datamodel-report-0-1" elementFormDefault="unqualified" attributeFormDefault="unqualified">
+  <xs:simpleType name="ObjectReferencePattern">
+    <xs:annotation>
+      <xs:documentation>Object path that can contain "{i}" placeholders and that can therefore references multiple objects.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&dot;?(&name;&dot;(&inst;&dot;)?)*"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ParameterReference">
+    <xs:annotation>
+      <xs:documentation>Parameter path that cannot contain "{i}" placeholders and that therefore references a single parameter.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&dot;?(&name;&dot;)*&name;?"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="ProfileName">
+    <xs:annotation>
+      <xs:documentation>Profile name, including version.  The name part is the same as xs:NCName except that dots are not permitted.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&name;&colon;&num;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="VersionNumber">
+    <xs:annotation>
+      <xs:documentation>Version number, consisting of major and minor versions.</xs:documentation>
+    </xs:annotation>
+    <xs:restriction base="xs:token">
+      <xs:pattern value="&num;&dot;&num;"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:attribute name="fixedObject" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>Indicates that object is fixed, so shouldn't (for example) warn about any writable parameters that it might contain.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="hideDeleted" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>Indicates that if item has been deleted, it should always be hidden in the report, e.g. not even shown in strikeout.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="noUniqueKeys" type="xs:boolean">
+    <xs:annotation>
+      <xs:documentation>Indicates that object has no unique keys, so shouldn't (for example) warn about the lack of unique keys.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="previousParameter" type="tns:ParameterReference">
+    <xs:annotation>
+      <xs:documentation>Previous parameter hint.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="previousObject" type="tns:ObjectReferencePattern">
+    <xs:annotation>
+      <xs:documentation>Previous object hint.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="previousProfile" type="tns:ProfileName">
+    <xs:annotation>
+      <xs:documentation>Previous profile hint.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+  <xs:attribute name="version" type="tns:VersionNumber">
+    <xs:annotation>
+      <xs:documentation>Version number.</xs:documentation>
+    </xs:annotation>
+  </xs:attribute>
+</xs:schema>

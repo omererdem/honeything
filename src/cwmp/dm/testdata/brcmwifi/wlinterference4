@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xinterference" ] ; then
+  echo "Auto Wireless LAN Interference mitigation is enabled and not active, and noise reduction is enabled. (mode 4)"
+fi
+exit 0

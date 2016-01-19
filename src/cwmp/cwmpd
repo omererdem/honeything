@@ -1,0 +1,140 @@
+#!/usr/bin/python
+# Copyright 2011 Google Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# TR-069 has mandatory attribute names that don't comply with policy
+#pylint: disable-msg=C6409
+#pylint: disable-msg=W0404
+#
+"""The main server process for our TR-069 CPE device."""
+
+__author__ = 'apenwarr@google.com (Avery Pennarun)'
+
+import os.path
+import sys
+import src.cwmp.google3
+import bup.options
+import tornado.autoreload
+import tornado.httpclient
+import dm_root
+import tr.api
+import tr.core
+import tr.http
+import tr.mainloop
+import tr.rcommand
+
+from src.logger.HoneythingLogging import HTLogging
+
+
+optspec = """
+cwmpd [options]
+--
+r,rcmd-port=  TCP port to listen for rcommands on; 0 to disable [12999]
+u,unix-path=  Unix socket to listen on [/tmp/cwmpd.sock]
+i,ip=         IP address to report to ACS. (default=finds interface IP address)
+l,listenip=   IP address to listen on [::1]
+p,port=       TCP port to listen for TR-069 on [7547]
+ping-path=    Force CPE ping listener to this URL path (default=random)
+acs-url=      URL of the TR-069 ACS server to connect to
+fake-acs      Run a fake ACS (and auto-set --acs-url to that)
+no-cpe        Don't run a CPE (and thus never connect to ACS)
+cpe-listener  Let CPE listen for http requests (not TR-069 compliant)
+platform=     Activate the platform-specific device tree (see platform/ dir)
+close-stdio   Close stdout after listeners are running; exit when stdin closes
+ping_ip6dev=  Use the IPv6 address from dev for the CPE Ping address
+ca-certs=     SSL ca_certificates.crt file to use
+client-cert=  SSL client certificate to use
+client-key=   SSL client private key to use
+restrict-acs-hosts= Domain names allowed for ACS URL.  Default=unrestricted.  Example: 'google.com gfsvc.com'
+"""
+
+ht = HTLogging()
+
+#pylint: disable-msg=W0613
+def _GotData(loop, fd, flags):
+  if not os.read(fd, 1024):
+    loop.ioloop.stop()
+
+
+def main():
+  o = bup.options.Options(optspec)
+  (opt, flags, extra) = o.parse(sys.argv[1:])  #pylint: disable-msg=W0612
+
+  tornado.httpclient.AsyncHTTPClient.configure(
+      'tornado.curl_httpclient.CurlAsyncHTTPClient')
+  loop = tr.mainloop.MainLoop()
+  root = dm_root.DeviceModelRoot(loop, opt.platform)
+  if opt.rcmd_port:
+    loop.ListenInet((opt.listenip, opt.rcmd_port),
+                    tr.rcommand.MakeRemoteCommandStreamer(root))
+  if opt.unix_path:
+    loop.ListenUnix(opt.unix_path,
+                    tr.rcommand.MakeRemoteCommandStreamer(root))
+
+  if opt.port:
+    acs = cpe = None
+    if opt.fake_acs:
+      acs = tr.api.ACS()
+      if not opt.acs_url:
+        opt.acs_url = 'http://localhost:%d/acs' % opt.port
+    if opt.cpe:
+      cpe = tr.api.CPE(root)
+      if not opt.cpe_listener:
+        #print 'CPE API is client mode only.'
+        ht.logger.info('CPE API is client mode only.')
+
+
+    if cpe:
+      # Arguments to pass to Tornado HTTPClient.fetch
+      fetch_args = {'user_agent': 'catawampus-tr69'}
+      if opt.ca_certs:
+        fetch_args['ca_certs'] = opt.ca_certs
+        fetch_args['validate_cert'] = True
+      if opt.client_cert and opt.client_key:
+        fetch_args['client_cert'] = opt.client_cert
+        fetch_args['client_key'] = opt.client_key
+
+      pc = root.get_platform_config(ioloop=loop.ioloop)
+      cpe.download_manager.SetDirectories(config_dir=pc.ConfigDir(),
+                                          download_dir=pc.DownloadDir())
+      cpe_machine = tr.http.Listen(ip=opt.ip, port=opt.port,
+                                   ping_path=opt.ping_path,
+                                   acs=acs, cpe=cpe,
+                                   restrict_acs_hosts=opt.restrict_acs_hosts,
+                                   cpe_listener=opt.cpe_listener,
+                                   platform_config=pc,
+                                   acs_url=opt.acs_url,
+                                   ping_ip6dev=opt.ping_ip6dev,
+                                   fetch_args=fetch_args)
+      ms = cpe_machine.GetManagementServer()
+      root.add_management_server(ms)
+      root.configure_tr157(cpe_machine)
+      cpe_machine.Startup()
+
+    if opt.close_stdio:
+      nullf = open('/dev/null', 'w+')
+      os.dup2(nullf.fileno(), 1)
+      nullf.close()
+      loop.ioloop.add_handler(sys.stdin.fileno(),
+                              lambda *args: _GotData(loop, *args),
+                              loop.ioloop.READ)
+
+  loop.Start()
+
+
+if __name__ == '__main__':
+  sys.stdout = os.fdopen(1, 'w', 1)  # force line buffering even if redirected
+  sys.stderr = os.fdopen(2, 'w', 1)  # force line buffering even if redirected
+  print
+  main()

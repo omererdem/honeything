@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xssid" ] ; then
+  echo "Current SSID: \"\""
+fi
+exit 0

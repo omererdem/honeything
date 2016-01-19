@@ -1,0 +1,1722 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    TR-069 STBService:1.1 Service Object definition update
+  
+  Notice:
+
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment.
+  This Broadband Forum Document has been approved by members of the
+  Forum. This Broadband Forum Document is not binding on the Broadband
+  Forum, any of its members, or any developer or service provider.
+  This Broadband Forum Document is subject to change, but only with
+  approval of members of the Forum.  This Document is copyrighted by
+  the Broadband Forum, and all rights are reserved.  Portions of this
+  Document may be copyrighted by Broadband Forum members.
+
+  This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+  OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+  BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+  INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+  (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+      PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+  (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+      FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+      HOLDER;
+  (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+      INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+      OTHER RIGHTS.
+
+  By using this Broadband Forum Document, users acknowledge that
+  implementation may require licenses to patents.  The Broadband Forum
+  encourages but does not require its members to identify such
+  patents.  For a list of declarations made by Broadband Forum member
+  companies, please see http://www.broadband-forum.org.  No assurance
+  is given that licenses to patents necessary to implement this
+  Document will be available for license at all or on reasonable and
+  non-discriminatory terms.
+
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+  ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+  LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+  CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+  RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+  OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+  Broadband Forum Documents may be copied, downloaded, stored on a
+  server or otherwise re-distributed in their entirety only, and may
+  not be modified without the advance written permission of the
+  Broadband Forum.
+
+  The text of this notice must be included in all copies of this
+  Broadband Forum Document.
+  
+  Summary:
+  TR-135 STB Service: 1.1 Service Object update.
+  
+  Version History:
+  September 2009: tr-135-1-0-0.xml, corresponds to TR-135 Issue 1, Section 6 
+                  (Parameter Definitions) and Section 7 (Profile Definitions)
+  November 2010: tr-135-1-1-0.xml, corresponds to TR-135 Issue 1, Amendment 1
+-->
+ 
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1 cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:wt-135-1-1-0">
+             <description>STB Service: 1.1 Service Object update.</description>
+    <import file="tr-135-1-0.xml" spec="urn:broadband-forum-org:tr-135-1-0">
+ <model name="STBService:1.0"></model>  
+  </import>
+  
+  
+  
+<bibliography>
+<reference id="RFC4078">
+      <name>RFC 4078</name>
+      <title>The TV-Anytime Content Reference Identifier (CRID)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://www.ietf.org/rfc/rfc4078.txt</hyperlink>
+    </reference>
+    <reference id="TS102323">
+      <name>ETSI TS 102 323</name>
+      <title>Digital Video Broadcasting (DVB); Carriage and signalling of TV-Anytime information
+in DVB transport streams</title>
+      <organization>ETSI</organization>
+    </reference>  
+     <reference id="SPDIF">
+      <name>S/PDIF</name>
+      <title> Sony/Philips Digital InterFace  IEC-958</title>
+      <organization>IEC</organization>
+    </reference>  
+     <reference id="HDMI">
+      <name>HDMI</name>
+      <title> High-Definition Multimedia Interface 1.4a</title>
+    <date>March 2010</date>
+    </reference>  
+ </bibliography> 
+ 
+ 
+ 
+ <model name="STBService:1.1"  base="STBService:1.0"  isService="true">
+
+<object base="STBService.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" dmr:noUniqueKeys="true"/>
+   
+ <object base="STBService.{i}.Capabilities.VideoOutput." access="readOnly" minEntries="1" maxEntries="1">
+  
+      <parameter name="DisplayFormats" access="readOnly">
+        <description>Each entry is a supported display format and MUST be in the form of “x:y”, such as for example “4:3, 16:9, 14:9". {{nopattern}}</description>
+        <syntax>
+          <list/>
+            <string>
+             <pattern value="\d+:\d+">
+              <description> {{nopattern}} </description></pattern>
+            </string>
+        </syntax>
+      </parameter>
+     </object>
+   
+ <object base="STBService.{i}.Capabilities.ServiceMonitoring." access="readOnly" minEntries="1" maxEntries="1">
+           <parameter base="ServiceTypes" access="readOnly">
+          <syntax>
+          <list/>
+          <string>
+            <enumeration value="IPTV">  
+            </enumeration>
+            <enumeration value="VoD">
+             </enumeration>
+            <enumeration value="IP">
+            </enumeration>
+            <enumeration value="TEST">
+              <description>WAN-sourced Force monitoring IP stream from {{param|.Components.FrontEnd.{i}.IP.ForceMonitor.URI}} (either IPTV or VoD).</description>
+            </enumeration>
+            <enumeration value="IP-All">
+              <description>Any WAN-sourced IP stream (includes user and force monitoring streams, IPTV and VoD).</description>
+            </enumeration>
+            <enumeration value="CAB">
+            </enumeration>
+            <enumeration value="DTT">
+            </enumeration>
+            <enumeration value="SAT">
+            </enumeration>
+            <enumeration value="PVR">
+            </enumeration>
+          </string>
+        </syntax>
+      </parameter>   
+       <parameter name="MaxEventsPerSampleInterval" access="readOnly">
+        <description>Maximum number of events of each applicable statistic that the STB is able to store for each sample interval.
+A value of -1 indicates no specific maximum number of events.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+            <units value="bytes"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter base="HighLevelMetricNames" access="readOnly">
+        <description action="replace">The names of the supported high-level metrics. If a metric produces several different scores (e.g. an audio, a video, and an audiovisual score), then they MUST be explicitly named.  Example (using "XYZ" as the name of the base metric):
+"XYZAudio,XYZVideo,XYZAudiovisual".</description>
+      </parameter>
+      </object>
+
+
+<object base="STBService.{i}.Capabilities.PVR." access="readOnly" minEntries="1" maxEntries="1">
+           <parameter base="MaxIOStreams" access="readOnly">
+        <description action="replace">Maximum number of AV streams that the PVR can simultaneously record and playback. For example a time shift, consisting of a record and a play back is considered as 2 streams.
+A value of -1 indicates no specific limit on the number of streams.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+        </syntax>
+      </parameter>
+    </object>
+ 
+<object name="STBService.{i}.Capabilities.HDMI." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.Capabilities.VideoOutput.">
+        <description>This object describes the characteristics of the HDMI interface, if any.</description>
+               <parameter name="SupportedResolutions" access="readOnly">
+        <description>Video resolutions supported for the HDMI video output. {{enum}}</description>
+        <syntax>
+          <list/>
+          <string>
+            <enumeration value="640x480p/60Hz"/>
+            <enumeration value="1280x720p/60Hz"/>
+            <enumeration value="1920x1080i/60Hz"/>
+            <enumeration value="720x480p/60Hz"/>
+            <enumeration value="720(1440)x480i/60Hz"/>
+            <enumeration value="1280x720p/50Hz"/>
+            <enumeration value="1920x1080i/50Hz"/>
+            <enumeration value="720x576p/50Hz"/>
+            <enumeration value="720(1440)x240p/60Hz"/>
+            <enumeration value="2880x480i/60Hz"/>
+            <enumeration value="2880x240p/60Hz"/>
+            <enumeration value="1440x480p/60Hz"/>
+            <enumeration value="1920x1080p/60Hz"/>
+            <enumeration value="720(1440)x288p/50Hz"/>
+            <enumeration value="2880x576i/50Hz"/>
+            <enumeration value="2880x288p/50Hz"/>
+            <enumeration value="1440x576p/50Hz"/>
+            <enumeration value="1920x1080p/50Hz"/>
+            <enumeration value="1920x1080p/24Hz"/>
+            <enumeration value="1920x1080p/25Hz"/>
+            <enumeration value="1920x1080p/30Hz"/>
+            <enumeration value="2880x480p/60Hz"/>
+            <enumeration value="2880x576p/50Hz"/>
+            <enumeration value="1920x1080i (1250 total)/50Hz"/>
+            <enumeration value="720(1440)x480i/120Hz"/>
+            <enumeration value="720x480p/120Hz"/>
+            <enumeration value="1920x1080i/120Hz"/>
+             <enumeration value="1280x720p/120Hz"/>
+            <enumeration value="720(1440)x480i/240Hz"/>
+            <enumeration value="720x480p/240Hz"/>
+            <enumeration value="720(1440)x576i/100Hz"/>
+            <enumeration value="720x576p/100Hz"/>
+            <enumeration value="1920x1080i/100Hz"/>
+            <enumeration value="1280x720p/100Hz"/>
+            <enumeration value="720(1440)x576i/200Hz"/>
+            <enumeration value="720x576p/200Hz"/>
+            <enumeration value="1280x720p/24Hz"/>
+            <enumeration value="1280x720p/25Hz"/>
+            <enumeration value="1280x720p/30Hz"/>
+            <enumeration value="1920x1080p/120Hz"/>
+            <enumeration value="1920x1080p/100Hz"/>
+          </string>
+        </syntax>
+      </parameter>
+        <parameter name="CECSupport" access="readOnly">
+<description>Indicates whether the STB is supporting HDMI-CEC features as described in {{bibref|HDMI}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+       <parameter name="HDMI3D" access="readOnly">
+        <description>Indicates whether the STB is supporting the 3D video formats mandated by {{bibref|HDMI}}.</description>
+        <syntax>
+           <boolean/>
+         </syntax>
+      </parameter> 
+     </object>
+ 
+<object name="STBService.{i}.Capabilities.CDS." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.Capabilities.HDMI.">
+        <description>This object describes the characteristics of the Content Download System, if any.</description>
+        <parameter name="PushCapable" access="readOnly">
+        <description>Capability of providing a CDS Push service for the operator initiated download of content items to local storage via a broadband IP connection.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="PullCapable" access="readOnly">
+        <description>Capability of providing a CDS Pull service for the user initiated download of content items to a local storage via a broadband IP connection.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+</object>
+ 
+
+<object base="STBService.{i}.Components." access="readOnly" minEntries="1" maxEntries="1"> 
+      <parameter base="FrontEndNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+       <parameter base="AudioDecoderNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+      <parameter base="VideoDecoderNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+      <parameter base="AudioOutputNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+      <parameter base="VideoOutputNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+      <parameter base="SCARTNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+     <parameter base="CANumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>      
+     <parameter base="DRMNumberOfEntries" access="readOnly">
+      <description action="replace">{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>              
+       <parameter name="HDMINumberOfEntries" access="readOnly">
+      <description>{{numentries}}</description>
+          <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>
+       <parameter name="SPDIFNumberOfEntries" access="readOnly">
+   <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+        </parameter>
+</object>
+
+
+  <object name="STBService.{i}.Applications.CDSPush." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Details of STB CDS Push logical internal parameters.</description>
+      <parameter name="Reference" access="readOnly">
+        <description>It references the object instance dedicated to the CDS Push service. Example: “Device.Services.StorageService.1.LogicalVolume.1.Folder.1”.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+            <pathRef refType="strong" targetParent=".Services.StorageService.{i}.PhysicalMedium. .Services.StorageService.{i}.LogicalVolume. .Services.StorageService.{i}.LogicalVolume.{i}.Folder." targetType="row"/>
+         </string>
+        </syntax>
+      </parameter>
+       <parameter name="ContentItemNumberOfEntries" access="readOnly">
+   <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+  </object>
+ 
+ 
+<object name="STBService.{i}.Applications.CDSPush.ContentItem.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ContentItemNumberOfEntries">
+      <description>Content Item instance table.</description>
+      <uniqueKey>
+        <parameter ref="ContentReferenceId"/>
+      </uniqueKey>
+      <parameter name="ContentReferenceId" access="readOnly">
+        <description>Unique Content Item reference as defined in {{bibref|TS102323}}, or {{bibref|RFC4078}}.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter> 
+      <parameter name="VersionNumber" access="readOnly">
+        <description>Version number of the stored content item (a content item could be updated with a new version e.g. in case of errors in the video preventing the play out).</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="255"/>
+            <units value="%"/>
+          </unsignedInt>
+        </syntax>
+      </parameter> 
+      <parameter name="DeleteItem" access="readWrite">
+        <description>When set to {{true}}, deletes this Content Item instance. The value is not saved in device state and is always {{false}} when read.</description>
+        <syntax>
+           <boolean/>
+        </syntax>
+      </parameter> 
+</object>
+ 
+ 
+ <object name="STBService.{i}.Applications.CDSPull." access="readOnly" minEntries="1" maxEntries="1">
+      <description>Details of STB CDS Pull logical internal component. This object is present only if the user allowed (via his local STB UI) the remote management of the CDS Pull service.</description>
+         <parameter name="Reference" access="readOnly">
+        <description>It references the object instance dedicated to the CDS Pull service. Example: “Device.Services.StorageService.1.LogicalVolume.1.Folder.1”.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+            <pathRef refType="strong" targetParent=".Services.StorageService.{i}.PhysicalMedium. .Services.StorageService.{i}.LogicalVolume. .Services.StorageService.{i}.LogicalVolume.{i}.Folder." targetType="row"/>
+          </string>
+        </syntax>
+      </parameter>
+       <parameter name="ContentItemNumberOfEntries" access="readOnly">
+   <description>{{numentries}}</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+  </object> 
+ 
+ 
+<object name="STBService.{i}.Applications.CDSPull.ContentItem.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ContentItemNumberOfEntries">
+      <description>Content Item instance table.</description>
+      <uniqueKey>
+        <parameter ref="ContentReferenceId"/>
+      </uniqueKey>
+      <parameter name="ContentReferenceId" access="readOnly">
+        <description>Unique Content Item reference as defined in {{bibref|TS102323}}, or {{bibref|RFC4078}}.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter> 
+      <parameter name="VersionNumber" access="readOnly">
+        <description>Version number of the stored content item (a content item could be updated with a new version e.g. in case of errors in the video preventing the play out).</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="255"/>
+            <units value="%"/>
+          </unsignedInt>
+        </syntax>
+      </parameter> 
+      <parameter name="DeleteItem" access="readWrite">
+        <description>When set to {{true}}, deletes this Content Item instance. The value is not saved in device state and is always {{false}} when read.</description>
+        <syntax>
+           <boolean/>
+        </syntax>
+      </parameter> 
+</object> 
+ 
+ 
+ 
+ 
+<object base="STBService.{i}.Components.FrontEnd.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="FrontEndNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+ </object>
+
+
+<object base="STBService.{i}.Components.FrontEnd.{i}.IP.IGMP.ClientGroup.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ClientGroupNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="GroupAddress"/>
+      </uniqueKey>
+    </object>
+
+
+<object base="STBService.{i}.Components.AudioDecoder.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AudioDecoderNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+    </object>
+
+<object base="STBService.{i}.Components.VideoDecoder.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VideoDecoderNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+    </object>
+
+<object base="STBService.{i}.Components.AudioOutput.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AudioOutputNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+    </object>
+
+<object base="STBService.{i}.Components.SCART.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="SCARTNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+   </object>
+
+<object base="STBService.{i}.AVStreams.AVStream.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AVStreamNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+    </object>
+    
+<object base="STBService.{i}.AVPlayers.AVPlayer.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AVPlayerNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+    </object>
+    
+<object base="STBService.{i}.Components.FrontEnd.{i}.IP.IGMP.ClientGroupStats.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ClientGroupStatsNumberOfEntries">
+      <uniqueKey functional="false">
+        <parameter ref="GroupAddress"/>
+      </uniqueKey>
+    </object>
+
+<object base="STBService.{i}.Components.PVR.Storage.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="StorageNumberOfEntries">
+      <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+ <parameter name="Name" access="readOnly" dmr:previousParameter="">
+        <description>Unique human-readable name associated with this storage instance.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>    
+
+
+
+<object base="STBService.{i}.Components.FrontEnd.{i}.IP.Inbound.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="InboundNumberOfEntries">
+      <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+ <parameter name="Name" access="readOnly" dmr:previousParameter="Status">
+        <description>Unique human-readable name associated with this inbound IP instance.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>    
+    
+<object base="STBService.{i}.Components.FrontEnd.{i}.IP.Outbound.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="OutboundNumberOfEntries">
+      <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Name" access="readOnly" dmr:previousParameter="Status">
+        <description>Unique human-readable name associated with this outbound IP instance.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>    
+
+
+<object base="STBService.{i}.Components.FrontEnd.{i}.DVBT.Modulation." access="readOnly" minEntries="1" maxEntries="1">   
+<parameter base="HierarchicalInformation" access="readWrite">
+          <syntax>
+          <string>
+            <enumeration value="0">
+              <description>no hierarchy</description>
+            </enumeration>
+          <enumeration value="1">
+              <description action="replace"/>
+            </enumeration>
+            <enumeration value="2"/>
+            <enumeration value="4"/>
+          </string>
+        </syntax>
+      </parameter>
+
+</object>
+
+
+
+<object name="STBService.{i}.Components.FrontEnd.{i}.DVBT.Service." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.Components.FrontEnd.{i}.DVBT.Modulation.">
+ <description>DVB-T Current service details.</description>
+        <parameter name="CurrentLogicalChannel" access="readOnly">
+        <description>It represents the logical channel object instance for the current service, For example: ''.Components.FrontEnd.1.DVBT.-ServiceListDatabase.LogicalChannel.12''.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+            <pathRef refType="strong" targetParent="#.ServiceListDatabase.LogicalChannel." targetType="row"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentService" access="readOnly">
+        <description>It represents the service object instance for the current service. For example: ''.Components.FrontEnd.1.DVBT.ServiceListDatabase.LogicalChannel.12.Service.1''.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+            <pathRef refType="strong" targetParent="#.ServiceListDatabase.LogicalChannel.{i}.Service." targetType="row"/>
+          </string>
+        </syntax>
+      </parameter>
+      </object>
+
+<object base="STBService.{i}.Components.FrontEnd.{i}.DVBT.ServiceListDatabase.LogicalChannel.{i}.Service.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ServiceNumberOfEntries">
+        <parameter name="Name" access="readOnly" dmr:previousParameter="">
+        <description>Human-readable name associated with this service, e.g. read from the DVB service information metadata.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>    
+      <parameter name="CBER" access="readOnly" dmr:previousParameter="BER" activeNotify="canDeny">
+        <description>Bit Error Ratio after correction, expressed in {{units}} (indicates the quality of this service).</description>
+        <syntax>
+          <unsignedInt>            
+          <units value="multiples of 1e-9"/>
+</unsignedInt>
+        </syntax>
+      </parameter>   
+       <parameter name="SNR" access="readOnly"  dmr:previousParameter="CBER" activeNotify="canDeny">
+        <description>Signal/Noise ratio in the carrier band, measured in {{units}} (indicates the quality of this service).</description>
+        <syntax>
+          <unsignedInt>
+            <units value="dB"/>
+        </unsignedInt>
+        </syntax>
+      </parameter>     
+      </object>
+    
+
+    
+    
+<object base="STBService.{i}.Components.FrontEnd.{i}.IP.RTPAVPF." access="readOnly" minEntries="1" maxEntries="1">
+        <parameter base="Enable" access="readWrite">
+        <description action="replace">Enables or disables RTP/AVPF receiver report generation.
+        When set to {{true}}, enables the error correction operation, immediately ({{enum|Forced|OperationMode}} mode) or automatically when necessary ({{enum|Auto|OperationMode}} mode).
+When set to {{false}}, disables the error correction operation.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="OperationMode" access="readWrite">
+        <description>The operation mode of the Error Correction mechanism. {{enum}}
+In {{enum|Auto}} mode, when Error Correction is enabled, the STB decides whether or not to run the Error Correction operation (e.g. after an error analysis).
+In {{enum|Forced}} mode, when Error Correction is enabled the STB MUST run the Error Correction operation.</description>
+        <syntax>
+          <string>
+            <enumeration value="Auto"/>
+            <enumeration value="Forced"/>
+          </string>
+        </syntax>
+      </parameter>
+     <parameter name="ECOperationStatus" access="readOnly">
+        <description>The status of RTP/AVPF operation. {{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+             <enumeration value="Auto mode EC On">
+				<description>{{enum|Auto|OperationMode}} mode and EC is running</description>
+			</enumeration>
+            <enumeration value="Auto mode EC Off without buffering">
+				<description>{{enum|Auto|OperationMode}} mode and EC is not running and EC data are not buffered). Note: this is equivalent of "Disabled" but this "Disabled" state is caused by STB under auto mode, not be set by operator</description>
+			</enumeration>
+            <enumeration value="Auto mode EC Off with buffering">
+				<description>{{enum|Auto|OperationMode}} mode and EC is not running but EC data are buffered</description>
+			</enumeration>
+            <enumeration value="Forced mode EC On">
+				<description>{{enum|Forced|OperationMode}} mode and Enabled</description>
+			</enumeration>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+   
+
+<object name="STBService.{i}.Components.FrontEnd.{i}.IP.FEC." access="readOnly" minEntries="1" maxEntries="1"  dmr:previousObject="STBService.{i}.Components.FrontEnd.{i}.IP.RTPAVPF.">
+ <description>Parameters related to AL-FEC configuration as defined in {{bibref|SMPTE20022-1}}.</description>
+        <parameter name="Enable" access="readWrite">
+        <description>Enables or disables FEC decoder operation.
+When set to {{true}}, enables the FEC decoder operation, immediately ({{enum|Forced|OperationMode}} mode) or automatically when necessary ({{enum|Auto|OperationMode}} mode).
+When set to {{false}}, disables the FEC decoder operation.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="OperationMode" access="readWrite">
+        <description>The operation mode of the FEC decoder. {{enum}}
+In {{enum|Auto}} mode, when Error Correction is enabled the STB decides whether or not to run the AL_FEC decoding (e.g. after an error analysis).
+In {{enum|Forced}} mode, when Error Correction is enabled the STB MUST run the FEC decoding.</description>
+        <syntax>
+          <string>
+            <enumeration value="Auto"/>
+            <enumeration value="Forced"/>
+          </string>
+        </syntax>
+      </parameter>
+     <parameter name="ECOperationStatus" access="readOnly">
+        <description>The status of FEC decoder operation. {{enum}} 
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Auto mode EC On">
+				<description>{{enum|Auto|OperationMode}} mode and EC is running</description>
+			</enumeration>
+            <enumeration value="Auto mode EC Off without buffering">
+				<description>{{enum|Auto|OperationMode}} mode and EC is not running and EC data are not buffered). Note: this is equivalent of "Disabled", but this "Disabled" state is caused by STB under auto mode, not be set by operator</description>
+			</enumeration>
+            <enumeration value="Auto mode EC Off with buffering">
+				<description>{{enum|Auto|OperationMode}} mode and EC is not running but EC data are buffered</description>
+			</enumeration>
+            <enumeration value="Forced mode EC On">
+				<description>{{enum|Forced|OperationMode}} mode and Enabled</description>
+			</enumeration>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>      
+   
+   
+<object name="STBService.{i}.Components.FrontEnd.{i}.IP.ForceMonitor." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.Components.FrontEnd.{i}.IP.ServiceConnect.">
+ <description>Parameters used to describe the force monitoring operation.
+When running in the force monitoring mode, the STB MUST automatically connect to a test URI  defined by the {{param|URI}} parameter whenever it detects that the IP tuner is not not receiving any data from the WAN.
+When running in normal mode, the STB does not perform any action when it does not receive any data from the IP tuner coming from the WAN.
+The force monitor mode allows to maintain an active stream coming from the network so as to keep collecting statistics.</description>
+        <parameter name="Enable" access="readWrite">
+        <description>When set to {{true}}, forces the operation mode in ForceMonitor mode
+When set to {{false}}, forces operation mode in Normal mode.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>Indicates the status of the statistic mode of operation. {{enum}}
+        </description>
+        <syntax>
+          <string>
+            <enumeration value="Normal"/>
+            <enumeration value="Force Monitor"/>
+          </string>
+        </syntax>
+      </parameter>
+     <parameter name="URI" access="readWrite">
+        <description>describes the service to connect to for force monitoring purposes with the same syntaxt as {{param|#.ServiceConnect.URI}}
+If a {{object|.ServiceMonitoring.MainStream}} instance with ''ServiceType'' = ''TEST'' or ''IP-All'' is currently enabled, the STB MUST ensure that performance data for this service is collected in that instance.
+The value when read is not specified and need not be the value that was most recently written.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>   
+    
+  <object name="STBService.{i}.Components.HDMI.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="HDMINumberOfEntries" dmr:previousObject="STBService.{i}.Components.SCART.{i}.">
+      <description>HDMI instance table. This object allows configuration of the STB’s HDMI output.</description>
+             <uniqueKey>
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables the HDMI output.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>The status of HDMI output.  {{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>Human-readable name associated with this output.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ResolutionMode" access="readWrite">
+        <description>The resolution mode of the HDMI output.
+In {{enum|Auto}} mode, the resolution is automatically set at the best format via HDMI protocols. 
+In {{enum|Manual}} mode, the resolution to be applied to the HDMI output is given by the ResolutionValue parameter.</description>
+        <syntax>
+         <string>
+            <enumeration value="Auto"/>
+            <enumeration value="Manual"/>
+         </string>
+        </syntax>
+      </parameter>
+      <parameter name="ResolutionValue" access="readWrite">
+        <description>When {{param|ResolutionMode}} is set to {{enum|Manual|ResolutionMode}} mode, a write action configures the resolution to be applied to the HDMI output, 
+When {{param|ResolutionMode}} is set to {{enum|Auto|ResolutionMode}}, a write action as no effect.
+A read action provides the current resolution of the HDMI output.</description>
+        <syntax>
+         <string>
+            <enumerationRef targetParam=".Capabilities.HDMI.SupportedResolutions" nullValue=""/>
+          </string>
+        </syntax>
+      </parameter> 
+     </object>   
+   
+   
+ <object name="STBService.{i}.Components.HDMI.{i}.DisplayDevice." access="readOnly" minEntries="0" maxEntries="1" >
+      <description>HDMI connected display device configuration. This object provides parameters from the HDMI connected device if any.</description>
+        <parameter name="Status" access="readOnly">
+        <description>The status of the connected HDMI Display device.  {{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Present"/>
+            <enumeration value="None"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>Human-readable name associated with this display device.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EEDID" access="readOnly">
+        <description>Enhanced Extended Display Information Data (E-EDID) retrieved from the connected HDMI device.</description>
+        <syntax>
+            <hexBinary><size maxLength="256"></size></hexBinary>
+        </syntax>
+      </parameter>
+      <parameter name="SupportedResolutions" access="readOnly">
+        <description>Each entry is a supported resolution of the connected HDMI device and MUST be one element of  {{param|.Capabilities.HDMI.SupportedResolutions}}.</description>
+        <syntax>
+          <list/>
+            <string/>
+        </syntax>
+      </parameter>  
+      <parameter name="PreferredResolution" access="readOnly">
+        <description>Preferred connected HDMI device resolution format.</description>
+        <syntax>
+            <string>
+				<enumerationRef targetParam=".Capabilities.HDMI.SupportedResolutions"/>
+          </string>
+        </syntax>
+      </parameter>  
+      <parameter name="VideoLatency" access="readOnly">
+        <description>Video latency, in {{units}}, being applied in the connected HDMI device. This parameter is extracted from the E-EDID and can be used to compensate the video latency to preserve lipsync.</description>
+        <syntax>
+           <unsignedInt>
+            <units value="milliseconds"/>
+            </unsignedInt>
+        </syntax>
+      </parameter>  
+     <parameter name="CECSupport" access="readOnly">
+        <description>When set to {{true}}, indicates the connected HDMI device is supporting HDMI-CEC features.
+When set to {{false}}, indicates the connected HDMI device does not support HDMI CEC.</description>
+        <syntax>
+           <boolean/>
+         </syntax>
+      </parameter> 
+      <parameter name="AutoLipSyncSupport" access="readOnly">
+        <description>When set to {{true}}, indicates the connected display device supports auto lip synchronization. This mode consists in communicating over HDMI, the delay to be applied by the STB to the audio in order to preserve the lip sync.</description>
+        <syntax>
+           <boolean/>
+         </syntax>
+      </parameter> 
+      <parameter name="HDMI3DPresent" access="readOnly">
+        <description>When set to {{true}}, indicates the connected display device supports the 3D video formats mandated by {{bibref|HDMI}}.</description>
+        <syntax>
+           <boolean/>
+         </syntax>
+      </parameter> 
+    </object>    
+      
+<object name="STBService.{i}.Components.SPDIF.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="SPDIFNumberOfEntries" dmr:previousObject="STBService.{i}.Components.AudioOutput.{i}." >
+      <description>S/PDIF output instance table configuration. This object, if present, is connected to the audio ouput instance currently delivering S/PDIF audio format as described in {{bibref|SPDIF}}.</description>
+       <uniqueKey>
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Enable" access="readWrite">
+        <description>Enables or disables the S/PDIF output.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly">
+        <description>The status of this S/PDIF output.  {{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Name" access="readOnly">
+        <description>Human-readable name associated with this output.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ForcePCM" access="readWrite">
+        <description>When set to {{true}}, forces the audio format over S/PDIF to be in PCM mode. 
+When set to {{false}}, let the compressed audio format be carried over S/PDIF (passthrough).</description>
+        <syntax>
+           <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Passthrough" access="readOnly">
+        <description>When in Passthrough mode, the STB sends the audio stream over S/PDIF without decoding it.</description>
+        <syntax>
+           <boolean/>
+         </syntax>
+      </parameter>
+      <parameter name="AudioDelay" access="readOnly">
+        <description>Audio delay value, in {{units}}, currently being applied to the audio stream on the S/PDIF interface. The audio delay is entered by the user via his local UI, when necessary for correcting the lipsync.</description>
+        <syntax>
+           <unsignedInt>
+                       <units value="milliseconds"/>
+</unsignedInt>
+         </syntax>
+      </parameter>
+  </object>    
+
+
+    <object base="STBService.{i}.AVPlayers." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="ResetPINCode" access="readWrite">
+         <description>When set to {{true}}, the master PIN code for the STB is set to 0000. Setting it to {{false}} has no effect.  The value is not saved in device state and is always {{false}} when read. It is not recommended that this be set to true without the user's permission. No data on the device such as PVR recordings are to be cleared as a result of resetting the PIN code.</description>
+         <syntax>
+           <boolean/>
+        </syntax>      
+      </parameter>
+      <parameter name="PreferredBehaviour" access="readWrite" dmr:previousParameter="PreferredSubtitlingLanguage">
+         <description>Aspect ratio behaviour preference for display on monitor.
+If non-empty, the string MUST be one of the .Components.VideoOutput.{i}. AspectRatioBehaviour values.</description>    
+         <syntax>
+          <string>
+           <size maxLength="64"></size>
+           </string>
+         </syntax>  
+      </parameter>
+      </object>
+   
+   
+<object base="STBService.{i}.Components.VideoOutput.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VideoOutputNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter base="Status" access="readOnly">
+         <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="ColorbarEnabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ColorbarEnable" access="readWrite">
+        <description>Enables or disables the color bar display.
+When set to {{true}}, the CPE MUST suspend the running service currently using the video output (e.g. IPTV broadcast reception) and MUST display the color bar.
+When set to {{false}}, the CPE MUST resume the previousely running service.
+This parameter MUST be always initialized with the value {{false}} on STB boot.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter base="AspectRatioBehaviour" access="readOnly">
+       <description action="replace">Indicates the aspect ratio behaviour for display on monitors with an aspect ratio different from that of the content, which is specified in {{param|.Components.VideoDecoder.{i}.ContentAspectRatio}}.</description>
+         <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Letterbox">
+              <description action="replace"> DEPRECATED and replaced by following values</description></enumeration>
+            <enumeration value="16:9 Letterbox"/>
+            <enumeration value="14:9 Letterbox"/>
+            <enumeration value="CenterCutOut"/>
+            <enumeration value="Combined">
+                <description action="replace"> DEPRECATED and replaced by following values</description></enumeration>
+             <enumeration value="Combined 16:9 Letterbox and CenterCutOut"/>
+             <enumeration value="Combined 14:9 Letterbox and CenterCutOut"/>
+          </string>
+        </syntax>
+      </parameter>
+       <parameter name="DisplayFormat" access="readWrite">
+       <description>Display format being connected to this VideoOutput.
+This parameter is used by the STB to determine whether an aspect ratio conversion is required.</description>
+        <syntax>
+          <string>
+            <enumerationRef targetParam=".Capabilities.VideoOutput.DisplayFormats" nullValue=""/>
+          </string>
+        </syntax>
+      </parameter>
+      </object>
+   
+   
+   
+   
+  <object base="STBService.{i}.ServiceMonitoring." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">Contains statistics relating to the QoS / QoE of Main AV streams. These statistics are broken down into categories, e.g. de-jittering and RTP, and for each category there are two types of statistics:
+* '''Total''' statistics, which count the number of occurrences of something.
+* '''Sample''' statistics, which are measured over a sample interval, and are made available to the ACS as a list of the most recent n samples.
+Total statistics are always collected (collection cannot be disabled, but the values can be reset).
+For Sample statistics, an STB uses a single sample interval and number of samples (n) for all {{object|MainStream}} instances.  The sample interval can be aligned with absolute time.
+When Sample statistics collection is enabled, statistics collection MUST proceed regardless of whether there are any active Main AV streams.  For example, even when the STB is not receiving any data, sample intervals will continue to be timed as normal.
+Refer to {{bibref|TR-135|I.3}} for non-normative explanation of the operation of the ''ServiceMonitoring'' object.</description>   
+     <parameter base="ForceSample" access="readWrite">
+         <syntax>
+         <list status="deleted">
+           </list>
+           <boolean/>
+        </syntax>
+      </parameter>
+      <parameter base="ReportSamples" access="readWrite">
+        <description action="replace">The number of samples that the STB can store and report for each statistic.
+The STB MUST permit {{param}} to be set to any value in the range from 1 to {{param|.Capabilities.ServiceMonitoring.MaxReportSamples}}.
+If {{param}} is changed while collection of Sample statistics is enabled, the STB will truncate or extend its statistics buffers as appropriate, but statistics collection MUST NOT otherwise be affected.
+For example, if {{param}} is 24 and {{param|SampleInterval}} is 3600 (an hour), the STB can store up to a day's worth of samples for each statistic.</description>
+       </parameter>
+ <parameter name="EventsPerSampleInterval" access="readWrite">
+        <description>The number of event measurements of each applicable statistic that the STB is able to store for each sample interval.
+The STB MUST permit {{param}} to be set to any value in the range from 1 to {{param|.Capabilities.ServiceMonitoring.MaxEventsPerSampleInterval}}.
+If {{param}} is changed while collection of Sample statistic is enabled, the STB will truncate or extend its event measurement buffers as appropriate, but event measurement collection MUST NOT otherwise be affected.
+For example, if {{param|ReportSamples}} is 24 and {{param|SampleInterval}} is 3600 (an hour), and {{param}} is 60, the STB can store up 60 event measurements per hour, or in total 1440 event measurements per day.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+ 
+  </object>
+  
+      
+    
+ <object name="STBService.{i}.ServiceMonitoring.GlobalOperation." access="readOnly" minEntries="1" maxEntries="1">
+ <description>Global operations statistics.</description>
+ </object>
+        
+<object name="STBService.{i}.ServiceMonitoring.GlobalOperation.Total." access="readOnly" minEntries="1" maxEntries="1">
+ <description>Global operations total statistics.</description>
+ <parameter name="ServiceAccessTime" access="readOnly">
+        <description>The time period in, {{units}}, between the first message (e.g. DHCP Discover) sent by the STB during boot-up and the first multicast I-frame for the default channel displayed by the STB.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+         </unsignedInt>
+        </syntax>
+      </parameter>
+    <parameter name="MinimumPortalResponse" access="readOnly">
+        <description>Minimum portal latency defined as the minimum time period, in {{units}}, between the instant of transmitting TCP SYN (the three way handshake) prior to first HTTP message, and receiving the last HTTP message carrying the information.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+        </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="MaximumPortalResponse" access="readOnly">
+        <description>Maximum portal latency defined as the maximum time period, in {{units}}, between the instant of transmitting TCP SYN (the three way handshake) prior to first HTTP message, and receiving the last HTTP message carrying the information.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+     </object> 
+  
+ 
+    
+    
+  <object name="STBService.{i}.ServiceMonitoring.GlobalOperation.Sample." access="readOnly" minEntries="1" maxEntries="1">
+ <description>Global operations sample statistics.</description>
+ <parameter name="MinimumPortalResponse" access="readOnly">
+        <description>Each entry is the minimum portal latency defined as the minimum time period, in {{units}}, between the instant of transmitting TCP SYN (the three way handshake) prior to first HTTP message, and receiving the last HTTP message carrying the information during the sample interval.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+  <parameter name="MaximumPortalResponse" access="readOnly">
+        <description>Each entry is the maximum portal latency defined as the maximum time period, in {{units}}, between the instant of transmitting TCP SYN (the three way handshake) prior to first HTTP message, and receiving the last HTTP message carrying the information during the sample interval.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="PortalResponse" access="readOnly">
+        <description>Each entry is a colon separated list of time periods (in milliseconds) between the instant of transmitting TCP SYN (the three way handshake) prior to first HTTP message, and receiving the last HTTP message carrying the information.  
+A comma separates measurements made in different sample intervals, while a colon separates individual measurements within a specific sample interval.
+If no PortalResponse measurements were made during a specific sample interval then this MUST be represented by an empty string.
+Example: ,837:453:1234,759,,,923:698,,,1284
+Here there were no measurements during first sample interval, three during the second, one during the third, etc.
+The statistics values in this list MUST be in time order, with the oldest one first and the most recent one last.  This applies both to sample intervals and to individual measurements during a specific sample interval. {{nopattern}}</description>
+        <syntax>
+          <list/>
+            <string>
+             <pattern value="(\d+(:\d+)*)?">
+              <description> {{nopattern}} </description></pattern>
+            </string>
+        </syntax>
+      </parameter>
+   </object>   
+  
+<object base="STBService.{i}.ServiceMonitoring.MainStream.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="MainStreamNumberOfEntries">
+   <uniqueKey functional="false">
+        <parameter ref="ServiceType"/>
+    </uniqueKey>
+    <parameter name="ChannelChangeFailureTimeout" access="readWrite">
+        <description>Time period, in {{units}}, between a user channel change request (defined as the instant of transmission of the relevant control protocol message (IGMP JOIN or RTSP SETUP) or a tuner command in case of DTT), and the display of the first I frame for the current AVStream, above which a channel change is considered as failed.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>
+       </syntax>
+      </parameter>	 
+ </object>
+  
+  
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total." access="readOnly" minEntries="1" maxEntries="1">  
+	 <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than the {{param|ResetTime}}, for several reasons, including the STB was not receiving any data (Standby mode without force monitoring).</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+      </parameter>
+ </object>
+  
+   <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.DejitteringStats." access="readOnly" minEntries="1" maxEntries="1">
+   <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* De-jittering data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+    </parameter>
+    <parameter name="EmptyBufferTime" access="readOnly">
+        <description>Total time, in {{units}}, for which the playout was stopped due to buffer issues (empty or too low level) for this AV stream.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>        
+          </syntax>
+      </parameter>
+     </object>
+     
+<object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.RTPStats." access="readOnly" minEntries="1" maxEntries="1">
+   <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* RTP data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+    </parameter>
+</object>
+
+<object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.MPEG2TSStats." access="readOnly" minEntries="1" maxEntries="1">
+   <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* MPEG2 TS data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+    </parameter>
+</object>
+      
+  <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.VideoDecoderStats." access="readOnly" minEntries="1" maxEntries="1">
+  <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* Video Decoder data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+    </parameter>
+    <parameter base="FrameRate" access="readOnly">
+        <description action="replace">The latest frame rate at which the STB played out the video content for this AV stream. Also the reported rate will be rounded off to the nearest integer.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      </object>
+     
+      
+<object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.AudioDecoderStats." access="readOnly" minEntries="1" maxEntries="1">
+  <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+        <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* Audio Decoder data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+    </parameter>
+   </object>  
+   
+ 
+      
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.VideoResponseStats." access="readOnly" minEntries="1" maxEntries="1">
+ <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+      <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* Video response data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+  </parameter>
+  <parameter name="ChannelChangeFailures" access="readOnly">
+        <description>Number of channel change failures. A channel change is considered as failed when the time period between a user channel change request and the display of the first I frame for this AVStream is above {{param|.ServiceMonitoring.MainStream.{i}.ChannelChangeFailureTimeout}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+  <parameter name="ChannelFailures" access="readOnly">
+        <description>Each entry represents a channel for which a channel change failed. Channels MAY be described as IP address, URL or Service names as appropriate. Only last 10 failures are required to be reported.</description>
+        <syntax>
+			<list maxItems="10">
+	    	</list>
+	    	<string/>
+	   </syntax>
+      </parameter>
+  <parameter name="MinimumVoDControlResponse" access="readOnly">
+        <description>Minimum time period, in {{units}}, between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I frame of unicast stream.  Only measured when started from a non-play state, i.e. either idle or paused.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>        </syntax>
+      </parameter>
+     <parameter name="MaximumVoDControlResponse" access="readOnly">
+        <description>Maximum time period, in {{units}}, between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I-frame of unicast stream.  Only measured when started from a non-play state, i.e. either idle or paused.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>
+                  </syntax>
+      </parameter>
+       <parameter name="RequestedTransactions" access="readOnly">
+        <description>Total number of RTSP protocol  requests to start a VoD program display.  
+Only meaningful for VoD.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+        <parameter name="AccessSuccesses" access="readOnly">
+        <description>Total number of successful VoD attempts.  An attempt is considered successful when the first I-frame is displayed by the client.
+Only meaningful for VoD.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CompletionCount" access="readOnly">
+        <description>Total number of completed VoD requests.  An attempt is defined successful if it continues until a RTSP protocol request to end the session is sent by the STB.
+Only meaningful for VoD.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      </object>
+      
+      <object name="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.TCPStats." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.DejitteringStats.">
+ <description>Total TCP statistics for this ServiceMonitoring main stream instance.</description>
+ <parameter name="TotalSeconds" access="readOnly" dmr:previousParameter="">
+      <description>The number of seconds during which data was collected for this AV stream since last reset
+Each statistics category (Dejittering, RTP etc) has its own {{param}} parameter, which indicates the number of seconds during which data was collected for that statistics category since last reset.
+Individual {{param}} values can be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}, for several reasons, including:
+* Any of the reasons for which the {{param}} values might be less than {{param|.ServiceMonitoring.MainStream.{i}.Total.ResetTime}}.
+* TCP data collection is not appropriate or possible for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+         </syntax>
+  </parameter>
+	   <parameter name="PacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of TCP packets correctly received for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+     <parameter name="PacketsRetransmitted" access="readOnly" activeNotify="canDeny">
+        <description>Total number of TCP packets being retransmitted for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="BytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of bytes received for this AV stream.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+     </object>
+      
+      
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample." access="readOnly" minEntries="1" maxEntries="1">  
+      <description action="replace">Sample statistics collected since collection was last enabled or reset.
+Most of the parameters in this object are comma-separated lists of individual statistics values, each of which corresponds to a sample interval.
+The statistics values in these comma-separated lists MUST be in time order, with the oldest one first and the most recent one last.
+Comma-separated list can contain up to ''ReportSamples'' statistics values.  When the list is full, each new value causes the oldest one to be discarded.
+Some comma-separated lists contains terms that are colon-separated lists and are used to store measurements on an event basis. These colon-separated lists can contain up to {{param|.Capabilities.ServiceMonitoring.MaxEventsPerSampleInterval}} values.
+If no data was collected for a statistic during a sample interval then the value for that sample interval MUST be zero unless otherwise specified in the description of the individual statistics parameter.</description>
+  <parameter base="SampleSeconds" access="readOnly">
+        <description action="replace">Each entry is the number of seconds during which data was collected for this AV stream during the sample interval.  Each statistics category (Dejittering, RTP etc) has its own ''SampleSeconds'' parameter, which indicates the number of seconds during which data was collected for that statistics category during the sample interval.
+Individual ''SampleSeconds'' values can be less than the ''SampleInterval'', for several reasons, including:
+* The STB was not receiving any data for the corresponding ServiceType for all or part of the sample interval.
+* ''TimeReference'' has been set to a time other than the Unknown Time and the current sample interval started part of the way through a scheduled sample interval.
+* ''ForceSample'' has been used to force statistics for the current sample to be calculated and updated in the data model.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>   
+    </object>
+
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.VideoDecoderStats." access="readOnly" minEntries="1" maxEntries="1">
+    <parameter base="FrameRate" access="readOnly">
+        <description action="replace">Each entry is the last frame rate at which the STB played out the video content for this AV stream during the sample interval. . Also the reported rate will be rounded off to the nearest integer.</description>
+        <syntax>
+            <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      </object>
+
+
+  <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.DejitteringStats." access="readOnly" minEntries="1" maxEntries="1">
+        <parameter base="EmptyBufferTime" access="readOnly">
+        <description action="replace">Each entry is the time period, in {{units}}, for which the playout was stopped due to buffer issues (empty or too low level) for this AV stream during the sample interval.</description>
+        </parameter>
+    </object>
+
+<object name="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.TCPStats." access="readOnly" minEntries="1" maxEntries="1" dmr:previousObject="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.DejitteringStats.">
+ <description>TCP sample statistics for this ''ServiceMonitoring'' main stream instance.</description>
+      <parameter name="SampleSeconds" access="readOnly">
+        <description>Each entry is the number of seconds during which de-jittering data was collected for this AV stream during the sample interval.
+Individual {{param}} values can be less than the sample interval, for several reasons, including:
+* Any of the reasons for which the {{param|.ServiceMonitoring.MainStream.{i}.Sample.SampleSeconds}} values might be less than the sample interval.
+* TCP data collection is not appropriate or possible for this AV stream.</description>
+ <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+ <parameter name="PacketsReceived" access="readOnly">
+        <description>Each entry is the total number of TCP packets received for this AV stream during the sample interval.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+  <parameter name="PacketsRetransmitted" access="readOnly">
+        <description>Each entry is the total number of TCP packets being retransmitted this AV stream.during the sample interval.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="BytesReceived" access="readOnly">
+        <description>Each entry is the total number of bytes received for  this AV stream.during the sample interval.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+   </object>   
+
+ 
+   
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.VideoResponseStats." access="readOnly" minEntries="1" maxEntries="1">
+  <parameter name="AverageVoDControlResponse" access="readOnly">
+        <description>Each entry is the time period, in {{units}}, between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I-frame of unicast stream, computed as the average of the VoDControlResponse events that occured for this AV stream during the sample interval. Only measured when started from a non-play state, i.e. either idle or paused.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>   <parameter name="MinimumVoDControlResponse" access="readOnly">
+        <description>Each entry is the minimum time period, in {{units}}, between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I-frame of unicast stream.  Only measured when started from a non-play state, i.e. either idle or paused.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>        </syntax>
+      </parameter>   
+   <parameter name="MaximumVoDControlResponse" access="readOnly">
+        <description>Each entry is the maximum time period, in {{units}}, between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I-frame of unicast stream.  Only measured when started from a non-play state, i.e. either idle or paused.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <units value="milliseconds"/>
+          </unsignedInt>        </syntax>
+      </parameter>   
+      <parameter name="VoDControlResponse" access="readOnly">
+        <description>Each entry is a colon separated list of time periods in milliseconds between the instant of transmitting a RTSP PLAY command to start playing stream, and displaying the first I-frame of unicast stream.  Only measured when started from a non-play state, i.e. either idle or paused.
+A comma separates measurements made in different sample intervals, while a colon separates individual measurements within a specific sample interval.
+If no VoDControlResponse measurements were made during a specific sample interval then this MUST be represented by an empty string.
+Example: ,837:453:1234,759,,,923:698,,,1284
+Here there were no measurements during first sample interval, three during the second, one during the third, etc.
+The statistics values in this list MUST be in time order, with the oldest one first and the most recent one last.  This applies both to sample intervals and to individual measurements during a specific sample interval. {{nopattern}}</description>
+        <syntax>
+          <list/>
+          <string>
+             <pattern value="(\d+(:\d+)*)?">
+              <description> {{nopattern}} </description></pattern>
+            </string>        
+         </syntax>
+      </parameter>   
+       <parameter name="VideoSystemResponse" access="readOnly">
+        <description>Each entry is a colon separated list of time periods in milliseconds between the instant of transmitting an IGMP JOIN or an RTSP SETUP command and the display of the first I frame that occurred for this AV stream during the sample interval.
+A comma separates measurements made in different sample intervals, while a colon separates individual measurements within a specific sample interval.
+If no VideoSystemResponse measurements were made during a specific sample interval then this MUST be represented by an empty string.
+Example: ,837:453:1234,759,,,923:698,,,1284
+Here there were no measurements during first sample interval, three during the second, one during the third, etc.
+The statistics values in this list MUST be in time order, with the oldest one first and the most recent one last.  This applies both to sample intervals and to individual measurements during a specific sample interval. {{nopattern}}</description>
+        <syntax>
+          <list/>
+          <string>
+             <pattern value="(\d+(:\d+)*)?">
+              <description> {{nopattern}} </description></pattern>
+            </string>
+         </syntax>
+      </parameter>   
+     <parameter name="RequestedTransactions" access="readOnly">
+        <description>Each entry is the number of RTSP protocol requests to start a VoD program display during the sample interval.  
+Only meaningful for VoD.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>            
+     <parameter name="AccessSuccesses" access="readOnly">
+        <description>Each entry is the number of successful VoD attempts during the sample interval.  An attempt is considered successful when the first I-frame is displayed by the client.
+Only meaningful for VoD.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>          
+     <parameter name="CompletionCount" access="readOnly">
+        <description>Each entry is the number of completed VoD requests during the sample interval.  An attempt is defined successful if it continues until a RTSP protocol request to end the session is sent by the STB.
+Only meaningful for VoD.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>    
+      <parameter name="ChannelChangeFailures" access="readOnly">
+        <description>Each entry is the number of channel change failures. A channel change is considered as failed when the time period between a user channel change request and the display of the first I frame for this AVStream is above {{param|.ServiceMonitoring.MainStream.{i}.ChannelChangeFailureTimeout}}.</description>
+        <syntax>
+          <list/>
+          <unsignedInt/>
+        </syntax>
+      </parameter>       
+    </object>
+
+
+ <object base="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="HighLevelMetricStatsNumberOfEntries">
+      <description action="replace">High-level metric Sample statistics for this ''ServiceMonitoring'' main stream instance.  One or more different high-level metrics can be supported; this is specified by  {{param|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStatsNumberOfEntries}}.</description>
+      <parameter base="Metric1Threshold" access="readWrite">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|MetricThreshold}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+       </parameter>
+      <parameter base="Metric2Threshold" access="readWrite">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|MetricThreshold}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+      </parameter>
+      <parameter base="Metric1" access="readOnly">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|Metric}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+      </parameter>
+      <parameter base="Metric2" access="readOnly">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|Metric}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+      </parameter>
+      <parameter base="Metric1Failures" access="readOnly">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|MetricFailures}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+       </parameter>
+       <parameter base="Metric2Failures" access="readOnly">
+        <description action="replace">This parameter is DEPRECATED and replaced by the {{param|MetricFailures}} parameter and, if needed, several instances of {{object|.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.}}.</description>
+      </parameter>
+      <parameter name="Enable" access="readWrite" dmr:previousParameter="">
+        <description>Enables or disables this Metric instance.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Status" access="readOnly" dmr:previousParameter="Enable">
+        <description>The status of this Metric instance.  {{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+       <parameter name="MetricSampleInterval" access="readWrite" dmr:previousParameter="Name">
+        <description>A time period measured in {{units}}. A new value for the high level metric is calculated every {{param}} seconds. 
+The value for {{param}} MUST be less than, or equal to, {{param|.ServiceMonitoring.SampleInterval}}.
+{{param}}  SHOULD be chosen such that {{param|.ServiceMonitoring.SampleInterval}} is an integer multiple of {{param}}. If not, the last metric sample interval in each sample interval MUST be shortened so that the last metric sample interval ends when the sample interval ends.
+The value for {{param}} is algorithm-specific.</description>
+        <syntax>
+          <unsignedInt>
+            <units value="seconds"/>
+          </unsignedInt>        </syntax>
+	  </parameter>
+	  <parameter name="MetricThreshold" access="readWrite">
+        <description>The threshold value that controls the calculation of the {{param|MetricFailures}} parameter.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="Metric" access="readOnly">
+        <description>Each entry is a high-level metric calculated for this AV stream during the sample interval as the average of the high level metric values calculated on a metric sample interval basis. The length of the metric sample interval is given by {{param|MetricSampleInterval}}.
+The interpretation of the metric values is algorithm-specific; the only constraints are that values have to be numeric, in the range [0:65535] and that lower values indicate worse QoE than do higher values.</description>
+        <syntax>
+          <list/>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="MetricFailures" access="readOnly">
+        <description>Counts the number of times (since the last time this ''MainStream'' and Sample statistics collection were both enabled) that a newly-calculated value of high-level metric {{param|Metric}} was less than or equal to {{param|MetricThreshold}}.
+This parameter can be incremented at any time during a sample interval, and might be incremented more than once during a single sample interval.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+   
+   
+   
+   
+ <object base="STBService.{i}.Applications." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter name="ServiceProviderNumberOfEntries" access="readOnly">
+        <description>Number of Service Provider instances.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+<object name="STBService.{i}.Applications.ServiceProvider.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ServiceProviderNumberOfEntries">
+      <description>Service Provider instance table.</description>
+      <uniqueKey>
+        <parameter ref="Name"/>
+      </uniqueKey>
+      <parameter name="Name" access="readWrite">
+        <description>Service Provider name.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Domain" access="readWrite">
+        <description>Service Provider domain URI.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ServiceDiscoveryServer" access="readWrite">
+        <description>Service Provider’s Service Discovery Server. It MAY be configured in the format of IMS Public Service Identifier, or IP address or URL.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ActiveBCGServers" access="readOnly">
+        <description>Comma separated list of the BCG (Broadband Content Guide) server URLs the STB is currently retrieving IPTV service information from.</description>
+        <syntax>
+          <string>
+            <size maxLength="1024"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>   
+  
+  
+      
+<profile name="RTPAVPFConfig:1" dmr:previousProfile="RTPAVPF:1">
+    <object ref="STBService.{i}.Components.FrontEnd.{i}.IP.RTPAVPF." requirement="present">
+        <parameter ref="Enable" requirement="readWrite "/>
+        <parameter ref="OperationMode" requirement="readWrite "/>
+        <parameter ref="ECOperationStatus" requirement="readOnly"/>
+      </object>
+    </profile>      
+      
+      
+ <profile name="FECConfig:1" dmr:previousProfile="RTPAVPFConfig:1">
+    <object ref="STBService.{i}.Components.FrontEnd.{i}.IP.FEC." requirement="present">
+        <parameter ref="Enable" requirement="readWrite"/>
+        <parameter ref="OperationMode" requirement="readWrite"/>
+        <parameter ref="ECOperationStatus" requirement="readOnly"/>
+ </object>
+ </profile>      
+ 
+<profile name="ForceMonitoring:1" dmr:previousProfile="FECConfig:1">
+    <object ref="STBService.{i}.Components.FrontEnd.{i}.IP.ForceMonitor." requirement="present">
+        <parameter ref="Enable" requirement="readWrite "/>
+        <parameter ref="Status" requirement="readOnly"/>
+        <parameter ref="URI" requirement="readWrite"/>
+      </object> 
+  </profile>      
+
+      
+<profile name="CDS:1" dmr:previousProfile="DRM:1">
+   <object ref="STBService.{i}.Capabilities.CDS." requirement="present">
+        <parameter ref="PushCapable" requirement="readOnly"/>
+        <parameter ref="PullCapable" requirement="readOnly"/>
+      </object>
+    <object ref="STBService.{i}.Applications.CDSPush." requirement="present">
+        <parameter ref="Reference" requirement="readOnly"/>
+        <parameter ref="ContentItemNumberOfEntries" requirement="readOnly"/>
+      </object> 
+     <object ref="STBService.{i}.Applications.CDSPush.ContentItem.{i}." requirement="present">
+        <parameter ref="ContentReferenceId" requirement="readOnly"/>
+        <parameter ref="VersionNumber" requirement="readOnly"/>
+        <parameter ref="DeleteItem" requirement="readWrite"/>
+      </object> 
+    <object ref="STBService.{i}.Applications.CDSPull." requirement="present">
+        <parameter ref="Reference" requirement="readOnly"/>
+        <parameter ref="ContentItemNumberOfEntries" requirement="readOnly"/>
+      </object> 
+     <object ref="STBService.{i}.Applications.CDSPull.ContentItem.{i}." requirement="present">
+        <parameter ref="ContentReferenceId" requirement="readOnly"/>
+        <parameter ref="VersionNumber" requirement="readOnly"/>
+        <parameter ref="DeleteItem" requirement="readWrite"/>
+      </object>        
+   </profile>            
+      
+      
+<profile name="DiagPerfMon:1" dmr:previousProfile="AudioPerfMon:1">
+    <object ref="STBService.{i}.Capabilities.ServiceMonitoring." requirement="present">
+        <parameter ref="HighLevelMetricNames" requirement="readOnly"/>
+      </object>
+      <object ref="STBService.{i}.ServiceMonitoring.GlobalOperation.Total." requirement="present">
+        <parameter ref="ServiceAccessTime" requirement="readOnly"/>
+      </object>
+      <object ref="STBService.{i}.ServiceMonitoring.GlobalOperation.Sample." requirement="present">
+        <parameter ref="PortalResponse" requirement="readOnly"/>
+      </object>
+      <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.VideoResponseStats." requirement="present">
+        <parameter ref="AccessSuccesses" requirement="readOnly"/>
+        <parameter ref="RequestedTransactions" requirement="readOnly"/>
+        <parameter ref="CompletionCount" requirement="readOnly"/>
+        <parameter ref="VideoSystemResponse" requirement="readOnly"/>
+        <parameter ref="VoDControlResponse" requirement="readOnly"/>
+      </object>
+      <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.HighLevelMetricStats.{i}." requirement="present">
+        <parameter ref="MetricName" requirement="readOnly"/>
+        <parameter ref="SampleSeconds" requirement="readOnly"/>
+        <parameter ref="MetricSampleInterval" requirement="readOnly"/>
+        <parameter ref="Metric" requirement="readOnly"/>
+      </object>
+      <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.RTPStats." requirement="present">
+        <parameter ref="PacketsExpected" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>
+	   </object>
+    </profile>            
+      
+<profile base="BasicPerfMon:1" name="BasicPerfMon:2" dmr:previousProfile="BasicPerfMon:1">
+   <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+      </object>
+   <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.DejitteringStats." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+      </object>
+    <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.RTPStats." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+      </object>
+    <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.MPEG2TSStats." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+      </object>    
+    <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.VideoDecoderStats." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+      </object>    
+     <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Total.TCPStats." requirement="present">
+        <parameter ref="TotalSeconds" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>        
+        <parameter ref="PacketsRetransmitted" requirement="readOnly"/>        
+        <parameter ref="BytesReceived" requirement="readOnly"/>        
+    </object>    
+     <object ref="STBService.{i}.ServiceMonitoring.MainStream.{i}.Sample.TCPStats." requirement="present">
+        <parameter ref="SampleSeconds" requirement="readOnly"/>
+        <parameter ref="PacketsReceived" requirement="readOnly"/>        
+        <parameter ref="PacketsRetransmitted" requirement="readOnly"/>        
+        <parameter ref="BytesReceived" requirement="readOnly"/>        
+    </object>        
+</profile>                 
+      
+
+
+    <profile base="DigitalOutput:1" name="DigitalOutput:2" dmr:previousProfile="DigitalOutput:1">
+      <object ref="STBService.{i}.Capabilities.HDMI." requirement="present">
+        <parameter ref="SupportedResolutions" requirement="readOnly"/>
+        <parameter ref="CECSupport" requirement="readOnly"/>        
+        <parameter ref="HDMI3D" requirement="readOnly"/>        
+      </object>
+      <object ref="STBService.{i}.Components.HDMI.{i}." requirement="present">
+        <parameter ref="ResolutionMode" requirement="readWrite"/>
+        <parameter ref="ResolutionValue" requirement="readWrite"/>        
+      </object>
+       <object ref="STBService.{i}.Components.HDMI.{i}.DisplayDevice." requirement="present">
+        <parameter ref="SupportedResolutions" requirement="readOnly"/>
+        <parameter ref="PreferredResolution" requirement="readOnly"/>        
+        <parameter ref="VideoLatency" requirement="readOnly"/>        
+        <parameter ref="CECSupport" requirement="readOnly"/>        
+        <parameter ref="AutoLipSyncSupport" requirement="readOnly"/>       
+      </object>
+      <object ref="STBService.{i}.Components.SPDIF.{i}." requirement="present">
+        <parameter ref="ForcePCM" requirement="readOnly"/>
+        <parameter ref="Passthrough" requirement="readOnly"/>        
+        <parameter ref="AudioDelay" requirement="readOnly"/>        
+    </object>
+  </profile>
+    
+                       
+  </model>
+</dm:document>

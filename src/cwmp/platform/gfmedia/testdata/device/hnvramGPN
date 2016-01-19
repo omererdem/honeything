@@ -1,0 +1,7 @@
+#!/bin/sh
+
+if [ x"$1" = "x-r" ] && [ x"$2" = "xGPN" ] ; then
+  echo "GPN=PartNumber"
+fi
+
+exit 0

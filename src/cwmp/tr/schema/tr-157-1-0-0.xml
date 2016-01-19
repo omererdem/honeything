@@ -1,0 +1,2361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Component objects for CWMP: TR-069 Device:1.3 and
+    InternetGatewayDevice:1.5 Root Object definitions
+    
+    Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment. This
+    Broadband Forum XML Document has been approved by members of the Forum.
+    This Broadband Forum XML Document is not binding on the Broadband Forum,
+    any of its members, or any developer or service provider. This Broadband
+    Forum XML Document is subject to change, but only with approval of members
+    of the Forum.  This XML Document is copyrighted by the Broadband Forum,
+    and all rights are reserved.  Portions of this XML Document may be
+    copyrighted by Broadband Forum members.
+    
+    This Broadband Forum XML Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT
+    NOT LIMITED TO, ANY WARRANTY:
+    
+    (A) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+    PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (B) THAT THE CONTENTS OF THIS BROADBAND FORUM XML DOCUMENT ARE SUITABLE
+    FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+    (C) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENTATION WILL NOT
+    INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER
+    RIGHTS.
+    
+    By using this Broadband Forum XML Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such patents.
+    For a list of declarations made by Broadband Forum member companies,
+    please see http://www.broadband-forum.org.  No assurance is given that
+    licenses to patents necessary to implement this XML Document will be
+    available for license at all or on reasonable and non-discriminatory terms.
+    
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW
+    (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL
+    DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR
+    RELIANCE UPON THIS XML DOCUMENT; AND (B) ANY OBLIGATION TO UPDATE OR
+    CORRECT THIS XML DOCUMENT.
+    
+    Broadband Forum XML Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may not be
+    modified without the advance written permission of the Broadband Forum.
+    
+    The text of this notice must be included in all copies.
+    
+    Summary:
+    This document defines objects for use in CWMP managed devices.  The objects
+    may exist at the top level of a hierarchy, or in some cases within an existing
+    object.  The objects are intended for use in all CWMP Root objects. The objects
+    define varying functionality, diagnostics, etc. that are agnostic to the type
+    of device.
+    
+    Version History:
+    March 2009: tr-157-1-0-0.xml, corresponds to TR-157 Issue 1, Section 4 
+    (Data Model Definition) and Section 5 (Profile Definition).
+    September 2009: tr-157-1-0-0.xml (name unchanged)
+                - removed duplicate bibrefs
+                - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+                - removed BBF TR URLs (they can be deduced from the TR name)
+                - changed header comment to match CWMP web page
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-0 cwmp-datamodel-1-0.xsd" 
+    spec="urn:broadband-forum-org:tr-157-1-0-0">
+
+
+    <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+        <dataType name="IPAddress"/>
+    </import>
+    <import file="tr-106-1-2.xml" spec="urn:broadband-forum-org:tr-106-1-2">
+        <model name="Device:1.2"/>
+    </import>
+    <import file="tr-098-1-2.xml" spec="urn:broadband-forum-org:tr-098-1-2">
+        <model name="InternetGatewayDevice:1.4"/>
+    </import>
+    
+
+    <bibliography>
+        <reference id="TR-157">
+            <name>TR-157</name>
+            <title>Component Object for CWMP</title>
+            <organization>Broadband Forum</organization>
+            <date>March 2009</date>
+        </reference>
+        <reference id="RFC793">
+            <name>RFC 793</name>
+            <title>Transmission Control Protocol</title>
+            <organization>IETF</organization>
+            <date>September 1981</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc793.txt</hyperlink>
+        </reference>
+        <reference id="RFC1323">
+            <name>RFC 1323</name>
+            <title>TCP Extensions for High Performance</title>
+            <organization>IETF</organization>
+            <date>May 1992</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc1323.txt</hyperlink>
+        </reference>
+        <reference id="RFC2581">
+            <name>RFC 2581</name>
+            <title>TCP Congestion Control</title>
+            <organization>IETF</organization>
+            <date>April 1999</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc2581.txt</hyperlink>
+        </reference>
+        <reference id="RFC2582">
+            <name>RFC 2582</name>
+            <title>The NewReno Modification to TCP's Fast Recovery Algorithm</title>
+            <organization>IETF</organization>
+            <date>April 1999</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc2582.txt</hyperlink>
+        </reference>
+        <reference id="RFC2818">
+            <name>RFC 2818</name>
+            <title>HTTP Over TLS</title>
+            <organization>IETF</organization>
+            <date>May 2000</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc2818.txt</hyperlink>
+        </reference>
+        <reference id="RFC2974">
+            <name>RFC 2974</name>
+            <title>Session Announcement Protocol</title>
+            <organization>IETF</organization>
+            <date>October 2000</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc2974.txt</hyperlink>
+        </reference>
+        <reference id="RFC3926">
+            <name>RFC 3926</name>
+            <title>FLUTE - File Delivery over Unidirectional Transport</title>
+            <organization>IETF</organization>
+            <date>October 2004</date>
+            <hyperlink>http://www.ietf.org/rfc/rfc3926.txt</hyperlink>
+        </reference>
+        <reference id="DLNA-NDIG">
+            <name>DLNA Networked Device Interoperability Guidelines</name>
+            <title>DLNA Networked Device Interoperability Guidelines, Volume 2: Media Format Profiles.</title>
+            <organization>DLNA</organization>
+            <date>October 2006</date>
+            <hyperlink>http://www.dlna.org/industry/certification/guidelines/</hyperlink>
+        </reference>
+        <reference id="DVB-TS.102.824">
+            <name>TS 102 824</name>
+            <title>Digital Video Broadcasting (DVB);Remote Management and Firmware Update System for DVB IP Services</title>
+            <organization>ETSI</organization>
+            <date>July 2008</date>
+            <hyperlink>http://webapp.etsi.org/workprogram/Report_WorkItem.asp?WKI_ID=27769</hyperlink>
+        </reference>
+        <reference id="ICSA-Firewall">
+            <name>ICSA Modular Firewall Certification Criteria</name>
+            <title>Required Services Security Policy - Small/Medium Business (SMB) Category module - version 4.0</title>
+            <organization>ICSA Labs</organization>
+            <hyperlink>http://www.icsalabs.com/icsa/docs/html/communities/firewalls/pdf/criteria/SMB.pdf</hyperlink>
+        </reference>
+        <reference id="ISO-13818-6:1998">
+            <name>ISO/IEC 13818-6:1998</name>
+            <title>Information Technology - Generic coding of moving pictures and associated audio information - Part 6: Extensions for DSM-CC</title>
+            <organization>ISO</organization>
+            <date>1998</date>
+            <hyperlink>http://www.iso.org/iso/iso_catalogue/catalogue_tc/catalogue_detail.htm?csnumber=25039</hyperlink>
+        </reference>
+        <reference id="UPnP-DAv1">
+            <name>UPnP Device Architecture</name>
+            <title>UPnP Device Architecture 1.0</title>
+            <organization>UPnP Forum</organization>
+            <date>April 2008</date>
+            <hyperlink>http://www.upnp.org/specs/arch/UPnP-arch-DeviceArchitecture-v1.0-20080424.pdf</hyperlink>
+        </reference>
+        <reference id="USB1.0">
+            <name>USB 1.0</name>
+            <title>USB 1.0 Specification</title>
+            <organization>USB-IF</organization>
+            <date>January 1996</date>
+            <hyperlink>http://www.usb.org/developers/docs/</hyperlink>
+        </reference>
+        <reference id="USB2.0">
+            <name>USB 2.0</name>
+            <title>USB 2.0 Specification</title>
+            <organization>USB-IF</organization>
+            <date>April 2000</date>
+            <hyperlink>http://www.usb.org/developers/docs/usb_20_122208.zip</hyperlink>
+        </reference>
+        <reference id="USB3.0">
+            <name>USB 3.0</name>
+            <title>USB 3.0 Specification</title>
+            <organization>USB-IF</organization>
+            <date>November 2008</date>
+            <hyperlink>http://www.usb.org/developers/docs/usb_30_spec.zip</hyperlink>
+        </reference>
+    </bibliography>
+    
+    
+    <component name="DI_MemoryStatus">
+        <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="DeviceInfo.MemoryStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Status of the device's volatile physical memory.</description>
+            
+            <parameter name="Total" access="readOnly">
+                <description>The total physical RAM, in {{units}}, installed on the device.</description>
+                <syntax><unsignedInt><units value="kilobytes"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Free" access="readOnly" activeNotify="canDeny">
+                <description>The free physical RAM, in {{units}}, currently available on the device.</description>
+                <syntax><unsignedInt><units value="kilobytes"/></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="MemoryStatus:1">
+            <object ref="DeviceInfo.MemoryStatus." requirement="present">
+                <parameter ref="Total" requirement="readOnly"></parameter>
+                <parameter ref="Free" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="DI_ProcessStatus">
+        <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="DeviceInfo.ProcessStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Status of the processes on the device.</description>
+            
+            <parameter name="CPUUsage" access="readOnly" activeNotify="canDeny">
+                <description>The total amount of the CPU, in {{units}}, rounded up to the nearest whole {{units}}.  In the case that multiple CPU are present, this value represents the average of all CPU.</description>
+                <syntax><unsignedInt><range maxInclusive="100"/><units value="percent"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="ProcessNumberOfEntries" access="readOnly">
+                <description>
+                    Number of entries in the Process table.
+                    Since a Process can come and go very quickly, the CPE SHOULD place a locally specified limit on the frequency at which it will notify the ACS of value changes, as described in {{bibref|TR-069a2|Section 3.2.1}}.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="DeviceInfo.ProcessStatus.Process.{i}." access="readOnly"
+                numEntriesParameter="ProcessNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>List of all processes running on the device.</description>
+            <uniqueKey><parameter ref="PID"/></uniqueKey>
+            
+            <parameter name="PID" access="readOnly">
+                <description>The Process Identifier.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Command" access="readOnly">
+                <description>The name of the command that has caused the process to exist.</description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Size" access="readOnly" activeNotify="canDeny">
+                <description>The size in {{units}} of the memory occupied by the process.</description>
+                <syntax><unsignedInt><units value="kilobytes"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Priority" access="readOnly">
+                <description>The priority of the process where 0 is highest.</description>
+                <syntax><unsignedInt><range maxInclusive="99"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="CPUTime" access="readOnly" activeNotify="canDeny">
+                <description>The amount of time in {{units}} that the process has spent taking up CPU time since the process was started.</description>
+                <syntax><unsignedInt><units value="milliseconds"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="State" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The current state that the process is in.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Running"></enumeration>
+                        <enumeration value="Sleeping"></enumeration>
+                        <enumeration value="Stopped"></enumeration>
+                        <enumeration value="Idle" optional="true"></enumeration>
+                        <enumeration value="Uninterruptible" optional="true"></enumeration>
+                        <enumeration value="Zombie" optional="true"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <profile name="ProcessStatus:1">
+            <object ref="DeviceInfo.ProcessStatus." requirement="present">
+                <parameter ref="CPUUsage" requirement="readOnly"></parameter>
+                <parameter ref="ProcessNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="DeviceInfo.ProcessStatus.Process.{i}." requirement="present">
+                <parameter ref="PID" requirement="readOnly"></parameter>
+                <parameter ref="Command" requirement="readOnly"></parameter>
+                <parameter ref="Size" requirement="readOnly"></parameter>
+                <parameter ref="Priority" requirement="readOnly"></parameter>
+                <parameter ref="CPUTime" requirement="readOnly"></parameter>
+                <parameter ref="State" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="DI_TemperatureStatus">
+        <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="DeviceInfo.TemperatureStatus." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Status of the temperature of the device.</description>
+            
+            <parameter name="TemperatureSensorNumberOfEntries" access="readOnly">
+                <description>Number of entries in TemperatureSensor table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="DeviceInfo.TemperatureStatus.TemperatureSensor.{i}." access="readOnly" 
+                numEntriesParameter="TemperatureSensorNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>This object represents information that the device has obtained via sampling an internal temperature sensor.</description>
+            <uniqueKey><parameter ref="Name"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Indicates whether or not the temperature sensor is enabled.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of this temperature sensor.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled">
+                            <description>The sensor is not currently sampling the temperature.</description>
+                        </enumeration>
+                        <enumeration value="Enabled">
+                            <description>The sensor is currently sampling the temperature.</description>
+                        </enumeration>
+                        <enumeration value="Error">
+                            <description>The sensor error currently prevents sampling the temperature.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Reset" access="readWrite">
+                <description>
+                    When set to {{true}}, resets the temperature sensor. 
+                </description>
+                <syntax hidden="true"><boolean/></syntax>
+            </parameter>
+            <parameter name="ResetTime" access="readOnly">
+                <description>
+                    The time at which this temperature sensor was reset.
+                    Reset can be caused by:
+                    * {{param|Status}} transition from {{enum|Disabled|Status}} to {{enum|Enabled|Status}}
+                    * {{param|Reset}} set to {{true}}.
+                    * An internal reset of the temperature sensor (including a reboot of the device).
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates that this temperature sensor has never been reset, which can only happen if it has never been enabled.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="Name" access="readOnly">
+                <description>Name of this temperature sensor. This text MUST be sufficient to distinguish this temperature sensor from other temperature sensors.</description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="Value" access="readOnly" activeNotify="canDeny">
+                <description>
+                    This temperature sensor's last good reading in {{units}}.
+                    A value of -274 (which is below absolute zero) indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-274"/>
+                        <units value="degrees celsius"/>
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="LastUpdate" access="readOnly" activeNotify="canDeny">
+                <description>
+                    The time at which this temperature sensor's last good reading was obtained. 
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="MinValue" access="readOnly">
+                <description>
+                    This temperature sensor's lowest value  reading in {{units}} since last reset.
+                    A value of -274 (which is below absolute zero) indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-274"/>
+                        <units value="degrees celsius"/>
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="MinTime" access="readOnly">
+                <description>
+                    The time at which this temperature sensor's lowest value was read. 
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="MaxValue" access="readOnly">
+                <description>
+                    This temperature sensor's highest value  reading in {{units}} since last reset.
+                    A value of -274 (which is below absolute zero) indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-274"/>
+                        <units value="degrees celsius"/>
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="MaxTime" access="readOnly">
+                <description>
+                    The time at which this temperature sensor's highest value was read. 
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates a good reading has not been obtained since last reset.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="LowAlarmValue" access="readWrite">
+                <description>
+                    This temperature sensor's low alarm value in {{units}}.
+                    A value of -274 (which is below absolute zero) indicates a non configured value.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-274"/>
+                        <units value="degrees celsius"/>
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="LowAlarmTime" access="readOnly">
+                <description>
+                    Initial time at which this temperature sensor's {{param|LowAlarmValue}} was encountered.
+                    This value is only set the first time the alarm is seen and not changed until the next reset. 
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates that an alarm has not been encountered since the last reset.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="HighAlarmValue" access="readWrite">
+                <description>
+                    This temperature sensor's high alarm value in {{units}}.
+                    A value of -274 (which is below absolute zero) indicates a non configured value.
+                </description>
+                <syntax>
+                    <int>
+                        <range minInclusive="-274"/>
+                        <units value="degrees celsius"/>
+                    </int>
+                </syntax>
+            </parameter>
+            <parameter name="HighAlarmTime" access="readOnly">
+                <description>
+                    Initial time at which this temperature sensor's {{param|HighAlarmValue}} was encountered.
+                    This value is only set the first time the alarm is seen and not changed until the next reset. 
+                    The Unknown Time value, as defined in {{bibref|TR-106a2}}, indicates that an alarm has not been encountered since the last reset.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="TempStatus:1">
+            <object ref="DeviceInfo.TemperatureStatus." requirement="present">
+                <parameter ref="TemperatureSensorNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="DeviceInfo.TemperatureStatus.TemperatureSensor.{i}." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="ResetTime" requirement="readOnly"></parameter>
+                <parameter ref="Name" requirement="readOnly"></parameter>
+                <parameter ref="Value" requirement="readOnly"></parameter>
+                <parameter ref="LastUpdate" requirement="readOnly"></parameter>
+                <parameter ref="MinValue" requirement="readOnly"></parameter>
+                <parameter ref="MinTime" requirement="readOnly"></parameter>
+                <parameter ref="MaxValue" requirement="readOnly"></parameter>
+                <parameter ref="MaxTime" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+        
+        <profile name="TempStatusAdv:1" extends="TempStatus:1">
+            <object ref="DeviceInfo.TemperatureStatus.TemperatureSensor.{i}." requirement="present">
+                <parameter ref="Reset" requirement="readWrite"></parameter>
+                <parameter ref="LowAlarmValue" requirement="readWrite"></parameter>
+                <parameter ref="LowAlarmTime" requirement="readOnly"></parameter>
+                <parameter ref="HighAlarmValue" requirement="readWrite"></parameter>
+                <parameter ref="HighAlarmTime" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="DI_NetworkProperties">
+        <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="DeviceInfo.NetworkProperties." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object defines the parameters that describe how the device handles network traffic.</description>
+            
+            <parameter name="MaxTCPWindowSize" access="readOnly">
+                <description>The maximum number of {{units}} of outstanding data a sender can send on a particular connection prior to an acknowledgment {{bibref|RFC793}}.  Any scaling factor SHOULD be included in this parameter {{bibref|RFC1323}}.</description>
+                <syntax><unsignedInt><units value="bytes"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="TCPImplementation" access="readOnly">
+                <description>
+                    {{list}} Indicates the TCP congestion control mechanism(s) implemented. {{enum}}
+                    Tahoe, Reno, and New Reno are defined in {{bibref|RFC2582}}
+                </description>
+                <syntax>
+                    <list></list>
+                    <string>
+                        <enumeration value="Tahoe">
+                            <description>Represents the base TCP implementation in {{bibref|RFC793}} and elements of {{bibref|RFC2582}}</description>
+                        </enumeration>
+                        <enumeration value="Reno">
+                            <description>Represents the base TCP implementation in {{bibref|RFC793}} with the additional algorithms defined in {{bibref|RFC2581}}</description>
+                        </enumeration>
+                        <enumeration value="New Reno">
+                            <description>Described as a modification to the Reno algorithms in {{bibref|RFC2582}}</description>
+                        </enumeration>
+                        <enumeration value="Vegas">
+                            <description>An emerging TCP congestion control mechanism</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="MS_AutonomousTransferCompletePolicy">
+        <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="ManagementServer.AutonomousTransferCompletePolicy." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object allows configuration of CPE policy for notification of AUTONOMOUS TRANSFER COMPLETE events, defined in {{bibref|TR-069a2}}.
+                The CPE policy determines the conditions under which the CPE notifies the ACS of the completion of file transfers that were not specifically requested by the ACS.
+            </description>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enable/disable CPE notification of AUTONOMOUS TRANSFER COMPLETE events to the ACS.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="TransferTypeFilter" access="readWrite">
+                <description>
+                    Indicates the transfer types that MUST be included when the CPE notifies the ACS of AUTONOMOUS TRANSFER COMPLETE events.   Transfer types not indicated by this filter MUST NOT be included when the CPE notifies the ACS. {{enum}}
+                    Note that this includes any backup or restore operations that were not specifically requested by the ACS.  A backup is regarded as an Upload and a restore is regarded as a Download.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Upload"></enumeration>
+                        <enumeration value="Download"></enumeration>
+                        <enumeration value="Both">
+                            <description>Upload and Download</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="FileTypeFilter" access="readWrite">
+                <description>
+                    {{list}} Indicates the file types that MUST be included when the CPE notifies the ACS of AUTONOMOUS TRANSFER COMPLETE events.  File types omitted from this list MUST NOT be included when the CPE notifies the ACS.
+                    {{pattern}}
+                    Additionally, the following format is defined to allow the unique definition of vendor-specific file types:
+                    * ''"X &lt;OUI&gt; &lt;Vendor-specific identifier&gt;"''
+                    &lt;OUI&gt; is replaced by a 6 hexadecimal-digit OUI (organizationally unique identifier) as defined in {{bibref|OUI}}, with all upper-case letters and any leading zeros included. The OUI used for a given vendor-specific file type MUST be one that is assigned to the organization that defined this file type (which is not necessarily the same as the vendor of the CPE or ACS).
+                    Note that {{empty}} indicates that all file types are excluded from this filter, effectively disabling CPE notification of AUTONOMOUS TRANSFER COMPLETE events to the ACS.
+                </description>
+                <syntax>
+                    <list><size maxLength="1024"></size></list>
+                    <string>
+                        <pattern value="1 Firmware Upgrade Image">
+                            <description>Download Only</description>
+                        </pattern>
+                        <pattern value="2 Web Content">
+                            <description>Download Only</description>
+                        </pattern>
+                        <pattern value="3 Vendor Configuration File">
+                            <description>Download or Upload</description>
+                        </pattern>
+                        <pattern value="4 Vendor Log File">
+                            <description>Upload Only</description>
+                        </pattern>
+                        <pattern value="X [0-9A-F]{6} .*">
+                            <description>For Vendor-Specific File Types, could be for either Download or Upload</description>
+                        </pattern>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <profile name="AutonXferComplPolicy:1">
+            <object ref="ManagementServer.AutonomousTransferCompletePolicy." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="TransferTypeFilter" requirement="readWrite"></parameter>
+                <parameter ref="FileTypeFilter" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="UI_RemoteAccess">
+        <object base="UserInterface." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="UserInterface.RemoteAccess." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object contains parameters relating to remotely accessing the CPE's user interface.
+                Remote access is defined as any entity not of a local subnet attempting to connect to the CPE.
+                Remote access requires user authentication.  To provide remote access authentication the CPE MUST support a {{object|.User.{i}.}} with at least one instance that has {{param|.User.{i}.RemoteAccessCapable}} set to {{true}}.
+            </description>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enables/Disables remotely accessing the CPE’s user interface.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="Port" access="readWrite">
+                <description>Destination TCP port required for remote access connection.</description>
+                <syntax><unsignedInt><range maxInclusive="65535"></range></unsignedInt></syntax>
+            </parameter>
+            <parameter name="SupportedProtocols" access="readOnly">
+                <description>
+                    {{list}} Indicates the protocols that are supported by the CPE for the purpose of remotely accessing the user interface.
+                </description>
+                <syntax>
+                    <list></list>
+                    <string>
+                        <enumeration value="HTTP">
+                            <description>As defined in {{bibref|RFC2616}}</description>
+                        </enumeration>
+                        <enumeration value="HTTPS">
+                            <description>As defined in {{bibref|RFC2818}}</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Protocol" access="readWrite">
+                <description>
+                    This is the protocol currently being used for remote access.
+                </description>
+                <syntax>
+                    <string>
+                        <enumerationRef targetParam="SupportedProtocols"></enumerationRef>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="UI_LocalDisplay">
+        <object base="UserInterface." access="readOnly" minEntries="1" maxEntries="1"></object>
+        
+        <object name="UserInterface.LocalDisplay." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object describes how to remotely manage the initial positioning of a user interface on a device's local display.</description>
+            
+            <parameter name="Movable" access="readWrite">
+                <description>Controls whether the user is allowed to change the GUI window position on the local CPE's display.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="Resizable" access="readWrite">
+                <description>Controls whether the user is allowed to resize the GUI window on the local CPE's display.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="PosX" access="readWrite" activeNotify="canDeny">
+                <description>The horizontal position of the User Interface's top left corner within the local CPE's display measured from the top left corner, expressed in {{units}}.</description>
+                <syntax><int><units value="pixels"/></int></syntax>
+            </parameter>
+            <parameter name="PosY" access="readWrite" activeNotify="canDeny">
+                <description>The vertical position of the User Interface's top left corner within the local CPE's display measured from the top left corner, expressed in {{units}}.</description>
+                <syntax><int><units value="pixels"/></int></syntax>
+            </parameter>
+            <parameter name="Width" access="readWrite" activeNotify="canDeny">
+                <description>The width of the user interface within the local CPE's display, expressed in {{units}}.</description>
+                <syntax><unsignedInt><units value="pixels"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Height" access="readWrite" activeNotify="canDeny">
+                <description>The height of the user interface within the local CPE's display, expressed in {{units}}.</description>
+                <syntax><unsignedInt><units value="pixels"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="DisplayWidth" access="readOnly">
+                <description>The width of the local CPE's display, expressed in {{units}}.</description>
+                <syntax><unsignedInt><units value="pixels"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="DisplayHeight" access="readOnly">
+                <description>The height of the local CPE's display, expressed in {{units}}.</description>
+                <syntax><unsignedInt><units value="pixels"/></unsignedInt></syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="User">
+        <parameter name="UserNumberOfEntries" access="readOnly">
+            <description>Number of entries in the User table.</description>
+            <syntax><unsignedInt></unsignedInt></syntax>
+        </parameter>
+        
+        <object name="User.{i}." access="readWrite" 
+                numEntriesParameter="UserNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <description>This object contains parameters relating to the user characteristics.</description>
+            <uniqueKey><parameter ref="Username"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>
+                    Enables/disables this user object instance.
+                    If the User being configured is currently accessing the device then a disable MUST apply to the next user session and the current user session MUST NOT be abruptly terminated.
+                </description>
+                <syntax><boolean/><default type="object" value="false"></default></syntax>
+            </parameter>
+            <parameter name="RemoteAccessCapable" access="readWrite">
+                <description>Allows this user to remotely access the UserInterface via the mechanism defined in {{object|.UserInterface.RemoteAccess.}}</description>
+                <syntax>
+                    <boolean></boolean>
+                    <default type="object" value="false"></default>
+                </syntax>
+            </parameter>
+            <parameter name="Username" access="readWrite">
+                <description>Name of the current user. MUST NOT be {{empty}} for an enabled entry.</description>
+                <syntax>
+                    <string><size maxLength="64"/></string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="Password" access="readWrite">
+                <description>The user's password.</description>
+                <syntax hidden="true"><string><size maxLength="64"/></string></syntax>
+            </parameter>
+            <parameter name="Language" access="readWrite">
+                <description>
+                    String describing the default language for the local configuration interface, specified according to {{bibref|RFC3066}}.
+                    If {{empty}}, {{param|.UserInterface.CurrentLanguage}} is used.
+                </description>
+                <syntax>
+                    <string><size maxLength="16"/></string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <profile name="User:1">
+            <parameter ref="UserNumberOfEntries" requirement="readOnly"></parameter>
+            
+            <object ref="User.{i}." requirement="createDelete">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Username" requirement="readWrite"></parameter>
+                <parameter ref="Password" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="UPnP">
+        <object name="UPnP." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains all UPnP related objects and parameters including Device and Discovery related objects and parameters.</description>
+        </object>
+        
+        <object name="UPnP.Device." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Configuration Object for UPnP Access.</description>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enables/Disables UPnP support.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPMediaServer" access="readWrite">
+                <description>Enables/Disables UPnP Media Server.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPMediaRenderer" access="readWrite">
+                <description>Enables/Disables UPnP Media Renderer.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPWLANAccessPoint" access="readWrite">
+                <description>Enables/Disables UPnP Wireless Access Point.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPQoSDevice " access="readWrite">
+                <description>Enables/Disables UPnP QoS Device.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPQoSPolicyHolder" access="readWrite">
+                <description>Enables/Disables UPnP QoS Policy Holder.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="UPnPIGD" access="readWrite">
+                <description>Enables/Disables UPnP IGD.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+        </object>
+        
+        <object name="UPnP.Device.Capabilities." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object defines what UPnP capabilities this device has.</description>
+            
+            <parameter name="UPnPArchitecture" access="readOnly">
+                <description>
+                    Numeric value indicating the version of supported architecture for UPnP. 
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPMediaServer" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Media Server.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPMediaRenderer" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Media Renderer.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPWLANAccessPoint" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Wireless Access Point.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPBasicDevice" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Basic Device.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPQoSDevice" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Qos Device.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPQoSPolicyHolder" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP Qos Policy Holder.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="UPnPIGD" access="readOnly">
+                <description>
+                    Numeric value indicating the supported revision for UPnP IGD.
+                    A value of 0 indicates no support.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="UPnP.Discovery." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                UPnP {{bibref|UPnP-DAv1}} SSDP discovered root devices, embedded devices and embedded services.
+                The CPE MAY, but need not, retain some or all of the information in this object across reboots.
+            </description>
+            <parameter name="RootDeviceNumberOfEntries" access="readOnly">
+                <description>Number of entries in RootDevice table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="DeviceNumberOfEntries" access="readOnly">
+                <description>Number of entries in Device table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="ServiceNumberOfEntries" access="readOnly">
+                <description>Number of entries in Service table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="UPnP.Discovery.RootDevice.{i}." access="readOnly" 
+                numEntriesParameter="RootDeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>UPnP root device table. This table contains an entry for each UPnP root device that has been discovered via SSDP.</description>
+            <uniqueKey><parameter ref="UUID"/></uniqueKey>
+            
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of the UPnP root device. {{enum}}
+                    The ability to list inactive UPnP root devices is OPTIONAL. The length of time an inactive device remains listed in this table is a local matter to the CPE.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="LeaseActive">
+                            <description>Device is active and UPnP lease has not expired.</description>
+                        </enumeration>
+                        <enumeration value="LeaseExpired">
+                            <description>Device is inactive because UPnP lease has expired.</description>
+                        </enumeration>
+                        <enumeration value="ByebyeReceived">
+                            <description>Device is inactive because byebye message was received.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="UUID" access="readOnly">
+                <description>
+                    This UPnP root device's UUID (Universally Unique IDentifier) {{bibref|RFC4122}}, extracted from any of its USN (Unique Service Name) headers. This is a 36-byte string that uniquely identifies the device, the following is an example:
+                    : ''02c29d2a-dbfd-2d91-99c9-306d537e9856''
+                    {{pattern}}
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="36"></size>
+                        <pattern value="[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}"></pattern>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="USN" access="readOnly">
+                <description>
+                    The value of the USN (Unique Service Name) header for this UPnP root device. Three discovery messages are sent for root devices, and this SHOULD be the value of the USN header of the following form:
+                    : ''uuid:device-UUID::urn:domain-name:device:deviceType:v''
+                    SSDP is an unreliable protocol and it is possible that no discovery message containing the USN header of the above form was ever received. If so, one of the other two forms MAY be used:
+                    : ''uuid:device-UUID::upnp:rootdevice''
+                    : ''uuid:device-UUID'' (for root device UUID)
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="LeaseTime" access="readOnly">
+                <description>The UPnP root device lease time in {{units}}, extracted from the CACHE-CONTROL header.</description>
+                <syntax><unsignedInt><units value="seconds"></units></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Location" access="readOnly">
+                <description>The value of the LOCATION header for this UPnP root device, which is the URL of the root device's DDD (Device Description Document).</description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Server" access="readOnly">
+                <description>
+                    The value of the SERVER header for this UPnP root device, which is a string of the following form:
+                    : ''OS/version UPnP/udaversion product/version''
+                    where '''UPnP''' is a literal string, '''udaversion''' is the version of the UPnP Device Architecture.
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    {{list}} Indicates the full path names of all Host table entries, whether active or inactive, that correspond to this UPnP root device.
+                    As such entries are added to or removed from the Host tables, the value of this parameter MUST be updated accordingly.
+                </description>
+                <syntax>
+                    <list><size maxLength="1024"></size></list>
+                    <string><size maxLength="256"></size></string>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <object name="UPnP.Discovery.Device.{i}." access="readOnly" 
+                numEntriesParameter="DeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>UPnP embedded device table. This table contains an entry for each UPnP embedded device that has been discovered via SSDP.</description>
+            <uniqueKey><parameter ref="UUID"/></uniqueKey>
+            
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of the UPnP embedded device. {{enum}}
+                    The ability to list inactive UPnP embedded devices is OPTIONAL. The length of time an inactive device remains listed in this table is a local matter to the CPE.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="LeaseActive">
+                            <description>Device is active and UPnP lease has not expired.</description>
+                        </enumeration>
+                        <enumeration value="LeaseExpired">
+                            <description>Device is inactive because UPnP lease has expired.</description>
+                        </enumeration>
+                        <enumeration value="ByebyeReceived">
+                            <description>Device is inactive because byebye message was received.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="UUID" access="readOnly">
+                <description>
+                    This UPnP embedded device's UUID (Universally Unique IDentifier) {{bibref|RFC4122}}, extracted from any of its USN (Unique Service Name) headers. This is a 36-byte string that uniquely identifies the device, the following is an example:
+                    : ''02c29d2a-dbfd-2d91-99c9-306d537e9856''
+                    {{pattern}}
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="36"></size>
+                        <pattern value="[0-9A-Fa-f]{8}-([0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}"></pattern>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="USN" access="readOnly">
+                <description>
+                    The value of the USN (Unique Service Name) header for this UPnP embedded device. Two discovery messages are sent for embedded devices, and this SHOULD be the value of the USN header of the following form:
+                    : ''uuid:device-UUID::urn:domain-name:device:deviceType:v''
+                    SSDP is an unreliable protocol and it is possible that no discovery message containing the USN header of the above form was ever received. If so, the other form MAY be used:
+                    : ''uuid:device-UUID''
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="LeaseTime" access="readOnly">
+                <description>The UPnP embedded device lease time in {{units}}, extracted from the CACHE-CONTROL header.</description>
+                <syntax><unsignedInt><units value="seconds"></units></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Location" access="readOnly">
+                <description>The value of the LOCATION header for this UPnP embedded device, which is the URL of the root device's DDD (Device Description Document).</description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Server" access="readOnly">
+                <description>
+                    The value of the SERVER header for this UPnP embedded device, which is a string of the following form:
+                    : ''OS/version UPnP/udaversion product/version''
+                    where '''UPnP''' is a literal string, '''udaversion''' is the version of the UPnP Device Architecture.
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    {{list}} Indicates the full path names of all Host table entries, whether active or inactive, that correspond to this UPnP embedded device.
+                    As such entries are added to or removed from the Host tables, the value of this parameter MUST be updated accordingly.
+                </description>
+                <syntax>
+                    <list><size maxLength="1024"></size></list>
+                    <string><size maxLength="256"></size></string>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <object name="UPnP.Discovery.Service.{i}." access="readOnly" 
+                numEntriesParameter="ServiceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>UPnP embedded service table. This table contains an entry for each UPnP embedded service that has been discovered via SSDP.</description>
+            <uniqueKey><parameter ref="USN"/></uniqueKey>
+            
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of the UPnP embedded service. {{enum}}
+                    The ability to list inactive UPnP embedded services is OPTIONAL. The length of time an inactive service remains listed in this table is a local matter to the CPE.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="LeaseActive">
+                            <description>Service is active and UPnP lease has not expired.</description>
+                        </enumeration>
+                        <enumeration value="LeaseExpired">
+                            <description>Service is inactive because UPnP lease has expired.</description>
+                        </enumeration>
+                        <enumeration value="ByebyeReceived">
+                            <description>Service is inactive because byebye message was received.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="USN" access="readOnly">
+                <description>
+                    The value of the USN (Unique Service Name) header for this UPnP embedded service. This is of the following form:
+                    : ''uuid:device-UUID::urn:domain-name:service:serviceType:v''
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="LeaseTime" access="readOnly">
+                <description>The UPnP embedded service lease time in {{units}}, extracted from the CACHE-CONTROL header.</description>
+                <syntax><unsignedInt><units value="seconds"></units></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Location" access="readOnly">
+                <description>The value of the LOCATION header for this UPnP embedded service, which is the URL of the root device's DDD (Device Description Document).</description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Server" access="readOnly">
+                <description>
+                    The value of the SERVER header for this UPnP embedded service, which is a string of the following form:
+                    : ''OS/version UPnP/udaversion product/version''
+                    where '''UPnP''' is a literal string, '''udaversion''' is the version of the UPnP Device Architecture.
+                </description>
+                <syntax><string><size maxLength="256"></size></string></syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    {{list}} Indicates the full path names of all Host table entries, whether active or inactive, that correspond to this UPnP embedded service.
+                    As such entries are added to or removed from the Host tables, the value of this parameter MUST be updated accordingly.
+                </description>
+                <syntax>
+                    <list><size maxLength="1024"></size></list>
+                    <string><size maxLength="256"></size></string>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <profile name="UPnPDev:1">
+            <object ref="UPnP." requirement="present"></object>
+            
+            <object ref="UPnP.Device." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="UPnPMediaServer" requirement="readWrite"></parameter>
+                <parameter ref="UPnPMediaRenderer" requirement="readWrite"></parameter>
+                <parameter ref="UPnPWLANAccessPoint" requirement="readWrite"></parameter>
+                <parameter ref="UPnPQoSDevice " requirement="readWrite"></parameter>
+                <parameter ref="UPnPQoSPolicyHolder" requirement="readWrite"></parameter>
+                <parameter ref="UPnPIGD" requirement="readWrite"></parameter>
+            </object>
+            
+            <object ref="UPnP.Device.Capabilities." requirement="present">
+                <parameter ref="UPnPArchitecture" requirement="readOnly"></parameter>
+                <parameter ref="UPnPMediaServer" requirement="readOnly"></parameter>
+                <parameter ref="UPnPMediaRenderer" requirement="readOnly"></parameter>
+                <parameter ref="UPnPWLANAccessPoint" requirement="readOnly"></parameter>
+                <parameter ref="UPnPBasicDevice" requirement="readOnly"></parameter>
+                <parameter ref="UPnPQoSDevice" requirement="readOnly"></parameter>
+                <parameter ref="UPnPQoSPolicyHolder" requirement="readOnly"></parameter>
+                <parameter ref="UPnPIGD" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+        
+        <profile name="UPnPDiscBasic:1">
+            <object ref="UPnP." requirement="present"></object>
+            
+            <object ref="UPnP.Discovery." requirement="present">
+                <parameter ref="RootDeviceNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="UPnP.Discovery.RootDevice.{i}." requirement="present">
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="UUID" requirement="readOnly"></parameter>
+                <parameter ref="USN" requirement="readOnly"></parameter>
+                <parameter ref="LeaseTime" requirement="readOnly"></parameter>
+                <parameter ref="Location" requirement="readOnly"></parameter>
+                <parameter ref="Server" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+        
+        <profile name="UPnPDiscAdv:1" extends="UPnPDiscBasic:1">
+            <object ref="UPnP.Discovery." requirement="present">
+                <parameter ref="DeviceNumberOfEntries" requirement="readOnly"></parameter>
+                <parameter ref="ServiceNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="UPnP.Discovery.Device.{i}." requirement="present">
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="UUID" requirement="readOnly"></parameter>
+                <parameter ref="USN" requirement="readOnly"></parameter>
+                <parameter ref="LeaseTime" requirement="readOnly"></parameter>
+                <parameter ref="Location" requirement="readOnly"></parameter>
+                <parameter ref="Server" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="UPnP.Discovery.Service.{i}." requirement="present">
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="USN" requirement="readOnly"></parameter>
+                <parameter ref="LeaseTime" requirement="readOnly"></parameter>
+                <parameter ref="Location" requirement="readOnly"></parameter>
+                <parameter ref="Server" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="DLNACapabilities">
+        <object name="DLNA." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains all DLNA related objects and parameters.</description>
+        </object>
+        
+        <object name="DLNA.Capabilities." access="readOnly" minEntries="1" maxEntries="1">
+            <description>DLNA capabilities.</description>
+            
+            <parameter name="HNDDeviceClass" access="readOnly">
+                <description>{{list}} Indicates the supported DLNA Home Network Device Classes {{bibref|DLNA-NDIG|Table 4-1}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="DeviceCapability" access="readOnly">
+                <description>{{list}} Indicates the supported DLNA Device Capabilities {{bibref|DLNA-NDIG|Table 4-2}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="HIDDeviceClass" access="readOnly">
+                <description>{{list}} Indicates the supported DLNA Home Infrastructure Device Classes {{bibref|DLNA-NDIG|Table 4-4}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="ImageClassProfileID" access="readOnly">
+                <description>{{list}} Indicates the DLNA Image Class Profile IDs supported by this device, from Tables 5-2 and 5-3 of {{bibref|DLNA-NDIG}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="AudioClassProfileID" access="readOnly">
+                <description>{{list}} Indicates the DLNA Audio Class Profile IDs supported by this device, from Tables 5-4 through 5-10 of {{bibref|DLNA-NDIG}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="AVClassProfileID" access="readOnly">
+                <description>{{list}} Indicates the DLNA AV Class Profile IDs supported by this device, from Tables 5-11 through 5-15 of {{bibref|DLNA-NDIG}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="MediaCollectionProfileID" access="readOnly">
+                <description>{{list}} Indicates the DLNA Media Collection Profile IDs supported by this device {{bibref|DLNA-NDIG|Table 5-16}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+            <parameter name="PrinterClassProfileID" access="readOnly">
+                <description>{{list}} Indicates the DLNA Printer Class Profile IDs supported by this device {{bibref|DLNA-NDIG|Table 5-17}}.</description>
+                <syntax>
+                    <list><size maxLength="256"/></list>
+                    <string></string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="SmartCardReader">
+        <parameter name="SmartCardReaderNumberOfEntries" access="readOnly">
+            <description>Number of entries in the SmartCardReader table.</description>
+            <syntax><unsignedInt></unsignedInt></syntax>
+        </parameter>
+        
+        <object name="SmartCardReader.{i}." access="readOnly"
+                numEntriesParameter="SmartCardReaderNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>This object describes the characteristics of the smart card reader.</description>
+            <uniqueKey><parameter ref="Name"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enables or disables this smart card reader.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    Indicates the status of this smart card reader.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled"></enumeration>
+                        <enumeration value="Enabled">
+                            <description>Indicates the smart card reader is enabled and functioning properly.</description>
+                        </enumeration>
+                        <enumeration value="Error">
+                            <description>Indicates the smart card reader is enabled and not functioning properly.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Name" access="readOnly">
+                <description>Human-readable name associated with this smart card reader.</description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="Reset" access="readWrite">
+                <description>
+                    When set to {{true}}, resets the SmartCard Reader and the associated SmartCard. 
+                </description>
+                <syntax hidden="true"><boolean/></syntax>
+            </parameter>
+            <parameter name="ResetTime" access="readOnly">
+                <description>
+                    The time at which this SmartCard Reader was reset.
+                    Reset can be caused by:
+                    * {{param|Status}} transition from Disabled to Enabled
+                    * {{param|Reset}} set to {{true}}.
+                    * An internal reset of the SmartCard Reader (including a reboot of the device).
+                    Unknown Time value indicates that this SmartCard Reader has never been reset, which can only happen if it has never been enabled.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+            <parameter name="DecryptionFailedCounter" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Counter incremented once each time decryption cannot be carried out.
+                    This counter relates to the smart card reader, not to the smart card itself, i.e. it is reset when the {{param|Reset}} parameter is used and not when a Smart Card is inserted or removed.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="DecryptionFailedNoKeyCounter" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Counter incremented once each time the key is not available to decrypt it.  This is a subset of the more general {{param|DecryptionFailedCounter}} within the same object and thus will always be less than that parameter.
+                    This counter relates to the smart card reader, not to the smart card itself, i.e. it is reset when the {{param|Reset}} parameter is used and not when a Smart Card is inserted or removed.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="SmartCardReader.{i}.SmartCard." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Status of currently associated smart card.</description>
+            
+            <parameter name="Status" access="readOnly">
+                <description>
+                    Status of the Smart Card.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="None">
+                            <description>Indicates that no Smart Card is inserted.</description>
+                        </enumeration>
+                        <enumeration value="Running">
+                            <description>Indicates a Smart Card is present and working normally.</description>
+                        </enumeration>
+                        <enumeration value="Error">
+                            <description>Indicates the Smart Card is present and in an error condition.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Type" access="readOnly">
+                <description>
+                    Smart Card Type. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a2|Section 3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="CA"></enumeration>
+                        <enumeration value="DRM"></enumeration>
+                        <enumeration value="UICC"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Application" access="readOnly">
+                <description>
+                    {{list}} Indicates Smart Card Application(s).  {{param}} is only relevant when {{param|Type}} has a value of UICC, otherwise it is {{empty}}. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a2|Section 3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <list></list>
+                    <string>
+                        <enumeration value="SIM"></enumeration>
+                        <enumeration value="USIM"></enumeration>
+                        <enumeration value="ISIM"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SerialNumber" access="readOnly">
+                <description>The Smart Card Serial Number or {{empty}} if the Smart Card serial Number is not available, e.g. in the case of IPTV due to restrictions of the Service Delivery Platform.</description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="ATR" access="readOnly">
+                <description>The Smart Card answer to a reset action. Issued by the Smart Card upon reset.</description>
+                <syntax><string><size maxLength="1024"/></string></syntax>
+            </parameter>
+        </object>
+    </component>
+    
+    <component name="SelfTestDiag">
+        <object name="SelfTestDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This diagnostics test is vendor-specific and MAY include testing hardware, software, and/or firmware.</description>
+            
+            <parameter name="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+                <description>
+                    Indicates availability of diagnostic data. {{enum}}
+                    If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the DiagnosticsState to Requested.
+                    When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+                    When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the Error values listed above.
+                    If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+                    When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code "8 DIAGNOSTICS COMPLETE" in the Inform message.
+                    After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+                    Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+                    While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+                    While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="None"></enumeration>
+                        <enumeration value="Requested"></enumeration>
+                        <enumeration value="Complete"></enumeration>
+                        <enumeration value="Error_Internal"></enumeration>
+                        <enumeration value="Error_Other"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Results" access="readOnly" activeNotify="canDeny">
+                <description>Results of self-test (vendor specific).</description>
+                <syntax><string><size maxLength="1024"/></string></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="SelfTestDiag:1">
+            <object ref="SelfTestDiagnostics." requirement="present">
+                <parameter ref="DiagnosticsState" requirement="readWrite"></parameter>
+                <parameter ref="Results" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="NSLookupDiag">
+        <object name="NSLookupDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object defines access to an IP-layer NS Lookup test for the specified IP interface.
+                When initiated, the NS Lookup test will contact {{param|DNSServer}} and look up {{param|HostName}} {{param|NumberOfRepetitions}} times.
+                There will be a {{object|Result}} instance for each time the device performs a DNS lookup, which is determined by the value of {{param|NumberOfRepetitions}}.
+                Any previous {{object|Result}} instances are removed when a new test is initiated.
+            </description>
+            
+            <parameter name="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+                <description>
+                    Indicates availability of diagnostic data. {{enum}}
+                    If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the DiagnosticsState to {{enum|Requested}}.
+                    When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+                    When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the Error values listed above.
+                    If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+                    When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code "8 DIAGNOSTICS COMPLETE" in the Inform message.
+                    After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+                    Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+                    While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+                    While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="None"></enumeration>
+                        <enumeration value="Requested"></enumeration>
+                        <enumeration value="Complete"></enumeration>
+                        <enumeration value="Error_DNSServerNotResolved"><description>Unable to resolve DNSServer Name</description></enumeration>
+                        <enumeration value="Error_Internal"></enumeration>
+                        <enumeration value="Error_Other"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Interface" access="readWrite">
+                <description>
+                    {{reference}} This parameter specifies the IP-layer interface over which the test is to be performed (i.e. the source IP address to use when performing the test). 
+                    If {{empty}} is specified, the CPE MUST use its routing policy (Forwarding table entries), if necessary, to determine the appropriate interface.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"></size>
+                        <pathRef refType="weak" targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="HostName" access="readWrite">
+                <description>Specifies the Host Name that NS Lookup is to look for. The current domain name MUST be used unless the name is a fully qualified name.</description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="DNSServer" access="readWrite">
+                <description>
+                    Specifies the DNS Server name or IP address that NS Lookup is to use for the lookup. The name of this server will be resolved using the default DNS server unless an IP address is provided.
+                    If {{empty}} is specified, the device's default DNS server will be used.
+                </description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="Timeout" access="readWrite">
+                <description>Timeout in {{units}} that indicates that a request has failed.</description>
+                <syntax><unsignedInt><units value="milliseconds"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="NumberOfRepetitions" access="readWrite">
+                <description>
+                    The number of times the device SHOULD repeat the execution of the NSLookup using the same input parameters.  If the diagnostics test fails the CPE MAY terminate the test without completing the full number of repetitions. 
+                    Each repetition will use a Result instance to hold the NSLookup result data.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="SuccessCount" access="readOnly" activeNotify="canDeny">
+                <description>Number of successfully executed repetitions.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="ResultNumberOfEntries" access="readOnly" activeNotify="canDeny">
+                <description>Total number of Result entries from the most recent invocation of the test.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="NSLookupDiagnostics.Result.{i}." access="readOnly" 
+                numEntriesParameter="ResultNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>Results from the most recent invocation of the test, one instance per repetition.</description>
+            
+            <parameter name="Status" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Result Parameter to represent whether the NS Lookup was successful or not.  
+                    Errors for individual Result instances do not get bubbled up to {{param|.NSLookupDiagnostics.DiagnosticsState}}.  
+                    A failure on a specific attempt does not mean that the overall test failed, but a failure on all attempts means that {{param|.NSLookupDiagnostics.DiagnosticsState}} SHOULD be {{enum|Error_Other}}.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Success"></enumeration>
+                        <enumeration value="Error_DNSServerNotAvailable"></enumeration>
+                        <enumeration value="Error_HostNameNotResolved"></enumeration>
+                        <enumeration value="Error_Timeout"></enumeration>
+                        <enumeration value="Error_Other"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="AnswerType" access="readOnly" activeNotify="canDeny">
+                <description>
+                    Result parameter to represent whether the answer is Authoritative or not.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="None">
+                            <description>Indicates that the NS Lookup failed to find the host.</description>
+                        </enumeration>
+                        <enumeration value="Authoritative"></enumeration>
+                        <enumeration value="NonAuthoritative"></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="HostNameReturned" access="readOnly" activeNotify="canDeny">
+                <description>Result parameter to represent the fully qualified name for the Host Name in the calling parameter (e.g. HostName.DomainName); if no response was provided, then this parameter is {{empty}}.</description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+            <parameter name="IPAddresses" access="readOnly" activeNotify="canDeny">
+                <description>{{list}} Indicates the IP Address results returned by the NS Lookup; if no response was provided, then this parameter is {{empty}}.</description>
+                <syntax><list maxItems="10"></list><dataType ref="IPAddress"/></syntax>
+            </parameter>
+            <parameter name="DNSServerIP" access="readOnly" activeNotify="canDeny">
+                <description>Result parameter to represent the actual DNS Server IP address that the NS Lookup used.</description>
+                <syntax><dataType ref="IPAddress"/></syntax>
+            </parameter>
+            <parameter name="ResponseTime" access="readOnly" activeNotify="canDeny">
+                <description>Response time (for the first response packet) in {{units}}, or 0 if no response was received.</description>
+                <syntax><unsignedInt><units value="milliseconds"/></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="NSLookupDiag:1">
+            <object ref="NSLookupDiagnostics." requirement="present">
+                <parameter ref="DiagnosticsState" requirement="readWrite"></parameter>
+                <parameter ref="Interface" requirement="readWrite"></parameter>
+                <parameter ref="HostName" requirement="readWrite"></parameter>
+                <parameter ref="DNSServer" requirement="readWrite"></parameter>
+                <parameter ref="Timeout" requirement="readWrite"></parameter>
+                <parameter ref="NumberOfRepetitions" requirement="readWrite"></parameter>
+                <parameter ref="SuccessCount" requirement="readOnly"></parameter>
+                <parameter ref="ResultNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="NSLookupDiagnostics.Result.{i}." requirement="present">
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="AnswerType" requirement="readOnly"></parameter>
+                <parameter ref="HostNameReturned" requirement="readOnly"></parameter>
+                <parameter ref="IPAddresses" requirement="readOnly"></parameter>
+                <parameter ref="DNSServerIP" requirement="readOnly"></parameter>
+                <parameter ref="ResponseTime" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="SimpleFirewall">
+        <object name="Firewall." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Firewall configuration object.</description>
+            
+            <parameter name="Config" access="readWrite">
+                <description>
+                    How this firewall is configured. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a2|Section 3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="High">
+                            <description>The firewall implements the "Traffic Denied Inbound" and "Minimally Permit Common Services Outbound" components of the ICSA residential certification's Required Services Security Policy {{bibref|ICSA-Firewall}}.</description>
+                        </enumeration>
+                        <enumeration value="Low">
+                            <description>All Outbound traffic and pinhole-defined Inbound traffic is allowed.</description>
+                        </enumeration>
+                        <enumeration value="Off">
+                            <description>All Inbound and Outbound traffic is allowed, and the CPE is only protected by NAT settings.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Version" access="readOnly">
+                <description>A string identifying the firewall settings version currently used in the CPE, or {{empty}} if the firewall settings are not associated with a version.</description>
+                <syntax><string><size maxLength="16"/></string></syntax>
+            </parameter>
+            <parameter name="LastChange" access="readOnly">
+                <description>The time at which the firewall settings most recently changed.</description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="SimpleFirewall:1">
+            <object ref="Firewall." requirement="present">
+                <parameter ref="Config" requirement="readWrite"></parameter>
+                <parameter ref="Version" requirement="readOnly"></parameter>
+                <parameter ref="LastChange" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+        
+    <component name="USBHosts">
+        <object name="USBHosts." access="readOnly" minEntries="1" maxEntries="1">
+            <description>
+                This object models the CPE's USB Host controllers.
+                See {{bibref|TR-157|Appendix I}} for Theory of Operation.
+            </description>
+            
+            <parameter name="HostNumberOfEntries" access="readOnly">
+                <description>Number of entries in the Host table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="USBHosts.Host.{i}." access="readOnly" 
+                numEntriesParameter="HostNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>Table of CPE USB Host controllers.</description>
+            <uniqueKey><parameter ref="Name"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enables or disables the USB Host controller.</description>
+                <syntax><boolean/></syntax>
+            </parameter>
+            <parameter name="Name" access="readOnly">
+                <description>User-readable host controller name.</description>
+                <syntax><string><size maxLength="64"/></string></syntax>
+            </parameter>
+            <parameter name="Type" access="readOnly">
+                <description>
+                    Type of USB Host
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="OHCI">
+                            <description>Open Host Controller Interface</description>
+                        </enumeration>
+                        <enumeration value="EHCI">
+                            <description>Enhanced Host Controller Interface</description>
+                        </enumeration>
+                        <enumeration value="UHCI">
+                            <description>Universal Host Controller Interface</description>
+                        </enumeration>
+                        <enumeration value="xHCI">
+                            <description>Extensible Host Controller Interface</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Reset" access="readWrite">
+                <description>
+                    When set to {{true}}, reset the Host Controller and apply the reset signaling (see {{bibref|USB2.0|Chapter 7.1.7.5}}) to all of the Host Controller Hub downstream ports.
+                    The value is not saved in the device's state and setting it to {{false}} has no effect.
+                </description>
+                <syntax hidden="true"><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="PowerManagementEnable" access="readWrite">
+                <description>
+                    When set to {{true}}, {{param}} enables the Host Controller to invoke Power Management policy, i.e. controlled Suspend (see {{bibref|USB2.0}}, Chapters 4.3.2, 7.1.7.6, and 11.9).
+                    When set to {{false}} {{param}} immediately disables the Host controller Power Management policy. 
+                </description>
+                <syntax><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="USBVersion" access="readOnly">
+                <description>USB specification version with which the controller complies.  Example: "1.1"</description>
+                <syntax><string><size maxLength="4"></size></string></syntax>
+            </parameter>
+            <parameter name="DeviceNumberOfEntries" access="readOnly">
+                <description>Number of entries in the Device table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="USBHosts.Host.{i}.Device.{i}." access="readOnly"
+                numEntriesParameter="DeviceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>Table of connected USB devices.</description>
+            <uniqueKey><parameter ref="DeviceNumber"/></uniqueKey>
+            
+            <parameter name="DeviceNumber" access="readOnly">
+                <description>Device number on USB bus.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="USBVersion" access="readOnly">
+                <description>USB specification version with which the device complies.  Example: "1.1"</description>
+                <syntax><string><size maxLength="4"/></string></syntax>
+            </parameter>
+            <parameter name="DeviceClass" access="readOnly">
+                <description>
+                    Class Code as assigned by USB-IF. 
+                    When 0x00, each device specifies its own class code.  When 0xFF, the class code is vendor specified.
+                </description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+            <parameter name="DeviceSubClass" access="readOnly">
+                <description>Subclass code (assigned by USB-IF).</description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+            <parameter name="DeviceVersion" access="readOnly">
+                <description>Device release number.</description>
+                <syntax><unsignedInt><range maxInclusive="65535"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="DeviceProtocol" access="readOnly">
+                <description>Protocol code (assigned by USB-IF).</description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+            <parameter name="ProductID" access="readOnly">
+                <description>Product ID (assigned by manufacturer).</description>
+                <syntax><unsignedInt><range maxInclusive="65535"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="VendorID" access="readOnly">
+                <description>Vendor ID (assigned by USB-IF).</description>
+                <syntax><unsignedInt><range maxInclusive="65535"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Manufacturer" access="readOnly">
+                <description>Device Manufacturer string descriptor.</description>
+                <syntax><string><size maxLength="64"/></string></syntax>
+            </parameter>
+            <parameter name="ProductClass" access="readOnly">
+                <description>Device Product Class string descriptor.</description>
+                <syntax><string><size maxLength="64"/></string></syntax>
+            </parameter>
+            <parameter name="SerialNumber" access="readOnly">
+                <description>Device SerialNumber string descriptor.</description>
+                <syntax><string><size maxLength="64"/></string></syntax>
+            </parameter>
+            <parameter name="Port" access="readOnly">
+                <description>
+                    Hub port on parent device.
+                    0 when no parent.
+                </description>
+                <syntax><unsignedInt><range maxInclusive="255"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="Rate" access="readOnly">
+                <description>
+                    Speed of the USB device. {{enum}}
+                    Internal signaling between the connected USB device and the USB Host Controller provide the information needed to determine the negotiated rate.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Low">
+                            <description>1.5 Mbits/sec (187.5 KB/sec) defined in {{bibref|USB1.0}}</description>
+                        </enumeration>
+                        <enumeration value="Full">
+                            <description>12 Mbits/sec (1.5 MB/sec) defined in {{bibref|USB1.0}}</description>
+                        </enumeration>
+                        <enumeration value="High">
+                            <description>480 Mbits/sec (60 MB/sec) defined in {{bibref|USB2.0}}</description>
+                        </enumeration>
+                        <enumeration value="Super">
+                            <description>5.0 Gbits/sec (625 MB/sec) defined in {{bibref|USB3.0}}</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Parent" access="readOnly">
+                <description>
+                    {{reference}} This is a reference to the parent USB device (e.g. hub device).
+                    Example:
+                    : ''.USBHosts.Host.2.Device.3''
+                    This is {{empty}} for a device connected to the Host controller (root hub).
+                </description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetParent=".USBHosts.Host.{i}.Device.{i}." targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="MaxChildren" access="readOnly">
+                <description>Number of ports.  Only applies for hub device, equal to 0 for other devices.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="IsSuspended" access="readOnly">
+                <description>
+                    When {{true}} the associated Device is in a suspended (i.e. low-power) state (see {{bibref|USB2.0|Chapter 11.9}}).
+                    When {{false}} the associated Device is in any of the other states specified by the USB 2.0 Device State Machine (see {{bibref|USB2.0|Chapter 9.1.1}}). 
+                </description>
+                <syntax><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="IsSelfPowered" access="readOnly">
+                <description>
+                    When {{true}} the associated device is at least partly powered by a local source (see {{bibref|USB2.0|Chapter 9.4.5}}). 
+                    When {{false}} the associated device draws all the current it needs from the USB bus.
+                </description>
+                <syntax><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="ConfigurationNumberOfEntries" access="readOnly">
+                <description>Number of entries in the Configuration table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="USBHosts.Host.{i}.Device.{i}.Configuration.{i}." access="readOnly"
+                numEntriesParameter="ConfigurationNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>Table of device configurations.</description>
+            <uniqueKey><parameter ref="ConfigurationNumber"/></uniqueKey>
+            
+            <parameter name="ConfigurationNumber" access="readOnly">
+                <description>The identifier for each Device Configuration.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="InterfaceNumberOfEntries" access="readOnly">
+                <description>Number of entries in the Interface table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="USBHosts.Host.{i}.Device.{i}.Configuration.{i}.Interface.{i}." access="readOnly"
+                numEntriesParameter="InterfaceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <description>Table of device interface descriptors.</description>
+            <uniqueKey><parameter ref="InterfaceNumber"/></uniqueKey>
+            
+            <parameter name="InterfaceNumber" access="readOnly">
+                <description>Number of this interface (from USB interface descriptor).</description>
+                <syntax><unsignedInt><range maxInclusive="255"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="InterfaceClass" access="readOnly">
+                <description>
+                    Class Code as assigned by USB-IF. 
+                    When 0x00, each interface specifies its own class code.  When 0xFF, the class code is vendor specified.
+                </description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+            <parameter name="InterfaceSubClass" access="readOnly">
+                <description>Subclass code (assigned by USB-IF).</description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+            <parameter name="InterfaceProtocol" access="readOnly">
+                <description>Protocol code (assigned by USB-IF).</description>
+                <syntax><hexBinary><size maxLength="1"></size></hexBinary></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="USBHostsBasic:1">
+            <object ref="USBHosts." requirement="present">
+                <parameter ref="HostNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="USBHosts.Host.{i}." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Name" requirement="readOnly"></parameter>
+                <parameter ref="Type" requirement="readOnly"></parameter>
+                <parameter ref="USBVersion" requirement="readOnly"></parameter>
+                <parameter ref="DeviceNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="USBHosts.Host.{i}.Device.{i}." requirement="present">
+                <parameter ref="DeviceNumber" requirement="readOnly"></parameter>
+                <parameter ref="USBVersion" requirement="readOnly"></parameter>
+                <parameter ref="DeviceClass" requirement="readOnly"></parameter>
+                <parameter ref="DeviceSubClass" requirement="readOnly"></parameter>
+                <parameter ref="DeviceVersion" requirement="readOnly"></parameter>
+                <parameter ref="DeviceProtocol" requirement="readOnly"></parameter>
+                <parameter ref="ProductID" requirement="readOnly"></parameter>
+                <parameter ref="VendorID" requirement="readOnly"></parameter>
+                <parameter ref="Manufacturer" requirement="readOnly"></parameter>
+                <parameter ref="ProductClass" requirement="readOnly"></parameter>
+                <parameter ref="SerialNumber" requirement="readOnly"></parameter>
+                <parameter ref="Port" requirement="readOnly"></parameter>
+                <parameter ref="Rate" requirement="readOnly"></parameter>
+                <parameter ref="Parent" requirement="readOnly"></parameter>
+                <parameter ref="MaxChildren" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+        
+        <profile name="USBHostsAdv:1" extends="USBHostsBasic:1">
+            <object ref="USBHosts.Host.{i}." requirement="present">
+                <parameter ref="Reset" requirement="readWrite"></parameter>
+                <parameter ref="PowerManagementEnable" requirement="readWrite"></parameter>
+            </object>
+            
+            <object ref="USBHosts.Host.{i}.Device.{i}." requirement="present">
+                <parameter ref="IsSuspended" requirement="readOnly"></parameter>
+                <parameter ref="IsSelfPowered" requirement="readOnly"></parameter>
+                <parameter ref="ConfigurationNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="USBHosts.Host.{i}.Device.{i}.Configuration.{i}." requirement="present">
+                <parameter ref="ConfigurationNumber" requirement="readOnly"></parameter>
+                <parameter ref="InterfaceNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="USBHosts.Host.{i}.Device.{i}.Configuration.{i}.Interface.{i}." requirement="present">
+                <parameter ref="InterfaceNumber" requirement="readOnly"></parameter>
+                <parameter ref="InterfaceClass" requirement="readOnly"></parameter>
+                <parameter ref="InterfaceSubClass" requirement="readOnly"></parameter>
+                <parameter ref="InterfaceProtocol" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="PeriodicStatistics">
+        <object name="PeriodicStatistics." access="readOnly" minEntries="1" maxEntries="1"> 
+            <description>
+                This object configures collection of periodic statistics for the device.
+                Periodic statistics are measured over a sample interval (which can be aligned with absolute time) and are made available to the ACS as a comma-separated list of the most recent &lt;n&gt; samples.
+                This object provides a single set of global settings that affect the entire device unless overridden locally.
+            </description>
+            
+            <parameter name="MinSampleInterval" access="readOnly">
+                <description>
+                    Minimum sample interval in {{units}} that the CPE is able to support.
+                    A value of 0 indicates no specific minimum sample interval.
+                </description>
+                <syntax><unsignedInt><units value="seconds"/></unsignedInt></syntax>
+            </parameter>
+            <parameter name="MaxReportSamples" access="readOnly">
+                <description>
+                    Maximum number of samples of each statistic that the CPE is able to store and report.
+                    A value of 0 indicates no specific maximum number of samples.
+                </description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+            <parameter name="SampleSetNumberOfEntries" access="readOnly">
+                <description>Number of entries in SampleSet table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="PeriodicStatistics.SampleSet.{i}." access="readWrite"
+                numEntriesParameter="SampleSetNumberOfEntries" enableParameter="Enable" 
+                minEntries="0" maxEntries="unbounded">
+            <description>Periodic statistics sample set table.  Each sample set has its own sample interval etc.</description>
+            <uniqueKey><parameter ref="Name"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>
+                    Enables or disables collection of periodic statistics for this sample set.
+                    When collection of periodic statistics is enabled, any stored samples are discarded, and the first sample interval begins immediately.
+                </description>
+                <syntax><boolean/><default type="object" value="false"></default></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    Indicates availability of Sample statistics. {{enum}}
+                    The {{enum|Trigger}} value is only used for triggering the ACS to fetch the collected data and can only be used when {{param|FetchSamples}} is in the range [1:{{param|ReportSamples}}].
+                    The transition from {{enum|Enabled}} to {{enum|Trigger}} to {{enum|Enabled}} MUST be instantaneous and so will result in only a single value change for notification purposes.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled">
+                            <description>Collection is disabled.</description>
+                        </enumeration>
+                        <enumeration value="Enabled">
+                            <description>Collection is enabled.</description>
+                        </enumeration>
+                        <enumeration value="Trigger">
+                            <description>Collection is enabled and the ACS SHOULD now fetch the collected data.</description>
+                        </enumeration>
+                    </string>
+                    <default type="object" value="Disabled"></default>
+                </syntax>
+            </parameter>
+            <parameter name="Name" access="readWrite">
+                <description>The name of this sample set, which uniquely distinguishes each sample set.</description>
+                <syntax>
+                    <string><size maxLength="128"></size></string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="SampleInterval" access="readWrite">
+                <description>
+                    The sample interval in {{units}}. Each statistic is measured over this sample interval.
+                    The CPE MAY reject a request to set {{param}} to less than {{param|.PeriodicStatistics.MinSampleInterval}}.
+                    Sample intervals MUST begin every {{param}} {{units}}, with no delay between samples.
+                    If {{param}} is changed while collection of periodic statistics is enabled, any stored samples are discarded, and the first sample interval begins immediately.
+                    For example, if {{param|ReportSamples}} is 24 and {{param}} is 3600 (an hour), the CPE can store up to a day's worth of samples for each statistic.
+                </description>
+                <syntax>
+                    <unsignedInt>
+                        <range minInclusive="1"/>
+                        <units value="seconds"/>
+                    </unsignedInt>
+                    <default type="object" value="3600"></default>
+                </syntax>
+            </parameter>
+            <parameter name="ReportSamples" access="readWrite">
+                <description>
+                    The number of samples that the CPE will store and report for each statistic.
+                    The CPE MUST permit {{param}} to be set to at least {{param|.PeriodicStatistics.MaxReportSamples}}.
+                    If {{param}} is changed while collection of periodic statistics is enabled, the CPE will truncate or extend its statistics buffers as appropriate, but statistics collection MUST NOT otherwise be affected.
+                    For example, if {{param}} is 24 and {{param|SampleInterval}} is 3600 (an hour), the CPE can store up to a day's worth of samples for each statistic.
+                </description>
+                <syntax>
+                    <unsignedInt><range minInclusive="1"/></unsignedInt>
+                    <default type="object" value="24"></default>
+                </syntax>
+            </parameter>
+            <parameter name="TimeReference" access="readWrite">
+                <description>
+                    An absolute time reference in UTC to determine when sample intervals will complete.  Each sample interval MUST complete at this reference time plus or minus an integer multiple of {{param|SampleInterval}}.
+                    {{param}} is used only to set the "phase" of the sample and fetch intervals.  The actual value of {{param}} can be arbitrarily far into the past or future.
+                    This time reference also determines when the {{param|Status}} {{enum|Enabled|Status}} to {{enum|Trigger|Status}} to {{enum|Enabled|Status}} transitions that are controlled by {{param|FetchSamples}} will occur.  If collection of periodic statistics is enabled and {{param|FetchSamples}} is in the range [1:{{param|ReportSamples}}] then each such {{param|Status}} transition MUST occur at this reference time plus or minus an integer multiple of {{param|FetchSamples}} * {{param|SampleInterval}} (the fetch interval).
+                    If {{param}} is changed while collection of periodic statistics is enabled, any stored samples are discarded, and the first sample interval begins immediately.
+                    The Unknown Time value defined in {{bibref|TR-106a2}} indicates that no particular time reference is specified.  That is, the CPE MAY locally choose the time reference, and is required only to adhere to the specified sample and fetch intervals.
+                    If absolute time is not available to the CPE, its sample and fetch interval behavior MUST be the same as if the {{param}} parameter was set to the Unknown Time value.
+                    For example, if {{param|SampleInterval}} is 3600 (an hour) and if {{param}} is set to UTC midnight on some day (in the past, present, or future) then sample intervals will complete on each UTC hour (00:00, 01:00, 02:00 etc).
+                    If, in addition, {{param|FetchSamples}} is 24, then the fetch interval is 86400 (a day) and {{param|Status}} {{enum|Enabled|Status}} to {{enum|Trigger|Status}} to {{enum|Enabled|Status}} transitions will occur every day at UTC midnight.
+                    Note that, if {{param}} is set to a time other than the Unknown Time, the first sample interval (which has to begin immediately) will almost certainly be shorter than {{param|SampleInterval}}).  This is why {{param}} is defined in terms of when sample intervals complete rather than start.
+                </description>
+                <syntax><dateTime/><default type="object" value="0001-01-01T00:00:00Z"></default></syntax>
+            </parameter>
+            <parameter name="FetchSamples" access="readWrite">
+                <description>
+                    The number of sample intervals to be collected before transitioning {{param|Status}} from {{enum|Enabled|Status}} to {{enum|Trigger|Status}} to {{enum|Enabled|Status}}.
+                    If this SampleSet is enabled and {{param}} is in the range [1:{{param|ReportSamples}}] then {{param|Status}} MUST transition from {{enum|Enabled|Status}} to {{enum|Trigger|Status}} to {{enum|Enabled|Status}} on completion of every {{param}} sample intervals.  Otherwise, the transition MUST NOT occur.
+                    For example, if {{param|ReportSamples}} is 25 and {{param}} is 24, then the CPE will store 25 values for each monitored parameter and the above {{param|Status}} transition will occur as the CPE stores each 24th of 25 sample intervals, which means that the ACS could delay for up to two sample intervals before reading the stored values and would still not miss any samples (see also {{param|ForceSample}}).
+                    To disable this trigger mechanism and still collect sampled statistics, {{param}} can be set to either 0 or a value greater than {{param|ReportSamples}}.
+                </description>
+                <syntax>
+                    <unsignedInt></unsignedInt>
+                    <default type="object" value="0"></default>
+                </syntax>
+            </parameter>
+            <parameter name="ForceSample" access="readWrite">
+                <description>
+                    When set to {{true}}, forces statistics for the current sample to be calculated and updated in the data model.  Setting it to {{false}} has no effect. {{hidden}}
+                    If this is the first time that {{param}} has been set to {{true}} during the current sample interval, this MUST cause a new value to be added to each of the periodic statistics comma-separated list parameters, and the {{param|ReportEndTime}} and all {{param|SampleSeconds}} parameters MUST be updated accordingly.
+                    If this is not the first time that {{param}} has been set to {{true}} during the current sample interval, then the new values that were added as described in the previous paragraph, and the {{param|ReportEndTime}} and all {{param|SampleSeconds}} parameters, MUST be updated accordingly.
+                    Note that {{param}} just provides a "sneak preview" of the current sample.  It does not create a new sample and it does not interfere with the sample interval schedule.
+                    At the end of each sample interval, if {{param}} was set to {{true}} during the sample interval then the new values that were added as described above, and the {{param|ReportEndTime}} and all {{param|SampleSeconds}} parameters, will be updated accordingly.  In other words, the partial sample data that was created when {{param}} was set to {{true}} will be updated one last time at the end of the sample interval.
+                </description>
+                <syntax hidden="true"><boolean/><default type="object" value="false"></default></syntax>
+            </parameter>
+            <parameter name="ReportStartTime" access="readOnly">
+                <description>The absolute time at which the sample interval for the first stored sample (for each statistic) started.</description>
+                <syntax><dateTime/><default type="object" value=""></default></syntax>
+            </parameter>
+            <parameter name="ReportEndTime" access="readOnly">
+                <description>
+                    The absolute time at which the sample interval for the last stored sample (for each statistic) ended.
+                    If {{param|ForceSample}} has been used to force statistics for the current sample to be calculated and updated in the data model, then {{param}} MUST be updated to reflect the actual time over which stored data was collected.
+                </description>
+                <syntax><dateTime/><default type="object" value=""></default></syntax>
+            </parameter>
+            <parameter name="SampleSeconds" access="readOnly" activeNotify="canDeny">
+                <description>
+                    {{list}} Each entry indicates the number of {{units}} during which data was collected during the sample interval.
+                    Individual {{param}} values can be less than {{param|SampleInterval}}, for several reasons, including:
+                    : {{param|TimeReference}} has been set to a time other than the Unknown Time and the current sample interval started part of the way through a scheduled sample interval.
+                    : {{param|ForceSample}} has been used to force statistics for the current sample to be calculated and updated in the data model.
+                </description>
+                <syntax>
+                    <list></list>
+                    <unsignedInt><units value="seconds"/></unsignedInt>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="ParameterNumberOfEntries" access="readOnly">
+                <description>Number of entries in Parameter table.</description>
+                <syntax><unsignedInt></unsignedInt><default type="object" value="0"></default></syntax>
+            </parameter>
+        </object>
+        
+        <object name="PeriodicStatistics.SampleSet.{i}.Parameter.{i}."  access="readWrite"
+                numEntriesParameter="ParameterNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <description>
+                Periodic statistics parameter table for this sample set.  This table contains entries for parameters whose values are to be sampled.
+                Note that the comma-separated lists in this object (SampleSeconds, SuspectData and Values) only ever change (a) when first enabled, (b) when ForceSample is set to true (a "sneak preview" of the current sample), or (c) at the end of the sample interval.
+            </description>
+            <uniqueKey><parameter ref="Reference"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enables or disables this object instance.</description>
+                <syntax><boolean/><default type="object" value="false"></default></syntax>
+            </parameter>
+            <parameter name="Reference" access="readWrite">
+                <description>
+                    {{reference}} This is the parameter being monitored by the Periodic Statistics mechanism.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"/>
+                        <pathRef refType="weak" targetType="parameter"></pathRef>
+                    </string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="SampleMode" access="readWrite">
+                <description>
+                    Controls how this parameter's value is sampled. {{enum}}
+                    Parameters of non-numeric types can only support {{enum|Current}}.  The value of the {{param}} MUST be ignored for such parameters.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Current">
+                            <description>Sampled value is current value</description>
+                        </enumeration>
+                        <enumeration value="Change">
+                            <description>Sampled value is change in value since start of sample interval</description>
+                        </enumeration>
+                    </string>
+                    <default type="object" value="Current"></default>
+                </syntax>
+            </parameter>
+            <parameter name="CalculationMode" access="readWrite">
+                <description>
+                    Controls how this parameter's statistic is calculated from the sampled value(s). {{enum}}
+                    Parameters of non-numeric types can only support {{enum|Latest}}.  The value of the {{param}} MUST be ignored for such parameters.
+                    {{param|SampleMode}} MUST be applied before {{param}}, i.e. the inputs to the calculation will have already accounted for {{param|SampleMode}}.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Latest">
+                            <description>Statistic is sampled value at end of sample interval</description>
+                        </enumeration>
+                        <enumeration value="Minimum">
+                            <description>Statistic is minimum sampled value during sample interval</description>
+                        </enumeration>
+                        <enumeration value="Maximum">
+                            <description>Statistic is maximum sampled value during sample interval</description>
+                        </enumeration>
+                        <enumeration value="Average">
+                            <description>Statistic is average (mean) sampled value during sample interval</description>
+                        </enumeration>
+                    </string>
+                    <default type="object" value="Latest"></default>
+                </syntax>
+            </parameter>
+            <parameter name="LowThreshold" access="readWrite">
+                <description>
+                    The low threshold value that controls the calculation of {{param|Failures}}.  
+                    A value equal to {{param|HighThreshold}} disables the threshold/failure mechanism.
+                    Parameters of non-numeric types cannot support the threshold/failure mechanism. The value of this parameter MUST be ignored for such parameters.
+                </description>
+                <syntax><int></int><default type="object" value="0"></default></syntax>
+            </parameter>
+            <parameter name="HighThreshold" access="readWrite">
+                <description>
+                    The high threshold value that controls the calculation of {{param|Failures}}.  
+                    A value equal to {{param|LowThreshold}} disables the threshold/failure mechanism.
+                    Parameters of non-numeric types cannot support the threshold/failure mechanism. The value of this parameter MUST be ignored for such parameters.
+                </description>
+                <syntax><int></int><default type="object" value="0"></default></syntax>
+            </parameter>
+            <parameter name="SampleSeconds" access="readOnly" activeNotify="canDeny">
+                <description>
+                    {{list}} Each entry indicates the number of {{units}} during which data was collected for this parameter during the sample interval.
+                    Individual {{param}} values can be less than {{param|.PeriodicStatistics.SampleSet.{i}.SampleInterval}}, for several reasons, including:
+                    : Any of the reasons for which {{param|.PeriodicStatistics.SampleSet.{i}.SampleSeconds}} values might be less than {{param|.PeriodicStatistics.SampleSet.{i}.SampleInterval}}.
+                    : The parameter doesn't exist, or was created or deleted during a sample interval.
+                </description>
+                <syntax>
+                    <list></list>
+                    <unsignedInt><units value="seconds"/></unsignedInt>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="SuspectData" access="readOnly" activeNotify="canDeny">
+                <description>
+                    {{list}} Each entry is 0 if the sampled value is believed to be valid, or 1 if an event that might affect the validity of the sampled value occurred during the sample interval.
+                    For example, if the parameter value were to be reset during the sample interval then it would be appropriate to set {{param}} to 1.
+                </description>
+                <syntax>
+                    <list></list>
+                    <unsignedInt><range maxInclusive="1"/></unsignedInt>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="Values" access="readOnly" activeNotify="canDeny">
+                <description>
+                    {{list}} Each entry indicates the value of the referenced parameter, as determined by {{param|SampleMode}}, during the sample interval.
+                    The statistics values in this comma-separated lists MUST be in time order, with the oldest one first and the most recent one last.
+                    If the {{param|SampleMode}} parameter is not present, or is inappropriate for the referenced parameter, the statistics values MUST be collected in Current mode.
+                </description>
+                <syntax>
+                    <list></list>
+                    <string></string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+            <parameter name="Failures" access="readOnly">
+                <description>
+                    Counts the number of times (since this object instance was last enabled) that a newly-calculated sample value (accounting for {{param|SampleMode}}) transitioned from the “in range” state to the “out of range” state, or between the “out of range (low)” and “out of range (high)” states.  The states are defined as follows:
+                    * "in range” : current value is greater than {{param|LowThreshold}} and less than {{param|HighThreshold}}.
+                    * "out of range” : current value is less than or equal to {{param|LowThreshold}}, or greater than or equal to {{param|HighThreshold}}.
+                    * "out of range (low)” : current value is less than or equal to {{param|LowThreshold}}.
+                    * "out of range (high)” : current value is greater than or equal to {{param|HighThreshold}}.
+                    Note that, if {{param|LowThreshold}} and {{param|HighThreshold}} are both the same, the threshold/failure mechanism is disabled, so the value of this parameter will not increment.
+                    This parameter can be incremented at any time during a sample interval, and might be incremented more than once during a single sample interval.  For this reason, the CPE SHOULD place a locally specified limit on the frequency at which it will notify the ACS of such changes, as described in {{bibref|TR-069a2|Section 3.2.1}}.
+                    Parameters of non-numeric types cannot support the threshold/failure mechanism.  The value of this parameter MUST be ignored for such parameters.
+                </description>
+                <syntax><unsignedInt></unsignedInt><default type="object" value="0"></default></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="PeriodicStatsBase:1">
+            <object ref="PeriodicStatistics." requirement="present">
+                <parameter ref="MinSampleInterval" requirement="readOnly"/>
+                <parameter ref="MaxReportSamples" requirement="readOnly"/>
+                <parameter ref="SampleSetNumberOfEntries" requirement="readOnly"/>
+            </object>
+            
+            <object ref="PeriodicStatistics.SampleSet.{i}." requirement="createDelete">
+                <parameter ref="Name" requirement="readWrite"/>
+                <parameter ref="SampleInterval" requirement="readWrite"/>
+                <parameter ref="ReportSamples" requirement="readWrite"/>
+                <parameter ref="ReportStartTime" requirement="readOnly"/>
+                <parameter ref="ReportEndTime" requirement="readOnly"/>
+                <parameter ref="SampleSeconds" requirement="readOnly"/>
+                <parameter ref="ParameterNumberOfEntries" requirement="readOnly"/>
+            </object>
+            
+            <object ref="PeriodicStatistics.SampleSet.{i}.Parameter.{i}." requirement="createDelete">
+                <parameter ref="Reference" requirement="readWrite"/>
+                <parameter ref="SampleSeconds" requirement="readOnly"/>
+                <parameter ref="SuspectData" requirement="readOnly"/>
+                <parameter ref="Values" requirement="readOnly"/>
+            </object>
+        </profile>
+        
+        <profile name="PeriodicStatsAdv:1" extends="PeriodicStatsBase:1">
+            <object ref="PeriodicStatistics.SampleSet.{i}." requirement="createDelete">
+                <parameter ref="Enable" requirement="readWrite"/>
+                <parameter ref="Status" requirement="readOnly"/>
+                <parameter ref="TimeReference" requirement="readWrite"/>
+                <parameter ref="FetchSamples" requirement="readWrite"/>
+                <parameter ref="ForceSample" requirement="readWrite"/>
+            </object>
+            
+            <object ref="PeriodicStatistics.SampleSet.{i}.Parameter.{i}." requirement="createDelete">
+                <parameter ref="Enable" requirement="readWrite"/>
+                <parameter ref="SampleMode" requirement="readWrite"/>
+                <parameter ref="CalculationMode" requirement="readWrite"/>
+                <parameter ref="LowThreshold" requirement="readWrite"/>
+                <parameter ref="HighThreshold" requirement="readWrite"/>
+                <parameter ref="Failures" requirement="readOnly"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    <component name="DownloadAvailability">
+        <object name="DownloadAvailability." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains multicast announcement and query parameters used for the purpose of downloading files.</description>
+        </object>
+        
+        <object name="DownloadAvailability.Announcement." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains multicast announcement parameters used to download files.</description>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enable/disable CPE ability to receive and use multicast announcements from a server for the purpose of downloading files.</description>
+                <syntax><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of the announcement service.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled"></enumeration>
+                        <enumeration value="Enabled"></enumeration>
+                        <enumeration value="Error" optional="true">
+                            <description>MAY be used by the CPE to indicate a locally defined error condition.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="GroupNumberOfEntries" access="readOnly">
+                <description>Number of entries in the Group table.</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        
+        <object name="DownloadAvailability.Announcement.Group.{i}." access="readWrite"
+                numEntriesParameter="GroupNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <description>Multicast groups to which the CPE SHOULD listen for announcements.</description>
+            <uniqueKey><parameter ref="URL"/></uniqueKey>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enable/disable listening to this multicast group.</description>
+                <syntax><boolean></boolean><default type="object" value="false"></default></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of this group table entry.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled"></enumeration>
+                        <enumeration value="Enabled"></enumeration>
+                        <enumeration value="Error" optional="true">
+                            <description>MAY be used by the CPE to indicate a locally defined error condition, e.g. unable to parse received announcements.</description>
+                        </enumeration>
+                    </string>
+                    <default type="object" value="Disabled"></default>
+                </syntax>
+            </parameter>
+            <parameter name="URL" access="readWrite">
+                <description>
+                    URL {{bibref|RFC3986}} encoding the group address, source and port on which to listen, and other protocol information, e.g. expected announcement format.
+                    Depending on the application, the messages identified by this URL MAY directly contain the data to be downloaded, or alternatively MAY contain information informing the CPE how to obtain the data to be downloaded via a separate mechanism, which itself could involve a unicast or a multicast download protocol.
+                    Refer to {{bibref|DVB-TS.102.824}} for an example of a URL format that identifies a SAP {{bibref|RFC2974}} stream that indicates how to use either FLUTE {{bibref|RFC3926}} or DSM-CC {{bibref|ISO-13818-6:1998}} to perform the download.
+                </description>
+                <syntax>
+                    <string><size maxLength="256"/></string>
+                    <default type="object" value=""></default>
+                </syntax>
+            </parameter>
+        </object>
+        
+        <object name="DownloadAvailability.Query." access="readOnly" minEntries="1" maxEntries="1">
+            <description>This object contains multicast query parameters used to download files.</description>
+            
+            <parameter name="Enable" access="readWrite">
+                <description>Enable/disable CPE ability to autonomously query a server for the purpose of downloading files.</description>
+                <syntax><boolean></boolean></syntax>
+            </parameter>
+            <parameter name="Status" access="readOnly">
+                <description>
+                    The status of the query service.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Disabled"></enumeration>
+                        <enumeration value="Enabled"></enumeration>
+                        <enumeration value="Error" optional="true">
+                            <description>MAY be used by the CPE to indicate a locally defined error condition, e.g. unable to contact query response server.</description>
+                        </enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="URL" access="readWrite">
+                <description>
+                    URL {{bibref|RFC3986}} of the query response server.
+                    Depending on the application, the protocol described by this URL MAY be a SOAP interface, or MAY be any other RPC mechanism.
+                    Refer to {{bibref|DVB-TS.102.824}} for an example of a URL format that identifies a SOAP interface running over HTTP or HTTPS.
+                </description>
+                <syntax><string><size maxLength="256"/></string></syntax>
+            </parameter>
+        </object>
+        
+        <profile name="DownloadAnnounce:1">
+            <object ref="DownloadAvailability." requirement="present"/>
+            
+            <object ref="DownloadAvailability.Announcement." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="GroupNumberOfEntries" requirement="readOnly"></parameter>
+            </object>
+            
+            <object ref="DownloadAvailability.Announcement.Group.{i}." requirement="createDelete">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="URL" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+        
+        <profile name="DownloadQuery:1">
+            <object ref="DownloadAvailability." requirement="present"/>
+            
+            <object ref="DownloadAvailability.Query." requirement="present">
+                <parameter ref="Enable" requirement="readWrite"></parameter>
+                <parameter ref="Status" requirement="readOnly"></parameter>
+                <parameter ref="URL" requirement="readWrite"></parameter>
+            </object>
+        </profile>
+    </component>
+    
+    
+    <model name="Device:1.3" base="Device:1.2">
+        <component path="Device." ref="DI_MemoryStatus"/>
+        <component path="Device." ref="DI_ProcessStatus"/>
+        <component path="Device." ref="DI_TemperatureStatus"/>
+        <component path="Device." ref="DI_NetworkProperties"/>
+        <component path="Device." ref="MS_AutonomousTransferCompletePolicy"/>
+        <component path="Device." ref="UI_RemoteAccess"/>
+        <component path="Device." ref="UI_LocalDisplay"/>
+        <component path="Device." ref="User"/>
+        <component path="Device." ref="UPnP"/>
+        <component path="Device." ref="DLNACapabilities"/>
+        <component path="Device." ref="SmartCardReader"/>
+        <component path="Device." ref="SelfTestDiag"/>
+        <component path="Device." ref="NSLookupDiag"/>
+        <component path="Device." ref="SimpleFirewall"/>
+        <component path="Device." ref="USBHosts"/>
+        <component path="Device." ref="PeriodicStatistics"/>
+        <component path="Device." ref="DownloadAvailability"/>
+    </model>
+
+    <model name="InternetGatewayDevice:1.5" base="InternetGatewayDevice:1.4">
+        <component path="InternetGatewayDevice." ref="DI_MemoryStatus"/>
+        <component path="InternetGatewayDevice." ref="DI_ProcessStatus"/>
+        <component path="InternetGatewayDevice." ref="DI_TemperatureStatus"/>
+        <component path="InternetGatewayDevice." ref="DI_NetworkProperties"/>
+        <component path="InternetGatewayDevice." ref="MS_AutonomousTransferCompletePolicy"/>
+        <component path="InternetGatewayDevice." ref="UI_RemoteAccess"/>
+        <component path="InternetGatewayDevice." ref="UI_LocalDisplay"/>
+        <component path="InternetGatewayDevice." ref="User"/>
+        <component path="InternetGatewayDevice." ref="UPnP"/>
+        <component path="InternetGatewayDevice." ref="DLNACapabilities"/>
+        <component path="InternetGatewayDevice." ref="SmartCardReader"/>
+        <component path="InternetGatewayDevice." ref="SelfTestDiag"/>
+        <component path="InternetGatewayDevice." ref="NSLookupDiag"/>
+        <component path="InternetGatewayDevice." ref="SimpleFirewall"/>
+        <component path="InternetGatewayDevice." ref="USBHosts"/>
+        <component path="InternetGatewayDevice." ref="PeriodicStatistics"/>
+        <component path="InternetGatewayDevice." ref="DownloadAvailability"/>
+    </model>
+    
+</dm:document>

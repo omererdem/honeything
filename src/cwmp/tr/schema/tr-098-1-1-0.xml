@@ -1,0 +1,1635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 InternetGatewayDevice:1.2 Root Object definition
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  Broadband Forum XML Document has been approved by members of the Forum.
+  This Broadband Forum XML Document is not binding on the Broadband Forum,
+  any of its members, or any developer or service provider. This Broadband
+  Forum XML Document is subject to change, but only with approval of members
+  of the Forum.  This XML Document is copyrighted by the Broadband Forum,
+  and all rights are reserved.  Portions of this XML Document may be
+  copyrighted by Broadband Forum members.
+
+  This Broadband Forum XML Document is provided AS IS, WITH ALL FAULTS.
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT,
+  OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+  LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT
+  NOT LIMITED TO, ANY WARRANTY:
+
+  (A) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+      PURPOSE, NON-INFRINGEMENT, OR TITLE;
+  (B) THAT THE CONTENTS OF THIS BROADBAND FORUM XML DOCUMENT ARE SUITABLE
+      FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+  (C) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENTATION WILL NOT
+      INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER
+      RIGHTS.
+
+  By using this Broadband Forum XML Document, users acknowledge that
+  implementation may require licenses to patents.  The Broadband Forum
+  encourages but does not require its members to identify such patents.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.  No assurance is given that
+  licenses to patents necessary to implement this XML Document will be
+  available for license at all or on reasonable and non-discriminatory terms.
+
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT, OR
+  ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW
+  (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL
+  DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR
+  RELIANCE UPON THIS XML DOCUMENT; AND (B) ANY OBLIGATION TO UPDATE OR
+  CORRECT THIS XML DOCUMENT.
+
+  Broadband Forum XML Documents may be copied, downloaded, stored on a
+  server or otherwise re-distributed in their entirety only, and may not be
+  modified without the advance written permission of the Broadband Forum.
+
+  The text of this notice must be included in all copies.
+
+  Summary:
+  TR-069 InternetGatewayDevice:1.2 Root Object Definition.  Contains definition of
+  InternetGatewayDevice:1.2 Root Object.
+
+  Version History:
+  March 2009: tr-098-1-1-0.xml, corresponds to TR-098 Amendment 1 sections 2.4 (Data
+              Model), 2.4.1 (Inform and Notification Requirements) and 3 (Profile
+              Definitions).
+  September 2009: tr-098-1-1-0.xml (name unchanged)
+              - changed WLANConfigurationNumberOfEntries to (wrong but consistent)
+                LANWLANConfigurationNumberOfEntries
+              - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-0 cwmp-datamodel-1-0.xsd"
+             spec="urn:broadband-forum-org:tr-098-1-1-0">
+
+  <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+  
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="IPAddress"/>
+    <dataType name="MACAddress"/>
+  </import>
+  
+  <import file="tr-098-1-0.xml" spec="urn:broadband-forum-org:tr-098-1-0">
+    <model name="InternetGatewayDevice:1.1"/>
+  </import>
+  
+  <model name="InternetGatewayDevice:1.2" base="InternetGatewayDevice:1.1">
+    <object base="InternetGatewayDevice.DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="EnabledOptions" access="readOnly">
+        <description action="replace">The OptionName of each Option that is currently enabled in the CPE.  The OptionName of each is identical to the OptionName element of the OptionStruct described in {{bibref|TR-069a1}}.  Only those options are listed whose State indicates the option is enabled.</description>
+      </parameter>
+      <parameter base="AdditionalHardwareVersion" access="readOnly">
+        <description action="replace">Any additional hardware version information the vendor might wish to supply.</description>
+      </parameter>
+      <parameter base="AdditionalSoftwareVersion" access="readOnly">
+        <description action="replace">Any additional software version information the vendor might wish to supply.</description>
+      </parameter>
+      <parameter base="SpecVersion" access="readOnly" status="deprecated" forcedInform="true">
+        <description action="replace">Represents the version of the specification implemented by the device.  Currently 1.0 is the only available version.  The value of this parameter MUST equal "1.0".
+This parameter is DEPRECATED because its value is fixed and it therefore serves no purpose.  However, it is a Forced Inform parameter and therefore cannot be OBSOLETED.</description>
+      </parameter>
+      <parameter base="ProvisioningCode" access="readWrite" activeNotify="forceEnabled" forcedInform="true">
+        <description action="replace">Identifier of the primary service provider and other provisioning information, which MAY be used by the ACS to determine service provider-specific customization and provisioning parameters.
+If not {{empty}}, this argument SHOULD be in the form of a hierarchical descriptor with one or more nodes specified.  Each node in the hierarchy is represented as a 4-character sub-string, containing only numerals or upper-case letters.  If there is more than one node indicated, each node is separated by a "." (dot).  Examples: "TLCO" or "TLCO.GRP2".</description>
+      </parameter>
+      <parameter base="FirstUseDate" access="readOnly">
+        <description action="append">If NTP or equivalent is not available, this parameter, if present, SHOULD be set to the Unknown Time value.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.DeviceInfo.VendorConfigFile.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VendorConfigFileNumberOfEntries">
+      <description action="append">This table of Vendor Configuration Files is for information only and does not allow the ACS to operate on these files in any way.
+Whenever the CPE successfully downloads a configuration file as a result of the Download RPC with the FileType argument of ''3 Vendor Configuration File'', the CPE MUST update this table.  If the name of the file (determined as described in the definition of the {{param|Name}} parameter) differs from that of any existing instance, then the CPE MUST create a new instance to represent this file.  If instead, the name of the file is identical to that of an existing instance, then the CPE MUST update the content of the existing instance with the new version, date, and (optionally) description of the file.{{nokeys}}</description>
+      <parameter base="Name" access="readOnly">
+        <description action="append">If the CPE is able to obtain the name of the configuration file from the file itself, then the value of this parameter MUST be set to that name.
+Otherwise, if the CPE can extract the file name from the URL used to download the configuration file, then the value of this parameter MUST be set to that name.
+Otherwise, the value of this parameter MUST be set to the value of the TargetFileName argument of the Download RPC used to download this configuration file.</description>
+      </parameter>
+      <parameter base="Version" access="readOnly">
+        <description action="append">If the CPE is able to obtain the version of the configuration file from the file itself, then the value of this parameter MUST be set to the obtained value.
+Otherwise, the value of this parameter MUST be {{empty}}.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.DeviceConfig." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="PersistentData" access="readWrite">
+        <description action="replace">Arbitrary user data that MUST persist across CPE reboots.</description>
+      </parameter>
+      <parameter base="ConfigFile" access="readWrite">
+        <description action="replace">A dump of the currently running configuration on the CPE.  This parameter enables the ability to backup and restore the last known good state of the CPE.  It returns a vendor-specific document that defines the state of the CPE.  The document MUST be capable of restoring the CPE's state when written back to the CPE using SetParameterValues.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="URL" access="readWrite">
+        <description action="replace">URL, as defined in {{bibref|RFC3986}}, for the CPE to connect to the ACS using the CPE WAN Management Protocol. 
+This parameter MUST be in the form of a valid HTTP or HTTPS URL {{bibref|RFC2616}}.
+The ''host'' portion of this URL is used by the CPE for validating the ACS certificate when using SSL or TLS.
+Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="Username" access="readWrite">
+        <description action="append">Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="Password" access="readWrite">
+        <description action="append">Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="PeriodicInformEnable" access="readWrite">
+        <description action="replace">Whether or not the CPE MUST periodically send CPE information to the ACS using the Inform method call.</description>
+      </parameter>
+      <parameter base="PeriodicInformTime" access="readWrite">
+        <description action="replace">An absolute time reference in UTC to determine when the CPE will initiate the periodic Inform method calls.  Each Inform call MUST occur at this reference time plus or minus an integer multiple of the {{param|PeriodicInformInterval}}.
+{{param}} is used only to set the "phase" of the periodic Informs.  The actual value of {{param}} can be arbitrarily far into the past or future.
+For example, if {{param|PeriodicInformInterval}} is 86400 (a day) and if {{param}} is set to UTC midnight on some day (in the past, present, or future) then periodic Informs will occur every day at UTC midnight.  These MUST begin on the very next midnight, even if {{param}} refers to a day in the future.
+The Unknown Time value defined in {{bibref|TR-098a1|section 2.2}} indicates that no particular time reference is specified.  That is, the CPE MAY locally choose the time reference, and is required only to adhere to the specified {{param|PeriodicInformInterval}}.
+If absolute time is not available to the CPE, its periodic Inform behavior MUST be the same as if the {{param}} parameter was set to the Unknown Time value.</description>
+      </parameter>
+      <parameter base="ConnectionRequestURL" access="readOnly" activeNotify="forceEnabled" forcedInform="true">
+        <description action="replace">HTTP URL, as defined in {{bibref|RFC3986}}, for an ACS to make a Connection Request notification to the CPE.
+In the form:
+http://host:port/path
+The ''host'' portion of the URL MAY be the IP address for the management interface of the CPE in lieu of a host name.</description>
+      </parameter>
+      <parameter base="UpgradesManaged" access="readWrite">
+        <description action="replace">Indicates whether or not the ACS will manage upgrades for the CPE.  If {{true}}, the CPE SHOULD NOT use other means other than the ACS to seek out available upgrades.  If {{false}}, the CPE MAY use other means for this purpose.</description>
+      </parameter>
+      <parameter base="KickURL" access="readOnly">
+        <description action="replace">Present only for a CPE that supports the Kicked RPC method.
+LAN-accessible URL, as defined in {{bibref|RFC3986}}, from which the CPE can be "kicked" to initiate the Kicked RPC method call.  MUST be an absolute URL including a host name or IP address as would be used on the LAN side of the CPE.</description>
+      </parameter>
+      <parameter base="DownloadProgressURL" access="readOnly">
+        <description action="replace">Present only for a CPE that provides a LAN-side web page to show progress during a file download.
+LAN-accessible URL, as defined in {{bibref|RFC3986}}, to which a web-server associated with the ACS MAY redirect a user's browser on initiation of a file download to observer the status of the download.</description>
+      </parameter>
+      <parameter name="UDPConnectionRequestAddress" access="readOnly">
+        <description>Address and port to which an ACS MAY send a UDP Connection Request to the CPE (see {{bibref|TR-069a1|Annex G}}).
+This parameter is represented in the form of an Authority element as defined in {{bibref|RFC3986}}.  The value MUST be in one of the following two forms:
+: host:port
+: host
+When {{param|STUNEnable}} is {{true}}, the ''host'' and ''port'' portions of this parameter MUST represent the public address and port corresponding to the NAT binding through which the ACS can send UDP Connection Request messages (once this information is learned by the CPE through the use of STUN).
+When {{param|STUNEnable}} is {{false}}, the ''host'' and ''port'' portions of the URL MUST represent the local IP address and port on which the CPE is listening for UDP Connection Request messages.
+The second form of this parameter MAY be used only if the port value is equal to "80".</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="UDPConnectionRequestAddressNotificationLimit" access="readWrite">
+        <description>The minimum time, in seconds, between Active Notifications resulting from changes to the {{param|UDPConnectionRequestAddress}} (if Active Notification is enabled).</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="STUNEnable" access="readWrite">
+        <description>Enables or disables the use of STUN by the CPE.  This applies only to the use of STUN in association with the ACS to allow UDP Connection Requests.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="STUNServerAddress" access="readWrite">
+        <description>Host name or IP address of the STUN server for the CPE to send Binding Requests if STUN is enabled via {{param|STUNEnable}}.
+If {{empty}} and {{param|STUNEnable}} is {{true}}, the CPE MUST use the address of the ACS extracted from the host portion of the ACS URL.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNServerPort" access="readWrite">
+        <description>Port number of the STUN server for the CPE to send Binding Requests if STUN is enabled via {{param|STUNEnable}}.
+By default, this SHOULD be the equal to the default STUN port, 3478.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="STUNUsername" access="readWrite">
+        <description>If not {{empty}}, the value of the STUN USERNAME attribute to be used in Binding Requests (only if message integrity has been requested by the STUN server).
+If {{empty}}, the CPE MUST NOT send STUN Binding Requests with message integrity.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNPassword" access="readWrite">
+        <description>The value of the STUN Password to be used in computing the MESSAGE-INTEGRITY attribute to be used in Binding Requests (only if message integrity has been requested by the STUN server).</description>
+        <syntax hidden="true">
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNMaximumKeepAlivePeriod" access="readWrite">
+        <description>If STUN Is enabled, the maximum period, in seconds, that STUN Binding Requests MUST be sent by the CPE for the purpose of maintaining the binding in the Gateway.  This applies specifically to Binding Requests sent from the UDP Connection Request address and port.
+A value of -1 indicates that no maximum period is specified.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter name="STUNMinimumKeepAlivePeriod" access="readWrite">
+        <description>If STUN Is enabled, the minimum period, in seconds, that STUN Binding Requests can be sent by the CPE for the purpose of maintaining the binding in the Gateway.  This limit applies only to Binding Requests sent from the UDP Connection Request address and port, and only those that do not contain the BINDING-CHANGE attribute.  This limit does not apply to retransmissions following the procedures defined in {{bibref|RFC3489}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="NATDetected" access="readOnly">
+        <description>When STUN is enabled, this parameter indicates whether or not the CPE has detected address and/or port mapping in use.
+A {{true}} value indicates that the received MAPPED-ADDRESS in the most recent Binding Response differs from the CPE's source address and port.
+When STUNEnable is {{false}}, this value MUST be {{false}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="ManageableDeviceNumberOfEntries" access="readOnly">
+        <description>Number of entries in the {{object|ManageableDevice}} table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="ManageableDeviceNotificationLimit" access="readWrite">
+        <description>The minimum time, in seconds, between Active Notifications resulting from changes to the {{param|ManageableDeviceNumberOfEntries}} (if Active Notification is enabled).</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="InternetGatewayDevice.ManagementServer.ManageableDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ManageableDeviceNumberOfEntries">
+      <description>Each entry in this table corresponds to a distinct LAN Device that supports Device-Gateway Association according to {{bibref|TR-069a1|Annex F}} as indicated by the presence of the DHCP option specified in that Annex.</description>
+      <uniqueKey>
+        <parameter ref="ManufacturerOUI"/>
+        <parameter ref="SerialNumber"/>
+        <parameter ref="ProductClass"/>
+      </uniqueKey>
+      <parameter name="ManufacturerOUI" access="readOnly" activeNotify="canDeny">
+        <description>Organizationally unique identifier of the Device manufacturer as provided to the Gateway by the Device.  Represented as a six hexadecimal-digit value using all upper-case letters and including any leading zeros.  The value MUST be a valid OUI as defined in {{bibref|OUI}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SerialNumber" access="readOnly" activeNotify="canDeny">
+        <description>Serial number of the Device as provided to the Gateway by the Device.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProductClass" access="readOnly" activeNotify="canDeny">
+        <description>Identifier of the class of product for which the Device's serial number applies as provided to the Gateway by the Device.
+If the Device does not provide a Product Class, then this parameter MUST be {{empty}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Time." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains parameters relating an NTP or SNTP time client in the CPE.</description>
+    </object>
+    <object base="InternetGatewayDevice.UserInterface." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains parameters relating to the user interface of the CPE.</description>
+      <parameter base="PasswordRequired" access="readWrite">
+        <description action="replace">Present only if the CPE provides a password-protected LAN-side user interface.
+Indicates whether or not the local user interface MUST require a password to be chosen by the user.  If {{false}}, the choice of whether or not a password is used is left to the user.</description>
+      </parameter>
+      <parameter base="PasswordUserSelectable" access="readWrite">
+        <description action="replace">Present only if the CPE provides a password-protected LAN-side user interface and supports LAN-side Auto-Configuration.
+Indicates whether or not a password to protect the local user interface of the CPE MAY be selected by the user directly, or MUST be equal to the password used by the LAN-side Auto-Configuration protocol.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Layer3Forwarding.Forwarding.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="ForwardNumberOfEntries">
+      <description action="replace">Layer-3 forwarding table.
+In addition to statically configured routes, this table MUST include dynamic routes learned through layer-3 routing protocols, including RIP, OSPF, DHCP, and IPCP.  The CPE MAY reject attempts to delete or modify a dynamic route entry.
+For each incoming packet, the layer-3 forwarding decision is conceptually made as follows:
+* Only table entries with a matching {{param|ForwardingPolicy}} are considered, i.e. those that either do not specify a {{param|ForwardingPolicy}}, or else specify a {{param|ForwardingPolicy}} that matches that of the incoming packet. 
+* For the remaining table entries, those for which the source address/mask matches are sorted by longest prefix, i.e. with the most specific networks first (an unspecified source address is a wild-card and always matches, with a prefix length of zero). 
+* For the remaining table entries, those for which the destination address/mask matches are sorted by longest prefix, i.e. with the most specific networks first (an unspecified destination address is a wild-card and always matches, with a prefix length of zero). 
+* The first of the remaining table entries is applied to the packet.</description>
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+          <default type="object" value="Disabled"/>
+        </syntax>
+      </parameter>
+      <parameter base="Type" access="readWrite" status="deprecated">
+        <description action="append">{{enum}}
+This parameter is DEPRECATED because its value could conflict with {{param|DestIPAddress}} and/or {{param|DestSubnetMask}}.</description>
+        <syntax>
+          <string/>
+          <default type="object" value="Host"/>
+        </syntax>
+      </parameter>
+      <parameter base="DestIPAddress" access="readWrite">
+        <description action="append">A Forwarding table entry for which {{param}} and {{param|DestSubnetMask}} are both {{empty}} or "0.0.0.0" is a default route.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="DestSubnetMask" access="readWrite">
+        <description action="append">If a destination subnet mask is specified, the {{param}} is ANDed with the destination address before comparing with the {{param|DestIPAddress}}.  Otherwise, the full destination address is used as is.
+A Forwarding table entry for which {{param|DestIPAddress}} and {{param}} are both {{empty}} or "0.0.0.0" is a default route.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="SourceIPAddress" access="readWrite">
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="SourceSubnetMask" access="readWrite">
+        <description action="append">If a source subnet mask is specified, the {{param}} is ANDed with the source address before comparing with the {{param|SourceIPAddress}}.  Otherwise, the full source address is used as is.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="GatewayIPAddress" access="readWrite">
+        <description action="append">Only one of {{param}} and {{param|Interface}} SHOULD be configured for a route.
+If both are configured, {{param}} and {{param|Interface}} MUST be self-consistent.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="Interface" access="readWrite">
+        <description action="append">Only one of {{param|GatewayIPAddress}} and {{param}} SHOULD be configured for a route.
+If both are configured, {{param|GatewayIPAddress}} and {{param}} MUST be self-consistent.
+For a route that was configured by setting {{param|GatewayIPAddress}} but not {{param}}, read access to {{param}} MUST return the full hierarchical parameter name for the route's egress interface.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="ForwardingMetric" access="readWrite">
+        <syntax>
+          <int/>
+          <default type="object" value="-1"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANConfigSecurity." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ConfigPassword" access="readWrite">
+        <description action="replace">A password to allow LAN access to protected auto-configuration services.
+If the CPE supports TR-064 (LAN-side DSL CPE Configuration Protocol), this parameter is to be used as the ''dslf-config'' password (as defined in TR-064).
+If the CPE has a user interface with password protection enabled, this parameter is also to be used as the user password for password-protected operations.  However, this parameter MUST NOT be used to set the user password if the optional parameter {{param|InternetGatewayDevice.UserInterface.PasswordUserSelectable}} is {{true}}.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.IPPingDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object provides access to an IP-layer ping test.</description>
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Indicates availability of diagnostic data.  {{enum}}
+If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the ''Error'' values listed above.
+If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.
+After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.</description>
+        <syntax>
+          <string>
+            <enumeration value="None" access="readOnly"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete" access="readOnly"/>
+            <enumeration value="Error_CannotResolveHostName" access="readOnly"/>
+            <enumeration value="Error_Internal" access="readOnly"/>
+            <enumeration value="Error_Other" access="readOnly"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="Interface" access="readWrite">
+        <description action="append">The value of this parameter MUST be either a valid interface or {{empty}}.  An attempt to set this parameter to a different value MUST be rejected as an invalid parameter value.
+If {{empty}} is specified, the CPE MUST use the interface as directed by its routing policy (Forwarding table entries) to determine the appropriate interface.</description>
+      </parameter>
+      <parameter base="DSCP" access="readWrite">
+        <description action="replace">DiffServ codepoint to be used for the test packets.  By default the CPE SHOULD set this value to zero.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DHCPServerConfigurable" access="readWrite">
+        <description action="replace">Enables the configuration of the DHCP server on the LAN interface.  If this variable is set to {{false}}, the CPE SHOULD restore its default DHCP server settings.</description>
+      </parameter>
+      <parameter base="DHCPRelay" access="readOnly" status="deprecated">
+        <description action="append">This parameter is DEPRECATED because the functionality that it describes is not well-defined.  The CPE MAY set it to the value that it thinks most appropriate, based on its configuration.</description>
+      </parameter>
+      <parameter base="ReservedAddresses" access="readWrite">
+        <syntax>
+          <list>
+            <size maxLength="256"/>
+          </list>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSServers" access="readWrite">
+        <description action="replace">DNS servers offered to DHCP clients.  Support for more than three DNS Servers is OPTIONAL.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="IPRouters" access="readWrite">
+        <description action="replace">IP addresses of routers on this subnet.  Also known as default gateway.  Support for more than one Router address is OPTIONAL.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="PassthroughLease" access="readWrite">
+        <description action="replace">DHCP lease time in seconds given to the specified LAN Host when the WAN IP address is passed-through.
+Note: A temporary private IP address with short lease (for example, 1 min) might be given to the passthrough LAN Host before the WAN IP address is acquired.</description>
+      </parameter>
+      <parameter base="AllowedMACAddresses" access="readWrite">
+        <syntax>
+          <list>
+            <size maxLength="512"/>
+          </list>
+          <dataType ref="MACAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="IPInterfaceNumberOfEntries" access="readOnly">
+        <description action="replace">Number of IP interface at LAN side of the CPE. 1 is a typical value for CPE not supporting Multihomed interfaces.  Support for more than one interface instance is OPTIONAL.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANHostConfigManagement.IPInterface.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="IPInterfaceNumberOfEntries">
+      <parameter base="IPInterfaceIPAddress" access="readWrite">
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="IPInterfaceSubnetMask" access="readWrite">
+        <syntax>
+          <dataType ref="IPAddress"/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="IPInterfaceAddressingType" access="readWrite">
+        <syntax>
+          <string>
+            <enumeration value="DHCP"/>
+            <enumeration value="Static"/>
+            <enumeration value="AutoIP"/>
+          </string>
+          <default type="object" value="DHCP"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANEthernetInterfaceConfig.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="LANEthernetInterfaceNumberOfEntries">
+      <description action="replace">This object models an Ethernet LAN connection on a CPE device.  This object MUST be implemented for CPE that contain an Ethernet interface on the LAN side.</description>
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="NoLink"/>
+            <enumeration value="Error" optional="true"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.LANUSBInterfaceConfig.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="LANUSBInterfaceNumberOfEntries">
+      <description action="replace">This object models a USB LAN connection on a CPE device.  This object MUST be implemented for CPE that contain a USB interface on the LAN side.</description>
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="NoLink"/>
+            <enumeration value="Error" optional="true"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="LANWLANConfigurationNumberOfEntries">
+      <description action="replace">This object models an 802.11 LAN connection on a CPE device.  This object MUST be implemented for CPE that contain an 802.11 interface on the LAN side.</description>
+      <parameter base="Enable" access="readWrite">
+        <description action="append">When there are multiple ''WLANConfiguration'' instances, e.g. each instance supports a different 802.11 standard or has a different security configuration, this parameter can be used to control which of the instances are currently enabled.</description>
+      </parameter>
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="Error" optional="true"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="SSID" access="readWrite">
+        <description action="replace">The current service set identifier in use by the connection.  The SSID is an identifier that is attached to packets sent over the wireless LAN that functions as a "password" for joining a particular radio network (BSS).  Note: If an access point wishes to be known by more than one SSID, it MUST provide a ''WLANConfiguration'' instance for each SSID.</description>
+      </parameter>
+      <parameter base="BeaconType" access="readWrite">
+        <description action="replace">The capabilities that are currently enabled on the access point (and that are announced via beacons if {{param|BeaconAdvertisementEnabled}} is {{true}}). Write access to this parameter enables and disables such capabilities.
+An attempt to set this parameter to one of the required (mandatory) values MAY be rejected if (and only if) the requested capability is not available on this ''WLANConfiguration'' instance but is available on another ''WLANConfiguration'' instance within this Internet Gateway Device. For example, only basic 802.11 might be supported by one virtual AP, and only WPA might be supported by another virtual AP.
+A value of {{enum|None}} means that no capabilities are currently enabled on the access point and that no stations will be able to associate with it.  {{enum}}
+{{enum|11i}} SHOULD be taken to refer to both the 802.11i specification and to the WPA2 specification (any WPA2-certified device will implement all mandatory parts of the 802.11i standard).
+The OBSOLETED values are those for Basic + WPA/WPA2  mixed modes, which are not permitted by the WPA specifications.</description>
+        <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Basic"/>
+            <enumeration value="WPA"/>
+            <enumeration value="11i" optional="true"/>
+            <enumeration value="BasicandWPA" status="obsoleted" optional="true"/>
+            <enumeration value="Basicand11i" status="obsoleted" optional="true"/>
+            <enumeration value="WPAand11i" optional="true"/>
+            <enumeration value="BasicandWPAand11i" status="obsoleted" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="Standard" access="readOnly">
+        <description action="replace">Indicates which IEEE 802.11 standard this ''WLANConfiguration'' instance is configured for.  {{enum}}
+Where each value indicates support for only the indicated standard.
+If the device is configured simultaneously for more than one standard, a separate ''WLANConfiguration'' instance MUST be used for each supported standard.</description>
+      </parameter>
+      <parameter base="KeyPassphrase" access="readWrite">
+        <description action="replace">A passphrase from which the WEP keys are to be generated.
+This parameter is the same as the parameter ''InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.PreSharedKey.1.KeyPassphrase'' for the same instance of ''WLANConfiguration''.  When either parameter is changed, the value of the other is changed as well.
+If {{param}} is written, all four WEP keys are immediately generated.  The ACS SHOULD NOT set the passphrase and also set the WEP keys directly (the result of doing this is undefined).
+This MUST either be a valid key length divided by 8, in which case each byte contributes 8 bits to the key, or else MUST consist of Hex digits and be a valid key length divided by 4, in which case each byte contributes 4 bits to the key.
+Note: If a passphrase is used, all four WEP keys will be the same.</description>
+      </parameter>
+      <parameter base="WEPEncryptionLevel" access="readOnly">
+        <description action="replace">Supported key lengths.  {{enum}}
+Any additional vendor-specific values MUST start with the key length in bits.
+This parameter does not enforce a given encryption level but only indicates capabilities.  The WEP encryption level for a given key is inferred from the key length.</description>
+      </parameter>
+      <parameter base="BasicEncryptionModes" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support basic 802.11 then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.</description>
+      </parameter>
+      <parameter base="BasicAuthenticationMode" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support basic 802.11 then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.</description>
+        <syntax>
+          <string>
+            <size maxLength="31"/>
+            <enumeration value="None">
+              <description action="replace">Open authentication</description>
+            </enumeration>
+            <enumeration value="EAPAuthentication" optional="true"/>
+            <enumeration value="SharedAuthentication" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="WPAEncryptionModes" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support WPA then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.
+The DEPRECATED values are those that combine WEP with TKIP and/or AES, which is not permitted by the WPA specifications.</description>
+        <syntax>
+          <string>
+            <size maxLength="31"/>
+            <enumeration value="WEPEncryption" status="deprecated"/>
+            <enumeration value="TKIPEncryption"/>
+            <enumeration value="WEPandTKIPEncryption" status="deprecated"/>
+            <enumeration value="AESEncryption" optional="true"/>
+            <enumeration value="WEPandAESEncryption" status="deprecated" optional="true"/>
+            <enumeration value="TKIPandAESEncryption" optional="true"/>
+            <enumeration value="WEPandTKIPandAESEncryption" status="deprecated" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="WPAAuthenticationMode" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support WPA then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.</description>
+      </parameter>
+      <parameter base="IEEE11iEncryptionModes" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support 802.11i then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.
+''IEEE11i'' SHOULD be taken to refer to both the 802.11i specification and to the WPA2 specification (any WPA2-certified device will implement all mandatory parts of the 802.11i standard).
+The DEPRECATED values are those that combine WEP with TKIP and/or AES, which is not permitted by the WPA2 specifications.</description>
+        <syntax>
+          <string>
+            <size maxLength="31"/>
+            <enumeration value="WEPEncryption" status="deprecated"/>
+            <enumeration value="TKIPEncryption" optional="true"/>
+            <enumeration value="WEPandTKIPEncryption" status="deprecated"/>
+            <enumeration value="AESEncryption"/>
+            <enumeration value="WEPandAESEncryption" status="deprecated" optional="true"/>
+            <enumeration value="TKIPandAESEncryption" optional="true"/>
+            <enumeration value="WEPandTKIPandAESEncryption" status="deprecated" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="IEEE11iAuthenticationMode" access="readWrite">
+        <description action="append">{{enum}}
+If this ''WLANConfiguration'' instance does not support 802.11i then this parameter MUST NOT be present in this instance of the ''WLANConfiguration'' object.
+''IEEE11i'' SHOULD be taken to refer to both the 802.11i specification and to the WPA2 specification (any WPA2-certified device will implement all mandatory parts of the 802.11i standard).</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.AssociatedDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="TotalAssociations">
+      <description action="replace">A table of the devices currently associated with the access point.  The size of this table is given by {{param|InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.TotalAssociations}}.  This object MUST be implemented for CPE that contain an 802.11 interface on the LAN side.</description>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.WEPKey.{i}." access="readOnly" minEntries="4" maxEntries="4">
+      <description action="replace">This is a table of WEP keys.  The size of this table is fixed with exactly 4 entries (with instance numbers 1 through 4).  This object MUST be implemented for CPE that contain an 802.11 interface on the LAN side.</description>
+      <parameter base="WEPKey" access="readWrite">
+        <description action="replace">A WEP key expressed as a hexadecimal string. 
+The WEP encryption level for a given key is inferred from the key length, e.g. 10 characters for 40-bit encryption, or 26 characters for 104-bit encryption (keys do not all have to be of the same length, although they will be if the CPE uses {{param|InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.KeyPassphrase}} to generate them).
+If {{param|InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.KeyPassphrase}} is written, all four WEP keys are immediately generated.  The ACS SHOULD NOT set the passphrase and also set the WEP keys directly (the result of doing this is undefined).</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.PreSharedKey.{i}." access="readOnly" minEntries="10" maxEntries="10">
+      <description action="replace">This is a table of preshared keys.  The size of this table is fixed with exactly 10 entries (with instance numbers 1 through 10).  This object MUST be implemented for CPE that contain an 802.11 interface on the LAN side.</description>
+      <parameter base="PreSharedKey" access="readWrite">
+        <description action="replace">A literal WPA PSK expressed as a hexadecimal string.
+The first table entry contains the default {{param}} (''InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.PreSharedKey.1.PreSharedKey'').
+If {{param|KeyPassphrase}} is written, the PSK is immediately generated.  The ACS SHOULD NOT set the passphrase and also set the PSK directly (the result of doing this is undefined).</description>
+      </parameter>
+      <parameter base="KeyPassphrase" access="readWrite">
+        <description action="replace">A passphrase from which the PSK is to be generated.
+The first table entry is the same as the parameter {{param|InternetGatewayDevice.LANDevice.{i}.WLANConfiguration.{i}.KeyPassphrase}} for the same instance of ''WLANConfiguration''.  When either parameter is changed, the value of the other is changed as well.
+If {{param}} is written, the PSK is immediately generated.  The ACS SHOULD NOT set the passphrase and also set the PSK directly (the result of doing this is undefined).
+The key is generated as specified by WPA, which uses PBKDF2 from PKCS #5: Password-based Cryptography Specification Version 2.0 (RFC2898).</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.LANDevice.{i}.Hosts.Host.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="HostNumberOfEntries">
+      <parameter base="LeaseTimeRemaining" access="readOnly" activeNotify="canDeny">
+        <description action="replace">DHCP lease time remaining in seconds.  A value of -1 indicates an infinite lease.  The value MUST be 0 (zero) if the {{param|AddressSource}} is not {{enum|DHCP|AddressSource}}.</description>
+      </parameter>
+      <parameter base="Active" access="readOnly">
+        <description action="replace">Whether or not the host is currently present on the LAN.  The method of presence detection is a local matter to the CPE.
+The ability to list inactive hosts is OPTIONAL.  If the CPE includes inactive hosts in this table, this variable MUST be set to zero for each inactive host.  The length of time an inactive host remains listed in this table is a local matter to the CPE.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANCommonInterfaceConfig." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="Layer1UpstreamMaxBitRate" access="readOnly">
+        <description action="replace">Specifies the maximum upstream theoretical bit rate for the WAN device in bits per second.  This describes the maximum possible rate given the type of interface assuming the best-case operating environment, regardless of the current operating rate.
+For example, if the physical interface is 100BaseT, this value would be 100000000, regardless of the current operating rate.</description>
+      </parameter>
+      <parameter base="Layer1DownstreamMaxBitRate" access="readOnly">
+        <description action="replace">Specifies the maximum downstream theoretical bit rate for the WAN device in bits per second.  This describes the maximum possible rate given the type of interface assuming the best-case operating environment, regardless of the current operating rate.
+For example, if the physical interface is 100BaseT, this value would be 100000000, regardless of the current operating rate.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="Initializing"/>
+            <enumeration value="EstablishingLink"/>
+            <enumeration value="NoSignal"/>
+            <enumeration value="Error" optional="true"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="InterleaveDepth" access="readOnly">
+        <description action="replace">ADSL Interleaved depth.  This variable is only applicable if {{param|DataPath}} = {{enum|Interleaved|DataPath}}.  Otherwise, the value of this parameter MUST be zero.</description>
+      </parameter>
+      <parameter base="UpstreamCurrRate" access="readOnly" activeNotify="canDeny">
+        <description action="replace">The current physical layer aggregate data rate (expressed in Kbps) of the upstream DSL connection.</description>
+      </parameter>
+      <parameter base="DownstreamCurrRate" access="readOnly" activeNotify="canDeny">
+        <description action="replace">The current physical layer aggregate data rate (expressed in Kbps) of the downstream DSL connection.</description>
+      </parameter>
+      <parameter base="ATURVendor" access="readOnly">
+        <description action="replace">ATU-R vendor identifier as defined in G.994.1 and T1.413.  In the case of G.994.1 this corresponds to the four-octet provider code, which MUST be represented as eight hexadecimal digits.</description>
+      </parameter>
+      <parameter base="ATURCountry" access="readOnly">
+        <description action="replace">T.35 country code of the ATU-R vendor as defined in G.994.1, where the two-octet value defined in G.994.1 MUST be represented as four hexadecimal digits.</description>
+        <syntax>
+          <string>
+            <size maxLength="4"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="ATUCVendor" access="readOnly">
+        <description action="replace">ATU-C vendor identifier as defined in G.994.1 and T1.413.  In the case of G.994.1 this corresponds to the four-octet provider code, which MUST be represented as eight hexadecimal digits.</description>
+      </parameter>
+      <parameter base="ATUCCountry" access="readOnly">
+        <description action="replace">T.35 country code of the ATU-C vendor as defined in G.994.1, where the two-octet value defined in G.994.1 MUST be represented as four hexadecimal digits.</description>
+        <syntax>
+          <string>
+            <size maxLength="4"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="TotalStart" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of seconds since the beginning of the period used for collection of ''Total'' statistics.
+Statistics SHOULD continue to be accumulated across CPE reboots, though this might not always be possible.</description>
+      </parameter>
+      <parameter base="ShowtimeStart" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of seconds since the most recent DSL Showtime-the beginning of the period used for collection of ''Showtime'' statistics.</description>
+      </parameter>
+      <parameter base="CurrentDayStart" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of seconds since the beginning of the period used for collection of ''CurrentDay'' statistics.
+The CPE MAY align the beginning of each ''CurrentDay'' interval with days in the UTC time zone, but is not required to do so.
+Statistics SHOULD continue to be accumulated across CPE reboots, though this might not always be possible.</description>
+      </parameter>
+      <parameter base="QuarterHourStart" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of seconds since the beginning of the period used for collection of ''QuarterHour'' statistics.
+The CPE MAY align the beginning of each ''QuarterHour'' interval with real-time quarter-hour intervals, but is not required to do so.
+Statistics SHOULD continue to be accumulated across CPE reboots, though this might not always be possible.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Total." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Total number of successfully received blocks, where a block is as defined in RFC 2662.</description>
+      </parameter>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Total number of successfully transmitted blocks, where a block is as defined in RFC 2662.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.Showtime." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully received blocks since the most recent DSL Showtime, where a block is as defined in RFC 2662.</description>
+      </parameter>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully transmitted blocks since the most recent DSL Showtime, where a block is as defined in RFC 2662.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.LastShowtime." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully received blocks since the second most recent DSL Showtime, where a block is as defined in RFC 2662.</description>
+      </parameter>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully transmitted blocks since the second most recent DSL Showtime, where a block is as defined in RFC 2662.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.CurrentDay." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully received blocks during the current day, where a block is as defined in RFC 2662.</description>
+      </parameter>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully transmitted blocks during the current day, where a block is as defined in RFC 2662.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLInterfaceConfig.Stats.QuarterHour." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="ReceiveBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully received blocks during the current quarter hour, where a block is as defined in RFC 2662.</description>
+      </parameter>
+      <parameter base="TransmitBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Number of successfully transmitted blocks during the current quarter hour, where a block is as defined in RFC 2662.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANEthernetInterfaceConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <parameter base="Status" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="NoLink"/>
+            <enumeration value="Error" optional="true"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement." access="readOnly" minEntries="1" maxEntries="1" status="obsoleted">
+      <description action="replace">This object is intended for a CPE with a DSL modem WAN interface.
+Note - This object was originally created to allow ''WANConnection'' devices and services to be added dynamically in the IGD object model in TR-064 because UPnP Device Architecture 1.0 did not contain this capability natively.  Because in TR-069 objects can be created and removed using the AddObject and DeleteObject RPCs, ''WANConnection'' interfaces can be managed using these TR-069 mechanisms directly.  Therefore, unlike the TR-064 equivalent, the {{object|ConnectionService}} table within this object is Read-Only in the TR-069 ''InternetGatewayDevice'' data model context.
+This object is OBSOLETED because it serves no purpose.</description>
+      <parameter base="ConnectionServiceNumberOfEntries" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it is within an OBSOLETED object.  The CPE MAY return a value of 0 for this parameter, regardless of the number of connection services, in which case no {{object|ConnectionService}} instances will exist.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLConnectionManagement.ConnectionService.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ConnectionServiceNumberOfEntries" status="obsoleted">
+      <description action="append">This object is OBSOLETED because it is within an OBSOLETED object.</description>
+      <parameter base="WANConnectionDevice" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+      <parameter base="WANConnectionService" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+      <parameter base="DestinationAddress" access="readOnly" status="obsoleted">
+        <description action="append">The "PVC:" or "SVC:" prefix is part of the parameter value and MUST be followed by 0 or 1 space characters.  For example, possible values for this parameter are "PVC:8/23" or "PVC: 0/35".
+This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+      <parameter base="LinkType" access="readOnly" status="obsoleted">
+        <description action="replace">Link Type of the ''WANConnectionDevice'' entry.  One of Link Types as described in ''WANDSLLinkConfig''.
+This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+      <parameter base="ConnectionType" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+      <parameter base="Name" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it is within an OBSOLETED object.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANDSLDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object is to provide diagnostic information for a CPE with an ADSL2 or ADSL2+ modem WAN interface, but MAY also be used for ADSL.</description>
+      <parameter base="LoopDiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Indicates availability of diagnostic data.  {{enum}}
+If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test, which brings down the DSL connection while the test is operating.  When writing, the only allowed value is {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the ''Error'' values listed above.
+If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+When the diagnostic initiated by the ACS is completed, the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the corresponding reason in the Inform message.
+After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object instance) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.</description>
+        <syntax>
+          <string>
+            <enumeration value="None" access="readOnly"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete" access="readOnly"/>
+            <enumeration value="Error_Internal" access="readOnly"/>
+            <enumeration value="Error_Other" access="readOnly"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANDSLLinkConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <parameter base="LinkType" access="readWrite">
+        <description action="append">{{enum}}
+The value ''PPPoE'' has always been DEPRECATED and ''EoA'' should be used instead (see {{bibref|TR-098a1|Annex B}}).  The ACS MUST NOT set this parameter to ''PPPoE'' and the CPE MUST reject attempts to do so.</description>
+        <syntax>
+          <string>
+            <enumeration value="EoA"/>
+            <enumeration value="IPoA"/>
+            <enumeration value="PPPoA"/>
+            <enumeration value="PPPoE" status="deprecated"/>
+            <enumeration value="CIP"/>
+            <enumeration value="Unconfigured"/>
+          </string>
+          <default type="object" value="Unconfigured"/>
+        </syntax>
+      </parameter>
+      <parameter base="AutoConfig" access="readOnly">
+        <description action="replace">Indicates if the CPE is currently using some auto configuration mechanisms for this connection.  If this variable is {{true}}, all writable variables in this connection instance become read-only. Any attempt to change one of these variables SHOULD fail and an error SHOULD be returned.</description>
+      </parameter>
+      <parameter base="DestinationAddress" access="readWrite">
+        <description action="append">The "PVC:" or "SVC:" prefix is part of the parameter value and MUST be followed by 0 or 1 space characters.  For example, possible values for this parameter are "PVC:8/23" or "PVC: 0/35".</description>
+      </parameter>
+      <parameter base="FCSPreserved" access="readWrite">
+        <description action="replace">This flag tells if a checksum SHOULD be added in the ATM payload. It does not refer to the checksum of one of the ATM cells or AALX packets. In case of LLC or VCMUX encapsulation, this ATM checksum is the FCS field described in RFC 1483. It is only applicable in the upstream direction.</description>
+      </parameter>
+      <parameter base="ATMTransmittedBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">The current count of successfully transmitted cells.</description>
+      </parameter>
+      <parameter base="ATMReceivedBlocks" access="readOnly" activeNotify="canDeny">
+        <description action="replace">The current count of successfully received cells.</description>
+      </parameter>
+      <parameter base="AAL5CRCErrors" access="readOnly" status="deprecated" activeNotify="canDeny">
+        <description action="append">This parameter is DEPRECATED because it overlaps with the {{param|ATMCRCErrors}} parameter. If present, it MUST have the same value as the {{param|ATMCRCErrors}} parameter if AAL5 is in use, or 0 if AAL5 is not in use.</description>
+      </parameter>
+      <parameter base="ATMCRCErrors" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Count of the ATM layer cyclic redundancy check (CRC) errors.
+This refers to CRC errors at the ATM adaptation layer (AAL). The AAL in use is indicated by the {{param|ATMAAL}} parameter. The value of the {{param}} parameter MUST be 0 for AAL types that have no CRCs.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANATMF5LoopbackDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Indicates availability of diagnostic data.  {{enum}}
+If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the ''Error'' values listed above.
+If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.
+After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object instance) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.</description>
+        <syntax>
+          <string>
+            <enumeration value="None" access="readOnly"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete" access="readOnly"/>
+            <enumeration value="Error_Internal" access="readOnly"/>
+            <enumeration value="Error_Other" access="readOnly"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="NumberOfRepetitions" access="readWrite">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="1"/>
+        </syntax>
+      </parameter>
+      <parameter base="SuccessCount" access="readOnly" activeNotify="canDeny">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter base="FailureCount" access="readOnly" activeNotify="canDeny">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter base="AverageResponseTime" access="readOnly" activeNotify="canDeny">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter base="MinimumResponseTime" access="readOnly" activeNotify="canDeny">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+      <parameter base="MaximumResponseTime" access="readOnly" activeNotify="canDeny">
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPOTSLinkConfig." access="readOnly" minEntries="0" maxEntries="1">
+      <parameter base="ISPPhoneNumber" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="ISPInfo" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="LinkType" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value="PPP_Dialup"/>
+        </syntax>
+      </parameter>
+      <parameter base="NumberOfRetries" access="readWrite">
+        <description action="replace">The number of times the CPE SHOULD attempt an Internet connection setup before returning error.</description>
+      </parameter>
+      <parameter base="DelayBetweenRetries" access="readWrite">
+        <description action="replace">The number of seconds the CPE SHOULD wait between attempts to setup an Internet connection.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="WANIPConnectionNumberOfEntries">
+      <description action="replace">This object enables configuration of IP connections on the WAN interface of a CPE.</description>
+      <parameter base="LastConnectionError" access="readOnly">
+        <syntax>
+          <string/>
+          <default type="object" value="ERROR_NONE"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSEnabled" access="readWrite">
+        <description action="replace">Whether or not the device SHOULD attempt to query a DNS server across this connection.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSOverrideAllowed" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSServers" access="readWrite">
+        <description action="replace">DNS server IP addresses for this connection.  Support for more than three DNS Servers is OPTIONAL.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="ConnectionTrigger" access="readWrite">
+        <description action="append">{{enum}}
+The above values are defined as follows:
+* {{enum|OnDemand}}: If this IP connection is disconnected for any reason, it is to remain disconnected until the CPE has one or more packets to communicate over this connection, at which time the CPE automatically attempts to reestablish the connection.
+* {{enum|AlwaysOn}}: If this IP connection is disconnected for any reason, the CPE automatically attempts to reestablish the connection (and continues to attempt to reestablish the connection as long it remains disconnected).
+* {{enum|Manual}}: If this IP connection is disconnected for any reason, it is to remain disconnected until the user of the CPE explicitly instructs the CPE to reestablish the connection.
+Note that the reason for an IP connection becoming disconnected to begin with might be either external to the CPE, such as non-renewal of a DHCP lease or momentary disconnection of the physical interface, or internal to the CPE, such as use of the {{param|IdleDisconnectTime}} and/or {{param|AutoDisconnectTime}} parameters in this object.
+Note also that the means by which a CPE would keep an IP connection disconnected (while waiting for the designated trigger) if it is otherwise physically connected and has an IP address is a local matter specific to the implementation of the CPE.</description>
+        <syntax>
+          <string/>
+          <default type="object" value="OnDemand"/>
+        </syntax>
+      </parameter>
+      <parameter base="RouteProtocolRx" access="readWrite">
+        <syntax>
+          <string>
+            <enumeration value="Off"/>
+            <enumeration value="RIPv1" optional="true"/>
+            <enumeration value="RIPv2" optional="true"/>
+            <enumeration value="OSPF" optional="true"/>
+          </string>
+          <default type="object" value="Off"/>
+        </syntax>
+      </parameter>
+      <parameter base="ShapingRate" access="readWrite">
+        <description action="replace">Rate to shape this connection's egress traffic to.  For leaky bucket (constant rate shaping), this is the constant rate.  For token bucket (variable rate shaping), this is the average rate.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+      </parameter>
+      <parameter base="ShapingBurstSize" access="readWrite">
+        <description action="replace">Burst size in bytes.  For both leaky bucket (constant rate shaping) and token bucket (variable rate shaping) this is the bucket size and is therefore the maximum burst size.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0" status="deleted"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.PortMapping.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PortMappingNumberOfEntries">
+      <description action="replace">Port mapping table.
+This table MUST contain all NAT port mappings associated with this connection, including static and dynamic port mappings programmatically created via local control protocol, such as UPnP.
+This table MUST NOT contain dynamic NAT binding entries associated with the normal operation of NAT.
+At most one entry in an instance of this table can exist with all of the same values for {{param|RemoteHost}}, {{param|ExternalPort}}, and {{param|PortMappingProtocol}}.  If the ACS attempts to set the parameters of an existing entry such that this requirement would be violated, the CPE MUST reject the request.  In this case, the SetParameterValues response MUST include a SetParameterValuesFault element for each parameter in the corresponding request whose modification would have resulted in such a violation.  On creation of a new table entry, the CPE MUST choose default values for {{param|ExternalPort}} and {{param|PortMappingProtocol}} such that the new entry does not conflict with any existing entry.</description>
+      <parameter base="PortMappingLeaseDuration" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Determines the time to live, in seconds, of a port-mapping lease, where "time to live" means the number of seconds before the port mapping expires. 
+A value of 0 means the port mapping is static. Support for dynamic (non-static) port mappings is OPTIONAL.  That is, the only value for {{param}} that MUST be supported is 0.
+For a dynamic (non-static) port mapping, when this parameter is read, the value represents the time remaining on the port-mapping lease.  That is, for a dynamic port mapping, the value counts down toward 0.  When a dynamic port-mapping lease expires, the CPE MUST automatically terminate that port mapping, and MUST automatically delete the corresponding ''PortMapping'' table entry.</description>
+      </parameter>
+      <parameter base="RemoteHost" access="readWrite">
+        <description action="replace">This parameter is the IP address of the source of inbound packets.  {{empty}} indicates a "wildcard" (this will be a wildcard in most cases).  CPE are REQUIRED only to support wildcards.
+When {{param}} is a wildcard, all traffic sent to the {{param|ExternalPort}} on the WAN interface of the gateway is forwarded to the {{param|InternalClient}} on the {{param|InternalPort}}.
+When {{param}} is specified as one external IP address, the NAT will only forward inbound packets from this {{param}} to the {{param|InternalClient}}, all other packets will be dropped. 
+If a CPE supports non-wildcard values for {{param}}, it MAY additionally support the ability to have more than one port mapping with the same {{param|ExternalPort}} and {{param|PortMappingProtocol}}, but with differing values of {{param}}.
+When wildcard values are used for {{param}} and/or {{param|ExternalPort}}, the following precedence order applies (with the highest precedence listed first):
+# Explicit {{param}}, explicit {{param|ExternalPort}}
+# Explicit {{param}}, wildcard {{param|ExternalPort}}
+# Wildcard {{param}}, explicit {{param|ExternalPort}}
+# Wildcard {{param}}, wildcard {{param|ExternalPort}}
+If an incoming packet matches the criteria associated with more than one entry in this table, the CPE MUST apply the port mapping associated with the highest precedence entry.
+At most one entry in this table can exist with all of the same values for {{param}}, {{param|ExternalPort}}, and {{param|PortMappingProtocol}}.</description>
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="ExternalPort" access="readWrite">
+        <description action="replace">The external port that the NAT gateway would listen on for connection requests to a corresponding {{param|InternalPort}}. Inbound packets to this external port on the WAN interface SHOULD be forwarded to {{param|InternalClient}} on the {{param|InternalPort}}.
+A value of zero (0) represents a "wildcard".  If this value is a wildcard, connection request on all external ports (that are not otherwise mapped) will be forwarded to {{param|InternalClient}}.  In the wildcard case, the value(s) of {{param|InternalPort}} on {{param|InternalClient}} are ignored.
+When wildcard values are used for {{param|RemoteHost}} and/or {{param}}, the following precedence order applies (with the highest precedence listed first):
+# Explicit {{param|RemoteHost}}, explicit {{param}}
+# Explicit {{param|RemoteHost}}, wildcard {{param}}
+# Wildcard {{param|RemoteHost}}, explicit {{param}}
+# Wildcard {{param|RemoteHost}}, wildcard {{param}}
+If an incoming packet matches the criteria associated with more than one entry in this table, the CPE MUST apply the port mapping associated with the highest precedence entry.
+At most one entry in this table can exist with all of the same values for {{param|RemoteHost}}, {{param}}, and {{param|PortMappingProtocol}}.</description>
+      </parameter>
+      <parameter base="InternalPort" access="readWrite">
+        <description action="replace">The port on {{param|InternalClient}} that the gateway SHOULD forward connection requests to.  A value of zero (0) is not allowed.</description>
+      </parameter>
+      <parameter base="PortMappingProtocol" access="readWrite">
+        <description action="append">{{enum}}
+At most one entry in this table can exist with all of the same values for {{param|RemoteHost}}, {{param|ExternalPort}}, and {{param}}.</description>
+      </parameter>
+      <parameter base="InternalClient" access="readWrite">
+        <description action="replace">The IP address or DNS host name of an internal client (on the LAN).
+Support for an IP address is mandatory.  If {{param}} is specified as an IP address and the LAN device's IP address subsequently changes, the port mapping MUST remain associated with the original IP address.
+Support for DNS host names is OPTIONAL.  If {{param}} is specified as a DNS host name and the LAN device's IP address subsequently changes, the port mapping MUST remain associated with this LAN device.  In this case, it is the responsibility of the CPE to maintain the name-to-address mapping in the event of IP address changes.  This can be accomplished, for example, by assigning the DNS host name via use of DHCP option 12 (Host Name) or option 81 (FQDN).  Note that the ACS can learn the host name associated with a given LAN device via the ''Hosts'' table ({{object|InternetGatewayDevice.LANDevice.{i}.Hosts}}).
+Read access to this parameter MUST always return the exact value that was last set by the ACS.  For example, if the internal client is set to a DNS host name, it MUST read back as a DNS host name and not as an IP address.
+{{empty}} indicates an unconfigured {{param}}. If this parameter is unconfigured, this port mapping MUST NOT be operational.
+It MUST be possible to set the {{param}} to the broadcast IP address 255.255.255.255 for UDP mappings. This is to enable multiple NAT clients to use the same well-known port simultaneously.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="PortMappingDescription" access="readWrite">
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANIPConnection.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains statistics for all connections within the same ''WANConnectionDevice'' that share a common MAC address.  The contents of this object SHOULD be identical for each such connection.
+This object is intended only for ''WANConnectionDevice''s that can support an Ethernet-layer on this interface (e.g., ''PPPoE'', ''IPoE'').</description>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="WANPPPConnectionNumberOfEntries">
+      <description action="replace">This object enables configuration of PPP connections on the WAN interface of a CPE.</description>
+      <parameter base="LastConnectionError" access="readOnly">
+        <syntax>
+          <string/>
+          <default type="object" value="ERROR_NONE"/>
+        </syntax>
+      </parameter>
+      <parameter base="Username" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="Password" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSEnabled" access="readWrite">
+        <description action="replace">Whether or not the device SHOULD attempt to query a DNS server across this connection.</description>
+        <syntax>
+          <boolean/>
+          <default type="object" value="true"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSOverrideAllowed" access="readWrite">
+        <syntax>
+          <boolean/>
+          <default type="object" value="false"/>
+        </syntax>
+      </parameter>
+      <parameter base="DNSServers" access="readWrite">
+        <description action="replace">DNS server IP addresses for this connection.  Support for more than three DNS Servers is OPTIONAL.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter base="MACAddress" access="readWrite">
+        <description action="append">If {{param|TransportType}} is {{enum|PPPoA|TransportType}}, the value of this parameter is irrelevant and MUST be {{empty}}.</description>
+      </parameter>
+      <parameter base="MACAddressOverride" access="readWrite">
+        <description action="append">If {{param|TransportType}} is {{enum|PPPoA|TransportType}}, the value of this parameter is irrelevant and MUST be {{false}}.</description>
+      </parameter>
+      <parameter base="PPPoEACName" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="PPPoEServiceName" access="readWrite">
+        <syntax>
+          <string />
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="ConnectionTrigger" access="readWrite">
+        <description action="replace">Trigger used to establish the PPP connection.  {{enum}}
+The above values are defined as follows:
+* {{enum|OnDemand}}: If this PPP connection is disconnected for any reason, it is to remain disconnected until the CPE has one or more packets to communicate over this connection, at which time the CPE automatically attempts to reestablish the connection.
+* {{enum|AlwaysOn}}: If this PPP connection is disconnected for any reason, the CPE automatically attempts to reestablish the connection (and continues to attempt to reestablish the connection as long it remains disconnected).
+* {{enum|Manual}}: If this PPP connection is disconnected for any reason, it is to remain disconnected until the user of the CPE explicitly instructs the CPE to reestablish the connection.
+Note that the reason for a PPP connection becoming disconnected to begin with might be either external to the CPE, such as termination by the BRAS or momentary disconnection of the physical interface, or internal to the CPE, such as use of the {{param|IdleDisconnectTime}} and/or {{param|AutoDisconnectTime}} parameters in this object.</description>
+        <syntax>
+          <string/>
+          <default type="object" value="OnDemand"/>
+        </syntax>
+      </parameter>
+      <parameter base="RouteProtocolRx" access="readWrite">
+        <syntax>
+          <string>
+            <enumeration value="Off"/>
+            <enumeration value="RIPv1" optional="true"/>
+            <enumeration value="RIPv2" optional="true"/>
+            <enumeration value="OSPF" optional="true"/>
+          </string>
+          <default type="object" value="Off"/>
+        </syntax>
+      </parameter>
+      <parameter base="ShapingRate" access="readWrite">
+        <description action="replace">Rate to shape this connection's egress traffic to.  For leaky bucket (constant rate shaping), this is the constant rate.  For token bucket (variable rate shaping), this is the average rate.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+      </parameter>
+      <parameter base="ShapingBurstSize" access="readWrite">
+        <description action="replace">Burst size in bytes.  For both leaky bucket (constant rate shaping) and token bucket (variable rate shaping) this is the bucket size and is therefore the maximum burst size.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0" status="deleted"/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.PortMapping.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PortMappingNumberOfEntries">
+      <description action="replace">Port mapping table.
+This table MUST contain all NAT port mappings associated with this connection, including static and dynamic port mappings programmatically created via local control protocol, such as UPnP.
+This table MUST NOT contain dynamic NAT binding entries associated with the normal operation of NAT.
+At most one entry in an instance of this table can exist with all of the same values for {{param|RemoteHost}}, {{param|ExternalPort}}, and {{param|PortMappingProtocol}}.  If the ACS attempts to set the parameters of an existing entry such that this requirement would be violated, the CPE MUST reject the request.  In this case, the SetParameterValues response MUST include a SetParameterValuesFault element for each parameter in the corresponding request whose modification would have resulted in such a violation.  On creation of a new table entry, the CPE MUST choose default values for {{param|ExternalPort}} and {{param|PortMappingProtocol}} such that the new entry does not conflict with any existing entry.</description>
+      <parameter base="PortMappingLeaseDuration" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Determines the time to live, in seconds, of a port-mapping lease, where "time to live" means the number of seconds before the port mapping expires. 
+A value of 0 means the port mapping is static. Support for dynamic (non-static) port mappings is OPTIONAL.  That is, the only value for {{param}} that MUST be supported is 0.
+For a dynamic (non-static) port mapping, when this parameter is read, the value represents the time remaining on the port-mapping lease.  That is, for a dynamic port mapping, the value counts down toward 0.  When a dynamic port-mapping lease expires, the CPE MUST automatically terminate that port mapping, and MUST automatically delete the corresponding ''PortMapping'' table entry.</description>
+      </parameter>
+      <parameter base="RemoteHost" access="readWrite">
+        <description action="replace">This parameter is the IP address of the source of inbound packets.  {{empty}} indicates a "wildcard" (this will be a wildcard in most cases).  CPE are REQUIRED only to support wildcards.
+When {{param}} is a wildcard, all traffic sent to the {{param|ExternalPort}} on the WAN interface of the gateway is forwarded to the {{param|InternalClient}} on the {{param|InternalPort}}.
+When {{param}} is specified as one external IP address, the NAT will only forward inbound packets from this {{param}} to the {{param|InternalClient}}, all other packets will be dropped. 
+If a CPE supports non-wildcard values for {{param}}, it MAY additionally support the ability to have more than one port mapping with the same {{param|ExternalPort}} and {{param|PortMappingProtocol}}, but with differing values of {{param}}.
+When wildcard values are used for {{param}} and/or {{param|ExternalPort}}, the following precedence order applies (with the highest precedence listed first):
+# Explicit {{param}}, explicit {{param|ExternalPort}}
+# Explicit {{param}}, wildcard {{param|ExternalPort}}
+# Wildcard {{param}}, explicit {{param|ExternalPort}}
+# Wildcard {{param}}, wildcard {{param|ExternalPort}}
+If an incoming packet matches the criteria associated with more than one entry in this table, the CPE MUST apply the port mapping associated with the highest precedence entry.
+At most one entry in this table can exist with all of the same values for {{param}}, {{param|ExternalPort}}, and {{param|PortMappingProtocol}}.</description>
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="ExternalPort" access="readWrite">
+        <description action="replace">The external port that the NAT gateway would listen on for connection requests to a corresponding {{param|InternalPort}}. Inbound packets to this external port on the WAN interface SHOULD be forwarded to {{param|InternalClient}} on the {{param|InternalPort}}.
+A value of zero (0) represents a "wildcard".  If this value is a wildcard, connection request on all external ports (that are not otherwise mapped) will be forwarded to {{param|InternalClient}}.  In the wildcard case, the value(s) of {{param|InternalPort}} on {{param|InternalClient}} are ignored.
+When wildcard values are used for {{param|RemoteHost}} and/or {{param}}, the following precedence order applies (with the highest precedence listed first):
+# Explicit {{param|RemoteHost}}, explicit {{param}}
+# Explicit {{param|RemoteHost}}, wildcard {{param}}
+# Wildcard {{param|RemoteHost}}, explicit {{param}}
+# Wildcard {{param|RemoteHost}}, wildcard {{param}}
+If an incoming packet matches the criteria associated with more than one entry in this table, the CPE MUST apply the port mapping associated with the highest precedence entry.
+At most one entry in this table can exist with all of the same values for {{param|RemoteHost}}, {{param}}, and {{param|PortMappingProtocol}}.</description>
+      </parameter>
+      <parameter base="InternalPort" access="readWrite">
+        <description action="replace">The port on {{param|InternalClient}} that the gateway SHOULD forward connection requests to.  A value of zero (0) is not allowed.</description>
+      </parameter>
+      <parameter base="PortMappingProtocol" access="readWrite">
+        <description action="append">{{enum}}
+At most one entry in this table can exist with all of the same values for {{param|RemoteHost}}, {{param|ExternalPort}}, and {{param}}.</description>
+      </parameter>
+      <parameter base="InternalClient" access="readWrite">
+        <description action="replace">The IP address or DNS host name of an internal client (on the LAN).
+Support for an IP address is mandatory.  If {{param}} is specified as an IP address and the LAN device's IP address subsequently changes, the port mapping MUST remain associated with the original IP address.
+Support for DNS host names is OPTIONAL.  If {{param}} is specified as a DNS host name and the LAN device's IP address subsequently changes, the port mapping MUST remain associated with this LAN device.  In this case, it is the responsibility of the CPE to maintain the name-to-address mapping in the event of IP address changes.  This can be accomplished, for example, by assigning the DNS host name via use of DHCP option 12 (Host Name) or option 81 (FQDN).  Note that the ACS can learn the host name associated with a given LAN device via the ''Hosts'' table ({{object|InternetGatewayDevice.LANDevice.{i}.Hosts}}).
+Read access to this parameter MUST always return the exact value that was last set by the ACS.  For example, if the internal client is set to a DNS host name, it MUST read back as a DNS host name and not as an IP address.
+{{empty}} indicates an unconfigured {{param}}. If this parameter is unconfigured, this port mapping MUST NOT be operational.
+It MUST be possible to set the {{param}} to the broadcast IP address 255.255.255.255 for UDP mappings. This is to enable multiple NAT clients to use the same well-known port simultaneously.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+      <parameter base="PortMappingDescription" access="readWrite">
+        <syntax>
+          <string/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.WANDevice.{i}.WANConnectionDevice.{i}.WANPPPConnection.{i}.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains statistics for all connections within the same ''WANConnectionDevice'' that share a common MAC address.  The contents of this object SHOULD be identical for each such connection.
+This object is intended only for ''WANConnectionDevice''s that can support an Ethernet-layer on this interface (e.g., ''PPPoE'', ''IPoE'').</description>
+    </object>
+    <object base="InternetGatewayDevice.Layer2Bridging." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="AvailableInterfaceNumberOfEntries" access="readOnly">
+        <description action="replace">Number of entries in the {{object|AvailableInterface}} table.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Layer2Bridging.Bridge.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="BridgeNumberOfEntries">
+      <parameter base="BridgeStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Layer2Bridging.Filter.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="FilterNumberOfEntries">
+      <parameter base="FilterStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="VLANIDFilter" access="readWrite">
+        <description action="replace">The 802.1Q VLAN ID of packets to admit to the specified Bridge through the interfaces specified for this Filter.
+A value of -1 indicates that the default VLAN ID for the Bridge SHOULD be used instead (as specified by {{param|InternetGatewayDevice.Layer2Bridging.Bridge.{i}.VLANID}} for the Bridge table entry associated with this Filter table entry).  On creation of a Filter entry, the default value for this parameter MUST be -1.</description>
+      </parameter>
+      <parameter base="SourceMACAddressFilterList" access="readWrite">
+        <description action="replace">Each list entry MAY optionally specify a bit-mask, where matching of a packet's MAC address is only to be done for bit positions set to one in the mask.  If no mask is specified, all bits of the MAC Address are to be used for matching.
+For example, the list might be: ''01:02:03:04:05:06, 1:22:33:00:00:00/FF:FF:FF:00:00:00, 88:77:66:55:44:33''</description>
+      </parameter>
+      <parameter base="DestMACAddressFilterList" access="readWrite">
+        <description action="replace">Each list entry MAY optionally specify a bit-mask, where matching of a packet's MAC address is only to be done for bit positions set to one in the mask.  If no mask is specified, all bits of the MAC Address are to be used for matching.
+For example, the list might be: ''01:02:03:04:05:06, 1:22:33:00:00:00/FF:FF:FF:00:00:00, 88:77:66:55:44:33''</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Layer2Bridging.Marking.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="MarkingNumberOfEntries">
+      <parameter base="MarkingStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="VLANIDMark" access="readWrite">
+        <description action="replace">The 802.1Q VLAN ID to be used on egress to the interfaces associated with this Marking table entry (if {{param|VLANIDUntag}} is {{false}}).
+A value of -1 indicates that the default VLAN ID for the Bridge SHOULD be used instead (as specified by {{param|InternetGatewayDevice.Layer2Bridging.Bridge.{i}.VLANID}} for the Bridge table entry associated with this Marking table entry).</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.Layer2Bridging.AvailableInterface.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="AvailableInterfaceNumberOfEntries">
+      <parameter base="InterfaceReference" access="readOnly" activeNotify="canDeny">
+        <description action="replace">This table SHOULD contain a single entry for each available LAN and WAN interface.
+For a WAN interface, this parameter is the full hierarchical parameter name of a particular ''WANConnectionDevice''.  A ''WANConnectionDevice'' is considered available (included in this table) only if it supports layer-2 bridged traffic.  That is, this table MUST include only ''WANConnectionDevice''s that contain either a ''WANEthernetLinkConfig'' object, or that contain a ''WANDSLLinkConfig'' object for which the ''LinkType'' is ''EoA''.  For example: ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2''
+For a LAN interface, this parameter is the full hierarchical parameter name of a particular LAN**InterfaceConfig object, or a WLANConfiguration object.  This table SHOULD include one entry for each such object.  For example: ''InternetGatewayDevice.LANDevice.1.LANLANEthernetInterfaceConfig.2''
+For a WAN-side connection to the Gateway's IP router, this parameter is the full hierarchical parameter name of a particular WAN**Connection service.  This table SHOULD include an entry for each layer-3 WAN connection.  For example: ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1''
+For a LAN-side connection to the Gateway's IP router, this parameter is the full hierarchical parameter name of a particular LANDevice.  This table SHOULD include an entry for each LANDevice, each of which is associated with a LAN-side layer-3 connection to the Gateway's IP router.  For example: ''InternetGatewayDevice.LANDevice.2''</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DefaultDSCPMark" access="readWrite">
+        <description action="replace">DSCP to mark traffic not associated with any specified classifier.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="DefaultEthernetPriorityMark" access="readWrite">
+        <description action="replace">Ethernet priority code (as defined in 802.1D) to mark traffic not associated with any specified classifier.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="AvailableAppList" access="readOnly">
+        <description action="replace">URNs, each indicating a protocol supported for use as a ProtocolIdentifier in the App table.  This list MAY include any of the URNs defined in {{bibref|TR-098a1|Annex A}} as well as other URNs defined elsewhere.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement.Classification.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="ClassificationNumberOfEntries">
+      <parameter base="ClassificationKey" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it serves no purpose (no other parameter references it).</description>
+      </parameter>
+      <parameter base="ClassificationStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="ClassificationOrder" access="readWrite">
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter base="ClassInterface" access="readWrite">
+        <description action="replace">Classification criterion.
+Specifies the LAN or WAN ingress interface associated with this entry.  The content is the full hierarchical parameter name of the particular ''WANDevice'', ''WANConnectionDevice'', ''WAN**Connection'', ''LANDevice'', ''LAN**InterfaceConfig'', or ''WLANConfiguration'' object.
+The following are WAN interface examples:
+* ''InternetGatewayDevice.WANDevice.2''
+* ''InternetGatewayDevice.WANDevice.1.WANConnectionDevice.2.WANPPPConnection.1''
+The following are LAN interface examples:
+* ''InternetGatewayDevice.LANDevice.3''
+* ''InternetGatewayDevice.LANDevice.1.LANEthernetInterfaceConfig.2''
+* ''InternetGatewayDevice.LANDevice.1.WLANConfiguration.3''
+The string ''WAN'' indicates this entry is to apply to traffic entering from any WAN interface.
+The string ''LAN'' indicates this entry is to apply to traffic entering from any LAN interface.
+The string ''Local'' indicates this entry is to apply to IP-layer traffic entering from a local source within the Internet Gateway Device.
+{{empty}} indicates this classification entry is to apply to all sources.</description>
+      </parameter>
+      <parameter base="DSCPMark" access="readWrite">
+        <description action="replace">Classification result.
+DSCP to mark traffic with that falls into this classification entry.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="EthernetPriorityMark" access="readWrite">
+        <description action="replace">Classification result.
+Ethernet priority code (as defined in 802.1D) to mark traffic with that falls into this classification entry.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="ClassQueue" access="readWrite">
+        <description action="replace">Classification result.
+Instance number of the Queue table entry for traffic that falls in this classification.
+A value of -1 indicates a null queue.
+{{param}} and {{param|ClassApp}} are mutually exclusive and one of the two MUST be specified.  If {{param}} is null, {{param|ClassApp}} MUST be specified, and vice versa.</description>
+      </parameter>
+      <parameter base="ClassApp" access="readWrite">
+        <description action="replace">Classification result.
+Instance number of the App table entry for traffic that falls in this classification.
+A value of -1 indicates a null App table entry.
+{{param|ClassQueue}} and {{param}} are mutually exclusive and one of the two MUST be specified.  If {{param|ClassQueue}} is null, {{param}} MUST be specified, and vice versa.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement.App.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="AppNumberOfEntries">
+      <parameter base="AppKey" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it serves no purpose (no other parameter references it).</description>
+      </parameter>
+      <parameter base="AppStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="ProtocolIdentifier" access="readWrite">
+        <description action="replace">URN identifying the protocol associated with the given application.  A set of defined URNs is given in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="AppDefaultDSCPMark" access="readWrite">
+        <description action="replace">DSCP to mark traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="AppDefaultEthernetPriorityMark" access="readWrite">
+        <description action="replace">Ethernet priority code (as defined in 802.1D) to mark traffic associated with this App table entry, but not associated with any specified flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement.Flow.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="FlowNumberOfEntries">
+      <parameter base="FlowKey" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it serves no purpose (no other parameter references it).</description>
+      </parameter>
+      <parameter base="FlowStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="FlowType" access="readWrite">
+        <description action="replace">URN identifying the type of flow to be associated with the specified queue and policer.  A set of defined URNs is given in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="FlowDSCPMark" access="readWrite">
+        <description action="replace">DSCP to mark traffic with that falls into this flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of DSCP based upon the EthernetPriority value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+      <parameter base="FlowEthernetPriorityMark" access="readWrite">
+        <description action="replace">Ethernet priority code (as defined in 802.1D) to mark traffic with that falls into this flow.
+A value of -1 indicates no change from the incoming packet.
+A value of -2 indicates automatic marking of EthernetPriority based upon the DSCP value of the incoming packet as defined in {{bibref|TR-098a1|Annex A}}.</description>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement.Policer.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="PolicerNumberOfEntries">
+      <parameter base="PolicerKey" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it serves no purpose (no other parameter references it).</description>
+      </parameter>
+      <parameter base="PolicerStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="InternetGatewayDevice.QueueManagement.Queue.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="QueueNumberOfEntries">
+      <description action="append">This table can contain hardware queues.  The CPE MAY refuse to allow hardware queues to be deleted.</description>
+      <parameter base="QueueKey" access="readOnly" status="obsoleted">
+        <description action="append">This parameter is OBSOLETED because it serves no purpose (no other parameter references it).</description>
+      </parameter>
+      <parameter base="QueueStatus" access="readOnly">
+        <description action="append">{{enum}}
+The {{enum|Error}} value MAY be used by the CPE to indicate a locally defined error condition.</description>
+        <syntax>
+          <string>
+            <enumeration value="Disabled"/>
+            <enumeration value="Enabled"/>
+            <enumeration value="Error" optional="true"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="QueueInterface" access="readWrite">
+        <description action="replace">Egress interfaces for which the specified queue MUST exist.  This parameter MUST be in one of the following forms:
+The full hierarchical parameter name of the particular ''WANDevice'', ''WANConnectionDevice'', ''WAN**Connection'', ''LANDevice'', ''LAN**InterfaceConfig'', or ''WLANConfiguration'' object.
+The string ''WAN'', which indicates this entry applies to all WAN interfaces.
+The string ''LAN'', which indicates this entry applies to all LAN interfaces.
+{{empty}}, which indicates this classification entry is to apply to all interfaces.
+Packets classified into this queue that exit through any other interface MUST instead use the default queuing behavior specified in the Queue table entry referenced by {{param|InternetGatewayDevice.QueueManagement.DefaultQueue}}.
+For the default queue itself (the Queue table entry referenced by {{param|InternetGatewayDevice.QueueManagement.DefaultQueue}}), the value of the {{param}} parameter MUST be ignored.  That is, the default queue MUST exist on all egress interfaces.</description>
+      </parameter>
+      <parameter base="QueueBufferLength" access="readOnly">
+        <description action="append">Queue buffer size for all egress interfaces for which this queue exists.  If the buffer size is not the same for all such egress interfaces, this parameter MUST be 0.</description>
+      </parameter>
+      <parameter base="REDThreshold" access="readWrite">
+        <description action="replace">Random Early Detection threshold, used only when {{param|DropAlgorithm}} is {{enum|RED|DropAlgorithm}}.
+This is the minimum threshold (''min_th'') and is measured as a percentage of the queue size.  If the value is set to zero, the CPE MUST choose a sensible value, e.g. 5 (but the value MUST still read back as zero).
+In this version of the data model, there is no way to set the maximum threshold (''max_th'').  The CPE MUST choose a sensible value, e.g. three times the minimum threshold. 
+In this version of the data model, there is no way to set the RED weight (''w_q'').  The CPE MUST choose a sensible value, e.g. 0.002.</description>
+        <syntax>
+          <unsignedInt>
+            <range maxInclusive="100"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter base="REDPercentage" access="readWrite">
+        <description action="replace">Random Early Detection percentage, used only when {{param|DropAlgorithm}} is {{enum|RED|DropAlgorithm}}.
+This is the maximum value of the packet marking probability (''max_p'').  If the value is set to zero, the CPE MUST choose a sensible value, e.g. 10 (but the value MUST still read back as zero).
+In this version of the data model, there is no way to set the RED weight (''w_q'').  The CPE MUST choose a sensible value, e.g. 0.002.</description>
+        <syntax>
+          <unsignedInt>
+            <range maxInclusive="100"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter base="DropAlgorithm" access="readWrite">
+        <syntax>
+          <string>
+            <enumeration value="RED">
+              <description action="replace">Random Early Detection {{bibref|RED}}</description>
+            </enumeration>
+            <enumeration value="DT">
+              <description action="replace">Drop Tail</description>
+            </enumeration>
+            <enumeration value="WRED">
+              <description action="replace">Weighted RED</description>
+            </enumeration>
+            <enumeration value="BLUE">
+              <description action="replace">{{bibref|BLUE}}</description>
+            </enumeration>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="SchedulerAlgorithm" access="readWrite">
+        <syntax>
+          <string>
+            <enumeration value="WFQ">
+              <description action="replace">Weighted Fair Queueing</description>
+            </enumeration>
+            <enumeration value="WRR">
+              <description action="replace">Weighted Round Robin</description>
+            </enumeration>
+            <enumeration value="SP">
+              <description action="replace">Strict Priority</description>
+            </enumeration>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="ShapingRate" access="readWrite">
+        <description action="replace">Rate to shape this queue's traffic to.  For leaky bucket (constant rate shaping), this is the constant rate.  For token bucket (variable rate shaping), this is the average rate.
+If &lt;= 100, in percent of the rate of the highest rate-constrained layer over which the packet will travel on egress.
+If &gt; 100, in bits per second.
+A value of -1 indicates no shaping.</description>
+      </parameter>
+      <parameter base="ShapingBurstSize" access="readWrite">
+        <description action="replace">Burst size in bytes.  For both leaky bucket (constant rate shaping) and token bucket (variable rate shaping) this is the bucket size and is therefore the maximum burst size.</description>
+        <syntax>
+          <unsignedInt/>
+          <default type="object" value="0" status="deleted"/>
+        </syntax>
+       </parameter>
+    </object>
+    <profile name="DeviceAssociation:1">
+      <object ref="InternetGatewayDevice.ManagementServer." requirement="notSpecified">
+        <parameter ref="ManageableDeviceNumberOfEntries" requirement="readOnly"/>
+      </object>
+      <object ref="InternetGatewayDevice.ManagementServer.ManageableDevice.{i}." requirement="present">
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+        <parameter ref="ProductClass" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="UDPConnReq:1">
+      <object ref="InternetGatewayDevice.ManagementServer." requirement="notSpecified">
+        <parameter ref="UDPConnectionRequestAddress" requirement="readOnly"/>
+        <parameter ref="UDPConnectionRequestAddressNotificationLimit" requirement="readWrite"/>
+        <parameter ref="STUNEnable" requirement="readWrite"/>
+        <parameter ref="STUNServerAddress" requirement="readWrite"/>
+        <parameter ref="STUNServerPort" requirement="readWrite"/>
+        <parameter ref="STUNUsername" requirement="readWrite"/>
+        <parameter ref="STUNPassword" requirement="readWrite"/>
+        <parameter ref="STUNMaximumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="STUNMinimumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="NATDetected" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</dm:document>

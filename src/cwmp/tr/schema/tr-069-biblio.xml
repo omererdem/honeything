@@ -1,0 +1,953 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 data model bibliographic references
+
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document is a draft, and has not been approved
+    by members of the Forum.  Even if approved, this Broadband Forum
+    Document is not binding on the Broadband Forum, any of its members,
+    or any developer or service provider.  This Broadband Forum Document
+    is subject to change.  This Broadband Forum Document is copyrighted
+    by the Broadband Forum, and portions of this Broadband Forum
+    Document may be copyrighted by Broadband Forum members. This
+    Document is for use by Broadband Forum members only.  Advance
+    written permission by the Broadband Forum is required for
+    distribution of this Broadband Forum Document in its entirety or in
+    portions outside the Broadband Forum.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that there
+    is no obligation upon Broadband Forum members to license patents
+    that are necessary to implement a Document, and such licensing
+    obligations as may exist with respect to Broadband Forum Technical
+    Reports do not attach until a proposed Technical Report is finalized
+    by the Broadband Forum.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT. 
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+  Summary:
+    TR-069 bibliographic references.  This file is not versioned, and contains
+    a centralized set of bibliographic references for all TR-069 data model
+    definitions.
+
+  Version History:
+    March 2009: tr-069-biblio.xml, bibliographic references from all data model
+       versions up to InternetGatewayDevice:1.4 (TR-098 Amendment 2) and 
+       Device:1.2 (TR-106 Amendment 2).
+    September 2009: tr-069-biblio.xml (name unchanged)
+       - moved TR-106a2 bibref from tr-106-1-2-0.xml
+       - added some missing reference dates
+       - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+       - removed BBF TR URLs (they can be deduced from the TR name)
+    May 2010: tr-069-biblio.xml (name unchanged)
+       - added references in support of Device:2.0 (TR-181 Issue 2)
+    November 2010: tr-069-biblio.xml (name unchanged)
+       - added references in support of Device:2.1 (TR-181 Issue 2 Amendment 1)
+    March 2011: tr-069-biblio.xml (name unchanged)
+       - added references in support of Device:2.2 (TR-181 Issue 2 Amendment 2)
+    May 2011: tr-069-biblio.xml (name unchanged)
+       - added references in support of FAPService:1.1 (TR-196 Amendment 1)   
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3
+                                   http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-3.xsd
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                   http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-069-biblio">
+  <bibliography>
+    <reference id="802.11-2007">
+      <name>802.11-2007</name>
+      <title>Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications</title>
+      <organization>IEEE</organization>
+      <date>2007</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.11-2007.pdf</hyperlink>
+    </reference>
+    <reference id="802.11a-1999">
+      <name>802.11a-1999</name>
+      <title>High-speed Physical Layer in the 5 GHz band</title>
+      <organization>IEEE</organization>
+      <date>1999</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.11a-1999.pdf</hyperlink>
+    </reference>
+    <reference id="802.11b-1999">
+      <name>802.11b-1999</name>
+      <title>Higher Speed Physical Layer Extension in the 2.4 GHz band</title>
+      <organization>IEEE</organization>
+      <date>1999</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.11b-1999.pdf</hyperlink>
+    </reference>
+    <reference id="802.11g-2003">
+      <name>802.11g-2003</name>
+      <title>Further Higher Data Rate Extension in the 2.4 GHz Band</title>
+      <organization>IEEE</organization>
+      <date>2003</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.11g-2003.pdf</hyperlink>
+    </reference>
+    <reference id="802.11h-2003">
+      <name>802.11h-2003</name>
+      <title>Spectrum and Transmit Power Management Extensions</title>
+      <organization>IEEE</organization>
+      <date>2003</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.11h-2003.pdf</hyperlink>
+    </reference>
+    <reference id="802.11n-2009">
+      <name>802.11n-2009</name>
+      <title>Amendment 5: Enhancements for Higher Throughput</title>
+      <organization>IEEE</organization>
+      <date>2009</date>
+      <hyperlink>http://ieeexplore.ieee.org/xpl/freeabs_all.jsp?reload=true&amp;arnumber=5307322</hyperlink>
+    </reference>
+    <reference id="802.1D-2004">
+      <name>IEEE Std 802.1D-2004</name>
+      <title>Media Access Control (MAC) Bridges</title>
+      <organization>IEEE</organization>
+      <date>2004</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.1D-2004.pdf</hyperlink>
+    </reference>
+    <reference id="802.1Q-2005">
+      <name>IEEE Std 802.1Q-2005</name>
+      <title>Virtual Bridged Local Area Networks</title>
+      <organization>IEEE</organization>
+      <date>2006</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.1Q-2005.pdf</hyperlink>
+    </reference>
+    <reference id="802.1x-2004">
+      <name>802.1x-2004</name>
+      <title>Standards for Local and Metropolitan Area Networks: Port based Network Access Control</title>
+      <organization>IEEE</organization>
+      <date>2004</date>
+      <hyperlink>http://standards.ieee.org/getieee802/download/802.1X-2004.pdf</hyperlink>
+    </reference>
+    <reference id="BLUE">
+      <name>Blue</name>
+      <title>A New Class of Active Queue Management Algorithms</title>
+      <hyperlink>http://www.thefengs.com/wuchang/work/blue</hyperlink>
+    </reference>
+    <reference id="G.992.1">
+      <name>G.992.1</name>
+      <title>Asymmetric digital subscriber line (ADSL) transceivers</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.992.1</hyperlink>
+    </reference>
+    <reference id="G.992.2">
+      <name>G.992.2</name>
+      <title>Splitterless asymmetric digital subscriber line (ADSL) transceivers</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.992.2</hyperlink>
+    </reference>
+    <reference id="G.992.3">
+      <name>G.992.3</name>
+      <title>Asymmetric digital subscriber line transceivers 2 (ADSL2)</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.992.3</hyperlink>
+    </reference>
+    <reference id="G.992.4">
+      <name>G.992.4</name>
+      <title>Splitterless asymmetric digital subscriber line transceivers 2 (splitterless ADSL2)</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.992.4</hyperlink>
+    </reference>
+    <reference id="G.992.5">
+      <name>G.992.5</name>
+      <title>Asymmetric Digital Subscriber Line (ADSL) transceivers - Extended bandwidth ADSL2 (ADSL2plus)</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.992.5</hyperlink>
+    </reference>
+    <reference id="G.993.1">
+      <name>G.993.1</name>
+      <title>Very high speed digital subscriber line transceivers</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.993.1</hyperlink>
+    </reference>
+    <reference id="G.993.2">
+      <name>G.993.2</name>
+      <title>Very high speed digital subscriber line transceivers 2 (VDSL2)</title>
+      <organization>ITU-T</organization> 
+      <hyperlink>http://www.itu.int/rec/T-REC-G.993.2</hyperlink>
+    </reference>
+    <reference id="G.994.1">
+      <name>G.994.1</name>
+      <title>Handshake procedures for digital subscriber line (DSL) transceivers</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.994.1</hyperlink>
+    </reference>
+    <reference id="G.997.1">
+      <name>G.997.1</name>
+      <title>Physical layer management for digital subscriber line (DSL) transceivers</title>
+      <organization>ITU-T</organization>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.997.1</hyperlink>
+    </reference>
+    <reference id="G.998.1">
+      <name>G.998.1</name>
+      <title>ATM-based Multi-Pair Bonding</title>
+      <organization>ITU-T</organization>
+      <date>2005</date>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.998.1</hyperlink>
+    </reference>
+    <reference id="G.998.2">
+      <name>G.998.2</name>
+      <title>Ethernet-based Multi-Pair Bonding</title>
+      <organization>ITU-T</organization>
+      <date>2005</date>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.998.2</hyperlink>
+    </reference>
+    <reference id="G.998.3">
+      <name>G.998.3</name>
+      <title>Multi-Pair Bonding Using Time-Division Inverse Multiplexing</title>
+      <organization>ITU-T</organization>
+      <date>2005</date>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.998.2</hyperlink>
+    </reference>
+    <reference id="G.9954">
+      <name>G.9954</name>
+      <title>Phoneline networking transceivers - Enhanced physical, media access, and link layer specifications (HPNA 3.0 and 3.1)</title>
+      <organization>ITU-T</organization>
+      <date>2007</date>
+      <hyperlink>http://www.itu.int/rec/T-REC-G.9954/en</hyperlink>
+    </reference>
+    <reference id="HPAV1.1">
+      <name>HomePlug AV Specification</name>
+      <title>Version 1.1</title>
+      <organization>HomePlug</organization>
+      <date>2007</date>
+      <hyperlink>http://www.homeplug.org</hyperlink>
+    </reference>
+    <reference id="HTML4.01">
+      <name>HTML 4.01 Specification</name>
+      <organization>W3C</organization>
+      <hyperlink>http://www.w3.org/TR/html4</hyperlink>
+    </reference>
+    <reference id="ICSA-Baseline">
+      <name>ICSA Baseline Modular Firewall Certification Criteria</name>
+      <title>Baseline module - version 4.1</title>
+      <organization>ICSA Labs</organization>
+      <date>2008</date>
+      <hyperlink>http://www.icsalabs.com/sites/default/files/baseline.pdf</hyperlink>
+    </reference>
+    <reference id="ICSA-Firewall">
+        <name>ICSA Modular Firewall Certification Criteria</name>
+        <title>Required Services Security Policy - Small/Medium Business (SMB) Category module - version 4.0</title>
+        <organization>ICSA Labs</organization>
+        <hyperlink>http://www.icsalabs.com/sites/default/files/SMB4.0.pdf</hyperlink>
+    </reference>
+    <reference id="ICSA-Residential">
+      <name>ICSA Residential Modular Firewall Certification Criteria</name>
+      <title>Required Services Security Policy - Residential Category module - version 4.1</title>
+      <organization>ICSA Labs</organization>
+      <date>2008</date>
+      <hyperlink>http://www.icsalabs.com/sites/default/files/residential.pdf</hyperlink>
+    </reference>
+    <reference id="ISO3166-1">
+      <name>ISO 3166-1</name>
+      <title>Codes for the representation of names of countries and their subdivisions - Part 1: Country codes</title>
+      <organization>ISO</organization>
+      <date>2006</date>
+      <hyperlink>http://www.iso.org/iso/country_codes.htm</hyperlink>
+    </reference>
+    <reference id="MoCAv1.0">
+      <name>MoCA v1.0</name>
+      <title>MoCA MAC/PHY Specification v1.0</title>
+      <organization>MoCA Alliance</organization>
+      <date>2009</date>
+      <hyperlink>http://www.mocalliance.org</hyperlink>
+    </reference>
+    <reference id="MoCAv1.1">
+      <name>MoCA v1.1</name>
+      <title>MoCA MAC/PHY Specification v1.1 Extensions</title>
+      <organization>MoCA Alliance</organization>
+      <date>2009</date>
+      <hyperlink>http://www.mocalliance.org</hyperlink>
+    </reference>
+    <reference id="MOCA11-MIB">
+      <name>MOCA11-MIB</name>
+      <title>Remote Management of MoCA Interfaces using SNMP MIB</title>
+      <organization>MoCA Alliance</organization>
+      <date>2009</date>
+      <hyperlink>http://www.mocalliance.org</hyperlink>
+    </reference>
+    <reference id="OUI">
+      <name>Organizationally Unique Identifiers (OUIs)</name>
+      <hyperlink>http://standards.ieee.org/faqs/OUI.html</hyperlink>
+    </reference>
+    <reference id="PKCS7">
+      <name>PKCS #7</name>
+      <title>Cryptographic Message Syntax Standard</title>
+      <hyperlink>http://www.rsasecurity.com/rsalabs/pkcs/pkcs-7/index.html</hyperlink>
+    </reference>
+    <reference id="RED">
+      <name>References on RED (Random Early Detection) Queue Management</name>
+      <hyperlink>http://www.icir.org/floyd/red.html</hyperlink>
+    </reference>
+    <reference id="RFC862">
+      <name>RFC 862</name>
+      <title>Echo Protocol</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1983</date>
+      <hyperlink>http://tools.ietf.org/html/rfc862</hyperlink>
+    </reference>
+    <reference id="RFC959">
+      <name>RFC 959</name>
+      <title>File Transfer Protocol</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1985</date>
+      <hyperlink>http://tools.ietf.org/html/rfc958</hyperlink>
+    </reference>
+    <reference id="RFC1332">
+      <name>RFC 1332</name>
+      <title>The PPP Internet Protocol Control Protocol (IPCP)</title>
+      <organization>IETF</organization>
+      <date>1992</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1332</hyperlink>
+    </reference>
+    <reference id="RFC1661">
+      <name>RFC 1661</name>
+      <title>The Point-to-Point Protocol (PPP)</title>
+      <organization>IETF</organization>
+      <date>1994</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1661</hyperlink>
+    </reference>
+    <reference id="RFC1877">
+      <name>RFC 1877</name>
+      <title>PPP Internet Protocol Control Protocol Extensions for Name Server Addresses</title>
+      <organization>IETF</organization>
+      <date>1995</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1877</hyperlink>
+    </reference>
+    <reference id="RFC1974">
+      <name>RFC 1974</name>
+      <title>PPP Stac LZS Compression Protocol</title>
+      <organization>IETF</organization>
+      <date>1996</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1974</hyperlink>
+    </reference>
+    <reference id="RFC2119">
+      <name>RFC 2119</name>
+      <title>Key words for use in RFCs to Indicate Requirement Levels</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2119</hyperlink>
+    </reference>
+    <reference id="RFC2131">
+      <name>RFC 2131</name>
+      <title>Dynamic Host Configuration Protocol</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2131</hyperlink>
+    </reference>
+    <reference id="RFC2132">
+      <name>RFC 2132</name>
+      <title>DHCP Options and BOOTP Vendor Extensions</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2132</hyperlink>
+    </reference>
+    <reference id="RFC2225">
+      <name>RFC 2225</name>
+      <title>Classical IP and ARP over ATM</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2225</hyperlink>
+    </reference>
+    <reference id="RFC2364">
+      <name>RFC 2364</name>
+      <title>PPP Over AAL5</title>
+      <organization>IETF</organization>
+      <date>1998</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2364</hyperlink>
+    </reference>
+    <reference id="RFC2474">
+      <name>RFC 2474</name>
+      <title>Definition of the Differentiated Services Field (DS Field) in the IPv4 and IPv6 Headers</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2474</hyperlink>
+    </reference>
+    <reference id="RFC2516">
+      <name>RFC 2516</name>
+      <title>A Method for Transmitting PPP Over Ethernet (PPPoE)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2516</hyperlink>
+    </reference>
+    <reference id="RFC2616">
+      <name>RFC 2616</name>
+      <title>Hypertext Transfer Protocol -- HTTP/1.1</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1999</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2616</hyperlink>
+    </reference>
+    <reference id="RFC2634">
+      <name>RFC 2634</name>
+      <title>Enhanced Security Services for S/MIME</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2634</hyperlink>
+    </reference>
+    <reference id="RFC2662">
+      <name>RFC 2662</name>
+      <title>Definitions of Managed Objects for the ADSL Lines</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2662</hyperlink>
+    </reference>
+    <reference id="RFC2684">
+      <name>RFC 2684</name>
+      <title>Multiprotocol Encapsulation over ATM Adaptation Layer 5</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2684</hyperlink>
+    </reference>
+    <reference id="RFC2697">
+      <name>RFC 2697</name>
+      <title>A Single Rate Three Color Marker</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2697</hyperlink>
+    </reference>
+    <reference id="RFC2698">
+      <name>RFC 2698</name>
+      <title>A Two Rate Three Color Marker</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2698</hyperlink>
+    </reference>
+    <reference id="RFC2863">
+      <name>RFC 2863</name>
+      <title>The Interfaces Group MIB</title>
+      <organization>IETF</organization>
+      <date>2000</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2863</hyperlink>
+    </reference>
+    <reference id="RFC2865">
+      <name>RFC 2865</name>
+      <title>Remote Authentication Dial In User Service (RADIUS)</title>
+      <organization>IETF</organization>
+      <date>2000</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2865</hyperlink>
+    </reference>
+    <reference id="RFC2898">
+      <name>RFC 2898</name>
+      <title>PKCS #5: Password-Based Cryptography Specification Version 2.0</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc2898</hyperlink>
+    </reference>
+    <reference id="RFC3004">
+      <name>RFC 3004</name>
+      <title>The User Class Option for DHCP</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3004</hyperlink>
+    </reference>
+    <reference id="RFC3066">
+      <name>RFC 3066</name>
+      <title>Tags for the Identification of Languages</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3066</hyperlink>
+    </reference>
+    <reference id="RFC3489">
+      <name>RFC 3489</name>
+      <title>STUN - Simple Traversal of User Datagram Protocol (UDP) Through Network Address Translators (NATs)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3489</hyperlink>
+    </reference>
+    <reference id="RFC3513">
+      <name>RFC 3513</name>
+      <title>Internet Protocol Version 6 (IPv6) Addressing Architecture</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3513</hyperlink>
+    </reference>
+    <reference id="RFC3925">
+      <name>RFC 3925</name>
+      <title>Vendor-Identifying Vendor Options for Dynamic Host Configuration Protocol version 4 (DHCPv4)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3925</hyperlink>
+    </reference>
+    <reference id="RFC3927">
+      <name>RFC 3927</name>
+      <title>Dynamic Configuration of IPv4 Link-Local Addresses</title>
+      <organization>IETF</organization>
+      <date>2005</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3927</hyperlink>
+    </reference>
+    <reference id="RFC3986">
+      <name>RFC 3986</name>
+      <title>Uniform Resource Identifier (URI): Generic Syntax</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <hyperlink>http://tools.ietf.org/html/rfc3986</hyperlink>
+    </reference>
+    <reference id="RFC4122">
+      <name>RFC 4122</name>
+      <title>A Universally Unique IDentifier (UUID) URN Namespace</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2005</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4122</hyperlink>
+    </reference>
+    <reference id="RFC4632">
+      <name>RFC 4632</name>
+      <title>Classless Inter-domain Routing (CIDR): The Internet Address Assignment and Aggregation Plan</title>
+      <organization>IETF</organization>
+      <date>2006</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4632</hyperlink>
+    </reference>
+    <reference id="RFC5625">
+      <name>RFC 5625</name>
+      <title>DNS Proxy Implementation Guidelines</title>
+      <organization>IETF</organization>
+      <date>2009</date>
+      <hyperlink>http://tools.ietf.org/html/rfc5625</hyperlink>
+    </reference>
+    <reference id="SOAP1.1">
+      <name>Simple Object Access Protocol (SOAP) 1.1</name>
+      <organization>W3C</organization>
+      <hyperlink>http://www.w3.org/TR/2000/NOTE-SOAP-20000508</hyperlink>
+    </reference>
+    <reference id="TR-064">
+      <name>TR-064</name>
+      <title>LAN-Side DSL CPE Configuration Specification</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2004</date>
+    </reference>
+    <reference id="TR-069">
+      <name>TR-069</name>
+      <title>CPE WAN Management Protocol</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2004</date>
+    </reference>
+    <reference id="TR-069a1">
+      <name>TR-069 Amendment 1</name>
+      <title>CPE WAN Management Protocol</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2006</date>
+    </reference>
+    <reference id="TR-069a2">
+      <name>TR-069 Amendment 2</name>
+      <title>CPE WAN Management Protocol</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2007</date>
+    </reference>
+    <reference id="TR-069a3">
+      <name>TR-069 Amendment 3</name>
+      <title>CPE WAN Management Protocol</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-098">
+      <name>TR-098</name>
+      <title>Internet Gateway Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2005</date>
+    </reference>
+    <reference id="TR-098a1">
+      <name>TR-098 Amendment 1</name>
+      <title>Internet Gateway Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2006</date>
+    </reference>
+    <reference id="TR-098a2">
+      <name>TR-098 Amendment 2</name>
+      <title>Internet Gateway Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2008</date>
+    </reference>
+    <reference id="TR-106">
+      <name>TR-106</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2005</date>
+    </reference>
+    <reference id="TR-106a1">
+      <name>TR-106 Amendment 1</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2006</date>
+    </reference>
+    <reference id="TR-106a2">
+      <name>TR-106 Amendment 2</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2008</date>
+    </reference>
+    <reference id="TR-106a3">
+      <name>TR-106 Amendment 3</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2009</date>
+    </reference>
+    <reference id="TR-106a4">
+      <name>TR-106 Amendment 4</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-106a5">
+      <name>TR-106 Amendment 5</name>
+      <title>Data Model Template for TR-069-Enabled Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-124i2">
+      <name>TR-124 Issue 2</name>
+      <title>Functional Requirements for Broadband Residential Gateway Devices</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-143">
+      <name>TR-143</name>
+      <title>Enabling Network Throughput Performance Tests and Statistical Monitoring</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2008</date>
+    </reference>
+    <reference id="TR-157a3">
+      <name>TR-157 Amendment 3</name>
+      <title>Componnent Objects for CWMP</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-159">
+      <name>TR-159</name>
+      <title>Management Framework for xDSL Bonding</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2008</date>
+    </reference>
+    <reference id="TR-181i1">
+      <name>TR-181 Issue 1</name>
+      <title>Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-181i2">
+      <name>TR-181 Issue 2</name>
+      <title>Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-181i2a1">
+      <name>TR-181 Issue 2 Amendment 1</name>
+      <title>Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2010</date>
+    </reference>
+    <reference id="TR-181i2a2">
+      <name>TR-181 Issue 2 Amendment 2</name>
+      <title>Device Data Model for TR-069</title>
+      <organization>Broadband Forum</organization>
+      <category>TR</category>
+      <date>2011</date>
+    </reference>
+    <reference id="UPA-PLC">
+      <name>Universal Powerline Association</name>
+      <organization>UPA</organization>
+      <hyperlink>http://www.upaplc.org</hyperlink>
+    </reference>
+    <reference id="WPSv1.0">
+      <name>Wi-Fi Protected Setup Specification Version 1.0h</name>
+      <title>Wi-Fi Alliance</title>
+      <date>2006</date>
+      <hyperlink>http://www.wi-fi.org</hyperlink>
+    </reference>
+
+    <!-- New references used in TR-181 Issue 2 Amendment 2 -->
+
+    <reference id="DSLite">
+      <name>draft-ietf-softwire-dual-stack-lite</name>
+      <title>Dual-Stack Lite Broadband Deployments Following IPv4 Exhaustion</title>
+      <organization>IETF</organization>
+      <category>Internet-Draft</category>
+      <hyperlink>http://tools.ietf.org/html/draft-ietf-softwire-dual-stack-lite</hyperlink>
+    </reference>
+    <reference id="DSLite-options">
+      <name>draft-ietf-softwire-ds-lite-tunnel-option</name>
+      <title>Dynamic Host Configuation Protocol for IPv6 (DHCPv6) Options for Dual-Stack Lite</title>
+      <organization>IETF</organization>
+      <category>Internet-Draft</category>
+      <hyperlink>http://tools.ietf.org/html/draft-ietf-softwire-ds-lite-tunnel-option</hyperlink>
+    </reference>
+    <reference id="RFC1035">
+      <name>RFC 1035</name>
+      <title>Domain Names - Implementation and Specification</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1987</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1035</hyperlink>
+    </reference>
+    <reference id="RFC1378">
+      <name>RFC 1378</name>
+      <title>The PPP AppleTalk Control Protocol (ATCP)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1992</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1378</hyperlink>
+    </reference>
+    <reference id="RFC1552">
+      <name>RFC 1552</name>
+      <title>The PPP Internetwork Packet Exchange Control Protocol (IPXCP)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1993</date>
+      <hyperlink>http://tools.ietf.org/html/rfc1552</hyperlink>
+    </reference>
+    <reference id="RFC2080">
+      <name>RFC 2080</name>
+      <title>RIPng for IPv6</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1997</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2080</hyperlink>
+    </reference>
+    <reference id="RFC2097">
+      <name>RFC 2097</name>
+      <title>The PPP NetBIOS Frames Control Protocol (NBFCP)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>1997</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2097</hyperlink>
+    </reference>
+    <reference id="RFC2782">
+      <name>RFC 2782</name>
+      <title>A DNS RR for specifying the location of services (DNS SRV)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2000</date>
+      <hyperlink>http://tools.ietf.org/html/rfc2782</hyperlink>
+    </reference>
+    <reference id="RFC3232">
+      <name>RFC 3232</name>
+      <title>"Assigned Numbers: RFC 1700 is Replaced by an On-line Database"</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2002</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3232</hyperlink>
+    </reference>
+    <reference id="RFC3315">
+      <name>RFC 3315</name>
+      <title>Dynamic Host Configuration Protocol for IPv6 (DHCPv6)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2003</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3315</hyperlink>
+    </reference>
+    <reference id="RFC3596">
+      <name>RFC 3596</name>
+      <title>DDNS Extensions to Support IP Version 6</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2003</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3596</hyperlink>
+    </reference>
+    <reference id="RFC3633">
+      <name>RFC 3633</name>
+      <title>IPv6 Prefix Options for Dynamic Host Configuration Protocol (DHCP) version 6</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2003</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3633</hyperlink>
+    </reference>
+    <reference id="RFC3646">
+      <name>RFC 3646</name>
+      <title>DNS Configuration options for Dynamic Host Configuration Protocol for IPv6 (DHCPv6)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2003</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3646</hyperlink>
+    </reference>
+    <reference id="RFC3775">
+      <name>RFC 3775</name>
+      <title>Mobility Support in IPv6</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2004</date>
+      <hyperlink>http://tools.ietf.org/html/rfc3775</hyperlink>
+    </reference>
+    <reference id="RFC4191">
+      <name>RFC 4191</name>
+      <title>Default Router Preferences and More-Specific Routes</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2005</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4191</hyperlink>
+    </reference>
+    <reference id="RFC4193">
+      <name>RFC 4193</name>
+      <title>Unique Local IPv6 Unicast Addresses</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2005</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4193</hyperlink>
+    </reference>
+    <reference id="RFC4242">
+      <name>RFC 4242</name>
+      <title>Information Refresh Time Option for Dynamic Host Configuration Protocol for IPv6 (DHCPv6)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2005</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4242</hyperlink>
+    </reference>
+    <reference id="RFC4291">
+      <name>RFC 4291</name>
+      <title>IP Version 6 Addressing Architecture</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2006</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4291</hyperlink>
+    </reference>
+    <reference id="RFC4292">
+      <name>RFC 4292</name>
+      <title>IP Forwarding Table MIB</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2006</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4292</hyperlink>
+    </reference>
+    <reference id="RFC4293">
+      <name>RFC 4293</name>
+      <title>Management Information Base for the Internet Protocol (IP)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2006</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4293</hyperlink>
+    </reference>
+    <reference id="RFC4389">
+      <name>RFC 4389</name>
+      <title>Neighbor Discovery Proxies (ND Proxy)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2006</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4389</hyperlink>
+    </reference>
+    <reference id="RFC4861">
+      <name>RFC 4861</name>
+      <title>Neighbor Discovery for IP version 6 (IPv6)</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2007</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4861</hyperlink>
+    </reference>
+    <reference id="RFC4862">
+      <name>RFC 4862</name>
+      <title>IPv6 Stateless Address Autoconfiguration</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2007</date>
+      <hyperlink>http://tools.ietf.org/html/rfc4862</hyperlink>
+    </reference>
+    <reference id="RFC5072">
+      <name>RFC 5072</name>
+      <title>IP Version 6 over PPP</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2007</date>
+      <hyperlink>http://tools.ietf.org/html/rfc5072</hyperlink>
+    </reference>
+    <reference id="RFC5969">
+      <name>RFC 5969</name>
+      <title>IPv6 Rapid Deployment on IPv4 Infrastructures (6rd) - Protocol Specification</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2010</date>
+      <hyperlink>http://tools.ietf.org/html/rfc5969</hyperlink>
+    </reference>
+    <reference id="RFC6106">
+      <name>RFC 6106</name>
+      <title>IPv6 Router Advertisement Option for DNS Configuration</title>
+      <organization>IETF</organization>
+      <category>RFC</category>
+      <date>2010</date>
+      <hyperlink>http://tools.ietf.org/html/rfc6106</hyperlink>
+    </reference>
+    <reference id="UPnP-IGD:1">
+      <name>UPnP InternetGatewayDevice:1</name>
+      <title>InternetGatewayDevice:1 Device Template Version 1.01</title>
+      <organization>UPnP</organization>
+      <category>SDCP</category>
+      <date>2001</date>
+      <hyperlink>http://upnp.org/specs/gw/UPnP-gw-InternetGatewayDevice-v1-Device.pdf</hyperlink>
+    </reference>
+    <reference id="UPnP-IGD:2">
+      <name>UPnP InternetGatewayDevice:2</name>
+      <title>InternetGatewayDevice:2 Device Template Version 1.01</title>
+      <organization>UPnP</organization>
+      <category>SDCP</category>
+      <date>2010</date>
+      <hyperlink>http://upnp.org/specs/gw/UPnP-gw-InternetGatewayDevice-v2-Device.pdf</hyperlink>
+    </reference>
+  
+    <!-- New references used in TR-196 Amendment 1 -->
+    
+    <reference id="3GPP-TS.22.220">
+      <name>3GPP TS 22.220</name>
+      <title>Service requirements for Home Node B (HNB) and Home eNode B (HeNB)</title>
+      <organization>3GPP SA WG1</organization>
+      <hyperlink>http://www.3gpp.org/ftp/Specs/html-info/22220.htm</hyperlink>
+    </reference>
+    <reference id="3GPP-TS.25.469">
+      <name>3GPP TS 25.469</name>
+      <title>UTRAN Iuh interface Home Node B Application Part (HNBAP) signalling</title>
+      <organization>3GPP RAN WG3</organization>
+      <hyperlink>http://www.3gpp.org/ftp/Specs/html-info/25469.htm</hyperlink>
+    </reference>
+    <reference id="IANA-portnumbers">
+      <name>IANA Port Numbers</name>
+      <title>Port Numbers</title>
+      <organization>IANA</organization>
+      <hyperlink>http://www.iana.org/assignments/port-numbers</hyperlink>
+    </reference>
+
+  </bibliography>
+</dm:document>

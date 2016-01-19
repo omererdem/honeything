@@ -1,0 +1,10 @@
+cpu  0 0 0 0 0 0 0 0 0 0
+cpu0 0 0 0 0 0 0 0 0 0 0
+cpu1 0 0 0 0 0 0 0 0 0 0
+intr 0 0 0 0 0 0 0 0 0 0 0 0 0
+ctxt 0
+btime 0
+processes 0
+procs_running 0
+procs_blocked 0
+softirq 0 0 0 0 0 0 0 0 0 0 0

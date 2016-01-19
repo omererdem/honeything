@@ -1,0 +1,72 @@
+{
+  "STBService": [
+    {
+      "MainStream": [
+        {
+          "StreamId" : 8,
+          "DejitteringStats": {
+            "EmptyBufferTime": 1,
+            "Overruns": 1,
+            "Underruns": 18
+          }
+        },
+        {
+          "StreamId" : 7,
+          "DejitteringStats": {
+            "EmptyBufferTime": 5,
+            "Overruns": 2,
+            "Underruns": 17
+          }
+        },
+        {
+          "StreamId" : 6,
+          "DejitteringStats": {
+            "EmptyBufferTime": 11,
+            "Overruns": 3,
+            "Underruns": 16
+          }
+        },
+        {
+          "StreamId" : 5,
+          "DejitteringStats": {
+            "EmptyBufferTime": 17,
+            "Overruns": 4,
+            "Underruns": 15
+          }
+        },
+        {
+          "StreamId" : 4,
+          "DejitteringStats": {
+            "EmptyBufferTime": 23,
+            "Overruns": 5,
+            "Underruns": 14
+          }
+        },
+        {
+          "StreamId" : 3,
+          "DejitteringStats": {
+            "EmptyBufferTime": 31,
+            "Overruns": 6,
+            "Underruns": 13
+          }
+        },
+        {
+          "StreamId" : 2,
+          "DejitteringStats": {
+            "EmptyBufferTime": 41,
+            "Overruns": 7,
+            "Underruns": 12
+          }
+        },
+        {
+          "StreamId" : 1,
+          "DejitteringStats": {
+            "EmptyBufferTime": 47,
+            "Overruns": 8,
+            "Underruns": 11
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ x"$3" = "xradio" ] ; then
+  # This may look backwards, that radio off returns 0x001 while on returns
+  # 0x0000, but I assure you it is correct.
+  echo "0x0000"
+fi
+exit 0

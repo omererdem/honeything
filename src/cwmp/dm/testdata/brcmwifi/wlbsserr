@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xbss" ] ; then
+  echo "dazed_and_confused"
+fi
+exit 0

@@ -1,0 +1,30 @@
+system type		: BCM7425B0 STB platform
+processor		: 0
+cpu model		: Broadcom BMIPS5000 V1.1  FPU V0.1
+BogoMIPS		: 868.35
+cpu MHz			: 1305.099
+wait instruction	: yes
+microsecond timers	: yes
+tlb_entries		: 64
+extra interrupt vector	: yes
+hardware watchpoint	: no
+ASEs implemented	:
+shadow register sets	: 1
+core			: 0
+VCED exceptions		: not available
+VCEI exceptions		: not available
+
+processor		: 1
+cpu model		: Broadcom BMIPS5000 V1.1  FPU V0.1
+BogoMIPS		: 651.26
+cpu MHz			: 1305.099
+wait instruction	: yes
+microsecond timers	: yes
+tlb_entries		: 64
+extra interrupt vector	: yes
+hardware watchpoint	: no
+ASEs implemented	:
+shadow register sets	: 1
+core			: 0
+VCED exceptions		: not available
+VCEI exceptions		: not available

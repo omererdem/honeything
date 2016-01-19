@@ -1,0 +1,815 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Component Objects for CWMP
+    
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+  
+  Summary:
+    This document defines objects for use in CWMP managed devices.  The objects
+    may exist at the top level of a hierarchy, or in some cases within an 
+    existing object.  The objects are intended for use in all CWMP Root 
+    objects. The objects define varying functionality, diagnostics, etc. that 
+    are agnostic to the type of device.
+
+
+  Editors:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Tim Spets, Motorola Mobility
+
+  Editors Object Addressing Extensions:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Ping Fang, Huawei Technologies
+    Nils Magnusson, TeliaSonera
+    Anton Okmyanskiy, Cisco
+    Staffan Ungsgard, TeliaSonera
+
+  Editors Remote Management of non-TR-069 devices:
+    John Blackford, Pace
+    Ping Fang, Huawei Technologies
+    Tim Spets, Motorola Mobility
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Heather Kirksey, Alcatel-Lucent
+
+  Vice Chair: 
+    Jason Walls, UNH
+
+  Chief Editor: 
+    Michael Hanrahan, Huawei Technologies
+
+
+  Version History:
+    * March 2009: tr-157-1-0-0.xml, corresponds to TR-157 Issue 1, Section 4 
+       (Data Model Definition) and Section 5 (Profile Definition).
+    * September 2009: tr-157-1-1-0.xml, corresponds to TR-157 Issue 1 
+       Amendment 1, Section 4 (Data Model Definition) and Section 5 (Profile 
+       Definition).
+    * May 2010: tr-157-1-2-0.xml, corresponds to TR-157 Issue 1 Amendment 2.
+    * December 2010: tr-157-1-3-0.xml, corresponds to TR-157 Issue 1 Amendment 3.
+    * July 2011: tr-157-1-4-0.xml, new components for CWMP Proxy Management and
+       updates of existing components for Alias-Based Addressing
+    
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd 
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-157-1-4-0" file="tr-157-1-4-0.xml">
+             
+    <description>TR-157 Amendment 4</description>
+<!-- import Alias DT definition -->
+    <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+        <dataType name="Alias"/>
+    </import>
+    
+    <import file="tr-157-1-3.xml" spec="urn:broadband-forum-org:tr-157-1-3">
+        <component name="DI_MemoryStatus"/>
+        <component name="DI_ProcessStatus"/>
+        <component name="DI_NetworkProperties"/>
+        <component name="MS_DUStateChangeCompletePolicy"/>
+        <component name="MS_AutonomousTransferCompletePolicy"/>
+        <component name="UI_RemoteAccess"/>
+        <component name="UI_LocalDisplay"/>
+        <component name="UPnP"/>
+        <component name="DLNACapabilities"/>
+        <component name="SelfTestDiag"/>
+        <component name="SimpleFirewall"/>
+        <!-- component fixed for the error introduced in tr-157-1-2-0.xml -->
+        <component name="_NSLookupDiag" ref="NSLookupDiag"/>
+        <!-- components extended -->
+        <component name="_DI_Processors" ref="DI_Processors"/>
+        <component name="_DI_TemperatureStatus" ref="DI_TemperatureStatus"/>
+        <component name="_DI_SupportedDataModel" ref="DI_SupportedDataModel"/>
+        <component name="_DI_VendorLogFiles" ref="DI_VendorLogFiles"/>
+        <component name="_User" ref="User"/>
+        <component name="_SmartCardReader" ref="SmartCardReader"/>
+        <component name="_USBHosts" ref="USBHosts"/>
+        <component name="_USBHosts_Device2" ref="USBHosts_Device2"/>
+        <component name="_PeriodicStatistics" ref="PeriodicStatistics"/>
+        <component name="_DownloadAvailability" ref="DownloadAvailability"/>
+        <component name="_SoftwareModules" ref="SoftwareModules"/>
+    </import>
+    
+    <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+    
+    <!-- new component -->
+    <component name="DI_ProxierInfo">
+        <object name="DeviceInfo.ProxierInfo." access="readOnly" minEntries="1" maxEntries="1">
+            <description>Represents the associated CPE Proxier for a Proxied Device that utilizes the Virtual CWMP Device Mechanism {{bibref|TR-069a4|Annex J.1.1}}.</description>
+            <parameter name="ManufacturerOUI" access="readOnly">
+                <description>
+                    Organizationally unique identifier of the associated CPE Proxier.  Represented as a six hexadecimal-digit value using all upper-case letters and including any leading zeros.  {{pattern}}
+                    The value MUST be a valid OUI as defined in {{bibref|OUI}}.
+                </description>
+                <syntax>
+                    <string>
+                        <size minLength="6" maxLength="6"/>
+                        <pattern value="[0-9A-F]{6}"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProductClass" access="readOnly">
+                <description>
+                    Identifier of the class of product of the associated CPE Proxier for which the serial number applies.
+                    {{empty}} indicates either that the CPE Proxier does not use a product class to differentiate its serial number.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SerialNumber" access="readOnly">
+                <description>
+                    Serial number of the associated CPE Proxier.  
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxyProtocol" access="readOnly">
+                <description>
+                    The protocol being used to communicate between the CPE Proxier and this Proxied Device. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a6|3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                        <enumeration value="Z-Wave"><description>see {{bibref|Z-Wave}}</description></enumeration>
+                        <enumeration value="ZigBee"><description>see {{bibref|ZigBee}}</description></enumeration>
+                        <enumeration value="UPnP-DM"><description>see {{bibref|UPnP-DM:1}}</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <!-- new component -->
+    <component name="MS_EmbeddedDevice">
+        <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter name="EmbeddedDeviceNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        <object name="ManagementServer.EmbeddedDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="EmbeddedDeviceNumberOfEntries">
+            <description>Each entry in this table represents a distinct Proxied Device that utilizes the Embedded Object Mechanism {{bibref|TR-069a4|Annex J.1.2}} for proxying devices.</description>
+            <uniqueKey>
+                <parameter ref="ControllerID"/>
+                <parameter ref="ProxiedDeviceID"/>
+            </uniqueKey>
+            <parameter name="ControllerID" access="readOnly">
+                <description>
+                    Identifier of the controller that is responsible for a sub-network of Proxied Devices within the LAN.
+                    {{empty}} indicates that this Proxied Device either:
+                    * Isn't part of a sub-network, within the LAN, with a controller entity.
+                    * Doesn't need a {{param}} to ensure its {{param|ProxiedDeviceID}} is unique throughout the LAN.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"></size>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxiedDeviceID" access="readOnly">
+                <description>
+                    Idenitfier of the Proxied Device.  
+                    This is an opaque string that is unique to the Proxied Device within a specific sub-network within the LAN (identified by the {{param|ControllerID}}).  If the {{param|ControllerID}} is {{empty}} this {{param}} is unique across the LAN.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"></size>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Reference" access="readOnly">
+                <description>
+                   {{noreference}}The value MUST be the path name of a table row.  If the referenced object is deleted, this {{object}} instance MUST also be removed.  Represents the instance of a multi-instanced object that is directly controlled by, and has come into existence because of, this Proxied Device that utilizes the Embedded Object Mechanism {{bibref|TR-069a4|Annex J.1.2}}.
+                </description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SupportedDataModel" access="readOnly">
+                <description>
+                    Represents the CWMP-DT schema instance(s) that this Proxied Device is utilizing.  The CWMP-DT schema instance is also the one being utilized by the object referenced within {{param|Reference}}.
+                </description>
+                <syntax>
+                    <list/>
+                    <string>
+                        <pathRef targetParent=".DeviceInfo.SupportedDataModel." refType="strong" targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    References the {{object|.LANDevice.{i}.Hosts.Host}} table entry(s), whether active or inactive, that corresponds to this proxied LAN device.
+                </description>
+                <syntax>
+                    <list maxItems="32"/>
+                    <string>
+                        <pathRef refType="strong" targetParent=".LANDevice.{i}.Hosts.Host." targetType="row"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxyProtocol" access="readOnly">
+                <description>
+                    The protocol being used to communicate between the CPE Proxier and this Proxied Device. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a6|3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                        <enumeration value="Z-Wave"><description>see {{bibref|Z-Wave}}</description></enumeration>
+                        <enumeration value="ZigBee"><description>see {{bibref|ZigBee}}</description></enumeration>
+                        <enumeration value="UPnP-DM"><description>see {{bibref|UPnP-DM:1}}</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="CommandProcessed" access="readOnly">
+                <description>
+                    Whether or not the CPE Proxier has successfully communicated all pending configuration commands down to the Proxied Device.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Pending"/>
+                        <enumeration value="Retrying"/>
+                        <enumeration value="Success"/>
+                        <enumeration value="Error"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="CommandProcessingErrMsg" access="readOnly">
+                <description>
+                    Detailed {{param|CommandProcessed}} error description (vendor specific).
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="1024"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="LastSyncTime" access="readOnly">
+                <description>
+                    The last time that the CPE Proxier synchronized the state of the Proxied Device. This parameter MUST be updated when a proxy command is executed successfully on the Proxied Device.
+                    The Unknown Time value, as defined in {{bibref|TR-106a6}}, indicates that the Proxied Device's state has not been synchronized since the CPE Proxier was last rebooted.
+                </description>
+                <syntax><dateTime/></syntax>
+            </parameter>
+        </object>
+    </component>
+    <!-- new component -->
+    <component name="MS_VirtualDevice">
+        <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter name="VirtualDeviceNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        <object name="ManagementServer.VirtualDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VirtualDeviceNumberOfEntries">
+            <description>Each entry in this table represents a distinct Proxied Device that utilizes the Virtual CWMP Device Mechanism {{bibref|TR-069a4|Annex J.1.1}} for proxying devices.</description>
+            <uniqueKey>
+                <parameter ref="ManufacturerOUI"/>
+                <parameter ref="ProductClass"/>
+                <parameter ref="SerialNumber"/>
+            </uniqueKey>
+            <parameter name="ManufacturerOUI" access="readOnly">
+                <description>
+                    Organizationally unique identifier of the associated Proxied Device.  Represented as a six hexadecimal-digit value using all upper-case letters and including any leading zeros.  {{pattern}}
+                    The value MUST be a valid OUI as defined in {{bibref|OUI}}.
+                </description>
+                <syntax>
+                    <string>
+                        <size minLength="6" maxLength="6"/>
+                        <pattern value="[0-9A-F]{6}"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProductClass" access="readOnly">
+                <description>
+                    Identifier of the class of product of the associated Proxied Device for which the serial number applies.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SerialNumber" access="readOnly">
+                <description>
+                    Serial number of the associated Proxied Device.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    {{list}} {{reference}}  References all the {{object|.LANDevice.{i}.Hosts.Host}} table entries, whether active or inactive, that correspond to this proxied LAN device.  There can be multiple such entries if the Proxied Device has more than one network interface.
+                </description>
+                <syntax>
+                    <list maxItems="32"/>
+                    <string>
+                        <pathRef refType="strong" targetParent=".LANDevice.{i}.Hosts.Host." targetType="row"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxyProtocol" access="readOnly">
+                <description>
+                    The protocol being used to communicate between the CPE Proxier and this Proxied Device. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a6|3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                        <enumeration value="Z-Wave"><description>see {{bibref|Z-Wave}}</description></enumeration>
+                        <enumeration value="ZigBee"><description>see {{bibref|ZigBee}}</description></enumeration>
+                        <enumeration value="UPnP-DM"><description>see {{bibref|UPnP-DM:1}}</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <!-- new component -->
+    <component name="MS_EmbeddedDevice_Device2">
+        <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter name="EmbeddedDeviceNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        <object name="ManagementServer.EmbeddedDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="EmbeddedDeviceNumberOfEntries">
+            <description>Each entry in this table represents a distinct Proxied Device that utilizes the Embedded Object Mechanism {{bibref|TR-069a4|Annex J.1.2}} for proxying devices.</description>
+            <uniqueKey>
+                <parameter ref="ControllerID"/>
+                <parameter ref="ProxiedDeviceID"/>
+            </uniqueKey>
+            <parameter name="ControllerID" access="readOnly">
+                <description>
+                    Identifier of the controller that is responsible for a sub-network of Proxied Devices within the LAN.
+                    {{empty}} indicates that this Proxied Device either:
+                    * Isn't part of a sub-network, within the LAN, with a controller entity.
+                    * Doesn't need a {{param}} to ensure its {{param|ProxiedDeviceID}} is unique throughout the LAN.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"></size>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxiedDeviceID" access="readOnly">
+                <description>
+                    Idenitfier of the Proxied Device.  
+                    This is an opaque string that is unique to the Proxied Device within a specific sub-network within the LAN (identified by the {{param|ControllerID}}).  If the {{param|ControllerID}} is {{empty}} this {{param}} is unique across the LAN.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="256"></size>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Reference" access="readOnly">
+                <description>
+                   {{noreference}}The value MUST be the path name of a table row.  If the referenced object is deleted, this {{object}} instance MUST also be removed. Represents the instance of a multi-instanced object that is directly controlled by, and has come into existence because of, this Proxied Device  that utilizes the Embedded Object Mechanism {{bibref|TR-069a4|Annex J.1.2}}.
+                </description>
+                <syntax>
+                    <string>
+                        <pathRef refType="strong" targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SupportedDataModel" access="readOnly">
+                <description>
+                    Represents the CWMP-DT schema instance(s) that this Proxied Device is utilizing.  The CWMP-DT schema instance is also the one being utilized by the object referenced within {{param|Reference}}.
+                </description>
+                <syntax>
+                    <list/>
+                    <string>
+                        <pathRef targetParent=".DeviceInfo.SupportedDataModel." refType="strong" targetType="row"></pathRef>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    References the {{object|.Hosts.Host}} table entry(s), whether active or inactive, that corresponds to this proxied LAN device.
+                </description>
+                <syntax>
+                    <list maxItems="32"/>
+                    <string>
+                        <pathRef refType="strong" targetParent=".Hosts.Host." targetType="row"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxyProtocol" access="readOnly">
+                <description>
+                    The protocol being used to communicate between the CPE Proxier and this Proxied Device. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a6|3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                        <enumeration value="Z-Wave"><description>see {{bibref|Z-Wave}}</description></enumeration>
+                        <enumeration value="ZigBee"><description>see {{bibref|ZigBee}}</description></enumeration>
+                        <enumeration value="UPnP-DM"><description>see {{bibref|UPnP-DM:1}}</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="CommandProcessed" access="readOnly">
+                <description>
+                    Whether or not the CPE Proxier has successfully communicated all pending configuration commands down to the Proxied Device.
+                </description>
+                <syntax>
+                    <string>
+                        <enumeration value="Pending"/>
+                        <enumeration value="Retrying"/>
+                        <enumeration value="Success"/>
+                        <enumeration value="Error"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="CommandProcessingErrMsg" access="readOnly">
+                <description>Detailed {{param|CommandProcessed}} error description (vendor specific).</description>
+                <syntax>
+                    <string>
+                        <size maxLength="1024"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="LastSyncTime" access="readOnly">
+                <description>
+                    The last time that the CPE Proxier synchronized the state of the Proxied Device.  This parameter MUST be updated when a proxy command is executed successfully on the Proxied Device.
+                    The Unknown Time value, as defined in {{bibref|TR-106a6}}, indicates that the Proxied Device's state has not been synchronized since the CPE Proxier was last rebooted.
+                </description>
+                <syntax>
+                    <dateTime/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <!-- new component -->
+    <component name="MS_VirtualDevice_Device2">
+        <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter name="VirtualDeviceNumberOfEntries" access="readOnly">
+                <description>{{numentries}}</description>
+                <syntax><unsignedInt></unsignedInt></syntax>
+            </parameter>
+        </object>
+        <object name="ManagementServer.VirtualDevice.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VirtualDeviceNumberOfEntries">
+            <description>Each entry in this table represents a distinct Proxied Device that utilizes the Virtual CWMP Device Mechanism {{bibref|TR-069a4|Annex I.1.1}} for proxying devices.</description>
+            <uniqueKey>
+                <parameter ref="ManufacturerOUI"/>
+                <parameter ref="ProductClass"/>
+                <parameter ref="SerialNumber"/>
+            </uniqueKey>
+            <parameter name="ManufacturerOUI" access="readOnly">
+                <description>
+                    Organizationally unique identifier of the associated Proxied Device.  Represented as a six hexadecimal-digit value using all upper-case letters and including any leading zeros.  {{pattern}}
+                    The value MUST be a valid OUI as defined in {{bibref|OUI}}.
+                </description>
+                <syntax>
+                    <string>
+                        <size minLength="6" maxLength="6"/>
+                        <pattern value="[0-9A-F]{6}"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProductClass" access="readOnly">
+                <description>
+                    Identifier of the class of product of the associated Proxied Device for which the serial number applies.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="SerialNumber" access="readOnly">
+                <description>
+                    Serial number of the associated Proxied Device.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="Host" access="readOnly">
+                <description>
+                    {{list}} {{reference}}  References all the {{object|.Hosts.Host}} table entries, whether active or inactive, that correspond to this proxied LAN device.  There can be multiple such entries if the Proxied Device has more than one network interface.
+                </description>
+                <syntax>
+                    <list maxItems="32"/>
+                    <string>
+                        <pathRef refType="strong" targetParent=".Hosts.Host." targetType="row"/>
+                    </string>
+                </syntax>
+            </parameter>
+            <parameter name="ProxyProtocol" access="readOnly">
+                <description>
+                    The protocol being used to communicate between the CPE Proxier and this Proxied Device. {{enum}}
+                    Vendors can extend the enumerated values with vendor specific extensions, in which case the rules outlined in {{bibref|TR-106a6|3.3}} MUST be adhered to.
+                </description>
+                <syntax>
+                    <string>
+                        <size maxLength="64"/>
+                        <enumeration value="Z-Wave"><description>see {{bibref|Z-Wave}}</description></enumeration>
+                        <enumeration value="ZigBee"><description>see {{bibref|ZigBee}}</description></enumeration>
+                        <enumeration value="UPnP-DM"><description>see {{bibref|UPnP-DM:1}}</description></enumeration>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <!-- components CHANGES needed by Pace -->
+    <component name="NSLookupDiagDiffs">
+        <object base="NSLookupDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+            <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+                <syntax>
+                    <string>
+                        <enumeration value="None" access="readOnly"/>
+                        <enumeration value="Requested"/>
+                        <enumeration value="Complete" access="readOnly"/>
+                        <enumeration value="Error_DNSServerNotResolved" access="readOnly"/>
+                        <enumeration value="Error_Internal" access="readOnly"/>
+                        <enumeration value="Error_Other" access="readOnly"/>
+                    </string>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="NSLookupDiag">
+        <component ref="_NSLookupDiag"/>
+        <component ref="NSLookupDiagDiffs"/>
+    </component>
+    <!-- component CHANGES needed for Alias -->
+    <component name="DI_TemperatureStatusDiffs">
+        <object base="DeviceInfo.TemperatureStatus.TemperatureSensor.{i}." access="readOnly" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="DI_TemperatureStatus">
+        <component ref="_DI_TemperatureStatus"/>
+        <component ref="DI_TemperatureStatusDiffs"/>
+    </component>
+    <component name="DI_SupportedDataModelDiffs">
+        <object base="DeviceInfo.SupportedDataModel.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="SupportedDataModelNumberOfEntries">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="DI_SupportedDataModel">
+        <component ref="_DI_SupportedDataModel"/>
+        <component ref="DI_SupportedDataModelDiffs"/>
+    </component>
+    <component name="DI_ProcessorsDiffs">
+        <object base="DeviceInfo.Processor.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ProcessorNumberOfEntries">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="DI_Processors">
+        <component ref="_DI_Processors"/>
+        <component ref="DI_ProcessorsDiffs"/>
+    </component>
+    <!-- update the Alias description -->
+    <component name="DI_VendorLogFilesDiffs">
+        <object base="DeviceInfo.VendorLogFile.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="VendorLogFileNumberOfEntries">
+            <parameter base="Alias" access="readWrite" activeNotify="canDeny">
+                <description action="replace">{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="DI_VendorLogFiles">
+        <component ref="_DI_VendorLogFiles"/>
+        <component ref="DI_VendorLogFilesDiffs"/>
+    </component>
+    <component name="UserDiffs">
+        <object base="User.{i}." access="readWrite" numEntriesParameter="UserNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="User">
+        <component ref="_User"/>
+        <component ref="UserDiffs"/>
+    </component>
+    <component name="SmartCardReaderDiffs">
+        <object base="SmartCardReader.{i}." access="readOnly" numEntriesParameter="SmartCardReaderNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="SmartCardReader">
+        <component ref="_SmartCardReader"/>
+        <component ref="SmartCardReaderDiffs"/>
+    </component>
+    <component name="USBHostsDiffs">
+        <object base="USBHosts.Host.{i}." access="readOnly" numEntriesParameter="HostNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="USBHosts">
+        <component ref="_USBHosts"/>
+        <component ref="USBHostsDiffs"/>
+    </component>
+    <component name="USBHosts_Device2Diffs">
+        <object base="USBHosts.Host.{i}." access="readOnly" numEntriesParameter="HostNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="USBHosts_Device2">
+        <component ref="_USBHosts_Device2"/>
+        <component ref="USBHosts_Device2Diffs"/>
+    </component>
+    <component name="PeriodicStatisticsDiffs">
+        <object base="PeriodicStatistics.SampleSet.{i}." access="readWrite" numEntriesParameter="SampleSetNumberOfEntries" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+        <object base="PeriodicStatistics.SampleSet.{i}.Parameter.{i}." access="readWrite" numEntriesParameter="ParameterNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="PeriodicStatistics">
+        <component ref="_PeriodicStatistics"/>
+        <component ref="PeriodicStatisticsDiffs"/>
+    </component>
+    <component name="DownloadAvailabilityDiffs">
+        <object base="DownloadAvailability.Announcement.Group.{i}." access="readWrite" numEntriesParameter="GroupNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+            <uniqueKey functional="false">
+                <parameter ref="Alias"/>
+            </uniqueKey>
+            <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+                <description>{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="DownloadAvailability">
+        <component ref="_DownloadAvailability"/>
+        <component ref="DownloadAvailabilityDiffs"/>
+    </component>
+    <!-- update the Alias description -->
+    <component name="SoftwareModulesDiffs">
+        <object base="SoftwareModules.ExecEnv.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ExecEnvNumberOfEntries">
+            <parameter base="Alias" access="readWrite" activeNotify="canDeny">
+                <description action="replace">{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+        <object base="SoftwareModules.DeploymentUnit.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="DeploymentUnitNumberOfEntries">
+            <parameter base="Alias" access="readWrite" activeNotify="canDeny">
+                <description action="replace">{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+        <object base="SoftwareModules.ExecutionUnit.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="ExecutionUnitNumberOfEntries">
+            <parameter base="Alias" access="readWrite" activeNotify="canDeny">
+                <description action="replace">{{datatype|expand}}</description>
+                <syntax>
+                    <dataType ref="Alias"/>
+                </syntax>
+            </parameter>
+        </object>
+    </component>
+    <component name="SoftwareModules">
+        <component ref="_SoftwareModules"/>
+        <component ref="SoftwareModulesDiffs"/>
+    </component>
+</dm:document>

@@ -1,0 +1,416 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device:1.1 Root Object definition
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  Broadband Forum XML Document has been approved by members of the Forum.
+  This Broadband Forum XML Document is not binding on the Broadband Forum,
+  any of its members, or any developer or service provider. This Broadband
+  Forum XML Document is subject to change, but only with approval of members
+  of the Forum.  This XML Document is copyrighted by the Broadband Forum,
+  and all rights are reserved.  Portions of this XML Document may be
+  copyrighted by Broadband Forum members.
+
+  This Broadband Forum XML Document is provided AS IS, WITH ALL FAULTS.
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT,
+  OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+  LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT
+  NOT LIMITED TO, ANY WARRANTY:
+
+  (A) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+      PURPOSE, NON-INFRINGEMENT, OR TITLE;
+  (B) THAT THE CONTENTS OF THIS BROADBAND FORUM XML DOCUMENT ARE SUITABLE
+      FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+  (C) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENTATION WILL NOT
+      INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER
+      RIGHTS.
+
+  By using this Broadband Forum XML Document, users acknowledge that
+  implementation may require licenses to patents.  The Broadband Forum
+  encourages but does not require its members to identify such patents.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.  No assurance is given that
+  licenses to patents necessary to implement this XML Document will be
+  available for license at all or on reasonable and non-discriminatory terms.
+
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT, OR
+  ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW
+  (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL
+  DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR
+  RELIANCE UPON THIS XML DOCUMENT; AND (B) ANY OBLIGATION TO UPDATE OR
+  CORRECT THIS XML DOCUMENT.
+
+  Broadband Forum XML Documents may be copied, downloaded, stored on a
+  server or otherwise re-distributed in their entirety only, and may not be
+  modified without the advance written permission of the Broadband Forum.
+
+  The text of this notice must be included in all copies.
+
+  Summary:
+  TR-069 Device:1.1 Root Object Definition.  Contains definition of Device:1.1
+  Root Object and Common Objects.
+
+  Version History:
+  November 2008: tr-106-1-1-0.xml, corresponds to TR-106 Amendment 1 section
+                 3.4 (Common Object Definitions), section 3.5 (Inform Require-
+                 ments), section 3.6 (Notification Requirements) and section 4
+                 (Profile Definitions).  Contains only the differences from
+                 Device:1.0.
+  September 2009: tr-106-1-1-0.xml (name unchanged)
+                 - removed duplicate bibrefs
+                 - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-0 cwmp-datamodel-1-0.xsd"
+             spec="urn:broadband-forum-org:tr-106-1-1-0">
+
+  <import file="tr-106-1-0.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <component name="_ManagementServer" ref="ManagementServer"/>
+    <component name="GatewayInfo"/>
+    <component name="_DeviceInfo" ref="DeviceInfo"/>
+    <component name="_Config" ref="Config"/>
+    <component name="_Time" ref="Time"/>
+    <component name="_UserInterface" ref="UserInterface"/>
+    <component name="_LAN" ref="LAN"/>
+    <model name="Device:1.0"/>
+  </import>
+
+  <!-- Primary Common Objects (allowed only in Device Root Object)  -->
+  <!-- Diffs from Device:1.0 -->
+  <component name="ManagementServerDiffs">
+    <object base="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="URL" access="readWrite">
+        <description action="replace">URL, as defined in {{bibref|RFC3986}}, for the CPE to connect to the ACS using the CPE WAN Management Protocol. 
+This parameter MUST be in the form of a valid HTTP or HTTPS URL.
+The ''host'' portion of this URL is used by the CPE for validating the ACS certificate when using SSL or TLS.
+Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="Username" access="readWrite">
+        <description action="append">Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="Password" access="readWrite">
+        <description action="append">Note that on a factory reset of the CPE, the value of this parameter might be reset to its factory value.  If an ACS modifies the value of this parameter, it SHOULD be prepared to accommodate the situation that the original value is restored as the result of a factory reset.</description>
+      </parameter>
+      <parameter base="PeriodicInformEnable" access="readWrite">
+        <description action="replace">Whether or not the CPE MUST periodically send CPE information to the ACS using the Inform method call.</description>
+      </parameter>
+      <parameter base="PeriodicInformTime" access="readWrite">
+        <description action="replace">An absolute time reference in UTC to determine when the CPE will initiate the periodic Inform method calls.  Each Inform call MUST occur at this reference time plus or minus an integer multiple of the {{param|PeriodicInformInterval}}.
+{{param}} is used only to set the ''phase'' of the periodic Informs.  The actual value of {{param}} can be arbitrarily far into the past or future.
+For example, if {{param|PeriodicInformInterval}} is 86400 (a day) and if {{param}} is set to UTC midnight on some day (in the past, present, or future) then periodic Informs will occur every day at UTC midnight.  These MUST begin on the very next midnight, even if {{param}} refers to a day in the future.
+The Unknown Time value defined in {{bibref|TR-106a1|section 3.2}} indicates that no particular time reference is specified.  That is, the CPE MAY locally choose the time reference, and is required only to adhere to the specified {{param|PeriodicInformInterval}}.
+If absolute time is not available to the CPE, its periodic Inform behavior MUST be the same as if the {{param}} parameter was set to the Unknown Time value.</description>
+      </parameter>
+      <parameter base="ConnectionRequestURL" access="readOnly" forcedInform="true">
+        <description action="replace">HTTP URL, as defined in {{bibref|RFC3986}}, for an ACS to make a Connection Request notification to the CPE.
+In the form:
+: http://host:port/path
+The ''host'' portion of the URL MAY be the IP address for the management interface of the CPE in lieu of a host name.</description>
+      </parameter>
+      <parameter base="UpgradesManaged" access="readWrite">
+        <description action="replace">Indicates whether or not the ACS will manage upgrades for the CPE.  If {{true}}, the CPE SHOULD NOT use other means other than the ACS to seek out available upgrades.  If {{false}}, the CPE MAY use other means for this purpose.
+Note that an autonomous upgrade (reported via an "10 AUTONOMOUS TRANSFER COMPLETE" Inform Event code) SHOULD be regarded as a managed upgrade if it is performed according to ACS-specified policy.</description>
+      </parameter>
+      <parameter base="KickURL" access="readOnly">
+        <description action="replace">Present only for a CPE that supports the Kicked RPC method.
+LAN-accessible URL, as defined in {{bibref|RFC3986}}, from which the CPE can be ''kicked'' to initiate the Kicked RPC method call.  MUST be an absolute URL including a host name or IP address as would be used on the LAN side of the CPE.</description>
+      </parameter>
+      <parameter base="DownloadProgressURL" access="readOnly">
+        <description action="replace">Present only for a CPE that provides a LAN-side web page to show progress during a file download.
+LAN-accessible URL, as defined in {{bibref|RFC3986}}, to which a web-server associated with the ACS MAY redirect a user's browser on initiation of a file download to observer the status of the download.</description>
+      </parameter>
+      <parameter name="UDPConnectionRequestAddress" access="readOnly">
+        <description>Address and port to which an ACS MAY send a UDP Connection Request to the CPE (see {{bibref|TR-069a1|Annex G}}).
+This parameter is represented in the form of an Authority element as defined in {{bibref|RFC3986}}.  The value MUST be in one of the following two forms:
+: host:port
+: host
+* When {{param|STUNEnable}} is {{true}}, the ''host'' and ''port'' portions of this parameter MUST represent the public address and port corresponding to the NAT binding through which the ACS can send UDP Connection Request messages (once this information is learned by the CPE through the use of STUN).
+* When {{param|STUNEnable}} is {{false}}, the ''host'' and ''port'' portions of the URL MUST represent the local IP address and port on which the CPE is listening for UDP Connection Request messages.
+The second form of this parameter MAY be used only if the port value is equal to ''80''.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="UDPConnectionRequestAddressNotificationLimit" access="readWrite">
+        <description>The minimum time, in seconds, between Active Notifications resulting from changes to the {{param|UDPConnectionRequestAddress}} (if Active Notification is enabled).</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="STUNEnable" access="readWrite">
+        <description>Enables or disables the use of STUN by the CPE.  This applies only to the use of STUN in association with the ACS to allow UDP Connection Requests.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="STUNServerAddress" access="readWrite">
+        <description>Host name or IP address of the STUN server for the CPE to send Binding Requests if STUN is enabled via {{param|STUNEnable}}.
+If is {{empty}} and {{param|STUNEnable}} is {{true}}, the CPE MUST use the address of the ACS extracted from the host portion of the ACS URL.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNServerPort" access="readWrite">
+        <description>Port number of the STUN server for the CPE to send Binding Requests if STUN is enabled via {{param|STUNEnable}}.
+By default, this SHOULD be the equal to the default STUN port, 3478.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="STUNUsername" access="readWrite">
+        <description>If is not {{empty}}, the value of the STUN USERNAME attribute to be used in Binding Requests (only if message integrity has been requested by the STUN server).
+If is {{empty}}, the CPE MUST NOT send STUN Binding Requests with message integrity.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNPassword" access="readWrite">
+        <description>The value of the STUN Password to be used in computing the MESSAGE-INTEGRITY attribute to be used in Binding Requests (only if message integrity has been requested by the STUN server).
+When read, this parameter returns {{empty}}, regardless of the actual value.</description>
+        <syntax hidden="true">
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="STUNMaximumKeepAlivePeriod" access="readWrite">
+        <description>If STUN Is enabled, the maximum period, in seconds, that STUN Binding Requests MUST be sent by the CPE for the purpose of maintaining the binding in the Gateway.  This applies specifically to Binding Requests sent from the UDP Connection Request address and port.
+A value of -1 indicates that no maximum period is specified.</description>
+        <syntax>
+          <int>
+            <range minInclusive="-1"/>
+          </int>
+        </syntax>
+      </parameter>
+      <parameter name="STUNMinimumKeepAlivePeriod" access="readWrite">
+        <description>If STUN Is enabled, the minimum period, in seconds, that STUN Binding Requests can be sent by the CPE for the purpose of maintaining the binding in the Gateway.  This limit applies only to Binding Requests sent from the UDP Connection Request address and port, and only those that do not contain the BINDING-CHANGE attribute.  This limit does not apply to retransmissions following the procedures defined in {{bibref|RFC3489}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="NATDetected" access="readOnly">
+        <description>When STUN is enabled, this parameter indicates whether or not the CPE has detected address and/or port mapping in use.
+A {{true}} value indicates that the received MAPPED-ADDRESS in the most recent Binding Response differs from the CPE's source address and port.
+When {{param|STUNEnable}} is {{false}}, this value MUST be {{false}}.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <!-- Full components -->
+  <component name="ManagementServer">
+    <component ref="_ManagementServer"/>
+    <component ref="ManagementServerDiffs"/>
+  </component>
+
+  <!-- Secondary Common Objects (allowed in Device Root and Service Objects) -->
+  <!-- Diffs from Device:1.0 -->
+  <component name="DeviceInfoDiffs">
+    <object base="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="EnabledOptions" access="readOnly">
+        <description action="replace">Comma-separated list of the OptionName of each Option that is currently enabled in the CPE.  The OptionName of each is identical to the OptionName element of the OptionStruct described in {{bibref|TR-069a1}}.  Only those options are listed whose State indicates the option is enabled.</description>
+      </parameter>
+      <parameter base="AdditionalHardwareVersion" access="readOnly">
+        <description action="replace">A comma separated list of any additional versions.  Represents any additional hardware version information the vendor might wish to supply.</description>
+      </parameter>
+      <parameter base="AdditionalSoftwareVersion" access="readOnly">
+        <description action="replace">A comma separated list of any additional versions.  Represents any additional software version information the vendor might wish to supply.</description>
+      </parameter>
+      <parameter base="FirstUseDate" access="readOnly" activeNotify="canDeny">
+        <description action="append">If NTP or equivalent is not available, this parameter, if present, SHOULD be set to the Unknown Time value.</description>
+      </parameter>
+    </object>  
+  </component>
+  <component name="ConfigDiffs">
+    <object base="Config." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="PersistentData" access="readWrite">
+        <description action="replace">Arbitrary user data that MUST persist across CPE reboots.</description>
+      </parameter>
+      <parameter base="ConfigFile" access="readWrite">
+        <description action="replace">A dump of the currently running configuration on the CPE.  This parameter enables the ability to backup and restore the last known good state of the CPE.  It returns a vendor-specific document that defines the state of the CPE.  The document MUST be capable of restoring the CPE's state when written back to the CPE using SetParameterValues.</description>
+      </parameter>
+    </object>  
+  </component>
+  <component name="TimeDiffs">
+    <object base="Time." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains parameters relating an NTP or SNTP time client in the CPE.</description>
+    </object>  
+  </component>
+  <component name="UserInterfaceDiffs">
+    <object base="UserInterface." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains parameters relating to the user interface of the CPE.</description>
+      <parameter base="PasswordRequired" access="readWrite">
+        <description action="replace">Present only if the CPE provides a password-protected LAN-side user interface.
+Indicates whether or not the local user interface MUST require a password to be chosen by the user.  If {{false}}, the choice of whether or not a password is used is left to the user.</description>
+      </parameter>
+      <parameter base="PasswordUserSelectable" access="readWrite">
+        <description action="replace">Present only if the CPE provides a password-protected LAN-side user interface and supports LAN-side Auto-Configuration.
+Indicates whether or not a password to protect the local user interface of the CPE MAY be selected by the user directly, or MUST be equal to the password used by the LAN-side Auto-Configuration protocol.</description>
+      </parameter>
+    </object>  
+  </component>
+  <component name="LANDiffs">
+    <object base="LAN." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object contains parameters relating to IP-based LAN connectivity of a device.
+This object relates only to IP-layer LAN capabilities.  Lower-layer aspects of LAN connectivity are not considered part of the common data model defined in this specification.
+For a device that contains multiple IP interfaces, the scope of this object is limited to the default IP interface.  Data that might be associated with other interfaces is not considered part of the common data model defined in this specification.</description>
+      <parameter base="AddressingType" access="readWrite">
+        <description action="replace">The method used to assign an address to this interface.  {{enum}}
+The ability to modify this parameter is OPTIONAL.</description>
+      </parameter>
+      <parameter base="IPAddress" access="readWrite" forcedInform="true">
+        <description action="replace">The current IP address assigned to this interface.
+The ability to modify this parameter is OPTIONAL, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+      </parameter>
+      <parameter base="SubnetMask" access="readWrite">
+        <description action="replace">The current subnet mask.
+The ability to modify this parameter is OPTIONAL, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+      </parameter>
+      <parameter base="DefaultGateway" access="readWrite">
+        <description action="replace">The IP address of the current default gateway for this interface.
+The ability to modify this parameter is OPTIONAL, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+      </parameter>
+      <parameter base="DNSServers" access="readWrite">
+        <description action="replace">Comma-separated list of IP address of the DNS servers for this interface.
+The ability to modify this parameter is OPTIONAL, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.
+If this parameter is modifiable, the device MAY ignore any DNS servers beyond the first two in the list.</description>
+      </parameter>
+    </object>
+    <object base="LAN.DHCPOption.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="DHCPOptionNumberOfEntries">
+      <parameter base="Value" access="readWrite">
+        <syntax>
+          <base64/>
+          <default type="object" value=""/>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="LAN.IPPingDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description action="replace">This object defines access to an IP-layer ping test for the default IP interface.</description>
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Indicates availability of diagnostic data.  {{enum}}
+If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the ''Error'' values listed above.
+If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.
+After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.</description>
+        <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete"/>
+            <enumeration value="Error_CannotResolveHostName"/>
+            <enumeration value="Error_Internal"/>
+            <enumeration value="Error_Other"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="DSCP" access="readWrite">
+        <description action="replace">DiffServ codepoint to be used for the test packets.  By default the CPE SHOULD set this value to zero.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="63"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+    </object>
+    <object base="LAN.TraceRouteDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <parameter base="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description action="replace">Indicates availability of diagnostic data.  {{enum}}
+If the ACS sets the value of this parameter to {{enum|Requested}}, the CPE MUST initiate the corresponding diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the test is completed, the value of this parameter MUST be either {{enum|Complete}} (if the test completed successfully), or one of the ''Error'' values listed above.
+If the value of this parameter is anything other than {{enum|Complete}}, the values of the results parameters for this test are indeterminate.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.
+After the diagnostic is complete, the value of all result parameters (all read-only parameters in this object) MUST be retained by the CPE until either this diagnostic is run again, or the CPE reboots.  After a reboot, if the CPE has not retained the result parameters from the most recent test, it MUST set the value of this parameter to {{enum|None}}.
+Modifying any of the writable parameters in this object except for this one MUST result in the value of this parameter being set to {{enum|None}}.
+While the test is in progress, modifying any of the writable parameters in this object except for this one MUST result in the test being terminated and the value of this parameter being set to {{enum|None}}.
+While the test is in progress, setting this parameter to {{enum|Requested}} (and possibly modifying other writable parameters in this object) MUST result in the test being terminated and then restarted using the current values of the test parameters.</description>
+        <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete"/>
+            <enumeration value="Error_CannotResolveHostName"/>
+            <enumeration value="Error_MaxHopCountExceeded"/>
+            <enumeration value="Error_Internal"/>
+            <enumeration value="Error_Other"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter base="DSCP" access="readWrite">
+        <description action="replace">DiffServ codepoint to be used for the test packets.  By default the CPE SHOULD set this value to zero.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="63"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter base="ResponseTime" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Result parameter indicating the response time in milliseconds the most recent trace route test.  If a route could not be determined, this value MUST be zero.</description>
+      </parameter>
+      <parameter base="NumberOfRouteHops" access="readOnly" activeNotify="canDeny">
+        <description action="replace">Result parameter indicating the number of hops within the discovered route.  If a route could not be determined, this value MUST be zero.</description>
+      </parameter>
+    </object>
+  </component>
+  <!-- Full components -->  
+  <component name="DeviceInfo">
+    <component ref="_DeviceInfo"/>
+    <component ref="DeviceInfoDiffs"/>
+  </component>
+  <component name="Config">
+    <component ref="_Config"/>
+    <component ref="ConfigDiffs"/>
+  </component>
+  <component name="Time">
+    <component ref="_Time"/>
+    <component ref="TimeDiffs"/>
+  </component>
+  <component name="UserInterface">
+    <component ref="_UserInterface"/>
+    <component ref="UserInterfaceDiffs"/>
+  </component>
+  <component name="LAN">
+    <component ref="_LAN"/>
+    <component ref="LANDiffs"/>
+  </component>
+
+  <model name="Device:1.1" base="Device:1.0">
+    <component path="Device." ref="DeviceInfoDiffs"/>
+    <component path="Device." ref="ManagementServerDiffs"/>
+    <component path="Device." ref="ConfigDiffs"/>
+    <component path="Device." ref="TimeDiffs"/>
+    <component path="Device." ref="UserInterfaceDiffs"/>
+    <component path="Device." ref="LANDiffs"/>
+    <profile name="UDPConnReq:1">
+      <object ref="Device.ManagementServer." requirement="notSpecified">
+        <parameter ref="UDPConnectionRequestAddress" requirement="readOnly"/>
+        <parameter ref="UDPConnectionRequestAddressNotificationLimit" requirement="readWrite"/>
+        <parameter ref="STUNEnable" requirement="readWrite"/>
+        <parameter ref="STUNServerAddress" requirement="readWrite"/>
+        <parameter ref="STUNServerPort" requirement="readWrite"/>
+        <parameter ref="STUNUsername" requirement="readWrite"/>
+        <parameter ref="STUNPassword" requirement="readWrite"/>
+        <parameter ref="STUNMaximumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="STUNMinimumKeepAlivePeriod" requirement="readWrite"/>
+        <parameter ref="NATDetected" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</dm:document>

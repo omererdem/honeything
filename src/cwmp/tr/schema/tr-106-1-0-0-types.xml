@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Data Model Data Types
+
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+  Summary:
+    TR-069 Data Model Data Types.  Contains normative definitions of named 
+    (i.e. not built-in) data types that can be used in data model definitions.
+
+  Version History:
+    November 2008: tr-106-1-0-0-types.xml, corresponds to parts of TR-106
+            section 3.2, with some updates from Amendments 1 and 2.
+    September 2009: tr-106-1-0-0-types.xml (name unchanged)
+            - replaced bibrefs with import from biblio file
+            - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+    May 2010: tr-106-1-0-0-types.xml (name unchanged)
+            - defined the IPPrefix and IPv4Address data types
+            - specified doctype entities to help simplify data type definitions
+    November 2010: tr-106-1-0-0-types.xml (name unchanged)
+            - Updated the IPAddress and IPv4Address definition/description.
+            - Added new types IPv4Prefix, IPv6Address, IPv6Prefix, 
+              StatsCounter32, StatsCounter64
+            - Added new entity definition ipv4PrefixRange
+-->
+
+<!DOCTYPE cwmp-datamodel-entities [
+  <!ENTITY colon ":">
+  <!ENTITY hash "#">
+  <!ENTITY caret "\^">
+  <!ENTITY dot "\.">
+  <!ENTITY num "(\d+)">
+  <!ENTITY octet "(25[0-5]|2[0-4][0-9]|[01]?[0-9]?[0-9])">  <!-- 0 to 255 -->
+  <!ENTITY ipv4PrefixRange "(3[0-2]|[012]?[0-9])">          <!-- 0 to 32 -->
+]>
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-3"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-3 cwmp-datamodel-1-3.xsd"
+             spec="urn:broadband-forum-org:tr-106-1-0-0">
+
+  <import file="tr-069-biblio.xml" spec="urn:broadband-forum-org:tr-069-biblio"/>
+
+  <dataType name="IPAddress">
+    <description>IP address, i.e. IPv4 address (or IPv4 subnet mask) or IPv6 address.
+All IPv4 addresses and subnet masks MUST be represented as strings in IPv4 dotted-decimal notation.  Here are some examples of valid IPv4 address textual representations:
+* 216.52.29.100
+* 192.168.1.254
+All IPv6 addresses MUST be represented using any of the 3 standard textual representations defined in {{bibref|RFC4291}} Sections 2.2.1, 2.2.2 and 2.2.3.  Both lower-case and upper-case letters can be used, but use of lower-case letters is RECOMMENDED.  Here are some examples of valid IPv6 address textual representations:
+* 1080:0:0:800:ba98:3210:11aa:12dd
+* 1080::800:ba98:3210:11aa:12dd
+* 0:0:0:0:0:0:13.1.68.3
+IPv6 addresses MUST NOT include zone identifiers. Zone identifiers are discussed in {{bibref|RFC4007|Section 6}}.
+Unspecified or inapplicable addresses (or IPv4 subnet masks) MUST be represented as empty strings unless otherwise specified by the parameter definition.</description>
+    <string>
+      <size maxLength="45"/>
+    </string>
+  </dataType>
+  
+  <dataType name="IPv4Address" base="IPAddress">
+    <description>IPv4 address (or subnet mask).
+Can be any IPv4 address that is permitted by the ''IPAddress'' data type.</description>
+    <string>
+      <size maxLength="15"/>
+      <pattern value=""/>
+      <pattern value="(&octet;&dot;){3}&octet;"/>
+    </string>
+  </dataType>
+  
+  <dataType name="IPv6Address" base="IPAddress">
+    <description>IPv6 address.
+Can be any IPv6 address that is permitted by the ''IPAddress'' data type.</description>
+  </dataType>
+
+  <dataType name="IPPrefix">
+    <description>IPv4 or IPv6 routing prefix in Classless Inter-Domain Routing (CIDR) notation {{bibref|RFC4632}}. This is specified as an IP address followed by an appended "/n" suffix, where ''n'' (the prefix size) is an integer in the range 0-32 (for IPv4) or 0-128 (for IPv6) that indicates the number of (leftmost) '1' bits of the routing prefix. 
+IPv4 example: 192.168.1.0/24
+IPv6 example: 2001:edff:fe6a:f76::/64
+Unspecified or inapplicable IP prefixes MUST be represented as empty strings unless otherwise specified by the parameter definition.</description>
+    <string>
+      <size maxLength="49"/>
+    </string>
+  </dataType>
+  
+  <dataType name="IPv4Prefix" base="IPPrefix">
+    <description>IPv4 address prefix. 
+Can be any IPv4 prefix that is permitted by the ''IPPrefix'' data type.</description>
+    <string>
+      <size maxLength="18"/>
+      <pattern value=""/>
+      <pattern value="(&octet;&dot;){3}&octet;/&ipv4PrefixRange;"/>
+    </string>
+  </dataType>
+
+  <dataType name="IPv6Prefix" base="IPPrefix">
+    <description>IPv6 address prefix.
+Can be any IPv6 prefix that is permitted by the ''IPPrefix'' data type.</description>
+  </dataType>
+
+  <dataType name="MACAddress">
+    <description>All MAC addresses are represented as strings of 12 hexadecimal digits (digits 0-9, letters A-F or a-f) displayed as six pairs of digits separated by colons.  Unspecified or inapplicable MAC addresses MUST be represented as empty strings unless otherwise specified by the parameter definition.</description>
+    <string>
+      <size maxLength="17"/>
+      <pattern value=""/>
+      <pattern value="([0-9A-Fa-f][0-9A-Fa-f]:){5}([0-9A-Fa-f][0-9A-Fa-f])"/>
+    </string>
+  </dataType>
+  
+  <dataType name="StatsCounter32">
+    <description>A 32-bit statistics parameter, e.g. a byte counter.
+This data type SHOULD NOT be used for statistics parameters whose values might become greater than the maximum value that can be represented as an ''unsignedInt''. ''StatsCounter64'' SHOULD be used for such parameters.
+The actual value of the statistic might be greater than the maximum value that can be represented as an ''unsignedInt''. Such values SHOULD wrap around through zero.
+The term ''packet'' is to be interpreted as the transmission unit appropriate to the protocol layer in question, e.g. an IP packet or an Ethernet frame.</description>
+    <unsignedInt/>
+  </dataType>
+  
+  <dataType name="StatsCounter64">
+    <description>A 64-bit statistics parameter, e.g. a byte counter.
+This data type SHOULD be used for all statistics parameters whose values might become greater than the maximum value that can be represented as an ''unsignedInt''.
+The term ''packet'' is to be interpreted as the transmission unit appropriate to the protocol layer in question, e.g. an IP packet or an Ethernet frame.</description>
+    <unsignedLong/>
+  </dataType>
+
+</dm:document>

@@ -1,0 +1,74 @@
+#!/bin/sh
+
+TARGET=bup
+
+. ./configure.inc
+
+AC_INIT $TARGET
+
+if ! AC_PROG_CC; then
+    LOG " You need to have a functional C compiler to build $TARGET"
+    exit 1
+fi
+
+TLOGN "checking the GNU make"
+MAKE=`acLookFor make`
+if [ -z "$MAKE" ]; then
+    AC_FAIL " Cannot find make";
+fi
+
+MAKE_GNU=`$MAKE --version | grep "GNU Make"`
+if [ -z "$MAKE_GNU" ]; then
+    AC_FAIL " $MAKE is not GNU Make"
+fi
+
+MAKE_VERSION=`$MAKE --version | grep "GNU Make" | awk '{print $3}'`
+if [ -z "$MAKE_VERSION" ]; then
+    AC_FAIL " $MAKE --version does not return sensible output?"
+fi
+expr "$MAKE_VERSION" '>=' '3.81' || AC_FAIL "$MAKE must be >= version 3.81"
+TLOG " ok"
+
+TLOGN "checking the python"
+PYTHON=`acLookFor python`
+if [ -z "$PYTHON" ]; then
+    AC_FAIL " Cannot find python";
+fi
+TLOG " - you have some python program - ok"
+
+TLOGN "checking the git"
+GIT=`acLookFor git`
+if [ -z "$GIT" ]; then
+    AC_FAIL " Cannot find git";
+fi
+TLOG " - you have some git program - ok"
+
+
+# assuming the above checks pass, get the path of everything
+MF_PATH_INCLUDE	GMAKE make gmake
+MF_PATH_INCLUDE GIT git
+MF_PATH_INCLUDE TAR tar gtar
+MF_PATH_INCLUDE PYTHON python
+
+# For stat.
+AC_CHECK_HEADERS sys/stat.h
+AC_CHECK_HEADERS sys/types.h
+AC_CHECK_HEADERS unistd.h
+
+# For FS_IOC_GETFLAGS and FS_IOC_SETFLAGS.
+AC_CHECK_HEADERS linux/fs.h
+AC_CHECK_HEADERS sys/ioctl.h
+
+AC_CHECK_FUNCS utimensat 
+AC_CHECK_FUNCS utimes
+AC_CHECK_FUNCS lutimes
+
+AC_CHECK_FIELD stat st_atim sys/types.h sys/stat.h unistd.h
+AC_CHECK_FIELD stat st_mtim sys/types.h sys/stat.h unistd.h
+AC_CHECK_FIELD stat st_ctim sys/types.h sys/stat.h unistd.h
+
+AC_CHECK_FIELD stat st_atimensec sys/types.h sys/stat.h unistd.h
+AC_CHECK_FIELD stat st_mtimensec sys/types.h sys/stat.h unistd.h
+AC_CHECK_FIELD stat st_ctimensec sys/types.h sys/stat.h unistd.h
+
+AC_OUTPUT config.vars

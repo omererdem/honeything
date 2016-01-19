@@ -1,0 +1,30 @@
+#!/usr/bin/make -f
+
+PACKAGE_NAME=python-pynetlinux
+
+clean:
+	dh_testdir
+	dh_testroot
+	rm -f *-stamp
+	rm -rf dist build
+	-find -name '*.py[co]' | xargs rm -f
+	dh_clean
+
+build:
+	python setup.py build
+
+install:
+	python setup.py install --root $(CURDIR)/debian/${PACKAGE_NAME}
+
+binary: build install
+	dh_testdir -i
+	dh_testroot -i
+	dh_pycentral -i
+	dh_installdirs -i
+	dh_compress -i -X.py
+	dh_fixperms -i
+	dh_installdeb -i
+	dh_gencontrol -i
+	dh_md5sums -i
+	dh_builddeb -i
+

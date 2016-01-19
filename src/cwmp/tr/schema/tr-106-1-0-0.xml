@@ -1,0 +1,1084 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TR-069 Device:1.0 Root Object definition
+
+  Notice:
+  The Broadband Forum is a non-profit corporation organized to create
+  guidelines for broadband network system development and deployment. This
+  Broadband Forum XML Document has been approved by members of the Forum.
+  This Broadband Forum XML Document is not binding on the Broadband Forum,
+  any of its members, or any developer or service provider. This Broadband
+  Forum XML Document is subject to change, but only with approval of members
+  of the Forum.  This XML Document is copyrighted by the Broadband Forum,
+  and all rights are reserved.  Portions of this XML Document may be
+  copyrighted by Broadband Forum members.
+
+  This Broadband Forum XML Document is provided AS IS, WITH ALL FAULTS.
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT,
+  OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+  LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED, INCLUDING, BUT
+  NOT LIMITED TO, ANY WARRANTY:
+
+  (A) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A PARTICULAR
+      PURPOSE, NON-INFRINGEMENT, OR TITLE;
+  (B) THAT THE CONTENTS OF THIS BROADBAND FORUM XML DOCUMENT ARE SUITABLE
+      FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT HOLDER;
+  (C) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENTATION WILL NOT
+      INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR OTHER
+      RIGHTS.
+
+  By using this Broadband Forum XML Document, users acknowledge that
+  implementation may require licenses to patents.  The Broadband Forum
+  encourages but does not require its members to identify such patents.
+  For a list of declarations made by Broadband Forum member companies,
+  please see http://www.broadband-forum.org.  No assurance is given that
+  licenses to patents necessary to implement this XML Document will be
+  available for license at all or on reasonable and non-discriminatory terms.
+
+  ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM XML DOCUMENT, OR
+  ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY LAW
+  (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR CONSEQUENTIAL
+  DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR RELATED TO THE USE OF OR
+  RELIANCE UPON THIS XML DOCUMENT; AND (B) ANY OBLIGATION TO UPDATE OR
+  CORRECT THIS XML DOCUMENT.
+
+  Broadband Forum XML Documents may be copied, downloaded, stored on a
+  server or otherwise re-distributed in their entirety only, and may not be
+  modified without the advance written permission of the Broadband Forum.
+
+  The text of this notice must be included in all copies.
+
+  Summary:
+  TR-069 Device:1.0 Root Object Definition.  Contains definition of Device:1.0
+  Root Object and Common Objects.
+
+  Version History:
+  November 2008: tr-106-1-0-0.xml, corresponds to TR-106 section 3.4 (Common
+                 Object Definitions), section 3.5 (Inform Requirements),
+                 section 3.6 (Notification Requirements) and section 4
+                 (Profile Definitions).
+  September 2009: tr-106-1-0-0.xml (name unchanged)
+                 - removed duplicate bibrefs
+                 - fixed cwmp-datamodel.xsd to be cwmp-datamodel-1-0.xsd
+-->
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-0"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-0 cwmp-datamodel-1-0.xsd"
+             spec="urn:broadband-forum-org:tr-106-1-0-0">
+
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="IPAddress"/>
+    <dataType name="MACAddress"/>
+  </import>
+
+  <!-- Primary Common Objects (allowed only in Device Root Object)  -->
+  <component name="ManagementServer">
+    <description>Parameters associated with the communication between the CPE and an ACS (allowed only in Device Root Object).</description>
+    <object name="ManagementServer." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains parameters relating to the CPE's association with an ACS.</description>
+      <parameter name="URL" access="readWrite">
+        <description>URL for the CPE to connect to the ACS using the CPE WAN Management Protocol. 
+This parameter MUST be in the form of a valid HTTP or HTTPS URL.
+The ''host'' portion of this URL is used by the CPE for validating the ACS certificate when using SSL or TLS.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Username" access="readWrite">
+        <description>Username used to authenticate the CPE when making a connection to the ACS using the CPE WAN Management Protocol.
+This username is used only for HTTP-based authentication of the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Password" access="readWrite">
+        <description>Password used to authenticate the CPE when making a connection to the ACS using the CPE WAN Management Protocol.
+This password is used only for HTTP-based authentication of the CPE.
+When read, this parameter returns {{empty}}, regardless of the actual value.</description>
+        <syntax hidden="true">
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="PeriodicInformEnable" access="readWrite">
+        <description>Whether or not the CPE must periodically send CPE information to the ACS using the Inform method call.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="PeriodicInformInterval" access="readWrite">
+        <description>The duration in seconds of the interval for which the CPE MUST attempt to connect with the ACS and call the Inform method if {{param|PeriodicInformEnable}} is {{true}}.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="PeriodicInformTime" access="readWrite">
+        <description>An absolute time reference in UTC to determine when the CPE should initiate the Inform method calls.  Each Inform call must occur at this reference time plus or minus an integer multiple of the {{param|PeriodicInformInterval}}.
+A zero dateTime value (0000-00-00T00:00:00) indicates that no particular time reference is specified.  That is, the CPE may locally choose the time reference, required only to adhere to the specified {{param|PeriodicInformInterval}}.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="ParameterKey" access="readOnly" activeNotify="canDeny" forcedInform="true">
+        <description>{{param}} provides the ACS a reliable and extensible means to track changes made by the ACS.  The value of {{param}} MUST be equal to the value of the ParameterKey argument from the most recent successful SetParameterValues, AddObject, or DeleteObject method call from the ACS.
+The CPE MUST set {{param}} to the value specified in the corresponding method arguments if and only if the method completes successfully and no fault response is generated.  If a method call does not complete successfully (implying that the changes requested in the method did not take effect), the value of {{param}} MUST NOT be modified.
+The CPE MUST only modify the value of {{param}} as a result of SetParameterValues, AddObject, DeleteObject, or due to a factory reset.  On factory reset, the value of {{param}} MUST be set to {{empty}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="32"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConnectionRequestURL" access="readOnly" forcedInform="true">
+        <description>HTTP URL for an ACS to make a Connection Request notification to the CPE.
+In the form:
+: http://host:port/path
+The ''host'' portion of the URL MAY be the IP address for the management interface of the CPE in lieu of a host name.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConnectionRequestUsername" access="readWrite">
+        <description>Username used to authenticate an ACS making a Connection Request to the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConnectionRequestPassword" access="readWrite">
+        <description>Password used to authenticate an ACS making a Connection Request to the CPE.
+When read, this parameter returns {{empty}}, regardless of the actual value.</description>
+        <syntax hidden="true">
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="UpgradesManaged" access="readWrite">
+        <description>Indicates whether or not the ACS will manage upgrades for the CPE.  If {{true}}, the CPE SHOULD not use other means other than the ACS to seek out available upgrades.  If {{false}}, the CPE MAY use other means for this purpose.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="KickURL" access="readOnly">
+        <description>Present only for a CPE that supports the Kicked RPC method.
+LAN-accessible URL from which the CPE can be ''kicked'' to initiate the Kicked RPC method call.  MUST be an absolute URL including a host name or IP address as would be used on the LAN side of the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="DownloadProgressURL" access="readOnly">
+        <description>Present only for a CPE that provides a LAN-side web page to show progress during a file download.
+LAN-accessible URL to which a web-server associated with the ACS may redirect a user's browser on initiation of a file download to observer the status of the download.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="GatewayInfo">
+    <description>Information to identify an Internet Gateway Device through which the CPE is connected (allowed only in Root Objects).</description>
+    <object name="GatewayInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains information associated with a connected Internet Gateway Device.</description>
+      <parameter name="ManufacturerOUI" access="readOnly">
+        <description>Organizationally unique identifier of the associated Internet Gateway Device.  {{empty}} indicates that there is no associated Internet Gateway Device that has been detected.</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProductClass" access="readOnly">
+        <description>Identifier of the product class of the associated Internet Gateway Device.  {{empty}} indicates either that there is no associated Internet Gateway Device that has been detected, or the Internet Gateway Device does not support the use of the product-class parameter.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SerialNumber" access="readOnly">
+        <description>Serial number of the associated Internet Gateway Device.  {{empty}} indicates that there is no associated Internet Gateway Device that has been detected.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <!-- Secondary Common Objects (allowed in Device Root and Service Objects) -->
+  <component name="DeviceInfo">
+    <description>General information about the device, including its identity and version information (allowed in Device Root and Service Objects).</description>
+    <object name="DeviceInfo." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains general device information.</description>
+      <parameter name="Manufacturer" access="readOnly">
+        <description>The manufacturer of the CPE (human readable string).</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ManufacturerOUI" access="readOnly">
+        <description>Organizationally unique identifier of the device manufacturer.  Represented as a six hexadecimal-digit value using all upper-case letters and including any leading zeros.  The value MUST be a valid OUI as defined in {{bibref|OUI}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ModelName" access="readOnly" activeNotify="canDeny">
+        <description>Model name of the CPE (human readable string).</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Description" access="readOnly" activeNotify="canDeny">
+        <description>A full description of the CPE device (human readable string).</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ProductClass" access="readOnly">
+        <description>Identifier of the class of product for which the serial number applies.  That is, for a given manufacturer, this parameter is used to identify the product or class of product over which the {{param|SerialNumber}} parameter is unique.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SerialNumber" access="readOnly">
+        <description>Serial number of the CPE.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="HardwareVersion" access="readOnly" forcedInform="true">
+        <description>A string identifying the particular CPE model and version.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="SoftwareVersion" access="readOnly" forcedInform="true">
+        <description>A string identifying the software version currently installed in the CPE.
+To allow version comparisons, this element SHOULD be in the form of dot-delimited integers, where each successive integer represents a more minor category of variation.  For example, ''3.0.21'' where the components mean: ''Major.Minor.Build''.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="EnabledOptions" access="readOnly">
+        <description>Comma-separated list of the OptionName of each Option that is currently enabled in the CPE.  The OptionName of each is identical to the OptionName element of the OptionStruct described in {{bibref|TR-069}}.  Only those options are listed whose State indicates the option is enabled.</description>
+        <syntax>
+          <list>
+            <size maxLength="1024"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalHardwareVersion" access="readOnly">
+        <description>A comma separated list of any additional versions.  Represents any additional hardware version information the vendor may wish to supply.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="AdditionalSoftwareVersion" access="readOnly">
+        <description>A comma separated list of any additional versions.  Represents any additional software version information the vendor may wish to supply.</description>
+        <syntax>
+          <list>
+            <size maxLength="64"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="ProvisioningCode" access="readWrite">
+        <description>Identifier of the primary service provider and other provisioning information, which MAY be used by the ACS to determine service provider-specific customization and provisioning parameters.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="DeviceStatus" access="readOnly">
+        <description>Current operational status of the device.</description>
+        <syntax>
+          <string>
+            <enumeration value="Up"/>
+            <enumeration value="Initializing"/>
+            <enumeration value="Error"/>
+            <enumeration value="Disabled"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="UpTime" access="readOnly" activeNotify="canDeny">
+        <description>Time in seconds since the CPE was last restarted.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FirstUseDate" access="readOnly" activeNotify="canDeny">
+        <description>Date and time in UTC that the CPE first both successfully established an IP-layer network connection and acquired an absolute time reference using NTP or equivalent over that network connection.  The CPE MAY reset this date after a factory reset.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="DeviceLog" access="readOnly" activeNotify="canDeny">
+        <description>Vendor-specific log(s).</description>
+        <syntax>
+          <string>
+            <size maxLength="32768"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="Config">
+    <description>Contains general configuration state (allowed in Device Root and Service Objects).</description>
+    <object name="Config." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains general configuration parameters.</description>
+      <parameter name="PersistentData" access="readWrite">
+        <description>Arbitrary user data that must persist across CPE reboots.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ConfigFile" access="readWrite">
+        <description>A dump of the currently running configuration on the CPE.  This parameter enables the ability to backup and restore the last known good state of the CPE.  It returns a vendor-specific document that defines the state of the CPE.  The document must be capable of restoring the CPE's state when written back to the CPE using SetParameterValues.</description>
+        <syntax>
+          <string>
+            <size maxLength="32768"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="Time">
+    <description>Parameters associated with an NTP or SNTP time client on the CPE (allowed in Device Root and Service Objects).</description>
+    <object name="Time." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains parameters relating an NTP or SNTP time client in the CPE.  Support for this object is Optional.</description>
+      <parameter name="NTPServer1" access="readWrite">
+        <description>First NTP timeserver.  Either a host name or IP address.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NTPServer2" access="readWrite">
+        <description>Second NTP timeserver.  Either a host name or IP address.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NTPServer3" access="readWrite">
+        <description>Third NTP timeserver.  Either a host name or IP address.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NTPServer4" access="readWrite">
+        <description>Fourth NTP timeserver.  Either a host name or IP address.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NTPServer5" access="readWrite">
+        <description>Fifth NTP timeserver.  Either a host name or IP address.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentLocalTime" access="readOnly" activeNotify="canDeny">
+        <description>The current date and time in the CPE's local time zone.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="LocalTimeZone" access="readWrite">
+        <description>The local time zone definition, encoded according to IEEE 1003.1 (POSIX).  The following is an example value:
+: EST+5 EDT,M4.1.0/2,M10.5.0/2</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="UserInterface">
+    <description>Parameters related to the user interface of the CPE (allowed in Device Root and Service Objects).</description>
+    <object name="UserInterface." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains parameters relating to the user interface of the CPE.  Support for this object is Optional.</description>
+      <parameter name="PasswordRequired" access="readWrite">
+        <description>Present only if the CPE provides a password-protected LAN-side user interface.
+Indicates whether or not the local user interface must require a password to be chosen by the user.  If {{false}}, the choice of whether or not a password is used is left to the user.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="PasswordUserSelectable" access="readWrite">
+        <description>Present only if the CPE provides a password-protected LAN-side user interface and supports LAN-side Auto-Configuration.
+Indicates whether or not a password to protect the local user interface of the CPE may be selected by the user directly, or must be equal to the password used by the LAN-side Auto-Configuration protocol.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="UpgradeAvailable" access="readWrite">
+        <description>Indicates that a CPE upgrade is available, allowing the CPE to display this information to the user.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="WarrantyDate" access="readWrite">
+        <description>Indicates the date and time in UTC that the warranty associated with the CPE is to expire.</description>
+        <syntax>
+          <dateTime/>
+        </syntax>
+      </parameter>
+      <parameter name="ISPName" access="readWrite">
+        <description>The name of the customer's ISP.</description>
+        <syntax>
+          <string>
+            <size maxLength="64"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ISPHelpDesk" access="readWrite">
+        <description>The help desk phone number of the ISP.</description>
+        <syntax>
+          <string>
+            <size maxLength="32"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ISPHomePage" access="readWrite">
+        <description>The URL of the ISP's home page.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ISPHelpPage" access="readWrite">
+        <description>The URL of the ISP's on-line support page.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ISPLogo" access="readWrite">
+        <description>Base64 encoded GIF or JPEG image. The binary image is constrained to 4095 bytes or less.</description>
+        <syntax>
+          <base64>
+            <size minLength="0" maxLength="4095"/>
+          </base64>
+        </syntax>
+      </parameter>
+      <parameter name="ISPLogoSize" access="readWrite">
+        <description>Un-encoded binary image size in bytes.
+If ISPLogoSize input value is 0 then the ISPLogo is cleared.
+ISPLogoSize can also be used as a check to verify correct transfer and conversion of Base64 string to image size.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="4095"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="ISPMailServer" access="readWrite">
+        <description>The URL of the ISP's mail server.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ISPNewsServer" access="readWrite">
+        <description>The URL of the ISP's news server.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="TextColor" access="readWrite">
+        <description>The color of text on the GUI screens in RGB hexidecimal notation (e.g., FF0088).</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="BackgroundColor" access="readWrite">
+        <description>The color of the GUI screen backgrounds in RGB hexidecimal notation (e.g., FF0088).</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ButtonColor" access="readWrite">
+        <description>The color of buttons on the GUI screens in RGB hexidecimal notation (e.g., FF0088).</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="ButtonTextColor" access="readWrite">
+        <description>The color of text on buttons on the GUI screens in RGB hexidecimal notation (e.g., FF0088).</description>
+        <syntax>
+          <string>
+            <size maxLength="6"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AutoUpdateServer" access="readWrite">
+        <description>The server the CPE can check to see if an update is available for direct download to it.  This MUST NOT be used by the CPE if the {{param|ManagementServer.UpgradesManaged}} parameter is {{true}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="UserUpdateServer" access="readWrite">
+        <description>The server where a user can check via a web browser if an update is available for download to a PC.  This MUST NOT be used by the CPE if the {{param|ManagementServer.UpgradesManaged}} parameter is {{true}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="AvailableLanguages" access="readOnly">
+        <description>Comma-separated list of user-interface languages that are available, where each language is specified according to RFC 3066 {{bibref|RFC3066}}.</description>
+        <syntax>
+          <list>
+            <size maxLength="256"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentLanguage" access="readWrite">
+        <description>Current user-interface language, specified according to RFC 3066 {{bibref|RFC3066}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="16"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+  <component name="LAN">
+    <description>Parameters related to IP-based LAN connectivity of the CPE (allowed in Device Root and Service Objects).</description>
+    <object name="LAN." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains parameters relating to IP-based LAN connectivity of a device.
+This object relates only to IP-layer LAN capabilities.  Lower-layer aspects of LAN connectivity are not considered part of the common data model defined in this specification.
+For a device that contains multiple IP interfaces, the scope of this object is limited to the default IP interface.  Data that may be associated with other interfaces is not considered part of the common data model defined in this specification.
+Support for this object is Optional.</description>
+      <parameter name="AddressingType" access="readWrite">
+        <description>The method used to assign an address to this interface.  {{enum}}
+The ability to modify this parameter is optional.</description>
+        <syntax>
+          <string>
+            <enumeration value="DHCP"/>
+            <enumeration value="Static"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="IPAddress" access="readWrite" forcedInform="true">
+        <description>The current IP address assigned to this interface.
+The ability to modify this parameter is optional, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter name="SubnetMask" access="readWrite">
+        <description>The current subnet mask.
+The ability to modify this parameter is optional, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+        <syntax>
+          <dataType ref="IPAddress"/>
+        </syntax>
+      </parameter>
+      <parameter name="DefaultGateway" access="readWrite">
+        <description>The IP address of the current default gateway for this interface.
+The ability to modify this parameter is optional, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.</description>
+        <syntax>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="DNSServers" access="readWrite">
+        <description>Comma-separated list of IP address of the DNS servers for this interface.
+The ability to modify this parameter is optional, and this parameter cannot be modified if the {{param|AddressingType}} is {{enum|DHCP|AddressingType}}.
+If this parameter is modifiable, the device MAY ignore any DNS servers beyond the first two in the list.</description>
+        <syntax>
+          <list>
+            <size maxLength="256"/>
+          </list>
+          <string/>
+        </syntax>
+      </parameter>
+      <parameter name="MACAddress" access="readWrite">
+        <description>The physical address of this interface.  Writable only if {{param|MACAddressOverride}} is present and equal to {{true}}.</description>
+        <syntax>
+          <dataType ref="MACAddress"/>
+        </syntax>
+      </parameter>
+      <parameter name="MACAddressOverride" access="readWrite">
+        <description>Whether the value of {{param|MACAddress}} parameter can be overridden.
+* When {{true}}, {{param|MACAddress}} is writable.
+* When {{false}}, {{param|MACAddress}} is not writable, and the default MAC address assigned by the device SHOULD be restored.</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="DHCPOptionNumberOfEntries" access="readOnly">
+        <description>Number of entries in the DHCP option table.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="LAN.DHCPOption.{i}." access="readWrite" minEntries="0" maxEntries="unbounded" numEntriesParameter="DHCPOptionNumberOfEntries">
+      <description>This object is for configuration of DHCP options.  Each instance of this object represents a DHCP option to be included by the DHCP client in client requests.  The DHCP client MAY include any other options not specified in this table.</description>
+      <parameter name="Request" access="readWrite">
+        <description>Whether this entry represents a request to the DHCP server, or a value to be sent by the DHCP client.
+* When {{true}}, this entry represents a request.  In this case, the DHCP client MUST include the specified {{param|Tag}} in the Parameter Request List, as defined in RFC 2132.  The {{param|Value}} parameter is ignored in this case.
+* When {{false}}, this entry represents a value to be sent by the DHCP client.  In this case, the DHCP client MUST include a DHCP option formed from the {{param|Tag}} and {{param|Value}} parameters (with the Length derived from the length of the {{param|Value}} parameter).</description>
+        <syntax>
+          <boolean/>
+        </syntax>
+      </parameter>
+      <parameter name="Tag" access="readWrite">
+        <description>Tag of the DHCP option as defined in RFC 2132.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1" maxInclusive="254"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="Value" access="readWrite">
+        <description>Base64 encoded octet string to be used as the Value of the DHCP option if {{param|Request}} is {{false}}.</description>
+        <syntax>
+          <base64/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="LAN.Stats." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains statistics for the default IP interface.</description>
+      <parameter name="ConnectionUpTime" access="readOnly" activeNotify="canDeny">
+        <description>The time in seconds that this IP interface has been connected.
+* If the IP interface is using DHCP, this is the time that the DHCP client has been only in the Bound or Renewing states and the lower-layer interface has continuously maintained a link.
+* If the IP interface is using static addressing, this is the time that the lower-layer interface has continuously maintained a link.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="TotalBytesSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes sent over this interface since the device was last restarted as specified in {{param|.DeviceInfo.UpTime}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="TotalBytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes received over this interface since the device was last restarted as specified in {{param|.DeviceInfo.UpTime}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="TotalPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets sent over this interface since the device was last restarted as specified in {{param|.DeviceInfo.UpTime}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="TotalPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets received over this interface since the device was last restarted as specified in {{param|.DeviceInfo.UpTime}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentDayInterval" access="readOnly" activeNotify="canDeny">
+        <description>Number of seconds since the beginning of the period used for collection of CurrentDay statistics.
+The device MAY align the beginning of each CurrentDay interval with days in the UTC time zone, but is not required to do so.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentDayBytesSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes sent over this interface since the beginning of the current-day interval as specified by {{param|CurrentDayInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentDayBytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes received over this interface since the beginning of the current-day interval as specified by {{param|CurrentDayInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentDayPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets sent over this interface since the beginning of the current-day interval as specified by {{param|CurrentDayInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="CurrentDayPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets received over this interface since the beginning of the current-day interval as specified by {{param|CurrentDayInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QuarterHourInterval" access="readOnly" activeNotify="canDeny">
+        <description>Number of seconds since the beginning of the period used for collection of QuarterHour statistics.
+The device MAY align the beginning of each QuarterHour interval with real-time quarter-hour intervals, but is not required to do so.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QuarterHourBytesSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes sent over this interface since the beginning of the quarter-hour interval as specified by {{param|QuarterHourInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QuarterHourBytesReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP payload bytes received over this interface since the beginning of the quarter-hour interval as specified by {{param|QuarterHourInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QuarterHourPacketsSent" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets sent over this interface since the beginning of the quarter-hour interval as specified by {{param|QuarterHourInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="QuarterHourPacketsReceived" access="readOnly" activeNotify="canDeny">
+        <description>Total number of IP packets received over this interface since the beginning of the quarter-hour interval as specified by {{param|QuarterHourInterval}}.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="LAN.IPPingDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object is defines access to an IP-layer ping test for the default IP interface.</description>
+      <parameter name="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description>Indicates availability of diagnostic data.  {{enum}}
+Value may be set to {{enum|Requested}} to initiate the diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.</description>
+        <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete"/>
+            <enumeration value="Error_CannotResolveHostName"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Host" access="readWrite">
+        <description>Host name or address of the host to ping.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="NumberOfRepetitions" access="readWrite">
+        <description>Number of repetitions of the ping test to perform before reporting the results.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="Timeout" access="readWrite">
+        <description>Timeout in milliseconds for the ping test.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="DataBlockSize" access="readWrite">
+        <description>Size of the data block in bytes to be sent for each ping.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="DSCP" access="readWrite">
+        <description>DiffServ codepoint to be used for the test packets.  By default the CPE should set this value to zero.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="64"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="SuccessCount" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the number of successful pings (those in which a successful response was received prior to the timeout) in the most recent ping test.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="FailureCount" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the number of failed pings in the most recent ping test.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="AverageResponseTime" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the average response time in milliseconds over all repetitions with successful responses of the most recent ping test.  If there were no successful responses, this value MUST be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MinimumResponseTime" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the minimum response time in milliseconds over all repetitions with successful responses of the most recent ping test.  If there were no successful responses, this value MUST be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="MaximumResponseTime" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the maximum response time in milliseconds over all repetitions with successful responses of the most recent ping test.  If there were no successful responses, this value MUST be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="LAN.TraceRouteDiagnostics." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object is defines access to an IP-layer trace-route test for the default IP interface.</description>
+      <parameter name="DiagnosticsState" access="readWrite" activeNotify="canDeny">
+        <description>Indicates availability of diagnostic data.  {{enum}}
+Value may be set to {{enum|Requested}} to initiate the diagnostic test.  When writing, the only allowed value is {{enum|Requested}}.  To ensure the use of the proper test parameters (the writable parameters in this object), the test parameters MUST be set either prior to or at the same time as (in the same SetParameterValues) setting the {{param}} to {{enum|Requested}}.
+When requested, the CPE SHOULD wait until after completion of the communication session with the ACS before starting the diagnostic.
+When the diagnostic initiated by the ACS is completed (successfully or not), the CPE MUST establish a new connection to the ACS to allow the ACS to view the results, indicating the Event code ''8 DIAGNOSTICS COMPLETE'' in the Inform message.</description>
+        <syntax>
+          <string>
+            <enumeration value="None"/>
+            <enumeration value="Requested"/>
+            <enumeration value="Complete"/>
+            <enumeration value="Error_CannotResolveHostName"/>
+            <enumeration value="Error_MaxHopCountExceeded"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Host" access="readWrite">
+        <description>Host name or address of the host to find a route to.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+      <parameter name="Timeout" access="readWrite">
+        <description>Timeout in milliseconds for the trace route test.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="DataBlockSize" access="readWrite">
+        <description>Size of the data block in bytes to be sent for each trace route.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1" maxInclusive="65535"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="MaxHopCount" access="readWrite">
+        <description>The maximum number of hop used in outgoing probe packets (max TTL).  The default is 30 hops.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="1" maxInclusive="64"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="DSCP" access="readWrite">
+        <description>DiffServ codepoint to be used for the test packets.  By default the CPE should set this value to zero.</description>
+        <syntax>
+          <unsignedInt>
+            <range minInclusive="0" maxInclusive="64"/>
+          </unsignedInt>
+        </syntax>
+      </parameter>
+      <parameter name="ResponseTime" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the response time in milliseconds the most recent trace route test.  If a route could not be determined, this value must be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+      <parameter name="NumberOfRouteHops" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the number of hops within the discovered route.  If a route could not be determined, this value must be zero.</description>
+        <syntax>
+          <unsignedInt/>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="LAN.TraceRouteDiagnostics.RouteHops.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" numEntriesParameter="NumberOfRouteHops">
+      <description>Result parameter indicating the components of the discovered route.  If a route could not be determined, there will be no instances of this object.</description>
+      <parameter name="HopHost" access="readOnly" activeNotify="canDeny">
+        <description>Result parameter indicating the Host Name or IP Address of a hop along the discovered route.</description>
+        <syntax>
+          <string>
+            <size maxLength="256"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+  </component>
+
+  <model name="Device:1.0">
+    <object name="Device." access="readOnly" minEntries="1" maxEntries="1">
+      <description>The top-level object for a Device.</description>
+      <parameter name="DeviceSummary" access="readOnly" forcedInform="true">
+        <description>See {{bibref|TR-106|section 3.7}}.</description>
+        <syntax>
+          <string>
+            <size maxLength="1024"/>
+          </string>
+        </syntax>
+      </parameter>
+    </object>
+    <object name="Device.Services." access="readOnly" minEntries="1" maxEntries="1">
+      <description>This object contains general services information.</description>
+    </object>
+    <component path="Device." ref="DeviceInfo"/>
+    <component path="Device." ref="ManagementServer"/>
+    <component path="Device." ref="GatewayInfo"/>
+    <component path="Device." ref="Config"/>
+    <component path="Device." ref="Time"/>
+    <component path="Device." ref="UserInterface"/>
+    <component path="Device." ref="LAN"/>
+    <profile name="Baseline:1">
+      <object ref="Device." requirement="present">
+        <parameter ref="DeviceSummary" requirement="readOnly"/>
+      </object>
+      <object ref="Device.DeviceInfo." requirement="present">
+        <parameter ref="Manufacturer" requirement="readOnly"/>
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="ModelName" requirement="readOnly"/>
+        <parameter ref="Description" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+        <parameter ref="HardwareVersion" requirement="readOnly"/>
+        <parameter ref="SoftwareVersion" requirement="readOnly"/>
+        <parameter ref="DeviceStatus" requirement="readOnly"/>
+        <parameter ref="UpTime" requirement="readOnly"/>
+      </object>
+      <object ref="Device.ManagementServer." requirement="present">
+        <parameter ref="URL" requirement="readWrite"/>
+        <parameter ref="Username" requirement="readWrite"/>
+        <parameter ref="Password" requirement="readWrite"/>
+        <parameter ref="PeriodicInformEnable" requirement="readWrite"/>
+        <parameter ref="PeriodicInformInterval" requirement="readWrite"/>
+        <parameter ref="PeriodicInformTime" requirement="readWrite"/>
+        <parameter ref="ParameterKey" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestURL" requirement="readOnly"/>
+        <parameter ref="ConnectionRequestUsername" requirement="readWrite"/>
+        <parameter ref="ConnectionRequestPassword" requirement="readWrite"/>
+        <parameter ref="UpgradesManaged" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="GatewayInfo:1">
+      <object ref="Device.GatewayInfo." requirement="present">
+        <parameter ref="ManufacturerOUI" requirement="readOnly"/>
+        <parameter ref="ProductClass" requirement="readOnly"/>
+        <parameter ref="SerialNumber" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="Time:1">
+      <object ref="Device.Time." requirement="present">
+        <parameter ref="NTPServer1" requirement="readWrite"/>
+        <parameter ref="NTPServer2" requirement="readWrite"/>
+        <parameter ref="CurrentLocalTime" requirement="readOnly"/>
+        <parameter ref="LocalTimeZone" requirement="readWrite"/>
+      </object>
+    </profile>
+    <profile name="LAN:1">
+      <object ref="Device.LAN." requirement="present">
+        <parameter ref="AddressingType" requirement="readOnly"/>
+        <parameter ref="IPAddress" requirement="readOnly"/>
+        <parameter ref="SubnetMask" requirement="readOnly"/>
+        <parameter ref="DefaultGateway" requirement="readOnly"/>
+        <parameter ref="DNSServers" requirement="readOnly"/>
+        <parameter ref="MACAddress" requirement="readOnly"/>
+      </object>
+      <object ref="Device.LAN.Stats." requirement="present">
+        <parameter ref="ConnectionUpTime" requirement="readOnly"/>
+        <parameter ref="TotalBytesSent" requirement="readOnly"/>
+        <parameter ref="TotalBytesReceived" requirement="readOnly"/>
+        <parameter ref="TotalPacketsSent" requirement="readOnly"/>
+        <parameter ref="TotalPacketsReceived" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="IPPing:1">
+      <object ref="Device.LAN.IPPingDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="NumberOfRepetitions" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="SuccessCount" requirement="readOnly"/>
+        <parameter ref="FailureCount" requirement="readOnly"/>
+        <parameter ref="AverageResponseTime" requirement="readOnly"/>
+        <parameter ref="MinimumResponseTime" requirement="readOnly"/>
+        <parameter ref="MaximumResponseTime" requirement="readOnly"/>
+      </object>
+    </profile>
+    <profile name="TraceRoute:1">
+      <object ref="Device.LAN.TraceRouteDiagnostics." requirement="present">
+        <parameter ref="DiagnosticsState" requirement="readWrite"/>
+        <parameter ref="Host" requirement="readWrite"/>
+        <parameter ref="Timeout" requirement="readWrite"/>
+        <parameter ref="DataBlockSize" requirement="readWrite"/>
+        <parameter ref="MaxHopCount" requirement="readWrite"/>
+        <parameter ref="DSCP" requirement="readWrite"/>
+        <parameter ref="ResponseTime" requirement="readOnly"/>
+        <parameter ref="NumberOfRouteHops" requirement="readOnly"/>
+      </object>
+      <object ref="Device.LAN.TraceRouteDiagnostics.RouteHops.{i}." requirement="present">
+        <parameter ref="HopHost" requirement="readOnly"/>
+      </object>
+    </profile>
+  </model>
+</dm:document>

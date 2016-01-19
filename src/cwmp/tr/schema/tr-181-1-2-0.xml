@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  TR-069 Device:1.9 Root Object definition
+
+  Notice:
+
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+    
+  Summary:
+    TR-069 Device:1.9 Root Object definition.
+
+  Editors:
+    Klaus Wich, Nokia Siemens Networks
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Jason Walls, UNH
+
+  Version History:
+    * February 2010: tr-181-1-0-0.xml; corresponds to TR-181 Issue 1.
+                   * DeviceInfo: clarified DeviceID and added VendorConfig-
+                     File.{i}
+                   * ManagementServer: added EnableCWMP, DefaultActive-
+                     NotificationThrottle, CWMPRetryMinimumWaitInterval
+                     and CWMPRetryIntervalMultiplier
+                   * Time: added Enable and Status (and Time:2 profile)
+    * July 2011    : tr-181-1-1-0.xml
+                   * Alias extensions
+    * November 2011: tr181-1-2-0.xml
+                   * inport new optional components for Femto FAP from TR-262:
+                        - GPS
+                        - Tunnel
+                        - Performance Manamgemen
+                        - Application Platform    
+                   * import of new/updated optional components from TR-157a5
+                        - Software modules
+                        - Fault Management
+                        - Location
+                        - Security
+
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+    xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                           http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd
+                        urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                           http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-181-1-2-0" file="tr-181-1-2-0.xml">
+    
+    <description>
+    Device:1.9 data model 
+    * New Components are imported from TR-157a5 and TR-262
+    * The Word document has not been modified  
+    </description>
+    
+    <!-- imports modified/new common objects from tr-157-1-5 -->
+    <import file="tr-157-1-5.xml" spec="urn:broadband-forum-org:tr-157-1-5">
+        <component name="SoftwareModulesDiffs"/>
+        <component name="DI_Location"/>
+        <component name="FaultManagement"/>
+        <component name="Security"/>       
+    </import>
+    
+    <!-- imports new common Femto objects from tr-262-1-0 -->
+    <import file="tr-262-1-0.xml" spec="urn:broadband-forum-org:tr-262-1-0">
+        <component name="FAP"/>
+        <component name="FAP_GPS"/>
+        <component name="FAP_Tunnel"/>
+        <component name="FAP_PerformanceMgmt"/>
+        <component name="FAP_ApplicationPlatform"/>
+    </import>
+        
+    <!-- import Device:1.8 datamodel and components from tr-181-1-1 -->  
+    <import file="tr-181-1-1.xml" spec="urn:broadband-forum-org:tr-181-1-1">
+        <model name="Device:1.8"/>
+        <component name="ManagementServer"/>
+        <component name="GatewayInfo"/>
+        <component name="Config"/>
+        <component name="Time"/>
+        <component name="UserInterface"/>
+        <component name="LAN"/>
+        <component name="DeviceInfo"/>
+    </import>
+    
+    <model name="Device:1.9" base="Device:1.8">
+        <!-- add new objects from tr-157-1-5 -->
+        <component path="Device." ref="SoftwareModulesDiffs"/>
+        <component path="Device." ref="Security"/>
+        <component path="Device." ref="FaultManagement"/> 
+        <component path="Device." ref="DI_Location"/>
+
+        <!-- add new objects from tr-262-1-0 -->
+        <component path="Device." ref="FAP"/>
+        <component path="Device." ref="FAP_GPS"/>
+        <component path="Device." ref="FAP_Tunnel"/>
+        <component path="Device." ref="FAP_PerformanceMgmt"/>
+        <component path="Device." ref="FAP_ApplicationPlatform"/>
+      
+        <!-- avoid report tool warnings -->
+        <object base="Device.LAN.TraceRouteDiagnostics.RouteHops.{i}." access="readOnly" minEntries="0" maxEntries="unbounded" dmr:noUniqueKeys="true"/>
+
+    </model>
+</dm:document>

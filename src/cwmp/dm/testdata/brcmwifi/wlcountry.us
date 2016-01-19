@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xcountry" ] ; then
+  echo "US (US/16) UNITED STATES"
+fi
+exit 0

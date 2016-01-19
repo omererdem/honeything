@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xwsec" ] ; then
+  echo "7"
+fi
+exit 0

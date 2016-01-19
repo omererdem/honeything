@@ -1,0 +1,4 @@
+#!/bin/sh
+
+dd if=/dev/zero bs=4096 count=32
+exit 0

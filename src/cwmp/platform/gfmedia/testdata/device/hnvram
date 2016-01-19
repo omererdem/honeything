@@ -1,0 +1,19 @@
+#!/bin/sh
+
+if [ x"$1" = "x-r" ] && [ x"$2" = "x1ST_SERIAL_NUMBER" ] ; then
+  echo "1ST_SERIAL_NUMBER=123456789"
+fi
+
+if [ x"$1" = "x-r" ] && [ x"$2" = "xPLATFORM_NAME" ] ; then
+  echo "PLATFORM_NAME=ModelName"
+fi
+
+if [ x"$1" = "x-r" ] && [ x"$2" = "xGPN" ] ; then
+  echo "GPN=PartNumber"
+fi
+
+if [ x"$1" = "x-r" ] && [ x"$2" = "xHW_REV" ] ; then
+  echo "HW_REV=rev"
+fi
+
+exit 0

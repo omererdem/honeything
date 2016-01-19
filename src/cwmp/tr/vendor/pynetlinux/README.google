@@ -1,0 +1,4 @@
+Fetched pynetlinux-1.0 from github.
+
+Moved pynetlinux/* to top directory. We want to include this module
+directly, not install it on the target machine.

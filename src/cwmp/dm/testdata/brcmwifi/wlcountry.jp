@@ -1,0 +1,6 @@
+#!/bin/sh
+
+if [ x"$3" = "xcountry" ] ; then
+  echo "JP (JP/3) JAPAN"
+fi
+exit 0

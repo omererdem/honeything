@@ -1,0 +1,8 @@
+#!/bin/sh
+
+if [ x"$1" = "x-H" ] && [ x"$2" = x"/dev/sda" ] ; then
+echo "
+/dev/sda:
+ drive temperature (celsius) is:  50
+ drive temperature in range:  yes"
+fi

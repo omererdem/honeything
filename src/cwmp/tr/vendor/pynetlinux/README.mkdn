@@ -1,0 +1,34 @@
+# pynetlinux: Linux network configuration library for Python
+
+This library contains Python bindings to ioctl calls
+
+### Features
+
+* ifconfig
+    * List interfaces
+    * Bringing interfaces up and down
+    * Setting and getting the IP address and netmask
+    * Setting and getting link mode
+    * Ethernet flow control
+    * Retrieve interface statistics (bytes/packets tx/rx, etc)
+
+* brctl
+    * Create and destroy bridges
+    * Add/remove interfaces to bridges
+    * Set forwarding delay
+
+* tap
+    * Create and destroy taps
+    * File object API
+
+* route
+    * Get default gateway / interface
+
+
+### Contributors
+
+* Roman Lisagor
+* Sam Roberts
+* Anoop Karollil
+* Richard Feng
+

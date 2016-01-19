@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    TR-069 VoiceService:1.1 Service Object definition
+    
+  Notice:
+    The Broadband Forum is a non-profit corporation organized to create
+    guidelines for broadband network system development and deployment.
+    This Broadband Forum Document has been approved by members of the
+    Forum. This Broadband Forum Document is not binding on the Broadband
+    Forum, any of its members, or any developer or service provider.
+    This Broadband Forum Document is subject to change, but only with
+    approval of members of the Forum.  This Document is copyrighted by
+    the Broadband Forum, and all rights are reserved.  Portions of this
+    Document may be copyrighted by Broadband Forum members.
+
+    This Broadband Forum Document is provided AS IS, WITH ALL FAULTS.
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT,
+    OR ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED
+    BY LAW ANY REPRESENTATION OR WARRANTY, EXPRESS OR IMPLIED,
+    INCLUDING, BUT NOT LIMITED TO, ANY WARRANTY: 
+
+    (a) OF ACCURACY, COMPLETENESS, MERCHANTABILITY, FITNESS FOR A
+        PARTICULAR PURPOSE, NON-INFRINGEMENT, OR TITLE;
+    (b) THAT THE CONTENTS OF THIS BROADBAND FORUM DOCUMENT ARE SUITABLE
+        FOR ANY PURPOSE, EVEN IF THAT PURPOSE IS KNOWN TO THE COPYRIGHT
+        HOLDER;
+    (c) THAT THE IMPLEMENTATION OF THE CONTENTS OF THE DOCUMENT WILL NOT
+        INFRINGE ANY THIRD PARTY PATENTS, COPYRIGHTS, TRADEMARKS OR
+        OTHER RIGHTS.
+
+    By using this Broadband Forum Document, users acknowledge that
+    implementation may require licenses to patents.  The Broadband Forum
+    encourages but does not require its members to identify such
+    patents.  For a list of declarations made by Broadband Forum member
+    companies, please see http://www.broadband-forum.org.  No assurance
+    is given that licenses to patents necessary to implement this
+    Document will be available for license at all or on reasonable and
+    non-discriminatory terms.
+
+    ANY PERSON HOLDING A COPYRIGHT IN THIS BROADBAND FORUM DOCUMENT, OR
+    ANY PORTION THEREOF, DISCLAIMS TO THE FULLEST EXTENT PERMITTED BY
+    LAW (A) ANY LIABILITY (INCLUDING DIRECT, INDIRECT, SPECIAL, OR
+    CONSEQUENTIAL DAMAGES UNDER ANY LEGAL THEORY) ARISING FROM OR
+    RELATED TO THE USE OF OR RELIANCE UPON THIS DOCUMENT; AND (B) ANY
+    OBLIGATION TO UPDATE OR CORRECT THIS DOCUMENT.
+
+    Broadband Forum Documents may be copied, downloaded, stored on a
+    server or otherwise re-distributed in their entirety only, and may
+    not be modified without the advance written permission of the
+    Broadband Forum.
+
+    The text of this notice must be included in all copies of this
+    Broadband Forum Document.
+
+  Summary:
+    TR-069 VoiceService:1.1 Service Object definition
+
+
+  Editors:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Tim Spets, Motorola Mobility
+
+  Editors Object Addressing Extensions:
+    Sarah Banks, Cisco
+    Andrea Colmegna, FASTWEB
+    Ping Fang, Huawei Technologies
+    Nils Magnusson, TeliaSonera
+    Anton Okmyanskiy, Cisco
+    Staffan Ungsgard, TeliaSonera
+
+  Editors Remote Management of non-TR-069 devices:
+    John Blackford, Pace
+    Ping Fang, Huawei Technologies
+    Tim Spets, Motorola Mobility
+
+  BroadbandHome™ Working Group Chairs:
+    Greg Bathrick, PMC-Sierra
+    Heather Kirksey, Alcatel-Lucent
+
+  Vice Chair: 
+    Jason Walls, UNH
+
+  Chief Editor: 
+    Michael Hanrahan, Huawei Technologies
+
+
+  Version History:
+    September 2009: tr-104-1-0-0.xml, corresponds to TR-104 Issue 1, Section 3 
+                    (Data Model Definition) and Section 4 (Profile Definition).
+    July      2011: tr-104-1-1-0.xml, corresponds to TR-104 Issue 1, Amendment 1
+
+-->
+
+<dm:document xmlns:dm="urn:broadband-forum-org:cwmp:datamodel-1-4"
+             xmlns:dmr="urn:broadband-forum-org:cwmp:datamodel-report-0-1"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="urn:broadband-forum-org:cwmp:datamodel-1-4
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-1-4.xsd 
+                                 urn:broadband-forum-org:cwmp:datamodel-report-0-1
+                                    http://www.broadband-forum.org/cwmp/cwmp-datamodel-report.xsd"
+             spec="urn:broadband-forum-org:tr-104-1-1-0" file="tr-104-1-1-0.xml">
+
+  <description>VoiceService:1.1 Service Object</description>
+
+  <!-- import Alias DT definition -->
+  <import file="tr-106-1-0-types.xml" spec="urn:broadband-forum-org:tr-106-1-0">
+    <dataType name="Alias"/>
+  </import>
+
+  <import file="tr-104-1-0.xml" spec="urn:broadband-forum-org:tr-104-1-0">
+    <model name="VoiceService:1.0"></model>  
+  </import>
+
+  <model name="VoiceService:1.1" base="VoiceService:1.0" isService="true">
+
+    <!-- extends non-transient objects with Alias parameter -->
+    <object base="VoiceService.{i}." access="readOnly" numEntriesParameter="VoiceServiceNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.Capabilities.Codecs.{i}." access="readOnly" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}." access="readWrite" numEntriesParameter="VoiceProfileNumberOfEntries" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="Enable">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.SIP.EventSubscribe.{i}." access="readWrite" numEntriesParameter="SIPEventSubscribeNumberOfElements" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.SIP.ResponseMap.{i}." access="readWrite" numEntriesParameter="SIPResponseMapNumberOfElements" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.NumberingPlan.PrefixInfo.{i}." access="readWrite" numEntriesParameter="PrefixInfoNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Tone.Event.{i}." access="readOnly" numEntriesParameter="EventNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Tone.Description.{i}." access="readWrite" numEntriesParameter="DescriptionNumberOfEntries" enableParameter="ToneEnable" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Tone.Pattern.{i}." access="readWrite" numEntriesParameter="PatternNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.ButtonMap.Button.{i}." access="readOnly" numEntriesParameter="NumberOfButtons" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}." access="readWrite" numEntriesParameter="NumberOfLines" enableParameter="Enable" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="Enable">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}.SIP.EventSubscribe.{i}." access="readOnly" numEntriesParameter="SIPEventSubscribeNumberOfElements" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}.Ringer.Event.{i}." access="readOnly" numEntriesParameter="EventNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}.Ringer.Description.{i}." access="readWrite" numEntriesParameter="DescriptionNumberOfEntries" enableParameter="RingEnable" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}.Ringer.Pattern.{i}." access="readWrite" numEntriesParameter="PatternNumberOfEntries" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.VoiceProfile.{i}.Line.{i}.Codec.List.{i}." access="readOnly" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+    <object base="VoiceService.{i}.PhyInterface.{i}." access="readOnly" minEntries="0" maxEntries="unbounded">
+      <uniqueKey functional="false">
+        <parameter ref="Alias"/>
+      </uniqueKey>
+      <parameter name="Alias" access="readWrite" activeNotify="canDeny" dmr:previousParameter="">
+        <description>{{datatype|expand}}</description>
+        <syntax>
+          <dataType ref="Alias"/>
+        </syntax>
+      </parameter>
+    </object>
+
+  </model>
+
+</dm:document>
