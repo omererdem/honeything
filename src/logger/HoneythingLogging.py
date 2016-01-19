@@ -23,5 +23,5 @@ class HTLogging(BaseLogging):
 
     def __init__(self):
 
-        format = "%(asctime)s \t%(name)s \t%(levelname)s \t%(message)s"
+        format = "%(asctime)s \t%(name)s \t%(module)s \t%(levelname)s \t%(message)s"
         BaseLogging.__init__(self, 'honeything', 'file_honeything', format)
