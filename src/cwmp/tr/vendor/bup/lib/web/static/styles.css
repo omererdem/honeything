@@ -1,0 +1,24 @@
+body {
+    font-family: sans-serif
+}
+
+#wrapper {
+    width: 90%;
+    margin: auto;
+}
+
+#breadcrumb {
+    margin: 10px 0;
+}
+
+table {
+    width: auto;
+}
+
+th {
+    text-align: left;
+}
+
+.dir-size {
+    padding-left:15px;
+}
