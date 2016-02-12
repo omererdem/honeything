@@ -1,0 +1,86 @@
+#!/bin/sh -e
+#
+### BEGIN INIT INFO
+# Provides:          honeything
+# Required-Start:    $remote_fs $syslog
+# Required-Stop:     $remote_fs $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: HoneyThing
+# Description:       Honeypot for Internet of TR-069 Things
+### END INIT INFO
+
+. /lib/lsb/init-functions
+
+pidfile="/opt/honeything/run/honeything.pid"
+sockfile="/opt/honeything/run/cwmpd.sock"
+
+case "$1" in
+    start)
+        if [ -f $pidfile ]; then
+            pid=`cat $pidfile`
+            if kill -0 "$pid" 2>/dev/null; then
+                echo "HoneyThing is already running with PID $pid"
+                exit 0
+            fi
+        fi
+
+        echo -n "Starting HoneyThing: "
+
+        # Start the daemon
+        nohup /usr/bin/python /opt/honeything/bin/honeything > /dev/null 2>&1 &
+        echo $! > $pidfile
+
+        sleep 1
+        if [ -f $pidfile ] && [ -s $pidfile ]; then
+            echo -n "\t\t\t\t\t\t   [  \033[32mOK  \033[0m]\n"
+        else
+            echo -n "\t\t\t\t   [  \033[31mERROR  \033[0m]\n"
+        fi
+    ;;
+    stop)
+        if [ ! -f $pidfile ]; then
+            echo "No PID file found; not running?"
+            exit 0;
+        fi
+
+        echo -n "Stopping HoneyThing: "
+        # Stop the daemon
+        parent_pid=`ps x -o "%r %c" | grep cwmpd | awk '{print $1}'`
+        kill -TERM -$parent_pid
+
+        sleep 1
+        if [ $? -eq 0 ]; then
+            echo -n "\t\t\t\t\t\t   [  \033[32mOK  \033[0m]\n"
+            rm -f $pidfile $sockfile
+        else
+            echo -n "\t\t\t\t   [  \033[31mERROR  \033[0m]\n"
+            echo "The process could not be stoppped! PID = `cat $pidfile`"
+        fi
+    ;;
+    restart)
+        echo "Restarting HoneyThing ..."
+        $0 stop
+        $0 start
+    ;;
+    status)
+        # Check if running...
+        if [ -s $pidfile ]; then
+            pid=`cat $pidfile`
+            if kill -0 "$pid" 2>/dev/null; then
+                echo "HoneyThing is running with PID $pid"
+                exit 0
+            else
+                echo "PID file $pidfile exists, but process not running!"
+            fi
+        else
+            echo "HoneyThing is not running!"
+        fi
+    ;;
+    *)
+    # Refuse to do other stuff
+    echo "Usage: $0 {start|stop|restart|status}"
+    exit 1
+    ;;
+esac
+
