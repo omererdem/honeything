@@ -1,5 +1,5 @@
 # HoneyThing
-HoneyThing is a honeypot for internet of TR-069 things. It's designed to act as completely a modem/router that has RomPager embedded web server and supports [TR-069 (CWMP)](https://www.broadband-forum.org/technical/download/TR-069_Amendment-5.pdf) protocol.
+HoneyThing is a honeypot for Internet of TR-069 things. It's designed to act as completely a modem/router that has RomPager embedded web server and supports [TR-069 (CWMP)](https://www.broadband-forum.org/technical/download/TR-069_Amendment-5.pdf) protocol.
 
 Project idea was created by [Ali Ikinci](https://github.com/aikinci) and offered as [Honeynet GSoC](https://honeynet.org/gsoc/ideas#project15) project in 2015.
 
